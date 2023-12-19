@@ -1,0 +1,43 @@
+D:\isaac\Documents\Code Projects\bin\Debug\net7.0\Code Projects.exe
+D:\isaac\Documents\Code Projects\bin\Debug\net7.0\Code Projects.deps.json
+D:\isaac\Documents\Code Projects\bin\Debug\net7.0\Code Projects.runtimeconfig.json
+D:\isaac\Documents\Code Projects\bin\Debug\net7.0\Code Projects.dll
+D:\isaac\Documents\Code Projects\bin\Debug\net7.0\Code Projects.pdb
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfoInputs.cache
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfo.cs
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.csproj.CoreCompileInputs.cache
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.dll
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\refint\Code Projects.dll
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.pdb
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
+D:\isaac\Documents\Code Projects\obj\Debug\net7.0\ref\Code Projects.dll
+P:\6th Form Computing\18VanEnckevortI\Code Projects\bin\Debug\net7.0\Code Projects.exe
+P:\6th Form Computing\18VanEnckevortI\Code Projects\bin\Debug\net7.0\Code Projects.deps.json
+P:\6th Form Computing\18VanEnckevortI\Code Projects\bin\Debug\net7.0\Code Projects.runtimeconfig.json
+P:\6th Form Computing\18VanEnckevortI\Code Projects\bin\Debug\net7.0\Code Projects.dll
+P:\6th Form Computing\18VanEnckevortI\Code Projects\bin\Debug\net7.0\Code Projects.pdb
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.csproj.AssemblyReference.cache
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfoInputs.cache
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfo.cs
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.csproj.CoreCompileInputs.cache
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.dll
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\refint\Code Projects.dll
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.pdb
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
+P:\6th Form Computing\18VanEnckevortI\Code Projects\obj\Debug\net7.0\ref\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net7.0\Code Projects.exe
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net7.0\Code Projects.deps.json
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net7.0\Code Projects.runtimeconfig.json
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net7.0\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net7.0\Code Projects.pdb
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfoInputs.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.AssemblyInfo.cs
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.csproj.CoreCompileInputs.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\refint\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.pdb
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\ref\Code Projects.dll
