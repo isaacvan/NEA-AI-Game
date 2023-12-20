@@ -24,7 +24,7 @@ namespace UtilityFunctionsNamespace
         public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu
         public static bool loadedSave = false;
         public static bool Instant = false;
-        public static int colourSchemeIndex = 0;
+        public static int colourSchemeIndex = 1;
         
 
 
@@ -792,7 +792,7 @@ namespace UtilityFunctionsNamespace
 
     class ColourScheme
     {
-        public string[] schemes = { "default" };
+        public string[] schemes = { "default", "isaac" };
         public int[] generalText = new int[3];
         public string generalTextCode = "";
         public int[] menuMain = new int[3];
@@ -811,6 +811,11 @@ namespace UtilityFunctionsNamespace
                     menuMainCode = setColourScheme(menuMain, 210, 226, 252);
                     break;
                     // Add more colour schemes here
+                case "isaac":
+                    generalTextCode = setColourScheme(generalText, 255, 255, 255);
+                    menuAccentCode = setColourScheme(menuAccent, 255, 151, 107);
+                    menuMainCode = setColourScheme(menuMain, 255, 222, 255);
+                    break;
             }
 
         }

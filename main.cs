@@ -17,7 +17,7 @@ using System.Text;
 partial class Program
 {   // ERRORS CLEAR ALL SAVES
     // CLASS COLOUR SCHEME R G B AND D
-    // GITHUB CROSSOVER
+
 
 
     [DllImport("kernel32.dll", SetLastError = true)]
