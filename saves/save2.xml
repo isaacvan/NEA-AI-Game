@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="Warrior">
-  <statLabels>
-    <string>strength</string>
-    <string>dexterity</string>
-    <string>intelligence</string>
-    <string>currentHealth</string>
-    <string>maxHealth</string>
-    <string>defense</string>
-    <string>dodge</string>
-    <string>currentExp</string>
-    <string>maxExp</string>
-  </statLabels>
   <playerPos>
     <X>0</X>
     <Y>0</Y>
@@ -23,19 +12,8 @@
   <currentHealth>100</currentHealth>
   <defense>20</defense>
   <dodge>5</dodge>
-  <level>1</level>
+  <level>0</level>
   <currentExp>0</currentExp>
   <maxExp>15</maxExp>
-  <stats>
-    <int>15</int>
-    <int>5</int>
-    <int>5</int>
-    <int>100</int>
-    <int>100</int>
-    <int>20</int>
-    <int>5</int>
-    <int>0</int>
-    <int>15</int>
-  </stats>
   <madnessTurns>0</madnessTurns>
 </Player>

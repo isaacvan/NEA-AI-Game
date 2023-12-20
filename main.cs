@@ -266,7 +266,7 @@ partial class Program
                                 string load = Console.ReadLine();
                                 if (load == "y")
                                 {
-                                    string save = UtilityFunctions.mainDirectory + @$"saves\save{i}.xml";
+                                    string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
                                     UtilityFunctions.saveSlot = Path.GetFileName(save);
                                     UtilityFunctions.saveFile = save;
                                     saveChosen = true;
@@ -577,10 +577,10 @@ partial class Program
                     {
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all saves...\n", UtilityFunctions.typeSpeed);
-                        string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.txt");
+                        string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
                         foreach (string save in saves)
                         {
-                            UtilityFunctions.overrideSave(save);
+                            File.Delete(save);
                         }
                         Thread.Sleep(1000);
                         // return options(gameStarted, saveChosen);
