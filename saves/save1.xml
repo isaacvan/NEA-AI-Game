@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="Rogue">
+  <statLabels>
+    <string>strength</string>
+    <string>dexterity</string>
+    <string>intelligence</string>
+    <string>currentHealth</string>
+    <string>maxHealth</string>
+    <string>defense</string>
+    <string>dodge</string>
+    <string>currentExp</string>
+    <string>maxExp</string>
+  </statLabels>
+  <playerPos>
+    <X>0</X>
+    <Y>0</Y>
+  </playerPos>
+  <typeSpeed>1</typeSpeed>
+  <strength>5</strength>
+  <dexterity>20</dexterity>
+  <intelligence>5</intelligence>
+  <maxHealth>80</maxHealth>
+  <currentHealth>80</currentHealth>
+  <defense>15</defense>
+  <dodge>20</dodge>
+  <level>1</level>
+  <currentExp>0</currentExp>
+  <maxExp>15</maxExp>
+  <stats>
+    <int>5</int>
+    <int>20</int>
+    <int>5</int>
+    <int>80</int>
+    <int>80</int>
+    <int>15</int>
+    <int>20</int>
+    <int>0</int>
+    <int>15</int>
+  </stats>
+  <madnessTurns>0</madnessTurns>
+</Player>

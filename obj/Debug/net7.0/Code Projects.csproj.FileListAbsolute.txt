@@ -41,3 +41,4 @@ D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\refint\Code Projects.
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.pdb
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\ref\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.sourcelink.json
