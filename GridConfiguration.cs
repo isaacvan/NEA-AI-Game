@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using UtilityFunctionsNamespace;
 using EnemyClassesNamespace;
 using PlayerClassesNamespace;
-using StoryDevelopmentNamespace;
 using System.Xml.Linq;
 using System.Text.Json;
 using System.Reflection.Metadata.Ecma335;
@@ -106,7 +105,7 @@ namespace GridConfigurationNamespace
                 {
                     if (grid[playerX][playerY].eventHere.description[i] == "plrExp")
                     {
-                        player.increaseExp(int.Parse(grid[playerX][playerY].eventHere.consequences[i]));
+                        player.changePlayerStats("currentExp", 5);
 
                     }
                 }

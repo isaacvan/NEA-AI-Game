@@ -6,12 +6,12 @@ using UtilityFunctionsNamespace;
 using EnemyClassesNamespace;
 using PlayerClassesNamespace;
 using GridConfigurationNamespace;
-using StoryDevelopmentNamespace;
 using System.Xml.Linq;
 using System.Drawing;
 using System.Net.Http.Headers;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 using System.Text;
 
 partial class Program
@@ -28,7 +28,7 @@ partial class Program
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr GetStdHandle(int handle);
 
-    
+
 
     //\x1b[38;2;r;g;bm
     public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
@@ -38,7 +38,7 @@ partial class Program
     {
         string debugPointEntry = "game";
         Player player;
-        
+
 
         switch (debugPointEntry)
         {
@@ -118,37 +118,49 @@ partial class Program
             switch (inp)
             {
                 case 'w':
-                if (loc.Y != 0) {
-                    loc.Y -= 1;
-                    moved = true;
-                    return loc;
-                } else {
-                    return loc;
-                }
+                    if (loc.Y != 0)
+                    {
+                        loc.Y -= 1;
+                        moved = true;
+                        return loc;
+                    }
+                    else
+                    {
+                        return loc;
+                    }
                 case 'a':
-                if (loc.X != 0) {
-                    loc.X -= 1;
-                    moved = true;
-                    return loc;
-                } else {
-                    return loc;
-                }
+                    if (loc.X != 0)
+                    {
+                        loc.X -= 1;
+                        moved = true;
+                        return loc;
+                    }
+                    else
+                    {
+                        return loc;
+                    }
                 case 's':
-                if (loc.Y != grid[loc.X].Count - 1) {
-                    loc.Y += 1;
-                    moved = true;
-                    return loc;
-                } else {
-                    return loc;
-                }
+                    if (loc.Y != grid[loc.X].Count - 1)
+                    {
+                        loc.Y += 1;
+                        moved = true;
+                        return loc;
+                    }
+                    else
+                    {
+                        return loc;
+                    }
                 case 'd':
-                if (loc.X != grid.Count - 1) {
-                    loc.X += 1;
-                    moved = true;
-                    return loc;
-                } else {
-                    return loc;
-                }
+                    if (loc.X != grid.Count - 1)
+                    {
+                        loc.X += 1;
+                        moved = true;
+                        return loc;
+                    }
+                    else
+                    {
+                        return loc;
+                    }
                 default:
                     moved = true;
                     break;
@@ -200,10 +212,6 @@ partial class Program
 
     static bool menu(bool gameStarted, bool saveChosen)
     {
-        int r = 3;
-        int g = 3;
-        int b = 3;
-        int d = 255;
         if (saveChosen == false && gameStarted == false)
         {
             UtilityFunctions.clearScreen(null);
@@ -248,19 +256,17 @@ partial class Program
                 {
                     case 1:
                         UtilityFunctions.clearScreen(null);
-                        string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.txt");
-                        UtilityFunctions.checkIfSavesEmpty(saves);
-                        //P:\6th Form Computing\18VanEnckevortI\Code Projects\saves
+                        string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
                         bool started = false;
-                        foreach (string save in saves)
+                        for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                         {
-                            if (File.ReadAllLines(save)[0] == "empty")
+                            if (saves.Length == i)
                             {
-                                UtilityFunctions.clearScreen(null);
-                                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save Slot " + Path.GetFileName(save) + " is empty. Do you want to begin a new game? y/n", UtilityFunctions.typeSpeed);
+                                UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n", UtilityFunctions.typeSpeed);
                                 string load = Console.ReadLine();
                                 if (load == "y")
                                 {
+                                    string save = UtilityFunctions.mainDirectory + @$"saves\save{i}.xml";
                                     UtilityFunctions.saveSlot = Path.GetFileName(save);
                                     UtilityFunctions.saveFile = save;
                                     saveChosen = true;
@@ -269,12 +275,6 @@ partial class Program
 
 
                                 }
-                                else
-                                {
-                                    return false;
-
-                                } // INPUT SANITISEFHUISHFUIHSUIF
-
                             }
                         }
                         if (!started)
@@ -340,13 +340,21 @@ partial class Program
         { // put player where they were back into the game. If it's a new save, ignore.
 
             // DO SOMETHING ELSE (NOT A PRIORITY CURRENTLY)
-            player = UtilityFunctions.loadPlayerFromFile();
+            // broken rn player = UtilityFunctions.loadPlayerFromFile();
+            string chosenClass = UtilityFunctions.chooseClass();
+            player = UtilityFunctions.CreatePlayerInstance(chosenClass);
         }
         else
         {
             string chosenClass = UtilityFunctions.chooseClass();
             player = UtilityFunctions.CreatePlayerInstance(chosenClass);
             // GridFunctions.CreateGrid(@"D:\isaac\Documents\Code Projects\GridSaves");
+        }
+
+        XmlSerializer serializer = new XmlSerializer(typeof(Player));
+        using (TextWriter writer = new StreamWriter(UtilityFunctions.saveFile))
+        {
+            serializer.Serialize(writer, player);
         }
 
         UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
@@ -371,18 +379,18 @@ partial class Program
 
                 if (saveSlot == "1")
                 {
-                    UtilityFunctions.saveSlot = "save1.txt";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save1.txt";
+                    UtilityFunctions.saveSlot = "save1.xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save1.xml";
                 }
                 else if (saveSlot == "2")
                 {
-                    UtilityFunctions.saveSlot = "save2.txt";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save2.txt";
+                    UtilityFunctions.saveSlot = "save2.xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save2.xml";
                 }
                 else if (saveSlot == "3")
                 {
-                    UtilityFunctions.saveSlot = "save3.txt";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save3.txt";
+                    UtilityFunctions.saveSlot = "save3.xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save3.xml";
                 }
                 else
                 {
@@ -561,7 +569,7 @@ partial class Program
                 // Change type of sound effects
 
                 case 6:
-                
+
                     UtilityFunctions.clearScreen(null);
                     UtilityFunctions.TypeText(UtilityFunctions.Instant, "Are you sure you want to clear all saves? y/n\n", UtilityFunctions.typeSpeed);
                     string clearSaves = Console.ReadLine();
@@ -586,7 +594,7 @@ partial class Program
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     }
-                    
+
                     return options(gameStarted, saveChosen);
                 case 5:
                     Console.Clear();
@@ -609,7 +617,7 @@ partial class Program
         }
     }
 
-    
+
 
     static void DoBleed(Enemy enemy, Player player)
     {

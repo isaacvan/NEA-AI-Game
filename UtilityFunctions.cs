@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using StoryDevelopmentNamespace;
 using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
+using System.Xml.Serialization;
 
 namespace UtilityFunctionsNamespace
 {
@@ -22,10 +22,12 @@ namespace UtilityFunctionsNamespace
         public static string saveSlot = ""; // will be written to in main menu
         public static string mainDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")); // will be written to in main menu
         public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu
+        public static int maxSaves = 3;
         public static bool loadedSave = false;
         public static bool Instant = false;
         public static int colourSchemeIndex = 1;
         
+
 
 
 
@@ -116,8 +118,6 @@ namespace UtilityFunctionsNamespace
                 {
                     // The file will now be empty, and you can start writing new data to it
                 }
-                string[] baseLayout = File.ReadAllLines(mainDirectory + "example.txt");
-                File.WriteAllLines(slot, baseLayout);
                 UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save file cleared successfully.", typeSpeed);
             }
             catch (Exception ex)
@@ -195,23 +195,28 @@ namespace UtilityFunctionsNamespace
 
 
 
-        public static void DisplayHealthBar() {
+        public static void DisplayHealthBar()
+        {
 
         }
 
 
 
 
-        public static Player loadPlayerFromFile() {
+        public static Player loadPlayerFromFile()
+        {
             // this function will initialise a new player, but instead of giving them the base stats and everything, it will take a save file and put those stats into the game.
             // it will then return the player.
             string[] lines = File.ReadAllLines(saveFile);
             List<string> statLabels = new List<string>() { "strength=", "dexterity=", "intelligence=", "currentHealth=", "maxHealth=", "currentExp=", "maxExp=", "level=", "defense=", "dodge=" };
             string chosenCharacter = lines[1].Substring(12, 1); // gets first letter of class to identify
-            for (var i = 0; i < lines.Length; i++) {
+            for (var i = 0; i < lines.Length; i++)
+            {
                 string[] parts = lines[i].Split(':');
-                if (statLabels.Contains(parts[0])) {
-                    switch (parts[0]) {
+                if (statLabels.Contains(parts[0]))
+                {
+                    switch (parts[0])
+                    {
                         case "strength":
                             statLabels[0] += parts[1];
                             break;
@@ -248,22 +253,29 @@ namespace UtilityFunctionsNamespace
                 }
             }
             string[] uncheckedStats = statLabels.ToArray();
-            List<int> stats = new List<int>();  
-            foreach (string stat in uncheckedStats) {
-                if (stat.Contains("=")) {
+            List<int> stats = new List<int>();
+            foreach (string stat in uncheckedStats)
+            {
+                if (stat.Contains("="))
+                {
                     stats.Add(Convert.ToInt32(stat.Substring(stat.IndexOf("=") + 1)));
                 }
             }
 
             Player player;
-            if (chosenCharacter.ToLower() == "w") {
+            if (chosenCharacter.ToLower() == "w")
+            {
                 player = new Warrior() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9] };
                 return player;
-            } else if (chosenCharacter.ToLower() == "r") {
+            }
+            else if (chosenCharacter.ToLower() == "r")
+            {
                 player = new Rogue() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9] };
                 return player;
-            } else {
-                player = new Mage() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9]};
+            }
+            else
+            {
+                player = new Mage() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9] };
             }
             return player;
         }
@@ -272,45 +284,12 @@ namespace UtilityFunctionsNamespace
 
 
 
-        public static int getInvIndex()
-        {
-            // this function will find the index in my save files that has the string "inv" so that i can look at my list of  items
-            // and see if i have any of them.
-            // i will then use that index to get the items from my save files.
-            string[] lines = File.ReadAllLines(saveFile);
-            int invIndex = 0;
-            foreach (string line in lines)
-            {
-                if (line == "inv")
-                {
-                    break;
-                }
-                invIndex++;
-            }
-            return invIndex;
-        }
-
-
-
-
-
-        public static void checkIfSavesEmpty(string[] saves)
-        {
-            for (int i = 0; i < saves.Length; i++)
-            {
-                if (File.ReadAllText(saves[i]) == "")
-                {
-                    overrideSave(saves[i]);
-                }
-            }
-        }
-
-
 
 
 
         public static void addInfoToSaveFile(string label, string value)
         {
+            
             // this method will take an item / stat / label and search the save file for the index of this info.
             // then it will read the current value of this label and add the value taken as a parameter to this.
             // it will use File.ReadAllLines(UtilityFunctions.saveFile), separate each individual line into an array, split by the ":"
@@ -329,6 +308,8 @@ namespace UtilityFunctionsNamespace
 
 
             }*/
+
+            /*
             string[] info = File.ReadAllLines(UtilityFunctions.saveFile);
             string[][] arrayVersion = new string[info.Length][];
             for (var i = 0; i < info.Length; i++) // for every line in save 
@@ -404,6 +385,7 @@ namespace UtilityFunctionsNamespace
                 }
                 File.WriteAllLines(UtilityFunctions.saveFile, temp);
             }
+            */
         }
 
 
@@ -632,15 +614,6 @@ namespace UtilityFunctionsNamespace
 
         public static Player CreatePlayerInstance(string chosenClass)
         {
-            // write the chosenclass to the chosen save file
-            var lines = File.ReadAllLines(saveFile);
-            lines[0] = "active";
-            lines[1] = $"chosenClass:{chosenClass}";
-            File.WriteAllLines(saveFile, lines);
-
-
-
-
             if (chosenClass == "Mage")
             {
                 return new Mage();
@@ -825,7 +798,7 @@ namespace UtilityFunctionsNamespace
 
         public ColourScheme(int colourSchemeIndex)
         {
-            
+
             switch (schemes[colourSchemeIndex])
             {
                 case "default":
@@ -833,7 +806,7 @@ namespace UtilityFunctionsNamespace
                     menuAccentCode = setColourScheme(menuAccent, 137, 239, 245);
                     menuMainCode = setColourScheme(menuMain, 210, 226, 252);
                     break;
-                    // Add more colour schemes here
+                // Add more colour schemes here
                 case "isaac":
                     generalTextCode = setColourScheme(generalText, 255, 255, 255);
                     menuAccentCode = setColourScheme(menuAccent, 255, 151, 107);

@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Security.Cryptography;
 using System.Dynamic;
+using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace PlayerClassesNamespace
 {
 
 
-
+    [Serializable]
+    [XmlInclude(typeof(Warrior))]
+    [XmlInclude(typeof(Mage))]
+    [XmlInclude(typeof(Rogue))]
     public abstract class Player
     {
         public int strength { get; set; }
@@ -26,7 +31,7 @@ namespace PlayerClassesNamespace
         public int currentExp { get; set; }
         public int maxExp { get; set; }
         public List<int> stats { get; set; }
-        public List<string> statLabels = new List<string> {"strength", "dexterity", "intelligence", "currentHealth", "maxHealth", "defense", "dodge", "currentExp", "maxExp"};
+        public List<string> statLabels = new List<string> { "strength", "dexterity", "intelligence", "currentHealth", "maxHealth", "defense", "dodge", "currentExp", "maxExp" };
         public int madnessTurns { get; set; }
         public Point playerPos;
         public string[][] inventory;
@@ -38,22 +43,6 @@ namespace PlayerClassesNamespace
 
         public Player()
         {
-            int index = UtilityFunctions.getInvIndex();
-            string[] lines = File.ReadAllLines(UtilityFunctions.saveFile);
-            inventory = new string[lines.Length][];
-            //playerPos = new Point(0, 0);
-
-            for (int i = index + 1; i < lines.Length; i++)
-            {
-                inventory[i] = new string[3]; // Initialize the inner array with a size of 3
-            }
-
-            currentExp = 0;
-            UtilityFunctions.addInfoToSaveFile("currentExp", currentExp.ToString());
-            level = 1;
-            UtilityFunctions.addInfoToSaveFile("level", level.ToString());
-            maxExp = 15 * level;
-            UtilityFunctions.addInfoToSaveFile("maxExp", maxExp.ToString());
         }
 
         public void changePlayerPos(Point newPos)
@@ -61,44 +50,25 @@ namespace PlayerClassesNamespace
             playerPos = newPos;
         }
 
-        public void increaseExp(int expAwarded) {
-            if (currentExp + expAwarded >= maxExp) {
-                levelUpPlayer(currentExp + expAwarded);
-            } else {
-                currentExp += expAwarded;
-                UtilityFunctions.addInfoToSaveFile("currentExp", currentExp.ToString());
+        public void changePlayerStats(string stat, int newValue)
+        {
+            
+            XDocument document = XDocument.Load(UtilityFunctions.saveFile);
+
+            // Locate the save slot in the XML document
+            XElement saveElement = document.Element("Saves")?.Element(UtilityFunctions.saveSlot);
+            if (saveElement != null)
+            {
+                // Update player stats
+                saveElement.Element(stat)?.SetValue(newValue);
             }
-        }
 
-        public void levelUpPlayer(int totalExp) {
-            currentExp = totalExp - maxExp;
-            level++;
-            maxExp = 15 * level;
-            UtilityFunctions.addInfoToSaveFile("level", level.ToString());
-            UtilityFunctions.addInfoToSaveFile("currentExp", currentExp.ToString());
-            UtilityFunctions.addInfoToSaveFile("maxExp", maxExp.ToString());
-            increaseStats();
-        }
-
-        public void increaseStats() { 
-            strength++;
-            dexterity++;
-            intelligence++;
-            maxHealth += 5;
-            currentHealth = maxHealth;
-            defense += 2;
-            dodge += 2;
-            UtilityFunctions.addInfoToSaveFile("strength", strength.ToString());
-            UtilityFunctions.addInfoToSaveFile("dexterity", dexterity.ToString());
-            UtilityFunctions.addInfoToSaveFile("intelligence", intelligence.ToString());
-            UtilityFunctions.addInfoToSaveFile("maxHealth", maxHealth.ToString());
-            UtilityFunctions.addInfoToSaveFile("currentHealth", maxHealth.ToString());
-            UtilityFunctions.addInfoToSaveFile("defense", defense.ToString());
-            UtilityFunctions.addInfoToSaveFile("dodge", dodge.ToString());
+            // Save the updated document
+            document.Save("saves.xml");
         }
 
     }
-    class Mage : Player
+    public class Mage : Player
     {
         public Mage()
         {
@@ -150,18 +120,8 @@ namespace PlayerClassesNamespace
                         break;
                 }
             }
-            int index = UtilityFunctions.getInvIndex();
-            string[] inv = File.ReadAllLines(UtilityFunctions.saveFile);
-            for (var i = index + 1; i < inv.Length; i++)
-            {
-                string[] parts = inv[i].Split(':');
-                string item = parts[0].Trim();
-                string itemValue = parts[1].Trim();
-                string itemType = parts[2].Trim();
-                inventory[i] = new string[] { item, itemValue, itemType };
-            }
 
-            stats = new List<int> {strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp};
+            stats = new List<int> { strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp };
             foreach (string statLabel in statLabels)
             {
                 UtilityFunctions.addInfoToSaveFile(statLabel, stats[statLabels.IndexOf(statLabel)].ToString());
@@ -244,7 +204,7 @@ namespace PlayerClassesNamespace
 
 
 
-    class Rogue : Player
+    public class Rogue : Player
     {
         public Rogue()
         {
@@ -284,17 +244,8 @@ namespace PlayerClassesNamespace
                     dodge = statValue;
                 }
             }
-            int index = UtilityFunctions.getInvIndex();
-            string[] inv = File.ReadAllLines(UtilityFunctions.saveFile);
-            for (var i = index + 1; i < inv.Length; i++)
-            {
-                string[] parts = inv[i].Split(':');
-                string item = parts[0].Trim();
-                string itemValue = parts[1].Trim();
-                string itemType = parts[2].Trim();
-                inventory[i] = new string[] { item, itemValue, itemType };
-            }
-            stats = new List<int> {strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp};
+
+            stats = new List<int> { strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp };
             foreach (string statLabel in statLabels)
             {
                 UtilityFunctions.addInfoToSaveFile(statLabel, stats[statLabels.IndexOf(statLabel)].ToString());
@@ -381,7 +332,7 @@ namespace PlayerClassesNamespace
 
 
 
-    class Warrior : Player
+    public class Warrior : Player
     {
         public Warrior()
         {
@@ -421,17 +372,8 @@ namespace PlayerClassesNamespace
                     dodge = statValue;
                 }
             }
-            int index = UtilityFunctions.getInvIndex();
-            string[] inv = File.ReadAllLines(UtilityFunctions.saveFile);
-            for (var i = index + 1; i < inv.Length; i++)
-            {
-                string[] parts = inv[i].Split(':');
-                string item = parts[0].Trim();
-                string itemValue = parts[1].Trim();
-                string itemType = parts[2].Trim();
-                inventory[i] = new string[] { item, itemValue, itemType };
-            }
-            stats = new List<int> {strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp};
+
+            stats = new List<int> { strength, dexterity, intelligence, currentHealth, maxHealth, defense, dodge, currentExp, maxExp };
             foreach (string statLabel in statLabels)
             {
                 UtilityFunctions.addInfoToSaveFile(statLabel, stats[statLabels.IndexOf(statLabel)].ToString());
