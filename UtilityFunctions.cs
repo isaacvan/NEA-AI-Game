@@ -206,43 +206,66 @@ namespace UtilityFunctionsNamespace
             // this function will initialise a new player, but instead of giving them the base stats and everything, it will take a save file and put those stats into the game.
             // it will then return the player.
             string[] lines = File.ReadAllLines(saveFile);
-            List<string> statLabels = new List<string>() { "strength", "dexterity", "intelligence", "currentHealth", "maxHealth", "currentExp", "maxExp", "level", "defense", "dodge" };
-            string chosenCharacter = lines[1].Substring(12, 1);
+            List<string> statLabels = new List<string>() { "strength=", "dexterity=", "intelligence=", "currentHealth=", "maxHealth=", "currentExp=", "maxExp=", "level=", "defense=", "dodge=" };
+            string chosenCharacter = lines[1].Substring(12, 1); // gets first letter of class to identify
             for (var i = 0; i < lines.Length; i++) {
                 string[] parts = lines[i].Split(':');
                 if (statLabels.Contains(parts[0])) {
-                    /*switch (parts[0]) {
+                    switch (parts[0]) {
                         case "strength":
-                            player.strength = int.Parse(parts[1]);
+                            statLabels[0] += parts[1];
                             break;
                         case "dexterity":
-                            Player.dexterity = int.Parse(parts[1]);
+                            statLabels[1] += parts[1];
                             break;
                         case "intelligence":
-                            Player.intelligence = int.Parse(parts[1]);
+                            statLabels[2] += parts[1];
                             break;
                         case "currentHealth":
-                            Player.currentHealth = int.Parse(parts[1]);
+                            statLabels[3] += parts[1];
                             break;
                         case "maxHealth":
-                            Player.maxHealth = int.Parse(parts[1]);
+                            statLabels[4] += parts[1];
                             break;
                         case "currentExp":
-                            Player.currentExp = int.Parse(parts[1]);
+                            statLabels[5] += parts[1];
                             break;
                         case "maxExp":
-                            Player.maxExp = int.Parse(parts[1]);
+                            statLabels[6] += parts[1];
                             break;
                         case "level":
-                            Player.level = int.Parse(parts[1]);
+                            statLabels[7] += parts[1];
                             break;
                         case "defense":
-                            Player.defense = int.Parse(parts[1]);
+                            statLabels[8] += parts[1];
                             break;
-                    }*/
+                        case "dodge":
+                            statLabels[9] += parts[1];
+                            break;
+                        default:
+                            throw new Exception("Invalid stat label");
+                    }
                 }
             }
-            return new Mage();
+            string[] uncheckedStats = statLabels.ToArray();
+            List<int> stats = new List<int>();  
+            foreach (string stat in uncheckedStats) {
+                if (stat.Contains("=")) {
+                    stats.Add(Convert.ToInt32(stat.Substring(stat.IndexOf("=") + 1)));
+                }
+            }
+
+            Player player;
+            if (chosenCharacter.ToLower() == "w") {
+                player = new Warrior() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9] };
+                return player;
+            } else if (chosenCharacter.ToLower() == "r") {
+                player = new Rogue() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9] };
+                return player;
+            } else {
+                player = new Mage() { strength = stats[0], dexterity = stats[1], intelligence = stats[2], currentHealth = stats[3], maxHealth = stats[4], currentExp = stats[5], maxExp = stats[6], level = stats[7], defense = stats[8], dodge = stats[9]};
+            }
+            return player;
         }
 
 
