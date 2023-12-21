@@ -31,7 +31,7 @@ partial class Program
 
 
     //\x1b[38;2;r;g;bm
-    public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
+    
 
 
     static void Main(string[] args)
@@ -233,17 +233,17 @@ partial class Program
             UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
             UtilityFunctions.TypeText(UtilityFunctions.Instant, "╚═══════════════════════════════════════════════════════════════════════╝", UtilityFunctions.typeSpeed);
             */
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"║                               {colourScheme.menuAccentCode}Torment{colourScheme.menuMainCode}                                 ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                 [1] Start Game          [2] Load Save                 ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                 [3] Options             [4] Quit                      ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"╚═══════════════════════════════════════════════════════════════════════╝{colourScheme.generalTextCode}", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}", UtilityFunctions.typeSpeed);
             Console.WriteLine();
 
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Choose an option: ", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ", UtilityFunctions.typeSpeed);
 
 
 

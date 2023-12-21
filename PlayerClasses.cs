@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Dynamic;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using System.Reflection;
 
 namespace PlayerClassesNamespace
 {
@@ -39,7 +40,7 @@ namespace PlayerClassesNamespace
 
         public Player()
         {
-            maxExp = 15;
+            maxExp = 10;
         }
 
         public void changePlayerPos(Point newPos)
@@ -59,20 +60,62 @@ namespace PlayerClassesNamespace
 
             if (statElement != null)
             {
-                // Update player stat
+                // Update player stat in XML
                 statElement.SetValue((object)newValue);
                 document.Save(fileName);
+
+                // Update player stat in the Player class
+                Type playerType = typeof(Player);
+                PropertyInfo property = playerType.GetProperty(stat);
+
+                if (property != null)
+                {
+                    // Convert the new value to the property type
+                    object convertedValue = Convert.ChangeType(newValue, property.PropertyType);
+
+                    // Set the property value in the Player class
+                    property.SetValue(this, convertedValue);
+                }
+                else
+                {
+                    Console.WriteLine($"Property {stat} not found in Player class.");
+                }
             }
             else
             {
                 Console.WriteLine($"Element {stat} not found in {fileName}.");
             }
+
+            checkForLevelUp();
         }
+
+
 
 
         public void checkForLevelUp()
         {
+            while (currentExp >= maxExp) {
+                levelUp();
+            }
+        }
 
+        public void levelUp() {
+            currentExp = currentExp - maxExp;
+            maxExp += level * 10;
+            level++;
+            Console.Clear();
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Level Up!", UtilityFunctions.typeSpeed);
+            string inp;
+            bool valid = false;
+            while (!valid) {
+                inp = Console.ReadLine();
+                if (inp.ToLower() != "s" || inp.ToLower() != "d" || inp.ToLower() != "i") {
+
+                }
+            }
+             
+
+            //changePlayerStats();fs
         }
     }
     public class Mage : Player
