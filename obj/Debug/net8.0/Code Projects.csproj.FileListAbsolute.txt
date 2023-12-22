@@ -13,3 +13,18 @@ C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net8.0\refint\Code Projects.dll
 C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net8.0\Code Projects.pdb
 C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
 C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net8.0\ref\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.AssemblyInfoInputs.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.AssemblyInfo.cs
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.csproj.CoreCompileInputs.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.sourcelink.json
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\refint\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.pdb
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.exe
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.deps.json
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.runtimeconfig.json
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.dll
+D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.pdb
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
+D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\ref\Code Projects.dll

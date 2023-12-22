@@ -9,19 +9,19 @@
   },
   "packageFolders": {
     "C:\\Users\\isaac\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\isaac\\Documents\\NEA-AI-Game\\Code Projects.csproj",
+      "projectUniqueName": "D:\\isaac\\Documents\\NEA-main\\Code Projects\\Code Projects.csproj",
       "projectName": "Code Projects",
-      "projectPath": "C:\\Users\\isaac\\Documents\\NEA-AI-Game\\Code Projects.csproj",
+      "projectPath": "D:\\isaac\\Documents\\NEA-main\\Code Projects\\Code Projects.csproj",
       "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\isaac\\Documents\\NEA-AI-Game\\obj\\",
+      "outputPath": "D:\\isaac\\Documents\\NEA-main\\Code Projects\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
         "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
