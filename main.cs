@@ -167,45 +167,7 @@ partial class Program
         return loc;
     }
 
-    // public static async Task YourAsyncMethod()
-    // {
-    //     // bool keyPressed = false;
-
-    //     while (true)
-    //     {
-    //         if (Console.KeyAvailable)
-    //         {
-    //             ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
-    //             if (keyInfo.Key == ConsoleKey.Enter)
-    //             {
-    //                 quickEnd = true;
-    //             }
-
-    //         }
-
-    //         await Task.Delay(500);
-    //         quickEnd = false;
-    //     }
-    // }
-
-    // public static void UtilityFunctions.TypeText(UtilityFunctions.Instant, string text, int typingSpeed)
-    // {
-    //     for (int i = 0; i < text.Length; i++)
-    //     {
-    //         Console.Write(text[i]);
-    //         Thread.Sleep(typingSpeed);
-
-    //         if (quickEnd)
-    //         {
-    //             string restOfText = text.Substring(i + 1);
-    //             Console.Write(restOfText);
-    //             break;
-    //         }
-    //     }
-    //     Console.Write("\n");
-    // }
-
-
+    
 
 
     static bool menu(bool gameStarted, bool saveChosen)
@@ -216,21 +178,6 @@ partial class Program
 
             Console.SetWindowSize(80, 15); // Adjust the window size to fit your preference
             Console.Title = "Dungeon Crawler Menu";
-
-            /*
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "╔═══════════════════════════════════════════════════════════════════════╗", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                               ", UtilityFunctions.typeSpeed, false);
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Torment", UtilityFunctions.typeSpeed, false);
-            Console.ForegroundColor = ConsoleColor.White;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "                                 ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                 [1] Start Game          [2] Load Save                 ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                 [3] Options             [4] Quit                      ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "║                                                                       ║", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "╚═══════════════════════════════════════════════════════════════════════╝", UtilityFunctions.typeSpeed);
-            */
             UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗", UtilityFunctions.typeSpeed);
             UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║", UtilityFunctions.typeSpeed);
             UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║", UtilityFunctions.typeSpeed);
