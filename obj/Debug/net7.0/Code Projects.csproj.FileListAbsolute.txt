@@ -42,3 +42,18 @@ D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.pdb
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\ref\Code Projects.dll
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net7.0\Code Projects.sourcelink.json
+C:\Users\isaac\Documents\NEA-AI-Game\bin\Debug\net7.0\Code Projects.exe
+C:\Users\isaac\Documents\NEA-AI-Game\bin\Debug\net7.0\Code Projects.deps.json
+C:\Users\isaac\Documents\NEA-AI-Game\bin\Debug\net7.0\Code Projects.runtimeconfig.json
+C:\Users\isaac\Documents\NEA-AI-Game\bin\Debug\net7.0\Code Projects.dll
+C:\Users\isaac\Documents\NEA-AI-Game\bin\Debug\net7.0\Code Projects.pdb
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.AssemblyInfoInputs.cache
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.AssemblyInfo.cs
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.csproj.CoreCompileInputs.cache
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.sourcelink.json
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.dll
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\refint\Code Projects.dll
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.pdb
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
+C:\Users\isaac\Documents\NEA-AI-Game\obj\Debug\net7.0\ref\Code Projects.dll

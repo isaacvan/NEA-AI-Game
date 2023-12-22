@@ -12,8 +12,14 @@
   <currentHealth>100</currentHealth>
   <defense>20</defense>
   <dodge>5</dodge>
+<<<<<<< HEAD
   <level>1</level>
   <currentExp>5</currentExp>
   <maxExp>10</maxExp>
+=======
+  <level>0</level>
+  <currentExp>5</currentExp>
+  <maxExp>15</maxExp>
+>>>>>>> 1063f3ab3a4c7adf9b4173b09bdb61bff3bca8a8
   <madnessTurns>0</madnessTurns>
 </Player>
