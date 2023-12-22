@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="Warrior">
   <playerPos>
     <X>0</X>
     <Y>0</Y>
   </playerPos>
   <typeSpeed>1</typeSpeed>
-  <strength>15</strength>
-  <dexterity>5</dexterity>
-  <intelligence>5</intelligence>
-  <maxHealth>100</maxHealth>
-  <currentHealth>100</currentHealth>
-  <defense>20</defense>
-  <dodge>5</dodge>
-  <level>0</level>
+  <strength>27</strength>
+  <dexterity>17</dexterity>
+  <intelligence>17</intelligence>
+  <maxHealth>160</maxHealth>
+  <currentHealth>160</currentHealth>
+  <defense>32</defense>
+  <dodge>17</dodge>
+  <level>4</level>
   <currentExp>0</currentExp>
-  <maxExp>15</maxExp>
+  <maxExp>70</maxExp>
   <madnessTurns>0</madnessTurns>
 </Player>

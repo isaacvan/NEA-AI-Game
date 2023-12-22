@@ -25,7 +25,8 @@ namespace UtilityFunctionsNamespace
         public static int maxSaves = 3;
         public static bool loadedSave = false;
         public static bool Instant = false;
-        public static int colourSchemeIndex = 1;
+        public static int colourSchemeIndex = 0;
+        public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
         
 
 
@@ -464,17 +465,17 @@ namespace UtilityFunctionsNamespace
         {
             if (inst)
             {
-                Console.WriteLine($"{text}");
+                Console.WriteLine($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
             }
             else if (!newLine)
             {
                 Thread.Sleep(20);
-                Console.Write($"{text}");
+                Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
             }
             else
             {
                 Thread.Sleep(20);
-                Console.Write($"{text}");
+                Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
                 // foreach (char c in text)
                 // {
                 //     Console.Write(c);
@@ -786,15 +787,14 @@ namespace UtilityFunctionsNamespace
 
 
 
-    class ColourScheme
+    public class ColourScheme
     {
         public string[] schemes = { "default", "isaac" };
-        public int[] generalText = new int[3];
         public string generalTextCode = "";
-        public int[] menuMain = new int[3];
         public string menuMainCode = "";
-        public int[] menuAccent = new int[3];
         public string menuAccentCode = "";
+        public string generalAccentCode = "";
+        
 
         public ColourScheme(int colourSchemeIndex)
         {
@@ -802,25 +802,24 @@ namespace UtilityFunctionsNamespace
             switch (schemes[colourSchemeIndex])
             {
                 case "default":
-                    generalTextCode = setColourScheme(generalText, 255, 255, 255);
-                    menuAccentCode = setColourScheme(menuAccent, 137, 239, 245);
-                    menuMainCode = setColourScheme(menuMain, 210, 226, 252);
+                    generalTextCode = setColourScheme(255, 255, 255);
+                    menuAccentCode = setColourScheme(137, 239, 245);
+                    menuMainCode = setColourScheme(210, 226, 252);
+                    generalAccentCode = setColourScheme(94, 108, 255);
                     break;
                 // Add more colour schemes here
                 case "isaac":
-                    generalTextCode = setColourScheme(generalText, 255, 255, 255);
-                    menuAccentCode = setColourScheme(menuAccent, 255, 151, 107);
-                    menuMainCode = setColourScheme(menuMain, 255, 222, 255);
+                    generalTextCode = setColourScheme(255, 255, 255);
+                    menuAccentCode = setColourScheme(255, 151, 107);
+                    menuMainCode = setColourScheme(255, 222, 255);
+                    generalAccentCode = setColourScheme(255, 255, 255);
                     break;
             }
 
         }
 
-        static string setColourScheme(int[] set, int r, int g, int b)
+        static string setColourScheme(int r, int g, int b)
         {
-            set[0] = r;
-            set[1] = g;
-            set[2] = b;
             return $"\x1b[38;2;{r};{g};{b}m";
         }
     }
