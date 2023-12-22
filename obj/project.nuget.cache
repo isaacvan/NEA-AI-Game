@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xmpE41j3jNsiQditGbxLIimEJHtRE8NpbSpPFPaqGE6e2dbZO/q3IHIWsoU6oIBSI6mi+F+BuIJlkcDcjCkD5Q==",
+  "dgSpecHash": "mWMDT2kS1HBaN8TzcAt/kOmb6UhwKGld7aQe7YfH39LVxHDiw6fC/pJv2g1ZwGig0Rqr5VMd25a2+O4F++oaBg==",
   "success": true,
-  "projectFilePath": "D:\\isaac\\Documents\\NEA-main\\Code Projects\\Code Projects.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\isaac\\Documents\\NEA-AI-Game\\Code Projects.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

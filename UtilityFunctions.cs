@@ -284,115 +284,6 @@ namespace UtilityFunctionsNamespace
 
 
 
-
-
-
-
-        public static void addInfoToSaveFile(string label, string value)
-        {
-            
-            // this method will take an item / stat / label and search the save file for the index of this info.
-            // then it will read the current value of this label and add the value taken as a parameter to this.
-            // it will use File.ReadAllLines(UtilityFunctions.saveFile), separate each individual line into an array, split by the ":"
-            // then it will input the values, WriteAllLines as a copy of the original + changes, then save the edited document as saved.
-            /*switch (label) {
-                case "strength":
-                break;
-                case "dexterity":
-                break;
-                case "intelligence":
-                break;
-                case "currentHealth":
-                break;
-                case "maxHealth":
-                break;
-
-
-            }*/
-
-            /*
-            string[] info = File.ReadAllLines(UtilityFunctions.saveFile);
-            string[][] arrayVersion = new string[info.Length][];
-            for (var i = 0; i < info.Length; i++) // for every line in save 
-            {
-                string[] parts = info[i].Split(':');
-                string firstInfo = parts[0].Trim();
-                string secondValue = "";
-                string thirdType = "";
-                if (parts.Length == 1)
-                {
-                    arrayVersion[i] = new string[] { firstInfo };
-                }
-                else if (parts.Length == 2)
-                {
-                    secondValue = parts[1].Trim();
-                    arrayVersion[i] = new string[] { firstInfo, secondValue };
-                }
-                else if (parts.Length == 3)
-                {
-                    secondValue = parts[1].Trim();
-                    thirdType = parts[2].Trim();
-                    arrayVersion[i] = new string[] { firstInfo, secondValue, thirdType };
-                }
-
-            }
-
-            if (value != null)
-            {
-
-
-                for (var i = 0; i < arrayVersion.Length; i++)
-                {
-
-
-
-
-
-
-                    if (arrayVersion[i][0] == label && !string.IsNullOrEmpty(value))
-                    {
-                        // Check if the existing value is numeric
-                        if (int.TryParse(arrayVersion[i][1], out int currentValue))
-                        {
-                            int newValue = int.Parse(value);
-                            arrayVersion[i][1] = newValue.ToString();
-                        }
-                        else
-                        {
-                            // If the existing value is not numeric, replace it with the new value
-                            arrayVersion[i][1] = value;
-                        }
-                    }
-
-                }
-
-
-
-                string[] temp = new string[info.Length];
-                for (var i = 0; i < arrayVersion.Length; i++)
-                {
-                    for (var j = 0; j < arrayVersion[i].Length; j++)
-                    {
-                        if (j == arrayVersion[i].Length - 1)
-                        {
-                            temp[i] += arrayVersion[i][j];
-                        }
-                        else
-                        {
-                            temp[i] += arrayVersion[i][j] + ":";
-                        }
-
-                    }
-                }
-                File.WriteAllLines(UtilityFunctions.saveFile, temp);
-            }
-            */
-        }
-
-
-
-
-
         public static string chooseClass()
         {
             Console.Clear();
@@ -805,6 +696,7 @@ namespace UtilityFunctionsNamespace
                     generalTextCode = setColourScheme(255, 255, 255);
                     menuAccentCode = setColourScheme(137, 239, 245);
                     menuMainCode = setColourScheme(210, 226, 252);
+<<<<<<< HEAD
                     generalAccentCode = setColourScheme(94, 108, 255);
                     break;
                 // Add more colour schemes here
@@ -813,6 +705,14 @@ namespace UtilityFunctionsNamespace
                     menuAccentCode = setColourScheme(255, 151, 107);
                     menuMainCode = setColourScheme(255, 222, 255);
                     generalAccentCode = setColourScheme(255, 255, 255);
+=======
+                    break;
+                // Add more colour schemes here
+                case "isaac":
+                    generalTextCode = setColourScheme(145, 255, 215);
+                    menuAccentCode = setColourScheme(255, 151, 107);
+                    menuMainCode = setColourScheme(255, 222, 255);
+>>>>>>> 1063f3ab3a4c7adf9b4173b09bdb61bff3bca8a8
                     break;
             }
 
