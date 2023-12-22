@@ -696,7 +696,6 @@ namespace UtilityFunctionsNamespace
                     generalTextCode = setColourScheme(255, 255, 255);
                     menuAccentCode = setColourScheme(137, 239, 245);
                     menuMainCode = setColourScheme(210, 226, 252);
-<<<<<<< HEAD
                     generalAccentCode = setColourScheme(94, 108, 255);
                     break;
                 // Add more colour schemes here
@@ -705,14 +704,6 @@ namespace UtilityFunctionsNamespace
                     menuAccentCode = setColourScheme(255, 151, 107);
                     menuMainCode = setColourScheme(255, 222, 255);
                     generalAccentCode = setColourScheme(255, 255, 255);
-=======
-                    break;
-                // Add more colour schemes here
-                case "isaac":
-                    generalTextCode = setColourScheme(145, 255, 215);
-                    menuAccentCode = setColourScheme(255, 151, 107);
-                    menuMainCode = setColourScheme(255, 222, 255);
->>>>>>> 1063f3ab3a4c7adf9b4173b09bdb61bff3bca8a8
                     break;
             }
 
