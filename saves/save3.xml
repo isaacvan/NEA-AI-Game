@@ -5,15 +5,15 @@
     <Y>0</Y>
   </playerPos>
   <typeSpeed>1</typeSpeed>
-  <strength>21</strength>
-  <dexterity>11</dexterity>
-  <intelligence>11</intelligence>
-  <maxHealth>130</maxHealth>
-  <currentHealth>130</currentHealth>
-  <defense>26</defense>
-  <dodge>11</dodge>
-  <level>3</level>
+  <strength>17</strength>
+  <dexterity>7</dexterity>
+  <intelligence>7</intelligence>
+  <maxHealth>110</maxHealth>
+  <currentHealth>110</currentHealth>
+  <defense>22</defense>
+  <dodge>7</dodge>
+  <level>2</level>
   <currentExp>0</currentExp>
-  <maxExp>40</maxExp>
+  <maxExp>20</maxExp>
   <madnessTurns>0</madnessTurns>
 </Player>

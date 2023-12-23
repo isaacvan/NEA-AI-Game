@@ -25,7 +25,7 @@ namespace UtilityFunctionsNamespace
         public static int maxSaves = 3;
         public static bool loadedSave = false;
         public static bool Instant = false;
-        public static int colourSchemeIndex = 0;
+        public static int colourSchemeIndex = 1;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
         
 
@@ -703,7 +703,7 @@ namespace UtilityFunctionsNamespace
                     generalTextCode = setColourScheme(255, 255, 255);
                     menuAccentCode = setColourScheme(255, 151, 107);
                     menuMainCode = setColourScheme(255, 222, 255);
-                    generalAccentCode = setColourScheme(255, 255, 255);
+                    generalAccentCode = setColourScheme(234, 200, 174);
                     break;
             }
 
