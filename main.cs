@@ -232,11 +232,9 @@ partial class Program
                         // Start the game
                         break;
                     case 2:
-                        if (loadGame(gameStarted, saveChosen))
-                        {
-                            saveChosen = true;
-                        }
-
+                        loadGame(gameStarted, saveChosen);
+                        saveChosen = true;
+                        UtilityFunctions.loadedSave = true;
                         // Load a saved game
                         break;
                     case 3:
@@ -288,11 +286,17 @@ partial class Program
         if (UtilityFunctions.loadedSave)
         {
             // put player where they were back into the game. If it's a new save, ignore.
+            //string chosenClass = UtilityFunctions.chooseClass();
+            //player = UtilityFunctions.CreatePlayerInstance(chosenClass);
+            // deserialize the utilityfucntions.saveFile and load it into player
+            XmlSerializer serializer1 = new XmlSerializer(typeof(Player));
+            using (TextReader reader = new StreamReader(UtilityFunctions.saveFile))
+            {
+                player = (Player)serializer1.Deserialize(reader);
+            }
+            UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
 
-            // DO SOMETHING ELSE (NOT A PRIORITY CURRENTLY)
-            // broken rn player = UtilityFunctions.loadPlayerFromFile();
-            string chosenClass = UtilityFunctions.chooseClass();
-            player = UtilityFunctions.CreatePlayerInstance(chosenClass);
+
         }
         else
         {
@@ -311,135 +315,50 @@ partial class Program
         return player;
     }
 
-    static bool loadGame(bool gameStarted, bool saveChosen)
+    static void loadGame(bool gameStarted, bool saveChosen)
     {
         bool startedGame = false;
         while (!startedGame)
         {
             while (UtilityFunctions.saveSlot == "")
             {
-                UtilityFunctions.clearScreen(null);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Choose a save slot:\n",
-                    UtilityFunctions.typeSpeed);
-                for (int i = 0; i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml").Length; i++)
-                {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{i + 1}. Save Slot {i + 1}\n",
-                        UtilityFunctions.typeSpeed);
-                }
-
-                string saveSlot = Console.ReadLine();
-                if (saveSlot == "1")
-                {
-                    UtilityFunctions.saveSlot = "save1.xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save1.xml";
-                }
-                else if (saveSlot == "2")
-                {
-                    UtilityFunctions.saveSlot = "save2.xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save2.xml";
-                }
-                else if (saveSlot == "3")
-                {
-                    UtilityFunctions.saveSlot = "save3.xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save3.xml";
-                }
-                else
-                {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid input. Please enter a valid input.\n",
-                        UtilityFunctions.typeSpeed);
-                    Thread.Sleep(1000);
-                }
-            }
-
-            UtilityFunctions.clearScreen(null);
-            if (File.ReadAllLines(UtilityFunctions.saveFile)[0] == "active")
-            {
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save file found!\n", UtilityFunctions.typeSpeed);
-                bool startedTemp = false;
-                while (!startedTemp)
+                bool valid = false;
+                string saveSlot = "";
+                while (!valid)
                 {
                     UtilityFunctions.clearScreen(null);
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Would you like to load your save? y/n\n",
+                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Choose a save slot:\n",
                         UtilityFunctions.typeSpeed);
-                    string loadSave = Console.ReadLine();
-                    if (loadSave == "y")
+
+                    for (int i = 0;
+                         i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml").Length;
+                         i++)
                     {
-                        startedTemp = true;
-                        UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "Loading save...\n",
+                        UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{i + 1}. Save Slot {i + 1}\n",
                             UtilityFunctions.typeSpeed);
-                        UtilityFunctions.loadSave(UtilityFunctions.saveFile); // return true but make loadedGame true
-                        return true;
                     }
-                    else if (loadSave == "n")
+
+                    saveSlot = Console.ReadLine();
+
+                    if (Convert.ToInt32(saveSlot) > 0 && Convert.ToInt32(saveSlot) <= UtilityFunctions.maxSaves)
                     {
-                        startedTemp = true;
-                        bool startedTemp1 = false;
-                        while (!startedTemp1)
-                        {
-                            UtilityFunctions.clearScreen(null);
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                "Would you like to delete the current save? y/n\n", UtilityFunctions.typeSpeed);
-                            string overrideSave = Console.ReadLine();
-                            if (overrideSave == "y")
-                            {
-                                startedTemp1 = true;
-                                UtilityFunctions.clearScreen(null);
-                                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Overriding save...\n",
-                                    UtilityFunctions.typeSpeed);
-                                UtilityFunctions.overrideSave(UtilityFunctions
-                                    .saveFile); // deletes the save file and replaces it with an empty one
-                                return false;
-                            }
-                            else if (overrideSave == "n")
-                            {
-                                startedTemp1 = true;
-                                UtilityFunctions.clearScreen(null);
-                                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save not overridden.\n",
-                                    UtilityFunctions.typeSpeed); // send back to menu
-                                return false;
-                            }
-                            else
-                            {
-                                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                    "Invalid input. Please enter a valid input.\n", UtilityFunctions.typeSpeed);
-                                Thread.Sleep(1000);
-                            }
-                        }
+                        valid = true;
                     }
                     else
                     {
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            "Invalid input. Please enter a valid input.\n", UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid input.",
+                            UtilityFunctions.typeSpeed);
                         Thread.Sleep(1000);
                     }
                 }
-            }
-            else
-            {
-                UtilityFunctions.clearScreen(null);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Would you like to start a new save? y/n\n",
-                    UtilityFunctions.typeSpeed);
-                string newSave = Console.ReadLine();
-                if (newSave == "y")
-                {
-                }
-                else if (newSave == "n")
-                {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save not started.\n",
-                        UtilityFunctions.typeSpeed);
-                    menu(saveChosen, startedGame);
-                    break;
-                }
-                else
-                {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid input. Please enter a valid input.\n",
-                        UtilityFunctions.typeSpeed);
-                }
-            }
-        }
 
-        return saveChosen;
+                UtilityFunctions.saveSlot = "save" + (saveSlot) + ".xml";
+                UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save" + (saveSlot) + ".xml";
+            }
+
+            startedGame = true;
+            UtilityFunctions.clearScreen(null);
+        }
     }
 
     // doing wipe all saves / options then start doesnt work because options menu sends you back to menu, and you end up having to go back to the end of menu
