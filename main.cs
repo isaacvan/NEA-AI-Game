@@ -61,7 +61,7 @@ partial class Program
         {
         }
 
-        List<List<Tile>> grid = GridFunctions.CreateGrid(20, 20, file);
+        List<List<Tile>> grid = GridFunctions.CreateGrid(20, 20);
         GridFunctions.SaveGrid(grid, file);
         //GridFunctions.PrintGrid(grid, playerloc, playerloc, sightRange.X, sightRange.Y, player);
         Point sightRange = new Point(4, 4);
