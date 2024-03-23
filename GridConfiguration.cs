@@ -14,8 +14,71 @@ namespace GridConfigurationNamespace
 {
     public class GridFunctions
     {
+        private const string wallChar = $"\x1b[38;2;0;0;0m\u25a0";
+        private const string floorChar = $"\x1b[38;2;200;200;200m\u2588";
+        public static List<List<Tile>> GenerateRandomLayout(int width, int height)
+        {
+            // this function will take a width and height then generate a random floor layout in the form of a 2d array of tiles. It will have a random number of rooms between a range, of a random size, spaced out somewhat evenly with identifiers for each room.
+            int numOfRoomsLower = 2;
+            int numOfRoomsHigher = 4;
+            Random random = new Random();
+            int numOfRooms = random.Next(numOfRoomsLower, numOfRoomsHigher);
 
-        public static List<List<Tile>> CreateGrid(int width, int height, string fileName)
+            string[] roomIDs = new string[numOfRooms];
+            for (var i = 0; i < numOfRooms; i++)
+            {
+                roomIDs[i] = i.ToString();
+            }
+            int startRoomID = random.Next(0, numOfRooms);
+            int endRoomID = random.Next(0, numOfRooms);
+            while (endRoomID == startRoomID)
+            {
+                endRoomID = random.Next(0, numOfRooms);
+            }
+            
+            
+
+            for (var i = 0; i < numOfRooms; i++)
+            {
+                int roomWidthLower = 3;
+                int roomWidthHigher = 7;
+                int roomHeightLower = 3;
+                int roomHeightHigher = 7;
+                int roomWidth = random.Next(roomWidthLower, roomWidthHigher);
+                int roomHeight = random.Next(roomHeightLower, roomHeightHigher);
+            
+                int roomX = random.Next(0, width - roomWidth);
+                int roomY = random.Next(0, height - roomHeight);
+
+                if (i != 0)
+                {
+                    // check to make sure it doesnt collide with any other rooms.
+                }
+                
+                
+            }
+            
+            // once rooms are generated, paths need to be geenrated between each one.
+            
+            // then generate a 2d grid that represents the floor
+            List<List<Tile>> grid = new List<List<Tile>>();
+            string t = wallChar;
+
+            for (int i = 0; i < width; i++)
+            {
+                List<Tile> row = new List<Tile>();
+                for (int j = 0; j < height; j++) {
+                    
+                    row.Add(new Tile(i, j, t, false, 1, false, null));
+                }
+                grid.Add(row);
+            }
+            
+            return null;
+        }
+        
+        
+        public static List<List<Tile>> CreateGrid(int width, int height)
         {
             List<List<Tile>> grid = new List<List<Tile>>();
             string t = ".";
@@ -28,19 +91,19 @@ namespace GridConfigurationNamespace
                     
                     Event @event;
 
-                    if (i == 5 && j == 5)
+                    /*if (i == 5 && j == 5)
                     {
                         t = "0";
                         List<string> desc = new List<string> { "plrExp" };
                         List<string> consq = new List<string> { "5" };
                         @event = new Event("exp", desc, consq);
 
-                    } else {
-                        t = ".";
+                    } else {*/
+                        t = wallChar;
                         List<string> desc = new List<string> { "none" };
                         List<string> consq = new List<string> { "none" };
                         @event = new Event("none", desc, consq);
-                    }
+                    //}
                     
                     row.Add(new Tile(i, j, t, false, 1, false, @event));
 
@@ -76,7 +139,7 @@ namespace GridConfigurationNamespace
 
 
             grid[oldplayerLocation.X][oldplayerLocation.Y].playerHere = false;
-            grid[oldplayerLocation.X][oldplayerLocation.Y].t = ".";
+            grid[oldplayerLocation.X][oldplayerLocation.Y].t = wallChar;
             
             if (playerX >= 0 && playerX < grid.Count && playerY >= 0 && playerY < grid[playerX].Count) // if in bounds
             {
@@ -105,7 +168,7 @@ namespace GridConfigurationNamespace
                 {
                     if (grid[playerX][playerY].eventHere.description[i] == "plrExp")
                     {
-                        player.changePlayerStats("currentExp", player.currentExp + 5);
+                        player.changePlayerStats("currentExp", player.currentExp + Convert.ToInt32(grid[playerX][playerY].eventHere.consequences[i]));
 
                     }
                 }
