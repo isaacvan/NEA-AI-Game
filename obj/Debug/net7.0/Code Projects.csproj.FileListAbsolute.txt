@@ -72,3 +72,34 @@ C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\refint\Code Projects.d
 C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\Code Projects.pdb
 C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\Code Projects.genruntimeconfig.cache
 C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\ref\Code Projects.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\Emgu.CV.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\Code Projects.csproj.AssemblyReference.cache
+C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net7.0\Code Projects.csproj.CopyComplete
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\cvextern.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\cvextern.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\opencv_videoio_ffmpeg481_64.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\cvextern.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\opencv_videoio_ffmpeg481.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\concrt140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\msvcp140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\msvcp140_1.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\msvcp140_2.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\msvcp140_atomic_wait.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\msvcp140_codecvt_ids.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\vcruntime140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-arm64\native\vcruntime140_1.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\concrt140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\msvcp140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\msvcp140_1.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\msvcp140_2.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\msvcp140_atomic_wait.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\msvcp140_codecvt_ids.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\vcruntime140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x64\native\vcruntime140_1.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\concrt140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\msvcp140.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\msvcp140_1.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\msvcp140_2.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\msvcp140_atomic_wait.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\msvcp140_codecvt_ids.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\win-x86\native\vcruntime140.dll

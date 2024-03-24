@@ -9,6 +9,10 @@ using System.Xml.Linq;
 using System.Text.Json;
 using System.Reflection.Metadata.Ecma335;
 using System.Drawing;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using Emgu.CV.Util;
 
 namespace GridConfigurationNamespace
 {
@@ -16,7 +20,7 @@ namespace GridConfigurationNamespace
     {
         private const string wallChar = $"\x1b[38;2;0;0;0m\u25a0";
         private const string floorChar = $"\x1b[38;2;200;200;200m\u2588";
-        public static List<List<Tile>> GenerateRandomLayout(int width, int height)
+        public static List<List<Tile>> GenerateRandomLayoutHuman(int width, int height)
         {
             // this function will take a width and height then generate a random floor layout in the form of a 2d array of tiles. It will have a random number of rooms between a range, of a random size, spaced out somewhat evenly with identifiers for each room.
             int numOfRoomsLower = 2;
@@ -75,6 +79,159 @@ namespace GridConfigurationNamespace
             }
             
             return null;
+        }
+
+        /*public static void GenerateRandomLayoutAI()
+        {
+            // Load the image
+            Mat image = CvInvoke.Imread("C:\\Users\\isaac\\Downloads\\grid_image.webp", ImreadModes.Color);
+
+            // Convert image to grayscale
+            Mat gray = new Mat();
+            CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
+
+            // Apply thresholding
+            Mat thresh = new Mat();
+            CvInvoke.Threshold(gray, thresh, 10, 30, ThresholdType.BinaryInv);
+
+            // Find contours
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(thresh, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+
+            // Filter contours based on area if needed
+            double minArea = 50;
+            VectorOfVectorOfPoint filteredContours = new VectorOfVectorOfPoint();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (CvInvoke.ContourArea(contours[i]) >= minArea)
+                {
+                    filteredContours.Push(contours[i]); // Keep contour if its area is above the threshold
+                }
+            }
+            
+
+            // Extract wall locations
+            Console.WriteLine("Wall Locations:");
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (contours[i] != null)
+                {
+                    // Get bounding box of contour
+                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
+                    // Calculate center of bounding box (approximate wall location)
+                    int centerX = rect.X + rect.Width / 2;
+                    int centerY = rect.Y + rect.Height / 2;
+                    Console.WriteLine($"({centerX}, {centerY})");
+                }
+            }
+
+            // Optionally, visualize the result
+            Mat result = new Mat();
+            CvInvoke.DrawContours(image, contours, -1, new MCvScalar(0, 255, 0), 2);
+            CvInvoke.Imshow("Result", image);
+            CvInvoke.WaitKey(0);
+            CvInvoke.DestroyAllWindows();
+        }
+        */
+
+        public static void GenerateRandomLayoutArrayFormat(int width, int height)
+        {
+            // Load the image and detect wall locations
+            List<Point> wallLocations = DetectWallLocations("C:\\Users\\isaac\\Downloads\\grid_image.webp");
+
+            // Define the dimensions of the grid
+            int gridWidth = width;
+            int gridHeight = height;
+
+            // Create a 2D array to represent the grid
+            bool[,] grid = new bool[gridWidth, gridHeight];
+
+            // Mark the wall locations in the grid
+            foreach (Point location in wallLocations)
+            {
+                int x = location.X;
+                int y = location.Y;
+
+                // Ensure the location is within the grid bounds
+                if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight)
+                {
+                    grid[x, y] = true; // Mark as wall
+                }
+            }
+            
+            VisualizeGrid(grid);
+
+            // Now you have the grid with wall locations marked
+            // You can use this grid for further processing or visualization
+        }
+        
+        static void VisualizeGrid(bool[,] grid)
+        {
+            int width = grid.GetLength(0);
+            int height = grid.GetLength(1);
+
+            // Print the grid
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (grid[x, y])
+                    {
+                        Console.Write("# "); // Wall
+                    }
+                    else
+                    {
+                        Console.Write(". "); // Empty space
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+        
+        static List<Point> DetectWallLocations(string imagePath)
+        {
+            // Load the image
+            Mat image = CvInvoke.Imread(imagePath, ImreadModes.Color);
+
+            // Convert image to grayscale
+            Mat gray = new Mat();
+            CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
+
+            // Apply thresholding
+            Mat thresh = new Mat();
+            CvInvoke.Threshold(gray, thresh, 10, 10, ThresholdType.BinaryInv);
+
+            // Find contours
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(thresh, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+
+            // Filter contours based on area if needed
+            double minArea = 50;
+            VectorOfVectorOfPoint filteredContours = new VectorOfVectorOfPoint();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (CvInvoke.ContourArea(contours[i]) >= minArea)
+                {
+                    filteredContours.Push(contours[i]); // Keep contour if its area is above the threshold
+                }
+            }
+
+            // Extract wall locations
+            List<Point> wallLocations = new List<Point>();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (contours[i] != null)
+                {
+                    // Get bounding box of contour
+                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
+                    // Calculate center of bounding box (approximate wall location)
+                    int centerX = rect.X + rect.Width / 2;
+                    int centerY = rect.Y + rect.Height / 2;
+                    wallLocations.Add(new Point(centerX, centerY));
+                }
+            }
+
+            return wallLocations;
         }
         
         
