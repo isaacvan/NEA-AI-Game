@@ -81,7 +81,7 @@ namespace GridConfigurationNamespace
             return null;
         }
 
-        /*public static void GenerateRandomLayoutAI()
+        public static void GenerateRandomLayoutAI()
         {
             // Load the image
             Mat image = CvInvoke.Imread("C:\\Users\\isaac\\Downloads\\grid_image.webp", ImreadModes.Color);
@@ -132,7 +132,7 @@ namespace GridConfigurationNamespace
             CvInvoke.WaitKey(0);
             CvInvoke.DestroyAllWindows();
         }
-        */
+        
 
         public static void GenerateRandomLayoutArrayFormat(int width, int height)
         {
