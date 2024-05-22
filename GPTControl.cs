@@ -11,12 +11,8 @@ namespace GPTControlNamespace
         public static async Task generate()
         {
             // Your API key
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"Secret\appsettings.json");
 
-            var configuration = builder.Build();
-            string apiKey = configuration["OpenAI:ApiKey"];
+            string apiKey = "";
 
             // The API endpoint
             string endpoint = "https://api.openai.com/v1/images";
@@ -58,13 +54,8 @@ namespace GPTControlNamespace
         
         public static async Task keyCheck()
         {
-            // Your API key
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"Secret\appsettings.json");
 
-            var configuration = builder.Build();
-            string apiKey = configuration["OpenAI:ApiKey"];
+            string apiKey = "";
 
             // The API endpoint for listing engines (does not require special permissions)
             string endpoint = "https://api.openai.com/v1/engines";

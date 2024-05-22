@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="GeneratedImages\" />
+    <Folder Include="Secret\" />
   </ItemGroup>
 
 </Project>
