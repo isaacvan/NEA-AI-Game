@@ -58,9 +58,13 @@ namespace GPTControlNamespace
         
         public static async Task keyCheck()
         {
-            Console.WriteLine("here");
             // Your API key
-            string apiKey = "sk-proj-ZMcUeP0skGgI7AK61BwvT3BlbkFJGY92olItqv6zSJ588C8w";
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@"Secret\appsettings.json");
+
+            var configuration = builder.Build();
+            string apiKey = configuration["OpenAI:ApiKey"];
 
             // The API endpoint for listing engines (does not require special permissions)
             string endpoint = "https://api.openai.com/v1/engines";
