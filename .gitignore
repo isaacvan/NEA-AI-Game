@@ -1,2 +1,15 @@
-﻿# Ignore the Secret directory
+﻿# Environment variable files
+.env
+
+# Application settings
+appsettings.json
+appsettings.Development.json
+
+# Secrets file for development
+secrets.json
+
+# Rider IDE specific files
+.idea/
+
+# Ignore the Secret directory
 Secret/

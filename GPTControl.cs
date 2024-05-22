@@ -6,13 +6,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace GPTControlNamespace
 {
+    
+    
     public class GPTControl
     {
+        
+        public static string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        
         public static async Task generate()
         {
             // Your API key
 
-            string apiKey = "";
+            
 
             // The API endpoint
             string endpoint = "https://api.openai.com/v1/images";
@@ -55,7 +60,7 @@ namespace GPTControlNamespace
         public static async Task keyCheck()
         {
 
-            string apiKey = "";
+            
 
             // The API endpoint for listing engines (does not require special permissions)
             string endpoint = "https://api.openai.com/v1/engines";
