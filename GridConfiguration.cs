@@ -20,220 +20,6 @@ namespace GridConfigurationNamespace
     {
         private const string wallChar = $"\x1b[38;2;0;0;0m\u25a0";
         private const string floorChar = $"\x1b[38;2;200;200;200m\u2588";
-        public static List<List<Tile>> GenerateRandomLayoutHuman(int width, int height)
-        {
-            // this function will take a width and height then generate a random floor layout in the form of a 2d array of tiles. It will have a random number of rooms between a range, of a random size, spaced out somewhat evenly with identifiers for each room.
-            int numOfRoomsLower = 2;
-            int numOfRoomsHigher = 4;
-            Random random = new Random();
-            int numOfRooms = random.Next(numOfRoomsLower, numOfRoomsHigher);
-
-            string[] roomIDs = new string[numOfRooms];
-            for (var i = 0; i < numOfRooms; i++)
-            {
-                roomIDs[i] = i.ToString();
-            }
-            int startRoomID = random.Next(0, numOfRooms);
-            int endRoomID = random.Next(0, numOfRooms);
-            while (endRoomID == startRoomID)
-            {
-                endRoomID = random.Next(0, numOfRooms);
-            }
-            
-            
-
-            for (var i = 0; i < numOfRooms; i++)
-            {
-                int roomWidthLower = 3;
-                int roomWidthHigher = 7;
-                int roomHeightLower = 3;
-                int roomHeightHigher = 7;
-                int roomWidth = random.Next(roomWidthLower, roomWidthHigher);
-                int roomHeight = random.Next(roomHeightLower, roomHeightHigher);
-            
-                int roomX = random.Next(0, width - roomWidth);
-                int roomY = random.Next(0, height - roomHeight);
-
-                if (i != 0)
-                {
-                    // check to make sure it doesnt collide with any other rooms.
-                }
-                
-                
-            }
-            
-            // once rooms are generated, paths need to be geenrated between each one.
-            
-            // then generate a 2d grid that represents the floor
-            List<List<Tile>> grid = new List<List<Tile>>();
-            string t = wallChar;
-
-            for (int i = 0; i < width; i++)
-            {
-                List<Tile> row = new List<Tile>();
-                for (int j = 0; j < height; j++) {
-                    
-                    row.Add(new Tile(i, j, t, false, 1, false, null));
-                }
-                grid.Add(row);
-            }
-            
-            return null;
-        }
-
-        public static void GenerateRandomLayoutAI()
-        {
-            // Load the image
-            Mat image = CvInvoke.Imread("C:\\Users\\isaac\\Downloads\\grid_image.webp", ImreadModes.Color);
-
-            // Convert image to grayscale
-            Mat gray = new Mat();
-            CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
-
-            // Apply thresholding
-            Mat thresh = new Mat();
-            CvInvoke.Threshold(gray, thresh, 10, 30, ThresholdType.BinaryInv);
-
-            // Find contours
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-            CvInvoke.FindContours(thresh, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
-
-            // Filter contours based on area if needed
-            double minArea = 50;
-            VectorOfVectorOfPoint filteredContours = new VectorOfVectorOfPoint();
-            for (int i = 0; i < contours.Size; i++)
-            {
-                if (CvInvoke.ContourArea(contours[i]) >= minArea)
-                {
-                    filteredContours.Push(contours[i]); // Keep contour if its area is above the threshold
-                }
-            }
-            
-
-            // Extract wall locations
-            Console.WriteLine("Wall Locations:");
-            for (int i = 0; i < contours.Size; i++)
-            {
-                if (contours[i] != null)
-                {
-                    // Get bounding box of contour
-                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
-                    // Calculate center of bounding box (approximate wall location)
-                    int centerX = rect.X + rect.Width / 2;
-                    int centerY = rect.Y + rect.Height / 2;
-                    Console.WriteLine($"({centerX}, {centerY})");
-                }
-            }
-
-            // Optionally, visualize the result
-            Mat result = new Mat();
-            CvInvoke.DrawContours(image, contours, -1, new MCvScalar(0, 255, 0), 2);
-            CvInvoke.Imshow("Result", image);
-            CvInvoke.WaitKey(0);
-            CvInvoke.DestroyAllWindows();
-        }
-        
-
-        public static void GenerateRandomLayoutArrayFormat(int width, int height)
-        {
-            // Load the image and detect wall locations
-            List<Point> wallLocations = DetectWallLocations("C:\\Users\\isaac\\Downloads\\grid_image.webp");
-
-            // Define the dimensions of the grid
-            int gridWidth = width;
-            int gridHeight = height;
-
-            // Create a 2D array to represent the grid
-            bool[,] grid = new bool[gridWidth, gridHeight];
-
-            // Mark the wall locations in the grid
-            foreach (Point location in wallLocations)
-            {
-                int x = location.X;
-                int y = location.Y;
-
-                // Ensure the location is within the grid bounds
-                if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight)
-                {
-                    grid[x, y] = true; // Mark as wall
-                }
-            }
-            
-            VisualizeGrid(grid);
-
-            // Now you have the grid with wall locations marked
-            // You can use this grid for further processing or visualization
-        }
-        
-        static void VisualizeGrid(bool[,] grid)
-        {
-            int width = grid.GetLength(0);
-            int height = grid.GetLength(1);
-
-            // Print the grid
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    if (grid[x, y])
-                    {
-                        Console.Write("# "); // Wall
-                    }
-                    else
-                    {
-                        Console.Write(". "); // Empty space
-                    }
-                }
-                Console.WriteLine();
-            }
-        }
-        
-        static List<Point> DetectWallLocations(string imagePath)
-        {
-            // Load the image
-            Mat image = CvInvoke.Imread(imagePath, ImreadModes.Color);
-
-            // Convert image to grayscale
-            Mat gray = new Mat();
-            CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
-
-            // Apply thresholding
-            Mat thresh = new Mat();
-            CvInvoke.Threshold(gray, thresh, 10, 10, ThresholdType.BinaryInv);
-
-            // Find contours
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-            CvInvoke.FindContours(thresh, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
-
-            // Filter contours based on area if needed
-            double minArea = 50;
-            VectorOfVectorOfPoint filteredContours = new VectorOfVectorOfPoint();
-            for (int i = 0; i < contours.Size; i++)
-            {
-                if (CvInvoke.ContourArea(contours[i]) >= minArea)
-                {
-                    filteredContours.Push(contours[i]); // Keep contour if its area is above the threshold
-                }
-            }
-
-            // Extract wall locations
-            List<Point> wallLocations = new List<Point>();
-            for (int i = 0; i < contours.Size; i++)
-            {
-                if (contours[i] != null)
-                {
-                    // Get bounding box of contour
-                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
-                    // Calculate center of bounding box (approximate wall location)
-                    int centerX = rect.X + rect.Width / 2;
-                    int centerY = rect.Y + rect.Height / 2;
-                    wallLocations.Add(new Point(centerX, centerY));
-                }
-            }
-
-            return wallLocations;
-        }
-        
         
         public static List<List<Tile>> CreateGrid(int width, int height)
         {
@@ -284,17 +70,9 @@ namespace GridConfigurationNamespace
         public static bool PrintGrid(List<List<Tile>> grid, Point oldplayerLocation, Point newplayerLocation, int scopeWidth, int scopeHeight, Player player)
         {
             bool moveDone = true;
-
             UtilityFunctions.clearScreen(player);
             int playerX = newplayerLocation.X;
             int playerY = newplayerLocation.Y;
-            //if (player != null)
-           // {
-            //    playerX = player.playerPos.X;
-           //     playerY = player.playerPos.Y;
-           // }
-
-
             grid[oldplayerLocation.X][oldplayerLocation.Y].playerHere = false;
             grid[oldplayerLocation.X][oldplayerLocation.Y].t = wallChar;
             
@@ -306,7 +84,7 @@ namespace GridConfigurationNamespace
             else
             {
                 if (player != null) {
-                player.playerPos = oldplayerLocation;
+                    player.playerPos = oldplayerLocation;
                 }
                 playerX = oldplayerLocation.X;
                 playerY = oldplayerLocation.Y;
@@ -314,11 +92,11 @@ namespace GridConfigurationNamespace
                 moveDone = false;
                 //Environment.FailFast($"Player out of bounds. X: {playerX} Y: {playerY} Width: {grid.Count} Height: {grid[playerX].Count}");
             }
+            
             //grid[playerX][playerY].playerHere = true;
             //Console.CursorTop = 3 + scopeHeight;
             //Console.CursorLeft = scopeWidth;
-
-
+            
             if (grid[playerX][playerY].eventHere.name == "exp")
             {
                 for (var i = 0; i < grid[playerX][playerY].eventHere.description.Count; i++)
@@ -330,19 +108,14 @@ namespace GridConfigurationNamespace
                     }
                 }
             }
-
+            
             UtilityFunctions.clearScreen(player);
-
-
             List<string> arr = new List<string>();
 
             for (int i = playerY - scopeHeight; i <= playerY + scopeHeight; i++)
             {
                 for (int j = playerX - scopeWidth; j <= playerX + scopeWidth; j++)
                 {
-
-
-
                     if (i >= 0 && i < grid.Count && j >= 0 && j < grid[i].Count) // if in bounds
                     {
                         if (grid[j][i].playerHere)
@@ -363,7 +136,6 @@ namespace GridConfigurationNamespace
                         else
                         {
                             Console.ResetColor();
-
                             double distance = Math.Sqrt(Math.Pow(i - playerX, 2) + Math.Pow(j - playerY, 2));
                             int[] colours = UtilityFunctions.getShadeFromDist(255, 255, 255, distance, scopeWidth, scopeHeight);
                             int r = colours[0];
@@ -374,37 +146,22 @@ namespace GridConfigurationNamespace
                             //arr.Add($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
                             arr.Add($" {grid[j][i].t} ");
                         }
-
-
-
-
                         Console.ResetColor();
                     }
-
-
-
-
                 }
-                /*if (i >= -1 && i <= grid.Count)
-                {
-                    Console.WriteLine();
-                }*/
-
                 if (i >= 0)
                 {
                     arr.Add("\n");
                     Console.Write("\n");
                 }
-
-
             }
+            
             if (player != null)
             {
                 //UtilityFunctions.clearScreen(player);
             }
             //Console.WriteLine($"X: {playerX} Y: {playerY}\n");
             //printArr(arr);
-
             return moveDone;
         }
 

@@ -5,9 +5,6 @@
 appsettings.json
 appsettings.Development.json
 
-# Secrets file for development
-secrets.json
-
 # Rider IDE specific files
 .idea/
 
