@@ -48,9 +48,8 @@ partial class Program
         switch (debugPointEntry)
         {
             case "testing":
-                GPTControl.keyCheck();
-                //GPTControl.generate();
-                //GridFunctions.GenerateRandomLayoutAI();
+                GPTControl.Test();
+                Thread.Sleep(10000);
                 //gridLoop(null);
                 break;
             case "game":

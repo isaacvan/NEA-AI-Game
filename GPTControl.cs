@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using OpenAI_API;
 
 namespace GPTControlNamespace
 {
@@ -11,111 +12,33 @@ namespace GPTControlNamespace
     public class GPTControl
     {
         
-        public static string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        public static string apiKey = Environment.GetEnvironmentVariable("API_KEY");
         
-        public static async Task generate()
-        {
-            // Your API key
-
-            
-
-            // The API endpoint
-            string endpoint = "https://api.openai.com/v1/images";
-
-            // Sample request payload (replace with your prompt and parameters)
-            string requestData = "{\"prompt\": \"a cat sitting on a table\", \"max_width\": 600, \"max_height\": 400}";
-
-            // Create HttpClient instance
-            using (var client = new HttpClient())
-            {
-                // Set authorization header
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-
-                // Set request content type
-                HttpContent content = new StringContent(requestData);
-
-                // Send POST request
-                HttpResponseMessage response = await client.PostAsync(endpoint, content);
-
-                // Check if request was successful
-                if (response.IsSuccessStatusCode)
-                {
-                    // Read response content (image data)
-                    byte[] imageData = await response.Content.ReadAsByteArrayAsync();
-
-                    // Save the image to a file (or process/display it as needed)
-                    File.WriteAllBytes(
-                        "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\GeneratedImages\\generated_image.png",
-                        imageData);
-
-                    Console.WriteLine("Image generated successfully.");
-                }
-                else
-                {
-                    Console.WriteLine($"Request failed with status code {response.StatusCode}");
-                }
-            }
-        }
         
-        public static async Task keyCheck()
+        // Testing
+        public static async void Test()
         {
-
-            
-
-            // The API endpoint for listing engines (does not require special permissions)
-            string endpoint = "https://api.openai.com/v1/engines";
-
-            // Create HttpClient instance
-            using (var client = new HttpClient())
+            Console.WriteLine(apiKey);
+            if (string.IsNullOrEmpty(apiKey))
             {
-                Console.WriteLine("here");
-                // Set authorization header
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-
-                try
-                {
-                    Console.WriteLine("here");
-                    // Send GET request
-                    HttpResponseMessage response = null;
-                    
-                    try
-                    {
-                        Console.WriteLine("wtf");
-                        response = await client.GetAsync(endpoint);
-                        Console.WriteLine("wtf");
-                        // Rest of the code
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        Console.WriteLine($"HTTP request failed: {ex.Message}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                    }
-                    
-                    Console.WriteLine("fes");
-                    
-                    // Check if request was successful
-                    if (response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine("API key is valid.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"API key is invalid. Error status code: {response.StatusCode}");
-                    }
-                    
-                }
-                catch (HttpRequestException)
-                {
-                    Console.WriteLine("Failed to connect to the API. Please check your network connection.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                }
+                Console.WriteLine("API key not found. Please set the OPENAI_API_KEY environment variable.");
+                return;
             }
+
+            // Initialize the OpenAI API client
+            var openAiApi = new OpenAIAPI(apiKey);
+
+            // Generate a simple reply
+            var completionRequest = new OpenAI_API.Completions.CompletionRequest
+            {
+                Prompt = "Hello, how are you?",
+                MaxTokens = 50
+            };
+
+            var completionResult = await openAiApi.Completions.CreateCompletionAsync(completionRequest);
+
+            Console.WriteLine("OpenAI Response:");
+            Console.WriteLine(completionResult.Completions[0].Text.Trim());
         }
     }
 }
