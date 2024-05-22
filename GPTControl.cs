@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace GPTControlNamespace
 {
@@ -9,9 +10,13 @@ namespace GPTControlNamespace
     {
         public static async Task generate()
         {
-            Console.WriteLine("here");
             // Your API key
-            string apiKey = "sk-proj-ZMcUeP0skGgI7AK61BwvT3BlbkFJGY92olItqv6zSJ588C8w";
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@"Secret\appsettings.json");
+
+            var configuration = builder.Build();
+            string apiKey = configuration["OpenAI:ApiKey"];
 
             // The API endpoint
             string endpoint = "https://api.openai.com/v1/images";
