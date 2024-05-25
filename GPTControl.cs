@@ -1,31 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using OpenAI_API;
+﻿using OpenAI_API;
 
 namespace GPTControlNamespace
 {
-    
-    
     public class GPTControl
     {
         
         public static string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
         
-        
         // Testing
         public static async void Test()
         {
-            Console.WriteLine(apiKey);
             if (string.IsNullOrEmpty(apiKey))
             {
                 Console.WriteLine("API key not found. Please set the OPENAI_API_KEY environment variable.");
                 return;
             }
 
-            // Initialize the OpenAI API client
+            // initialise the client
             var openAiApi = new OpenAIAPI(apiKey);
 
             // Generate a simple reply
