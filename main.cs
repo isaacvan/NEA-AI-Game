@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using Emgu.CV.Dnn;
+using ItemFunctionsNamespace;
 using Microsoft.Extensions.Configuration;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -49,15 +50,43 @@ class Program
     {
         EnableColors();
         OpenAIAPI api = Narrator.initialiseGPT();
+        var chat = api.Chat.CreateConversation();
+        chat.Model = Model.GPT4_Turbo;
+        chat.RequestParameters.Temperature = 0.9;
         string debugPointEntry = "game";
         Player player;
         switch (debugPointEntry)
         {
             case "testing":
-                
+                //Directory.CreateDirectory(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1");
+                // create directory for this game
+                if (!Directory.Exists(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1"))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1");
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Item template directory already exists.");
+                }
                 break;
             case "game":
-                player = await initializeGame(api);
+                player = await initializeGame(api, chat);
+                await ItemFactory.initialiseItemFactoryFromNarrator(api, chat);
+                // NEXT STEPS
+                // ITEM PROMPT TO APPLY TO ONE SPECIFIC CLASS
+                // INVENTORY CLASS
+                // EVERYTHING TO DO WITH ITEMS
+                
+                
+                
+                Console.ReadLine();
                 //gridLoop(player);
                 break;
             default:
@@ -235,6 +264,7 @@ class Program
                                     string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
                                     UtilityFunctions.saveSlot = Path.GetFileName(save);
                                     UtilityFunctions.saveFile = save;
+                                    UtilityFunctions.saveName = $"save{i + 1}";
                                     saveChosen = true;
                                     started = true;
                                     break;
@@ -288,7 +318,7 @@ class Program
         return saveChosen;
     }
 
-    static async Task<Player> initializeGame(OpenAIAPI api)
+    static async Task<Player> initializeGame(OpenAIAPI api, Conversation chat)
     {
         // Task.Run(async () =>
         // {
@@ -329,11 +359,7 @@ class Program
         }
         
         Console.Clear();
-
-
-        var chat = api.Chat.CreateConversation();
-        chat.Model = Model.GPT4_Turbo;
-        chat.RequestParameters.Temperature = 0.9; 
+        
         
         // call api and initialise narrator, getting charactcer details
         player.initialisePlayerFromNarrator(api, chat, player);
@@ -383,6 +409,7 @@ class Program
 
                 UtilityFunctions.saveSlot = "save" + (saveSlot) + ".xml";
                 UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save" + (saveSlot) + ".xml";
+                UtilityFunctions.saveName = "save" + (saveSlot);
             }
 
             startedGame = true;
@@ -456,6 +483,20 @@ class Program
                         {
                             File.Delete(save);
                         }
+
+                        string[] templates =
+                            Directory.GetDirectories($@"{UtilityFunctions.mainDirectory}ItemTemplates");
+                        foreach (string template in templates)
+                        {
+                            Directory.Delete(template, true);
+                        }
+
+                        string[] files = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}ItemTemplates");
+                        foreach (string file in files)
+                        {
+                            File.Delete(file);
+                        }
+                       
 
                         Thread.Sleep(1000);
                         // return options(gameStarted, saveChosen);

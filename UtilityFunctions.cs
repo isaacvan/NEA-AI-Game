@@ -19,6 +19,10 @@ namespace UtilityFunctionsNamespace
                 @"..\..\..\")); // will be written to in main menu
 
         public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu
+        public static string saveName = "";
+        
+        public static string itemTemplateDir = @$"{mainDirectory}ItemTemplates\";
+        public static string itemTemplateSpecificDirectory = "";
         public static int maxSaves = 5;
         public static bool loadedSave = false;
         public static bool Instant = false;

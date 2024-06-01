@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="GeneratedImages\" />
+    <Folder Include="ItemTemplates\" />
+    <Folder Include="saves\" />
   </ItemGroup>
 
 </Project>

@@ -46,7 +46,7 @@ namespace PlayerClassesNamespace
 
         public async Task initialisePlayerFromNarrator(OpenAIAPI api, Conversation chat, Player player)
         {
-            Console.WriteLine("Creating Character...");
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Creating Character...", UtilityFunctions.typeSpeed);
             
             // load prompt 5
             string prompt5 = "";
@@ -82,7 +82,7 @@ namespace PlayerClassesNamespace
             //Console.WriteLine(output);
 
 
-            string finalXMLText = "";
+            
             if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
             {
                 // get all save file
@@ -124,6 +124,7 @@ namespace PlayerClassesNamespace
             // design xml file
             string preText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
             output = await UtilityFunctions.cleanseXML(output);
+            string finalXMLText = "";
             finalXMLText = preText + "\n" + output;
 
 
@@ -172,10 +173,8 @@ namespace PlayerClassesNamespace
             // set character health to max
             currentHealth = Health;
             // this.
-            Console.WriteLine("Character Created!");
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Character Created!", UtilityFunctions.typeSpeed);
             Console.ForegroundColor = ConsoleColor.White;
-            Thread.Sleep(500);
-            Console.Clear();
         }
 
         public void changePlayerPos(Point newPos)
