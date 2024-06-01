@@ -38,9 +38,12 @@ jobs:
       run: dotnet build $env:Solution_Name /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
+        API_KEY: ${{ secrets.API_KEY }}
 
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
 
     - name: Decode the pfx
       run: |
