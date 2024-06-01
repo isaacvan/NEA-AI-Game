@@ -1,20 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="Warrior">
-  <playerPos>
-    <X>0</X>
-    <Y>0</Y>
-  </playerPos>
-  <typeSpeed>1</typeSpeed>
-  <strength>17</strength>
-  <dexterity>7</dexterity>
-  <intelligence>7</intelligence>
-  <maxHealth>110</maxHealth>
-  <currentHealth>110</currentHealth>
-  <defense>22</defense>
-  <dodge>7</dodge>
-  <level>2</level>
-  <currentExp>15</currentExp>
-  <maxExp>20</maxExp>
-  <stats />
-  <madnessTurns>0</madnessTurns>
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <Class>Wizard</Class>
+    <Race>Eldritian</Race>
+    <Health>70</Health>
+    <ManaPoints>100</ManaPoints>
+    <Strength>5</Strength>
+    <Intelligence>10</Intelligence>
+    <Dexterity>7</Dexterity>
+    <Constitution>6</Constitution>
+    <Charisma>7</Charisma>
 </Player>

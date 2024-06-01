@@ -1,5 +1,6 @@
 using EnemyClassesNamespace;
 using UtilityFunctionsNamespace;
+using GPTControlNamespace;
 using System;
 using System.IO;
 using System.Threading;
@@ -10,35 +11,171 @@ using System.Dynamic;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Reflection;
+using OpenAI_API;
+using OpenAI_API.Chat;
 
 namespace PlayerClassesNamespace
 {
-
-
     [Serializable]
     public class Player
     {
-        public int strength { get; set; }
-        public int dexterity { get; set; }
-        public int intelligence { get; set; }
-        public int maxHealth { get; set; }
+        public string Class { get; set; }
+        public string Race { get; set; }
+        public int Health { get; set; }
         public int currentHealth { get; set; }
-        public int defense { get; set; }
-        public int dodge { get; set; }
+        public int ManaPoints { get; set; }
+        public int Strength { get; set; }
+        public int Intelligence { get; set; }
+        public int Dexterity { get; set; }
+        public int Constitution { get; set; }
+        public int Charisma { get; set; }
+
+
         public int level { get; set; }
         public int currentExp { get; set; }
         public int maxExp { get; set; }
-        public List<int> stats { get; set; }
-        public int madnessTurns { get; set; }
         public Point playerPos;
-        public string[][] inventory;
-        public int typeSpeed = 1;
-
 
         public Player()
         {
             maxExp = 10;
             level = 1;
+            currentExp = 0;
+            playerPos = new Point(0, 0);
+        }
+
+        public async Task initialisePlayerFromNarrator(OpenAIAPI api, Conversation chat, Player player)
+        {
+            Console.WriteLine("Creating Character...");
+            
+            // load prompt 5
+            string prompt5 = "";
+            Console.ForegroundColor = ConsoleColor.White;
+            try
+            {
+                prompt5 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt5.txt");
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not find prompt file: {e}");
+            }
+
+            // get response from GPT
+            string output = "";
+            try
+            {
+                // output = await Narrator.getGPTResponse(prompt5, api, 100, 0.9);
+                chat.AppendUserInput(prompt5);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not get response: {e}");
+            }
+
+            if (string.IsNullOrEmpty(output.Trim()))
+            {
+                throw new Exception("No response received from GPT.");
+            }
+
+
+            //Console.WriteLine(output);
+
+
+            string finalXMLText = "";
+            if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
+            {
+                // get all save file
+                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
+                bool started = false;
+                for (int i = 0; i < UtilityFunctions.maxSaves; i++)
+                {
+                    if (saves.Length == i)
+                    {
+                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
+                            $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n",
+                            UtilityFunctions.typeSpeed);
+                        string load = Console.ReadLine();
+                        if (load == "y")
+                        {
+                            string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
+                            UtilityFunctions.saveSlot = Path.GetFileName(save);
+                            UtilityFunctions.saveFile = save;
+                            started = true;
+                            i = UtilityFunctions.maxSaves;
+                        }
+                    }
+                }
+
+                if (!started)
+                {
+                    UtilityFunctions.TypeText(UtilityFunctions.Instant,
+                        "No empty save slots. Exiting Test. Press any key to leave", UtilityFunctions.typeSpeed);
+                    Console.ReadLine();
+                    Environment.Exit(0);
+                }
+            }
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            //Console.WriteLine(UtilityFunctions.saveFile);
+            //Console.WriteLine(output);
+
+
+            // design xml file
+            string preText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+            output = await UtilityFunctions.cleanseXML(output);
+            finalXMLText = preText + "\n" + output;
+
+
+            try
+            {
+                File.Create(UtilityFunctions.saveFile).Close();
+                File.WriteAllText(UtilityFunctions.saveFile, finalXMLText);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not write to file: {e}");
+            }
+
+
+            // Player player with attributes
+            XmlSerializer serializer = new XmlSerializer(typeof(Player));
+            using (TextReader reader = new StringReader(finalXMLText))
+            {
+                player = (Player)serializer.Deserialize(reader);
+            }
+
+
+            // set player properties
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            Type playerType = typeof(Player);
+            PropertyInfo[] properties = playerType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+
+            foreach (PropertyInfo property in properties)
+            {
+                try
+                {
+                    object value = property.GetValue(player);
+                    property.SetValue(this, value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
+                    // Handle or log the error as necessary
+                }
+            }
+
+
+            // set character health to max
+            currentHealth = Health;
+            // this.
+            Console.WriteLine("Character Created!");
+            Console.ForegroundColor = ConsoleColor.White;
+            Thread.Sleep(500);
+            Console.Clear();
         }
 
         public void changePlayerPos(Point newPos)
@@ -51,6 +188,7 @@ namespace PlayerClassesNamespace
             GetType().GetProperty(stat).SetValue(this, newValue);
 
             string fileName = UtilityFunctions.saveFile;
+
 
             // Load the XML document
             XDocument document = XDocument.Load(fileName);
@@ -68,56 +206,20 @@ namespace PlayerClassesNamespace
             {
                 Console.WriteLine($"Element {stat} not found in {fileName}.");
             }
+
             if (!midLevelUp)
             {
                 checkForLevelUp();
             }
-
         }
 
 
         public void checkForLevelUp()
         {
-            while (currentExp >= maxExp)
+            /*while (currentExp >= maxExp)
             {
                 levelUp();
-            }
+            }*/
         }
-
-
-        public void levelUp()
-        {
-            int newMaxExp = maxExp + (level * 10);
-            int newCurrentExp = currentExp - maxExp;
-            int newMaxHealth = maxHealth + (level * 10);
-            int newLevel = level + 1;
-            int newStrength = strength + (level * 2);
-            int newDexterity = dexterity + (level * 2);
-            int newIntelligence = intelligence + (level * 2);
-            int newDefense = defense + (level * 2);
-            int newDodge = dodge + (level * 2);
-            Console.Clear();
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"You levelled up from level {UtilityFunctions.colourScheme.generalAccentCode}{level}{UtilityFunctions.colourScheme.generalTextCode} to level {UtilityFunctions.colourScheme.generalAccentCode}{newLevel}{UtilityFunctions.colourScheme.generalTextCode}!", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Max HP: {UtilityFunctions.colourScheme.generalAccentCode}{maxHealth}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newMaxHealth}", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Strength: {UtilityFunctions.colourScheme.generalAccentCode}{strength}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newStrength}", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Dexterity: {UtilityFunctions.colourScheme.generalAccentCode}{dexterity}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newDexterity}", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Intelligence: {UtilityFunctions.colourScheme.generalAccentCode}{intelligence}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newIntelligence}", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Defense: {UtilityFunctions.colourScheme.generalAccentCode}{defense}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newDefense}", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"Dodge: {UtilityFunctions.colourScheme.generalAccentCode}{dodge}{UtilityFunctions.colourScheme.generalTextCode} => {UtilityFunctions.colourScheme.generalAccentCode}{newDodge}", UtilityFunctions.typeSpeed);
-            changePlayerStats("maxHealth", newMaxHealth, true);
-            changePlayerStats("currentHealth", newMaxHealth, true);
-            changePlayerStats("level", newLevel, true);
-            changePlayerStats("maxExp", newMaxExp, true);
-            changePlayerStats("currentExp", newCurrentExp, true);
-            changePlayerStats("strength", newStrength, true);
-            changePlayerStats("dexterity", newDexterity, true);
-            changePlayerStats("intelligence", newIntelligence, true);
-            changePlayerStats("defense", newDefense, true);
-            changePlayerStats("dodge", newDodge, true);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"\n\nPress any key to leave:", UtilityFunctions.typeSpeed);
-            Console.ReadLine();
-            UtilityFunctions.clearScreen(this);
-        }
-
     }
 }

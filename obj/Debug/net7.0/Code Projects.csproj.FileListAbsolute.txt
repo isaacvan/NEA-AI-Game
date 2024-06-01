@@ -123,3 +123,4 @@ C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\OpenAI_API.dll
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\System.Text.Encodings.Web.dll
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\System.Text.Json.dll
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\Microsoft.Extensions.Configuration.UserSecrets.dll

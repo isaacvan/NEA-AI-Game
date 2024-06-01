@@ -11,9 +11,7 @@ namespace UtilityFunctionsNamespace
 {
     public class UtilityFunctions
     {
-        public static string[] enemies = { "boar", "orc", "snake" };
         public static int typeSpeed = 1;
-        public static bool quickEnd = false;
         public static string saveSlot = ""; // will be written to in main menu
 
         public static string mainDirectory =
@@ -21,11 +19,12 @@ namespace UtilityFunctionsNamespace
                 @"..\..\..\")); // will be written to in main menu
 
         public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu
-        public static int maxSaves = 3;
+        public static int maxSaves = 5;
         public static bool loadedSave = false;
         public static bool Instant = false;
         public static int colourSchemeIndex = 0;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
+        public static string promptPath = @$"{mainDirectory}Prompts\";
 
         public static void overrideSave(string slot)
         {
@@ -45,6 +44,26 @@ namespace UtilityFunctionsNamespace
             {
                 UtilityFunctions.TypeText(UtilityFunctions.Instant, $"An error occurred: {ex.Message}", typeSpeed);
             }
+        }
+
+        public async static Task<string> cleanseXML(string xml)
+        {
+            // this function will ensure that the output the narrator gives is parseable
+            
+            string[] lines = xml.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            List<string> lineList = lines.ToList();
+            List<string> newLineList = new List<string>();
+
+            foreach (string line in lineList)
+            {
+                if (line.Contains("<"))
+                {
+                    newLineList.Add(line);
+                }
+            }
+            
+            string output = string.Join("\n", newLineList);
+            return output;
         }
 
         public static void loadSave(string slot)
@@ -70,7 +89,7 @@ namespace UtilityFunctionsNamespace
             {
                 DisplayExpBar(player.currentExp, player.maxExp, Console.WindowWidth);
                 int currentHealth = player.currentHealth;
-                int maxHealth = player.maxHealth;
+                int maxHealth = player.Health;
                 double healthPercentage = (double)currentHealth / maxHealth;
 
                 int redValue, greenValue;
@@ -101,75 +120,6 @@ namespace UtilityFunctionsNamespace
                 */
                 //Console.WriteLine("X: 0 Y: 0");
             }
-        }
-
-        public static void DisplayHealthBar()
-        {
-        }
-
-        public static string chooseClass()
-        {
-            Console.Clear();
-            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                "\nSelect a class from the following:\n\n[W] Warrior\n[R] Rogue\n[M] Mage", typeSpeed);
-            bool chosen = false;
-            bool valid = false;
-            bool valid2 = false;
-            string input = Console.ReadLine();
-            string[] classes = { "Warrior", "Rogue", "Mage" };
-            string[] classAbbreviations = { "W", "R", "M" };
-            input = input.Substring(0, 1);
-            int index = 0;
-            while (!chosen)
-            {
-                foreach (string i in classAbbreviations)
-                {
-                    if (input.ToLower() == i.ToLower())
-                    {
-                        valid = true;
-                        valid2 = true;
-                        chosen = true;
-                    }
-                    else if (!chosen)
-                    {
-                        index++;
-                    }
-                }
-
-                while (!valid2)
-                {
-                    if (!valid)
-                    {
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "Please enter a valid class", typeSpeed);
-                        Thread.Sleep(1000);
-                        Console.Clear();
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            "\nSelect a class from the following:\n\n[W] Warrior\n[R] Rogue\n[M] Mage", typeSpeed);
-                        input = Console.ReadLine();
-                        input = input.Substring(0, 1);
-                        index = 0;
-                        foreach (string i in classAbbreviations)
-                        {
-                            if (input.ToLower() == i.ToLower())
-                            {
-                                valid = true;
-                                chosen = true;
-                            }
-                            else if (!chosen)
-                            {
-                                index++;
-                            }
-                        }
-
-                        if (valid)
-                        {
-                            valid2 = true;
-                        }
-                    }
-                }
-            }
-
-            return classes[index];
         }
 
         public static void TypeText(bool inst, string text, int typingSpeed, bool newLine = true)
@@ -231,20 +181,6 @@ namespace UtilityFunctionsNamespace
             int blue = (int)(initialb * fraction);
             return new int[] { red, green, blue };
         }
-        
-
-        public static void DisplayAllStats(Player chosenCharacter)
-        {
-            Console.WriteLine($"\n{chosenCharacter.GetType().Name} Stats:\n");
-            Console.WriteLine($"Strength: {chosenCharacter.strength}");
-            Console.WriteLine($"Dexterity: {chosenCharacter.dexterity}");
-            Console.WriteLine($"Intelligence: {chosenCharacter.intelligence}");
-            Console.WriteLine($"Max Health: {chosenCharacter.maxHealth}");
-            Console.WriteLine($"Current Health: {chosenCharacter.currentHealth}");
-            Console.WriteLine($"Defense: {chosenCharacter.defense}");
-            Console.WriteLine($"Dodge: {chosenCharacter.dodge}");
-            // Add any other stats you want to display
-        }
 
         public static Enemy CreateEnemyInstance(string enemyName)
         {
@@ -266,7 +202,7 @@ namespace UtilityFunctionsNamespace
             }
         }
 
-        public static Player CreatePlayerInstance(Player player)
+        public static Player CreatePlayerInstance()
         {
             return new Player();
         }

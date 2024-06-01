@@ -1,35 +1,46 @@
 ﻿using OpenAI_API;
+using Microsoft.Extensions.Configuration;
+using OpenAI_API.Completions;
+using UtilityFunctionsNamespace;
 
 namespace GPTControlNamespace
 {
-    public class GPTControl
+    public class Narrator
     {
-        
-        public static string apiKey = Environment.GetEnvironmentVariable("API_KEY");
-        
         // Testing
-        public static async void Test()
+        public static OpenAIAPI initialiseGPT()
         {
-            if (string.IsNullOrEmpty(apiKey))
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Initialising GPT...", UtilityFunctions.typeSpeed);
+            //Thread.Sleep(500);
+            string? apiKey = System.Environment.GetEnvironmentVariable("API_KEY");
+            Console.WriteLine($"ENV API Key: {apiKey}");
+            if (apiKey == null)
             {
-                Console.WriteLine("API key not found. Please set the OPENAI_API_KEY environment variable.");
-                return;
+                Console.WriteLine("ENV API Key is not set, trying secrets");
+                var config = new ConfigurationBuilder()
+                    .AddUserSecrets<Program>()
+                    .Build();
+                apiKey = config["API_KEY"];
+                if (apiKey != null)
+                {
+                    Console.WriteLine("Secret found");
+                }
+                else
+                {
+                    throw new Exception("No GPT API key! Set API_KEY env variable");
+                }
             }
-
-            // initialise the client
-            var openAiApi = new OpenAIAPI(apiKey);
-
-            // Generate a simple reply
-            var completionRequest = new OpenAI_API.Completions.CompletionRequest
-            {
-                Prompt = "Hello, how are you?",
-                MaxTokens = 50
-            };
-
-            var completionResult = await openAiApi.Completions.CreateCompletionAsync(completionRequest);
-
-            Console.WriteLine("OpenAI Response:");
-            Console.WriteLine(completionResult.Completions[0].Text.Trim());
+            System.Environment.SetEnvironmentVariable("API_KEY", apiKey);
+            
+            OpenAIAPI api = new OpenAIAPI(apiKey);
+            
+            
+            
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Initialised GPT.", UtilityFunctions.typeSpeed);
+            //Thread.Sleep(500);
+            Console.Clear();
+            
+            return api;
         }
     }
 }

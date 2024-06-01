@@ -10,8 +10,13 @@ using GPTControlNamespace;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
+using Emgu.CV.Dnn;
+using Microsoft.Extensions.Configuration;
+using OpenAI_API;
+using OpenAI_API.Chat;
+using Model = OpenAI_API.Models.Model;
 
-partial class Program
+class Program
 {
     // Constants for standard output handle and enabling virtual terminal processing
     private const int STD_OUTPUT_HANDLE = -11;
@@ -36,25 +41,24 @@ partial class Program
             mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
             SetConsoleMode(handle, mode);
         }
-    }
+    } //\x1b[38;2;r;g;bm
 
-    //\x1b[38;2;r;g;bm
-
-    static void Main(string[] args)
+    
+    
+    static async Task Main(string[] args)
     {
         EnableColors();
+        OpenAIAPI api = Narrator.initialiseGPT();
         string debugPointEntry = "game";
         Player player;
         switch (debugPointEntry)
         {
             case "testing":
-                GPTControl.Test();
-                Thread.Sleep(10000);
-                //gridLoop(null);
+                
                 break;
             case "game":
-                player = initializeGame();
-                gridLoop(player);
+                player = await initializeGame(api);
+                //gridLoop(player);
                 break;
             default:
                 Environment.FailFast($"debuggingPointEntry Invalid");
@@ -62,6 +66,9 @@ partial class Program
         }
     }
 
+    
+    
+    
     static void gridLoop(Player player)
     {
         string file = UtilityFunctions.mainDirectory + @"GridSaves\save1.json";
@@ -281,7 +288,7 @@ partial class Program
         return saveChosen;
     }
 
-    static Player initializeGame()
+    static async Task<Player> initializeGame(OpenAIAPI api)
     {
         // Task.Run(async () =>
         // {
@@ -296,6 +303,7 @@ partial class Program
         }
 
         Player player;
+        
         if (UtilityFunctions.loadedSave)
         {
             // put player where they were back into the game. If it's a new save, ignore.
@@ -307,26 +315,34 @@ partial class Program
             {
                 player = (Player)serializer1.Deserialize(reader);
             }
-            UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
-
+            // UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
+            
+            
+            
+            throw new Exception("Not implemented yet");
 
         }
         else
         {
-            string chosenClass = UtilityFunctions.chooseClass();
-            player = UtilityFunctions.CreatePlayerInstance(new Player());
+            player = UtilityFunctions.CreatePlayerInstance();
             // GridFunctions.CreateGrid(@"D:\isaac\Documents\Code Projects\GridSaves");
         }
+        
+        Console.Clear();
 
-        XmlSerializer serializer = new XmlSerializer(typeof(Player));
-        using (TextWriter writer = new StreamWriter(UtilityFunctions.saveFile))
-        {
-            serializer.Serialize(writer, player);
-        }
 
-        UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
+        var chat = api.Chat.CreateConversation();
+        chat.Model = Model.GPT4_Turbo;
+        chat.RequestParameters.Temperature = 0.9; 
+        
+        // call api and initialise narrator, getting charactcer details
+        player.initialisePlayerFromNarrator(api, chat, player);
+        
         return player;
     }
+    
+    
+    
 
     static void loadGame(bool gameStarted, bool saveChosen)
     {

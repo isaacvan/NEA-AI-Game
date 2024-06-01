@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MQOKx6aZyPgjKOYqiYPWZZVO64pt14Y0rjhZVlB2L6Y6QmHOlpB/bfu0s1xEjL8uZKefs9dij9X0teSDSqntlA==",
+  "dgSpecHash": "baK/S5GwqciP5uKPLgt/YNyBV9vJXcPD99y2TvJQRFOturrEXnkastCrZFm5WwXXZPHu1OeyOqyvQdQL5bcIaw==",
   "success": true,
   "projectFilePath": "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.binder\\2.1.0\\microsoft.extensions.configuration.binder.2.1.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\8.0.0\\microsoft.extensions.configuration.fileextensions.8.0.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.json\\8.0.0\\microsoft.extensions.configuration.json.8.0.0.nupkg.sha512",
+    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.usersecrets\\8.0.0\\microsoft.extensions.configuration.usersecrets.8.0.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\2.1.0\\microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\8.0.0\\microsoft.extensions.fileproviders.physical.8.0.0.nupkg.sha512",

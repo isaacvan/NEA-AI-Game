@@ -15,7 +15,6 @@ jobs:
     env:
       Solution_Name: 'Code Projects.sln'
       Test_Project_Path: 'C:\Users\isaac\RiderProjects\NEA-AI-Game\Code Projects.csproj'
-      Wap_Project_Directory: 'C:\Users\isaac\RiderProjects\NEA-AI-Game\WapProjectDir'
 
     steps:
     - name: Checkout
@@ -24,7 +23,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
 
     - name: Build the application
       run: dotnet build $env:Solution_Name /p:Configuration=$env:Configuration
