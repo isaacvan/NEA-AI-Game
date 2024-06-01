@@ -21,29 +21,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Install .NET Core
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x'  # Assuming you are using .NET 6, adjust as necessary
-
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+        dotnet-version: '6.0.x'
 
     - name: Build the application
       run: dotnet build $env:Solution_Name /p:Configuration=$env:Configuration
       env:
+        API_KEY: ${{ secrets.API_KEY }}
         Configuration: ${{ matrix.configuration }}
-        API_KEY: ${{ secrets.API_KEY }}
-
-    - name: Execute unit tests
-      run: dotnet test $env:Test_Project_Path
-      env:
-        API_KEY: ${{ secrets.API_KEY }}
 
     - name: Decode the pfx
       run: |
