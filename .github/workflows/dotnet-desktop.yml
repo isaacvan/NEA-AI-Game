@@ -87,6 +87,11 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Build and run C# project
+      run: dotnet run
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     - name: Decode the pfx
       run: |
