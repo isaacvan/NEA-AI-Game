@@ -5,7 +5,7 @@ namespace GPTControlNamespace
     public class GPTControl
     {
         
-        public static string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        public static string apiKey = Environment.GetEnvironmentVariable("API_KEY");
         
         // Testing
         public static async void Test()

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="Warrior">
   <playerPos>
     <X>0</X>
@@ -13,7 +13,7 @@
   <defense>22</defense>
   <dodge>7</dodge>
   <level>2</level>
-  <currentExp>10</currentExp>
+  <currentExp>15</currentExp>
   <maxExp>20</maxExp>
   <stats />
   <madnessTurns>0</madnessTurns>

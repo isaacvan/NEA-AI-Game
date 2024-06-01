@@ -43,7 +43,7 @@ partial class Program
     static void Main(string[] args)
     {
         EnableColors();
-        string debugPointEntry = "testing";
+        string debugPointEntry = "game";
         Player player;
         switch (debugPointEntry)
         {
@@ -314,7 +314,7 @@ partial class Program
         else
         {
             string chosenClass = UtilityFunctions.chooseClass();
-            player = UtilityFunctions.CreatePlayerInstance(chosenClass);
+            player = UtilityFunctions.CreatePlayerInstance(new Player());
             // GridFunctions.CreateGrid(@"D:\isaac\Documents\Code Projects\GridSaves");
         }
 

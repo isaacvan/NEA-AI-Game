@@ -24,7 +24,7 @@ namespace UtilityFunctionsNamespace
         public static int maxSaves = 3;
         public static bool loadedSave = false;
         public static bool Instant = false;
-        public static int colourSchemeIndex = 1;
+        public static int colourSchemeIndex = 0;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
 
         public static void overrideSave(string slot)
@@ -266,20 +266,9 @@ namespace UtilityFunctionsNamespace
             }
         }
 
-        public static Player CreatePlayerInstance(string chosenClass)
+        public static Player CreatePlayerInstance(Player player)
         {
-            if (chosenClass == "Mage")
-            {
-                return new Mage();
-            }
-            else if (chosenClass == "Rogue")
-            {
-                return new Rogue();
-            }
-            else
-            {
-                return new Warrior();
-            }
+            return new Player();
         }
     }
 

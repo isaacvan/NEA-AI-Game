@@ -19,12 +19,13 @@ namespace GridConfigurationNamespace
     public class GridFunctions
     {
         private const string wallChar = $"\x1b[38;2;0;0;0m\u25a0";
-        private const string floorChar = $"\x1b[38;2;200;200;200m\u2588";
+        private const string expChar = $"\x1b[38;2;100;100;255me";
+        private const string floorChar = $"\x1b[38;2;200;200;200m.\x1b[0m";
         
         public static List<List<Tile>> CreateGrid(int width, int height)
         {
             List<List<Tile>> grid = new List<List<Tile>>();
-            string t = ".";
+            string t;
 
             for (int i = 0; i < width; i++)
             {
@@ -34,19 +35,19 @@ namespace GridConfigurationNamespace
                     
                     Event @event;
 
-                    /*if (i == 5 && j == 5)
+                    if (i == 5 && j == 5)
                     {
-                        t = "0";
+                        t = expChar;
                         List<string> desc = new List<string> { "plrExp" };
                         List<string> consq = new List<string> { "5" };
                         @event = new Event("exp", desc, consq);
 
-                    } else {*/
-                        t = wallChar;
+                    } else {
+                        t = floorChar;
                         List<string> desc = new List<string> { "none" };
                         List<string> consq = new List<string> { "none" };
                         @event = new Event("none", desc, consq);
-                    //}
+                    }
                     
                     row.Add(new Tile(i, j, t, false, 1, false, @event));
 
@@ -74,7 +75,7 @@ namespace GridConfigurationNamespace
             int playerX = newplayerLocation.X;
             int playerY = newplayerLocation.Y;
             grid[oldplayerLocation.X][oldplayerLocation.Y].playerHere = false;
-            grid[oldplayerLocation.X][oldplayerLocation.Y].t = wallChar;
+            grid[oldplayerLocation.X][oldplayerLocation.Y].t = floorChar;
             
             if (playerX >= 0 && playerX < grid.Count && playerY >= 0 && playerY < grid[playerX].Count) // if in bounds
             {
@@ -127,10 +128,10 @@ namespace GridConfigurationNamespace
                             arr.Add($" @ ");
                             Console.ResetColor();
                         } else if (grid[i][j].eventHere.name == "exp") {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write($" {grid[i][j].t} ");
-                            arr.Add($" {grid[i][j].t} ");
-                            Console.ResetColor();
+                            //Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write($" {expChar} ");
+                            arr.Add($" {expChar} ");
+                            //Console.ResetColor();
                         
                         }
                         else
@@ -141,6 +142,7 @@ namespace GridConfigurationNamespace
                             int r = colours[0];
                             int g = colours[1];
                             int b = colours[2];
+                            Console.ForegroundColor = ConsoleColor.White;
                             //Console.Write($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
                             Console.Write($" {grid[j][i].t} ");
                             //arr.Add($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
