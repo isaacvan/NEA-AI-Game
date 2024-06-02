@@ -75,17 +75,14 @@ class Program
                 player = await initializeGame(api, chat);
                 await itemFactory.initialiseItemFactoryFromNarrator(api, chat);
                 
-                /*
-                Console.WriteLine("Welcome to the game!");
-                Console.WriteLine(itemFactory.weaponTemplates[0].Description);
-                Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
-                player.EquipItem("Head", null);
-                Console.WriteLine(player);
-                */
                 
+                
+                // ---------------------------------------------------------------------------------------------------------
                 // NEXT STEPS
-                // INVENTORY CLASS
-                // EVERYTHING TO DO WITH ITEMS
+                // WRITING INVENTORY TO XML, add to player file? think
+                // same thing with equipment, ensure this is updated every time equipment changes. ensure equip and unequip work.
+                // ENEMY GENERTION. see UML class diagram. clear and restart enemy classes
+                //----------------------------------------------------------------------------------------------------------
                 
                 
                 
