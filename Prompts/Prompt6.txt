@@ -1,26 +1,34 @@
-﻿As the game's narrator with a comprehensive understanding of the game's universe and mechanics, you have been tasked to design an essential collection of items that will be used throughout the entirety of the game. These items should align with specific character classes, races, and contribute meaningfully to the game's narrative. Your output should be formatted in JSON to ensure it can be easily parsed and integrated into the game's development process. Please generate the following:
+﻿As the game's narrator with a comprehensive understanding of the game's universe and mechanics, you have been tasked to design an essential collection of items that will be used throughout the entirety of the game. These items should align with specific character classes, races, and contribute meaningfully to the game's narrative. Your output should be formatted in XML to ensure it can be easily parsed and integrated into the game's development process. It's crucial that these are unique to your storyline; no 2 games can be the same. Please generate the following:
 
-1. **Weapons**: Create detailed descriptions for at least five weapons, each suited for different character classes or races. Include attributes such as name, damage, weight, special abilities, and applicable class or race.
+1. Weapons: Create detailed descriptions for at least 3 weapons, each suited for the chosen character class and race. Include attributes such as damage (5 - 50, include a good range so that there are bad weapons and good weapons), weapon type, unique properties (e.g + 3 dex), weapon capabilities (effect of the attack) and narrative line. This will play when the user uses the special ability.
 
-2. **Consumable Items**: Describe five consumable items that are deeply intertwined with the storyline. Specify their effects, usage context, and any storyline relevance.
+2. Consumable Items: Describe 3 consumable items that are deeply intertwined with the storyline. Specify their effects, unique properties, and any storyline relevance.
 
-4. **Armour Sets**: Provide specifications for three armour sets, highlighting their defensive capabilities, class or race compatibility, and unique properties.
+3. Armour Sets: Provide specifications for 1 armour set (3 armours, head body and legs), highlighting their Defence stat (5 - 50, include a good range so that there are bad armours and good armours), unique properties, and defensive capabilities. Ensure you follow the format as below: no not create any unnecessary classes.
 
-Format your response as follows, without using the examples I have given you, as each item must apply to your game world. This must be in a parseable, XML format. Weapons must be under the inherited Weapon class, consumables in the inherited Consumable class, armour sets in the inherited Armour class. To seperate these sections, use the word SEPERATOR. Ensure you only use the word SEPERATOR twice, in-between the different sections:
+Format your response as follows, without using the examples I have given you, as each item must apply to your game world. This must be in a parseable, XML format. Weapons must be under the inherited Weapon class, consumables in the inherited Consumable class, armour sets in the inherited Armour class. They inherit from the Item class. To seperate these sections, use the word SEPERATOR. Ensure you only use the word SEPERATOR twice, in-between the different sections. It is crucial you only output in parseable XML, if you don't the system will break. Every single item should have a Name and a Description. Armours and Weapons need an ItemEquipLocation. ItemEquipLocation should be Head, Body, Legs, Weapon or Accessory (string):
 
-{
-  "Weapons": [
-    {"Name": "Flame Enchanted Sword", "Damage": 15, "Weight": 5, "Special Abilities": ["Fire Burst"], "Class": "Mage"},
-    ...
-  ]
-  SEPERATOR
-  "Consumables": [
-    {"Name": "Elixir of Shadows", "Effect": "Grants invisibility for 30 seconds", "Story Relevance": "Used to sneak into the enemy fortress undetected"},
-    ...
-  ]
-  SEPERATOR
-  "ArmourSets": [
-    {"Name": "Dragon Scale Armour", "Defense": 25, "Class": "Warrior", "Special Properties": ["Resistance to fire", "Enhanced Durability"]},
-    ...
-  ]
-}
+<Item>
+    <Weapon>
+        <Name>Spectral Bow</Name>
+        <Description>An ancient weapon, appearing to have been forged in the dark ages. It glimmers powerfully.</Description>
+        <Damage>12</Damage>
+        <WeaponType>Bow</WeaponType>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <WeaponCapabilities>Enemy strength reduced by 2</WeaponCapabilities>
+        <NarrativeLine>The arrow pierces the enemy, causing them to stagger.</NarrativeLine>
+    </Weapon>
+</Item>
+SEPERATOR
+<Item>
+    <Armour>
+        <Name>Veil of the Nightwalker</Name>
+        <Description>A hood woven from the essence of night, making the wearer blend with the shadows.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+2 Dexterity; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Reduces the chance to be detected by enemies</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+...
+
+It is imperitive that all start tags match end tags.

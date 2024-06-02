@@ -60,7 +60,7 @@ namespace UtilityFunctionsNamespace
 
             foreach (string line in lineList)
             {
-                if (line.Contains("<"))
+                if (line.Contains("<") || line.Contains("SEPERATOR", StringComparison.Ordinal))
                 {
                     newLineList.Add(line);
                 }
@@ -85,6 +85,16 @@ namespace UtilityFunctionsNamespace
             displayStats(player);
 
             Console.Write("\n\n");
+        }
+        
+        public static T DeserializeXmlFromFile<T>(string filePath)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
         }
 
         public static void displayStats(Player player, bool menu = false)

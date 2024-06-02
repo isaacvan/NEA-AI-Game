@@ -55,32 +55,35 @@ class Program
         chat.RequestParameters.Temperature = 0.9;
         string debugPointEntry = "game";
         Player player;
+        ItemFactory itemFactory = new ItemFactory();
         switch (debugPointEntry)
         {
             case "testing":
-                //Directory.CreateDirectory(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1");
-                // create directory for this game
-                if (!Directory.Exists(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1"))
-                {
-                    try
-                    {
-                        Directory.CreateDirectory(@"C:\Users\isaac\RiderProjects\NEA-AI-Game\ItemTemplates\save1");
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
-                }
-                else
-                {
-                    throw new Exception("Item template directory already exists.");
-                }
+                player = await initializeGame(api, chat, true);
+                await itemFactory.initialiseItemFactoryFromNarrator(api, chat, true);
+                
+                Console.WriteLine("Welcome to the game!");
+                Console.WriteLine(itemFactory.weaponTemplates[0].Description);
+                
+                
+                Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
+                player.EquipItem("Head", item);
+                Console.WriteLine(player.equipment.Slots["Head"].Name);
+                
                 break;
             case "game":
                 player = await initializeGame(api, chat);
-                await ItemFactory.initialiseItemFactoryFromNarrator(api, chat);
+                await itemFactory.initialiseItemFactoryFromNarrator(api, chat);
+                
+                /*
+                Console.WriteLine("Welcome to the game!");
+                Console.WriteLine(itemFactory.weaponTemplates[0].Description);
+                Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
+                player.EquipItem("Head", null);
+                Console.WriteLine(player);
+                */
+                
                 // NEXT STEPS
-                // ITEM PROMPT TO APPLY TO ONE SPECIFIC CLASS
                 // INVENTORY CLASS
                 // EVERYTHING TO DO WITH ITEMS
                 
@@ -208,7 +211,7 @@ class Program
         return loc;
     }
 
-    static bool menu(bool gameStarted, bool saveChosen)
+    static bool menu(bool gameStarted, bool saveChosen, bool testing = false)
     {
         if (saveChosen == false && gameStarted == false)
         {
@@ -249,11 +252,12 @@ class Program
                 {
                     case 1:
                         UtilityFunctions.clearScreen(null);
-                        string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
+                        List<string> saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml").ToList();
+                        saves.Remove($@"{UtilityFunctions.mainDirectory}saves\saveExample.xml");
                         bool started = false;
                         for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                         {
-                            if (saves.Length == i)
+                            if (saves.Count == i)
                             {
                                 UtilityFunctions.TypeText(UtilityFunctions.Instant,
                                     $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n",
@@ -318,7 +322,7 @@ class Program
         return saveChosen;
     }
 
-    static async Task<Player> initializeGame(OpenAIAPI api, Conversation chat)
+    static async Task<Player> initializeGame(OpenAIAPI api, Conversation chat, bool testing = false)
     {
         // Task.Run(async () =>
         // {
@@ -327,23 +331,44 @@ class Program
         Console.CursorVisible = false;
         bool gameStarted = false;
         bool saveChosen = false;
-        while (!saveChosen)
+        if (!testing)
         {
-            saveChosen = menu(gameStarted, saveChosen); // displays the menu
+            while (!saveChosen)
+            {
+                saveChosen = menu(gameStarted, saveChosen, testing); // displays the menu
+            }
+        }
+        else
+        {
+            UtilityFunctions.saveSlot = "saveExample.xml";
+            UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\saveExample.xml";
+            UtilityFunctions.saveName = "saveExamples";
         }
 
         Player player;
         
-        if (UtilityFunctions.loadedSave)
+        if (UtilityFunctions.loadedSave) // IF LOADED
         {
             // put player where they were back into the game. If it's a new save, ignore.
             //string chosenClass = UtilityFunctions.chooseClass();
             //player = UtilityFunctions.CreatePlayerInstance(chosenClass);
             // deserialize the utilityfucntions.saveFile and load it into player
-            XmlSerializer serializer1 = new XmlSerializer(typeof(Player));
-            using (TextReader reader = new StreamReader(UtilityFunctions.saveFile))
+            
+            
+            
+            // will create a function called loadGame()
+
+            try
             {
-                player = (Player)serializer1.Deserialize(reader);
+                XmlSerializer serializer1 = new XmlSerializer(typeof(Player));
+                using (TextReader reader = new StreamReader(UtilityFunctions.saveFile))
+                {
+                    player = (Player)serializer1.Deserialize(reader);
+                }
+            }
+            catch
+            {
+                throw new Exception("Not implemented yet");
             }
             // UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
             
@@ -352,9 +377,9 @@ class Program
             throw new Exception("Not implemented yet");
 
         }
-        else
+        else // if not loaded
         {
-            player = UtilityFunctions.CreatePlayerInstance();
+            player = UtilityFunctions.CreatePlayerInstance(); // returns new empty player
             // GridFunctions.CreateGrid(@"D:\isaac\Documents\Code Projects\GridSaves");
         }
         
@@ -362,7 +387,8 @@ class Program
         
         
         // call api and initialise narrator, getting charactcer details
-        player.initialisePlayerFromNarrator(api, chat, player);
+        // MAIN INITIALISE FUNCTION FOR CHARACTER
+        player.initialisePlayerFromNarrator(api, chat, player, testing);
         
         return player;
     }
@@ -475,26 +501,37 @@ class Program
                     string clearSaves = Console.ReadLine();
                     if (clearSaves == "y")
                     {
+                        
+                        // delete all except test saves
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all saves...\n",
                             UtilityFunctions.typeSpeed);
                         string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
                         foreach (string save in saves)
                         {
-                            File.Delete(save);
+                            if (Path.GetFileNameWithoutExtension(save) != "saveExample")
+                            {
+                                File.Delete(save);
+                            }
                         }
 
                         string[] templates =
                             Directory.GetDirectories($@"{UtilityFunctions.mainDirectory}ItemTemplates");
                         foreach (string template in templates)
                         {
-                            Directory.Delete(template, true);
-                        }
-
-                        string[] files = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}ItemTemplates");
-                        foreach (string file in files)
-                        {
-                            File.Delete(file);
+                            DirectoryInfo  info = new DirectoryInfo(template);
+                            if (info.Name != "saveExamples")
+                            {
+                                try
+                                {
+                                    Directory.Delete(template, true);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine($"Couldn't delete file: {e}");
+                                    Console.ReadLine();
+                                }
+                            }
                         }
                        
 
