@@ -1,6 +1,6 @@
 ﻿As the game's narrator with a comprehensive understanding of the game's universe and mechanics, you have been tasked to design an essential collection of items that will be used throughout the entirety of the game. These items should align with specific character classes, races, and contribute meaningfully to the game's narrative. Your output should be formatted in XML to ensure it can be easily parsed and integrated into the game's development process. It's crucial that these are unique to your storyline; no 2 games can be the same. Please generate the following:
 
-1. Weapons: Create detailed descriptions for at least 3 weapons, each suited for the chosen character class and race. Include attributes such as damage (5 - 50, include a good range so that there are bad weapons and good weapons), weapon type, unique properties (e.g + 3 dex), weapon capabilities (effect of the attack) and narrative line. This will play when the user uses the special ability.
+1. Weapons: Create detailed descriptions for at least 3 weapons, each suited for the chosen character class and race. Include attributes such as damage (5 - 50, include a good range so that there are bad weapons and good weapons), weapon type, unique properties (e.g + 3 dex), weapon capabilities (effect of the attack) and narrative line. This will play when the user uses the special ability. Include an ItemEquidLocation, either Weapon or Accessory.
 
 2. Consumable Items: Describe 3 consumable items that are deeply intertwined with the storyline. Specify their effects, unique properties, and any storyline relevance.
 
@@ -17,6 +17,7 @@ Format your response as follows, without using the examples I have given you, as
         <UniqueProperties>+3 Dexterity</UniqueProperties>
         <WeaponCapabilities>Enemy strength reduced by 2</WeaponCapabilities>
         <NarrativeLine>The arrow pierces the enemy, causing them to stagger.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>
 SEPERATOR

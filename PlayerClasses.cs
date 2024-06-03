@@ -36,8 +36,8 @@ namespace PlayerClassesNamespace
         public int currentExp { get; set; }
         public int maxExp { get; set; }
         public Point playerPos;
-        public Inventory inventory = new Inventory();
-        public Equipment equipment = new Equipment();
+        public Inventory inventory { get; set; }
+        public Equipment equipment { get; set; }
 
         public Player()
         {
@@ -47,18 +47,39 @@ namespace PlayerClassesNamespace
             playerPos = new Point(0, 0);
         }
         
-        public void EquipItem(string slot, Item item)
+        public void EquipItem(EquippableItem.EquipLocation slot, Item item)
         {
             equipment.EquipItem(slot, item, inventory);
         }
 
-        public void UnequipItem(string slot)
+        public void UnequipItem(EquippableItem.EquipLocation slot)
         {
             equipment.UnequipItem(slot, inventory);
         }
 
-        public async Task initialisePlayerFromNarrator(OpenAIAPI api, Conversation chat, Player player,
-            bool testing = false)
+        public void AddItem(Item item)
+        {
+            inventory.AddItem(item);
+        }
+        
+        public void RemoveItem(Item item)
+        {
+            inventory.RemoveItem(item);
+        }
+
+        public async Task initialiseInventory()
+        {
+            inventory = new Inventory();
+            await inventory.updateInventoryJSON();
+        }
+        
+        public async Task initialiseEquipment()
+        {
+            equipment = new Equipment();
+            await equipment.updateEquipmentJSON();
+        }
+
+        public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat, bool testing = false)
         {
             UtilityFunctions.TypeText(UtilityFunctions.Instant, "Creating Character...", UtilityFunctions.typeSpeed);
 
@@ -77,154 +98,7 @@ namespace PlayerClassesNamespace
 
             // get response from GPT
             string output = "";
-            if (!testing)
-            {
-                try
-                {
-                    // output = await Narrator.getGPTResponse(prompt5, api, 100, 0.9);
-                    chat.AppendUserInput(prompt5);
-                    output = await chat.GetResponseFromChatbotAsync();
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"Could not get response: {e}");
-                }
-
-                if (string.IsNullOrEmpty(output.Trim()))
-                {
-                    throw new Exception("No response received from GPT.");
-                }
-
-
-                //Console.WriteLine(output);
-
-
-                if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
-                {
-                    // get all save file
-                    string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
-                    bool started = false;
-                    for (int i = 0; i < UtilityFunctions.maxSaves; i++)
-                    {
-                        if (saves.Length == i)
-                        {
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n",
-                                UtilityFunctions.typeSpeed);
-                            string load = Console.ReadLine();
-                            if (load == "y")
-                            {
-                                string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
-                                UtilityFunctions.saveSlot = Path.GetFileName(save);
-                                UtilityFunctions.saveFile = save;
-                                started = true;
-                                i = UtilityFunctions.maxSaves;
-                            }
-                        }
-                    }
-
-                    if (!started)
-                    {
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            "No empty save slots. Exiting Test. Press any key to leave", UtilityFunctions.typeSpeed);
-                        Console.ReadLine();
-                        Environment.Exit(0);
-                    }
-                }
-
-                Console.ForegroundColor = ConsoleColor.Black;
-                //Console.WriteLine(UtilityFunctions.saveFile);
-                //Console.WriteLine(output);
-
-
-                // design xml file
-                string preText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-                output = await UtilityFunctions.cleanseXML(output);
-                string finalXMLText = "";
-                finalXMLText = preText + "\n" + output;
-
-
-                try
-                {
-                    File.Create(UtilityFunctions.saveFile).Close();
-                    File.WriteAllText(UtilityFunctions.saveFile, finalXMLText);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Could not write to file: {e}");
-                }
-
-
-                // Player player with attributes
-                XmlSerializer serializer = new XmlSerializer(typeof(Player));
-                using (TextReader reader = new StringReader(finalXMLText))
-                {
-                    player = (Player)serializer.Deserialize(reader);
-                }
-
-
-                // set player properties
-                if (player == null)
-                    throw new ArgumentNullException(nameof(player));
-
-                Type playerType = typeof(Player);
-                PropertyInfo[] properties = playerType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-
-                foreach (PropertyInfo property in properties)
-                {
-                    try
-                    {
-                        object value = property.GetValue(player);
-                        property.SetValue(this, value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
-                        // Handle or log the error as necessary
-                    }
-                }
-            }
-            else
-            {
-                string filePath = $@"{UtilityFunctions.mainDirectory}saves\saveExample.xml";
-                
-                // Player player with attributes
-                if (string.IsNullOrEmpty(filePath))
-                    throw new ArgumentException("File path must not be null or empty.");
-
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException($"The file '{filePath}' does not exist.");
-
-                XmlSerializer serializer = new XmlSerializer(typeof(Player));
-
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
-                {
-                    player = (Player)serializer.Deserialize(fileStream);
-                }
-
-                // set player properties
-                if (player == null)
-                    throw new ArgumentNullException(nameof(player));
-
-                Type playerType = typeof(Player);
-                PropertyInfo[] properties = playerType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-
-                foreach (PropertyInfo property in properties)
-                {
-                    try
-                    {
-                        object value = property.GetValue(player);
-                        property.SetValue(this, value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
-                        // Handle or log the error as necessary
-                    }
-                }
-            }
+            await gameSetup.generateMainXml(chat, prompt5);
 
 
             // set character health to max
@@ -233,6 +107,7 @@ namespace PlayerClassesNamespace
             UtilityFunctions.TypeText(UtilityFunctions.Instant, "Character Created!", UtilityFunctions.typeSpeed);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
 
         public void changePlayerPos(Point newPos)
         {

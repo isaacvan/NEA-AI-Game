@@ -16,11 +16,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenAI" Version="1.11.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Equipments\" />
     <Folder Include="GeneratedImages\" />
+    <Folder Include="Inventories\" />
     <Folder Include="ItemTemplates\" />
     <Folder Include="saves\" />
   </ItemGroup>

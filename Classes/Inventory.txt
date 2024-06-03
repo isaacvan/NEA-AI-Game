@@ -1,6 +1,0 @@
-small-health-potion:5:consumable
-basic-armour:1:equipment
-large-health-potion:0:consumable
-sword:0:equipment
-daggers:0:equipment
-staff:0:equipment

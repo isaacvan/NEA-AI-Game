@@ -6,6 +6,8 @@ using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
 using System.Xml.Serialization;
+using ItemFunctionsNamespace;
+using Newtonsoft.Json;
 
 namespace UtilityFunctionsNamespace
 {
@@ -48,6 +50,49 @@ namespace UtilityFunctionsNamespace
             {
                 UtilityFunctions.TypeText(UtilityFunctions.Instant, $"An error occurred: {ex.Message}", typeSpeed);
             }
+        }
+
+        public static async Task writeToJSONFile<T>(string path, T objectToWrite) where T : class
+        {
+            string json = JsonConvert.SerializeObject(objectToWrite, Formatting.Indented);
+            
+            // writes an object to a json file at the path path
+            using (StreamWriter file = File.CreateText(path))
+            {
+                await file.WriteAsync(json);
+            }
+        }
+
+        public static async Task<T> readFromJSONFile<T>(string path) where T : class
+        {
+            // reads an object from a json file at the path path
+            using (StreamReader file = File.OpenText(path))
+            {
+                string json = await file.ReadToEndAsync();
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+        }
+
+        public static async Task writeToXMLFile<T>(string path, T objectToWrite) where T : class
+        {
+            // writes an object to an xml file at the path path
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                serializer.Serialize(writer, objectToWrite);
+            }
+            await Task.CompletedTask;
+        }
+
+        public static async Task readFromXMLFile<T>(string path, T objectToRead) where T : class
+        {
+            // reads an object from an xml file at the path path
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (StreamReader reader = new StreamReader(path))
+            {
+                objectToRead = serializer.Deserialize(reader) as T;
+            }
+            await Task.CompletedTask;
         }
 
         public async static Task<string> cleanseXML(string xml)

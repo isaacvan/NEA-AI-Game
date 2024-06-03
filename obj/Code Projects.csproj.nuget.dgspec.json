@@ -69,6 +69,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "OpenAI": {
               "target": "Package",
               "version": "[1.11.0, )"

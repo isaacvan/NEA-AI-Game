@@ -14,6 +14,7 @@
           "Microsoft.Extensions.Configuration.FileExtensions": "8.0.0",
           "Microsoft.Extensions.Configuration.Json": "8.0.0",
           "Microsoft.Extensions.Configuration.UserSecrets": "8.0.0",
+          "Newtonsoft.Json": "13.0.3",
           "OpenAI": "1.11.0"
         },
         "runtime": {

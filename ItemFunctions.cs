@@ -2,10 +2,14 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using OpenAI_API;
 using OpenAI_API.Chat;
+using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace ItemFunctionsNamespace
 {
@@ -54,30 +58,44 @@ namespace ItemFunctionsNamespace
                 }
             }
         }
+
+        public async Task updateInventoryJSON()
+        {
+            // puts this inventory into JSON file called saveName var in Inventories
+            string path = UtilityFunctions.mainDirectory + @"Inventories\" + UtilityFunctions.saveName + ".json";
+            using (StreamWriter file = File.CreateText(path))
+            {
+                JsonSerializer serializer = new JsonSerializer
+                {
+                    Formatting = Formatting.Indented // Pretty print
+                };
+                serializer.Serialize(file, this);
+                await file.FlushAsync();
+            }
+        }
     }
 
     // EQUIPMENT USAGE
     /*
     item created through factory, e.g
     Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
-    player.EquipItem({"Head", "Body", "Legs", "Weapon", ""Accessory}, item);
+    player.EquipItem({"Head", "Body", "Legs", "Weapon", "Accessory"}, item);
     */
     
     public class Equipment
     {
-        public Dictionary<string, Item> Slots { get; private set; }
+        public Dictionary<EquippableItem.EquipLocation, Item> Slots { get; private set; }
 
         public Equipment()
         {
-            Slots = new Dictionary<string, Item>();
-            Slots.Add("Head", null);
-            Slots.Add("Body", null);
-            Slots.Add("Legs", null);
-            Slots.Add("Weapon", null);
-            Slots.Add("Accessory", null);
+            Slots = new Dictionary<EquippableItem.EquipLocation, Item>();
+            foreach (var location in  Enum.GetValues<EquippableItem.EquipLocation>())
+            {
+                Slots.Add(location, null);    
+            }
         }
         
-        public void EquipItem(string slot, Item item, Inventory inventory)
+        public void EquipItem(EquippableItem.EquipLocation slot, Item item, Inventory inventory)
         {
             if (!Slots.ContainsKey(slot))
             {
@@ -95,13 +113,20 @@ namespace ItemFunctionsNamespace
             inventory.RemoveItem(item);  // Remove the item from inventory when equipped
         }
 
-        public void UnequipItem(string slot, Inventory inventory)
+        public void UnequipItem(EquippableItem.EquipLocation slot, Inventory inventory)
         {
             if (Slots[slot] != null)
             {
                 inventory.AddItem(Slots[slot]);  // Add the unequipped item back to the inventory
                 Slots[slot] = null;
             }
+        }
+
+        public async Task updateEquipmentJSON()
+        {
+            // puts this equipment into XML file called saveName var in Equipment
+            string path = UtilityFunctions.mainDirectory + @"Equipments\" + UtilityFunctions.saveName + ".json";
+            await UtilityFunctions.writeToJSONFile<Equipment>(path, this);
         }
     }
     
@@ -123,9 +148,17 @@ namespace ItemFunctionsNamespace
             Console.WriteLine("Initialising item factory from narrator...");
             
             // initialise path, should be fine with testing
-            UtilityFunctions.itemTemplateSpecificDirectory =
-                UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName;
-            
+            if (!testing)
+            {
+                UtilityFunctions.itemTemplateSpecificDirectory =
+                    UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName;
+            }
+            else
+            {
+                UtilityFunctions.itemTemplateSpecificDirectory =
+                    UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName + "s";
+            }
+
             // load item templates from narrator
             string prompt6 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt6.txt");
             
@@ -281,6 +314,9 @@ namespace ItemFunctionsNamespace
                 this.consumableTemplates.Add(template);
             }
             
+            
+            // initialise
+            
 
             UtilityFunctions.TypeText(UtilityFunctions.Instant, "Item Factory Initialised", UtilityFunctions.typeSpeed);
         }
@@ -341,7 +377,7 @@ namespace ItemFunctionsNamespace
         public string Name { get; set; }
         public string Description { get; set; }
         public Type ItemType { get; set; }
-        public string ItemEquipLocation { get; set; }
+        public EquippableItem.EquipLocation ItemEquipLocation { get; set; }
 
         public void createTemplate(Item item)
         {
@@ -511,10 +547,23 @@ namespace ItemFunctionsNamespace
         public string Name { get; set; }
         public string Description { get; set; }
         public Type ItemType { get; set; }
-        public string ItemEquipLocation { get; set; }
+        
     }
 
-    public class Weapon : Item
+    public abstract class EquippableItem : Item
+    {
+        public enum EquipLocation
+        {
+            Head,
+            Body,
+            Legs,
+            Weapon,
+            Accessory,
+        }
+    }
+
+    
+    public class Weapon : EquippableItem
     {
         public int Damage { get; set; }
         public string WeaponType { get; set; }
@@ -532,11 +581,12 @@ namespace ItemFunctionsNamespace
         public string StorylineRelevance { get; set; }
     }
 
-    public class Armour : Item
+    public class Armour : EquippableItem
     {
         public int Defence { get; set; }
         public string DefensiveCapabilities { get; set; }
         public string UniqueProperties { get; set; }
-        public string ArmourType { get; set; }
     }
+    
+    
 }
