@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UtilityFunctionsNamespace;
 using EnemyClassesNamespace;
 using PlayerClassesNamespace;
@@ -16,143 +17,136 @@ namespace MainNamespace
 {
     class Program
     {
-        // Constants for standard output handle and enabling virtual terminal processing
-        private const int STD_OUTPUT_HANDLE = -11;
-        private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 
-        // Importing necessary Windows API functions
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr GetStdHandle(int nStdHandle);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
-
-        static void EnableColors()
-        {
-            IntPtr handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
-            if (GetConsoleMode(handle, out uint mode))
-            {
-                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-                SetConsoleMode(handle, mode);
-            }
-        } //\x1b[38;2;r;g;bm
-
-        
+        public static Game game;
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // same thing with equipment, ensure this is updated every time equipment changes. ensure equip and unequip work.
-        // cleean code, make GameSetups.cs
         // go through and fix bool testing usages with GameSetup usage
         // ENEMY GENERATION. see UML class diagram. clear and restart enemy classes
         //----------------------------------------------------------------------------------------------------------
-
-
-        class GameTest1 : GameSetup {
-            public void chooseSave()
-            {
-                UtilityFunctions.saveSlot = "saveExample.xml";
-                UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\saveExample.xml";
-                UtilityFunctions.saveName = "saveExample";
-            }
-
-            public async Task generateMainXml(Conversation chat, string prompt5)
-            {
-                string filePath = $@"{UtilityFunctions.mainDirectory}saves\saveExample.xml";
-                
-                // Player player with attributes
-                if (string.IsNullOrEmpty(filePath))
-                    throw new ArgumentException("File path must not be null or empty.");
-
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException($"The file '{filePath}' does not exist.");
-
-                XmlSerializer serializer = new XmlSerializer(typeof(Player));
-                Player loadedPlayer;
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
-                {
-                    loadedPlayer = (Player)serializer.Deserialize(fileStream);
-                }
-
-                // set player properties
-                if (loadedPlayer == null)
-                    throw new ArgumentNullException(nameof(loadedPlayer));
-
-                Type playerType = typeof(Player);
-                PropertyInfo[] properties = playerType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-
-                foreach (PropertyInfo property in properties)
-                {
-                    try
-                    {
-                        object value = property.GetValue(loadedPlayer);
-                        property.SetValue(this, value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
-                        // Handle or log the error as necessary
-                    }
-                }
-            }
-        };
-
-        class GameTest2 : GameTest1 {
-            public void initialisePlayer(Player player)
-            {
-                player.Class = "Wolfman";
-            }
-        };
         
         static async Task Main(string[] args)
         {
             EnableColors();
-            Game game = new Game();
-            string debugPointEntry = "game";
+            game = new Game();
+            Console.CancelKeyPress += MyHandler; // triggers save on forced exit
+            string debugPointEntry = "testing";
             switch (debugPointEntry)
             {
                 case "testing":
                     await game.initialiseGame(new GameTest1(), true);
-                    game.player.EquipItem(EquippableItem.EquipLocation.Body, game.itemFactory.createItem(game.itemFactory.armourTemplates[0]));
-                    game.player.EquipItem(game.itemFactory.weaponTemplates[0].ItemEquipLocation, game.itemFactory.createItem(game.itemFactory.weaponTemplates[0]));
-                    game.player.AddItem(game.itemFactory.createItem(game.itemFactory.consumableTemplates[0]));
-                    game.player.equipment.updateEquipmentJSON();
-                    game.player.inventory.updateInventoryJSON();
+                    
+                    game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
+                        game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
+                    //game.player.equipment.updateEquipmentJSON();
                     
                     Console.ReadLine();
-                    
                     break;
                 case "game":
                     await game.initialiseGame(new Narrator());
                     
                     // start game
+                    
                     Console.ReadLine();
-                    //gridLoop(player);
-                    
-                    
-                    
                     break;
                 default:
                     Environment.FailFast($"debuggingPointEntry Invalid");
                     break;
             }
         }
-
-
-
-        public static void saveGameToAllStorages(Game game)
+        
+        
+        protected static void MyHandler(object sender, ConsoleCancelEventArgs args)
         {
-
+            Console.WriteLine("Exiting system due to external process kill or shutdown");
+            
+            // prevent application from terminating immediately
+            args.Cancel = true;
+            
+            saveGameToAllStoragesSync();
+            Thread.Sleep(5000);
+            
+            // exit smoothly
+            Environment.Exit(0);
         }
 
+        static void test()
+        {
+            Console.WriteLine("test");
+        }
+        
+        public static async Task saveGameToAllStoragesAsync()
+        {
+            try
+            {
+                // checks before saving
+                
+                if (game.player != null)
+                {
+                    if (game.player.inventory != null)
+                    {
+                        await game.player.inventory.updateInventoryJSON();
+                        Console.WriteLine("Inventory saved successfully.");
+                    }
 
+                    if (game.player.equipment != null)
+                    {
+                        await game.player.equipment.updateEquipmentJSON();
+                        Console.WriteLine("Equipment saved successfully.");
+                    }
 
+                    await game.player.updatePlayerStatsXML();
+                    Console.WriteLine("Player stats saved successfully.");
+                }
 
+                Console.WriteLine("All game data saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving game data: {ex.Message}");
+                throw;  // Rethrow if you want to handle this exception at a higher level or log it
+            }
+            
+            // every aspect that needs to be saved
+            // map state, game state, story progress etc needs to be saved
+        }
+        
+        public static void saveGameToAllStoragesSync()
+        {
+            Console.WriteLine("Saving game data...");
+            try {
+                if (game.player != null)
+                {
+                    if (game.player.inventory != null)
+                    {
+                        game.player.inventory.updateInventoryJSONSync();
+                        Console.WriteLine("Inventory saved successfully.");
+                    }
+
+                    if (game.player.equipment != null)
+                    {
+                        game.player.equipment.updateEquipmentJSONSync();
+                        Console.WriteLine("Equipment saved successfully.");
+                    }
+
+                    game.player.updatePlayerStatsXMLSync();
+                    Console.WriteLine("Player stats saved successfully.");
+                }
+
+                Console.WriteLine("All game data saved successfully.");
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving game data: {ex}");
+                throw;  // Rethrow if you want to handle this exception at a higher level or log it
+            }
+            
+            // every aspect that needs to be saved
+            // map state, game state, story progress etc needs to be saved
+        }
+        
         static void gridLoop(Player player)
         {
             string file = UtilityFunctions.mainDirectory + @"GridSaves\save1.json";
@@ -304,9 +298,9 @@ namespace MainNamespace
                     {
                         case 1:
                             UtilityFunctions.clearScreen(null);
-                            List<string> saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml")
+                            List<string> saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml")
                                 .ToList();
-                            saves.Remove($@"{UtilityFunctions.mainDirectory}saves\saveExample.xml");
+                            saves.Remove($@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml");
                             bool started = false;
                             for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                             {
@@ -318,7 +312,7 @@ namespace MainNamespace
                                     string load = Console.ReadLine();
                                     if (load == "y")
                                     {
-                                        string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
+                                        string save = UtilityFunctions.mainDirectory + @$"Characters\save{i + 1}.xml";
                                         UtilityFunctions.saveSlot = Path.GetFileName(save);
                                         UtilityFunctions.saveFile = save;
                                         UtilityFunctions.saveName = $"save{i + 1}";
@@ -356,6 +350,7 @@ namespace MainNamespace
                         // Open options menu
                         case 4:
                             Console.Clear();
+                            saveGameToAllStoragesAsync().GetAwaiter().GetResult();
                             Environment.Exit(0);
                             // Exit the game
                             break;
@@ -453,7 +448,7 @@ namespace MainNamespace
                             UtilityFunctions.typeSpeed);
 
                         for (int i = 0;
-                             i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml").Length;
+                             i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml").Length;
                              i++)
                         {
                             UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{i + 1}. Save Slot {i + 1}\n",
@@ -475,7 +470,7 @@ namespace MainNamespace
                     }
 
                     UtilityFunctions.saveSlot = "save" + (saveSlot) + ".xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"saves\save" + (saveSlot) + ".xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"Characters\save" + (saveSlot) + ".xml";
                     UtilityFunctions.saveName = "save" + (saveSlot);
                 }
 
@@ -484,7 +479,7 @@ namespace MainNamespace
             }
         }
 
-        // doing wipe all saves / options then start doesnt work because options menu sends you back to menu, and you end up having to go back to the end of menu
+        // doing wipe all Characters / options then start doesnt work because options menu sends you back to menu, and you end up having to go back to the end of menu
         // where it automatically returns false. either get load to return a value or get rid of all menu rerouts inside options so that it sends you back to the menu 
         // already in, instead of generating a new one.
 
@@ -539,7 +534,7 @@ namespace MainNamespace
                     case 6:
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            "Are you sure you want to clear all saves? y/n\n", UtilityFunctions.typeSpeed);
+                            "Are you sure you want to clear all Characters? y/n\n", UtilityFunctions.typeSpeed);
                         string clearSaves = Console.ReadLine();
                         if (clearSaves == "y")
                         {
@@ -563,9 +558,9 @@ namespace MainNamespace
                         return options(gameStarted, saveChosen);
                     case 5:
                         Console.Clear();
+                        saveGameToAllStoragesAsync().GetAwaiter().GetResult();
                         Environment.Exit(0);
                         return false;
-                        ;
                     default:
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid option.\n",
@@ -585,11 +580,11 @@ namespace MainNamespace
 
         public static void DeleteAllSaves()
         {
-            // delete saves
+            // delete Characters
             UtilityFunctions.clearScreen(null);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all saves...\n",
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all Characters...\n",
                 UtilityFunctions.typeSpeed);
-            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
+            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
             foreach (string save in saves)
             {
                 if (Path.GetFileNameWithoutExtension(save) != "saveExample")
@@ -640,42 +635,30 @@ namespace MainNamespace
                 }
             }
         }
+        
+        // Constants for standard output handle and enabling virtual terminal processing
+        private const int STD_OUTPUT_HANDLE = -11;
+        private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 
-        static void DoBleed(Enemy enemy, Player player)
-        {
-            int bleedDamage = (player.level * (5 + enemy.roundBonus));
-            int oldHealth = enemy.currentHealth;
-            enemy.currentHealth -= bleedDamage;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                "\x1b[31mBleed\x1b[0m applied, dealt \x1b[31m" + bleedDamage + " damage.\x1b[0m",
-                UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                $" The {enemy.type} now has \n\x1b[31m{enemy.currentHealth} / {enemy.maxHealth} health\x1b[0m left.",
-                UtilityFunctions.typeSpeed);
-        }
+        // Importing necessary Windows API functions
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr GetStdHandle(int nStdHandle);
 
-        static void DoBurning(Enemy enemy, Player player)
-        {
-            if (enemy.defense > -50)
-            {
-                enemy.defense -= 10 * enemy.burningTurns;
-            }
-            else if (enemy.defense > -70)
-            {
-                enemy.defense -= 5 * enemy.burningTurns;
-            }
-            else
-            {
-                enemy.defense -= 2 * enemy.burningTurns;
-            }
-        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
 
-        static void DoMadness(Enemy enemy, Player player)
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
+
+        static void EnableColors()
         {
-            /*  int healthLost = player.maxHealth - player.currentHealth;
-              int multi =
-              if (((healthLost / player.maxHealth) * 100) > )
-           */
-        }
+            IntPtr handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            if (GetConsoleMode(handle, out uint mode))
+            {
+                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                SetConsoleMode(handle, mode);
+            }
+        } //\x1b[38;2;r;g;bm
     }
 }

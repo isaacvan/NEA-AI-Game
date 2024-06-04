@@ -36,8 +36,10 @@ namespace PlayerClassesNamespace
         public int currentExp { get; set; }
         public int maxExp { get; set; }
         public Point playerPos;
-        public Inventory inventory { get; set; }
-        public Equipment equipment { get; set; }
+
+        [XmlIgnore] public Inventory inventory { get; set; } = new Inventory();
+
+        [XmlIgnore] public Equipment equipment { get; set; } = new Equipment();
 
         public Player()
         {
@@ -69,14 +71,46 @@ namespace PlayerClassesNamespace
 
         public async Task initialiseInventory()
         {
-            inventory = new Inventory();
             await inventory.updateInventoryJSON();
         }
         
         public async Task initialiseEquipment()
         {
-            equipment = new Equipment();
             await equipment.updateEquipmentJSON();
+        }
+
+        public async Task updatePlayerStatsXML()
+        {
+            string path = UtilityFunctions.saveFile;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Player));
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    serializer.Serialize(writer, this);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error writing to XML file in updatePlayerStatsXML: {e}");
+            }
+        }
+        
+        public void updatePlayerStatsXMLSync()
+        {
+            string path = UtilityFunctions.saveFile;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Player));
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    serializer.Serialize(writer, this);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error writing to XML file in updatePlayerStatsXML: {e}");
+            }
         }
 
         public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat, bool testing = false)
@@ -98,8 +132,28 @@ namespace PlayerClassesNamespace
 
             // get response from GPT
             string output = "";
-            await gameSetup.generateMainXml(chat, prompt5);
+            Player tempPlayer = await gameSetup.generateMainXml(chat, prompt5, this);
+            //Console.WriteLine($"TempPlayer stat charisma: {tempPlayer.Charisma}");
+            
+            // assign this player to tempPlayer
+            PropertyInfo[] properties = typeof(Player).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                try
+                {
+                    object value = property.GetValue(tempPlayer);
+                    PropertyInfo thisProperty = this.GetType().GetProperty(property.Name);
 
+                    if (thisProperty != null && thisProperty.CanWrite)
+                    {
+                        thisProperty.SetValue(this, value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to set property in initialisePlayerFromNarrator {property.Name}: {ex.Message}");
+                }
+            }
 
             // set character health to max
             currentHealth = Health;
@@ -112,36 +166,6 @@ namespace PlayerClassesNamespace
         public void changePlayerPos(Point newPos)
         {
             playerPos = newPos;
-        }
-
-        public void changePlayerStats(string stat, int newValue, bool midLevelUp = false)
-        {
-            GetType().GetProperty(stat).SetValue(this, newValue);
-
-            string fileName = UtilityFunctions.saveFile;
-
-
-            // Load the XML document
-            XDocument document = XDocument.Load(fileName);
-
-            // Locate the element in the XML document
-            XElement statElement = document.Element("Player")?.Element(stat);
-
-            if (statElement != null)
-            {
-                // Update player stat
-                statElement.SetValue((object)newValue);
-                document.Save(fileName);
-            }
-            else
-            {
-                Console.WriteLine($"Element {stat} not found in {fileName}.");
-            }
-
-            if (!midLevelUp)
-            {
-                checkForLevelUp();
-            }
         }
 
 

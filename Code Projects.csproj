@@ -23,7 +23,7 @@
   <ItemGroup>
     <Folder Include="Equipments\" />
     <Folder Include="ItemTemplates\" />
-    <Folder Include="saves\" />
+    <Folder Include="Characters\" />
   </ItemGroup>
 
 </Project>

@@ -63,6 +63,17 @@ namespace UtilityFunctionsNamespace
             }
         }
 
+        public static void writeToJSONFileSync<T>(string path, T objectToWrite) where T : class
+        {
+            string json = JsonConvert.SerializeObject(objectToWrite, Formatting.Indented);
+            
+            // writes an object to a json file at the path path
+            using (StreamWriter file = File.CreateText(path))
+            {
+                file.Write(json);
+            }
+        }
+        
         public static async Task<T> readFromJSONFile<T>(string path) where T : class
         {
             // reads an object from a json file at the path path
@@ -77,10 +88,13 @@ namespace UtilityFunctionsNamespace
         {
             // writes an object to an xml file at the path path
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-            using (StreamWriter writer = new StreamWriter(path))
-            {
-                serializer.Serialize(writer, objectToWrite);
-            }
+            
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    serializer.Serialize(writer, objectToWrite);
+                }
+            
+
             await Task.CompletedTask;
         }
 

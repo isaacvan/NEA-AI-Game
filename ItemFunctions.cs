@@ -73,6 +73,21 @@ namespace ItemFunctionsNamespace
                 await file.FlushAsync();
             }
         }
+        
+        public void updateInventoryJSONSync()
+        {
+            // puts this inventory into JSON file called saveName var in Inventories
+            string path = UtilityFunctions.mainDirectory + @"Inventories\" + UtilityFunctions.saveName + ".json";
+            using (StreamWriter file = File.CreateText(path))
+            {
+                JsonSerializer serializer = new JsonSerializer
+                {
+                    Formatting = Formatting.Indented // Pretty print
+                };
+                serializer.Serialize(file, this);
+                file.Flush();
+            }
+        }
     }
 
     // EQUIPMENT USAGE
@@ -127,6 +142,13 @@ namespace ItemFunctionsNamespace
             // puts this equipment into XML file called saveName var in Equipment
             string path = UtilityFunctions.mainDirectory + @"Equipments\" + UtilityFunctions.saveName + ".json";
             await UtilityFunctions.writeToJSONFile<Equipment>(path, this);
+        }
+        
+        public void updateEquipmentJSONSync()
+        {
+            // puts this equipment into XML file called saveName var in Equipment
+            string path = UtilityFunctions.mainDirectory + @"Equipments\" + UtilityFunctions.saveName + ".json";
+            UtilityFunctions.writeToJSONFileSync<Equipment>(path, this);
         }
     }
     
@@ -436,7 +458,7 @@ namespace ItemFunctionsNamespace
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
+                    Console.WriteLine($"Failed to set property in createItemTemplate {property.Name}: {ex.Message}");
                 }
             }
         }

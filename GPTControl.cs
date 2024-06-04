@@ -15,7 +15,7 @@ namespace GPTControlNamespace
     {
         public void chooseSave();
 
-        Task generateMainXml(Conversation chat, string prompt5);
+        Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
     }
     
    
@@ -78,7 +78,7 @@ namespace GPTControlNamespace
             }
         }
         
-        public async Task generateMainXml(Conversation chat, string prompt5)
+        public async Task<Player> generateMainXml(Conversation chat, string prompt5, Player player)
         {
             string output;
             try
@@ -104,7 +104,7 @@ namespace GPTControlNamespace
             if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
             {
                 // get all save file
-                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
+                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
                 bool started = false;
                 for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                 {
@@ -116,7 +116,7 @@ namespace GPTControlNamespace
                         string load = Console.ReadLine();
                         if (load == "y")
                         {
-                            string save = UtilityFunctions.mainDirectory + @$"saves\save{i + 1}.xml";
+                            string save = UtilityFunctions.mainDirectory + @$"Characters\save{i + 1}.xml";
                             UtilityFunctions.saveSlot = Path.GetFileName(save);
                             UtilityFunctions.saveFile = save;
                             started = true;
@@ -130,6 +130,7 @@ namespace GPTControlNamespace
                     UtilityFunctions.TypeText(UtilityFunctions.Instant,
                         "No empty save slots. Exiting Test. Press any key to leave", UtilityFunctions.typeSpeed);
                     Console.ReadLine();
+                    await Program.saveGameToAllStoragesAsync();
                     Environment.Exit(0);
                 }
             }
@@ -171,7 +172,7 @@ namespace GPTControlNamespace
                 throw new ArgumentNullException("Null player");
 
             Type playerType = typeof(Player);
-            PropertyInfo[] properties = playerType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] properties = playerType.GetProperties();
 
 
             foreach (PropertyInfo property in properties)
@@ -179,14 +180,16 @@ namespace GPTControlNamespace
                 try
                 {
                     object value = property.GetValue(loadedPlayer);
-                    property.SetValue(this, value);
+                    property.SetValue(player, value);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to set property {property.Name}: {ex.Message}");
+                    Console.WriteLine($"Failed to set property in GenerateMainXML {property.Name}: {ex.Message}");
                     // Handle or log the error as necessary
                 }
             }
+
+            return player;
         }
 
     }

@@ -104,7 +104,7 @@ namespace GridConfigurationNamespace
                 {
                     if (grid[playerX][playerY].eventHere.description[i] == "plrExp")
                     {
-                        player.changePlayerStats("currentExp", player.currentExp + Convert.ToInt32(grid[playerX][playerY].eventHere.consequences[i]));
+                        //player.changePlayerStats("currentExp", player.currentExp + Convert.ToInt32(grid[playerX][playerY].eventHere.consequences[i]));
 
                     }
                 }

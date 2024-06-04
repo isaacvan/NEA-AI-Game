@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <playerPos>
+    <X>0</X>
+    <Y>0</Y>
+  </playerPos>
+  <Class>Arcane Weaver</Class>
+  <Race>Starborn</Race>
+  <Health>80</Health>
+  <currentHealth>80</currentHealth>
+  <ManaPoints>100</ManaPoints>
+  <Strength>5</Strength>
+  <Intelligence>10</Intelligence>
+  <Dexterity>8</Dexterity>
+  <Constitution>7</Constitution>
+  <Charisma>5</Charisma>
+  <level>1</level>
+  <currentExp>0</currentExp>
+  <maxExp>10</maxExp>
+</Player>
