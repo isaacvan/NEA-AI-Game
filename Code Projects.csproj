@@ -22,8 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Equipments\" />
-    <Folder Include="GeneratedImages\" />
-    <Folder Include="Inventories\" />
     <Folder Include="ItemTemplates\" />
     <Folder Include="saves\" />
   </ItemGroup>

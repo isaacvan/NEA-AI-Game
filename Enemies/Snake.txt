@@ -1,7 +1,0 @@
-strength:5
-dexterity:15
-intelligence:2
-currentHealth:35
-maxHealth:35
-defense:5
-dodge:30

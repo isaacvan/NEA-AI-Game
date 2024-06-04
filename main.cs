@@ -113,7 +113,7 @@ namespace MainNamespace
         {
             EnableColors();
             Game game = new Game();
-            string debugPointEntry = "testing";
+            string debugPointEntry = "game";
             switch (debugPointEntry)
             {
                 case "testing":
@@ -544,38 +544,7 @@ namespace MainNamespace
                         if (clearSaves == "y")
                         {
 
-                            // delete all except test saves
-                            UtilityFunctions.clearScreen(null);
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all saves...\n",
-                                UtilityFunctions.typeSpeed);
-                            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
-                            foreach (string save in saves)
-                            {
-                                if (Path.GetFileNameWithoutExtension(save) != "saveExample")
-                                {
-                                    File.Delete(save);
-                                }
-                            }
-
-                            string[] templates =
-                                Directory.GetDirectories($@"{UtilityFunctions.mainDirectory}ItemTemplates");
-                            foreach (string template in templates)
-                            {
-                                DirectoryInfo info = new DirectoryInfo(template);
-                                if (info.Name != "saveExamples")
-                                {
-                                    try
-                                    {
-                                        Directory.Delete(template, true);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine($"Couldn't delete file: {e}");
-                                        Console.ReadLine();
-                                    }
-                                }
-                            }
-
+                            DeleteAllSaves();
 
                             Thread.Sleep(1000);
                             // return options(gameStarted, saveChosen);
@@ -611,6 +580,64 @@ namespace MainNamespace
                 UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid option.\n", UtilityFunctions.typeSpeed);
                 Thread.Sleep(1000);
                 return options(gameStarted, saveChosen);
+            }
+        }
+
+        public static void DeleteAllSaves()
+        {
+            // delete saves
+            UtilityFunctions.clearScreen(null);
+            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all saves...\n",
+                UtilityFunctions.typeSpeed);
+            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"saves\", "*.xml");
+            foreach (string save in saves)
+            {
+                if (Path.GetFileNameWithoutExtension(save) != "saveExample")
+                {
+                    File.Delete(save);
+                }
+            }
+
+            // delete itemTemplates
+            string[] templates =
+                Directory.GetDirectories($@"{UtilityFunctions.mainDirectory}ItemTemplates");
+            foreach (string template in templates)
+            {
+                DirectoryInfo info = new DirectoryInfo(template);
+                if (info.Name != "saveExamples")
+                {
+                    try
+                    {
+                        Directory.Delete(template, true);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Couldn't delete file: {e}");
+                        Console.ReadLine();
+                    }
+                }
+            }
+            
+            // delete inventories
+            string[] inventories =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Inventories", searchPattern: "*.json");
+            foreach (string inventory in inventories)
+            {
+                if (Path.GetFileNameWithoutExtension(inventory) != "saveExample")
+                {
+                    File.Delete(inventory);
+                }
+            }
+            
+            // delete equipments
+            string[] equipments =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Equipments", searchPattern: "*.json");
+            foreach (string equipment in equipments)
+            {
+                if (Path.GetFileNameWithoutExtension(equipment) != "saveExample")
+                {
+                    File.Delete(equipment);
+                }
             }
         }
 
