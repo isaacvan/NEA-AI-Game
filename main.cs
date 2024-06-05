@@ -31,7 +31,7 @@ namespace MainNamespace
             EnableColors();
             game = new Game();
             Console.CancelKeyPress += MyHandler; // triggers save on forced exit
-            string debugPointEntry = "testing";
+            string debugPointEntry = "game";
             switch (debugPointEntry)
             {
                 case "testing":

@@ -28,3 +28,67 @@ D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.dll
 D:\isaac\Documents\NEA-main\Code Projects\bin\Debug\net8.0\Code Projects.pdb
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
 D:\isaac\Documents\NEA-main\Code Projects\obj\Debug\net8.0\ref\Code Projects.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Code Projects.exe
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Code Projects.deps.json
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Code Projects.runtimeconfig.json
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Code Projects.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Code Projects.pdb
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Emgu.CV.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\OpenAI_API.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\cvextern.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\cvextern.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\opencv_videoio_ffmpeg481_64.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\cvextern.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\opencv_videoio_ffmpeg481.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\concrt140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_1.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_2.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_atomic_wait.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_codecvt_ids.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140_1.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\concrt140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_1.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_2.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_atomic_wait.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_codecvt_ids.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140_1.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\concrt140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_1.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_2.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_atomic_wait.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_codecvt_ids.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\runtimes\win-x86\native\vcruntime140.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.AssemblyReference.cache
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.AssemblyInfoInputs.cache
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.AssemblyInfo.cs
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.CoreCompileInputs.cache
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.sourcelink.json
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.CopyComplete
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\refint\Code Projects.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.pdb
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\ref\Code Projects.dll
