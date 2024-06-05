@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Echoes of the Forgotten</Name>
+        <Description>A blade that whispers tales of ancient battles and long-lost warriors.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Strength; +1 Charisma</UniqueProperties>
+        <WeaponCapabilities>Grants the ability to unleash a spectral warrior to assist in battle for 10 seconds.</WeaponCapabilities>
+        <NarrativeLine>As you swing the blade, echoes of past warriors fill the air, bolstering your strength.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Starfire Wand</Name>
+        <Description>A slender wand imbued with the essence of celestial bodies, warm to the touch.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Wand</WeaponType>
+        <UniqueProperties>+3 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Casts a radiant beam of light, causing extended damage over time.</WeaponCapabilities>
+        <NarrativeLine>With a flick, a brilliant beam of starfire erupts, searing your foes.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Whispers of the Void</Name>
+        <Description>A bow crafted from the essence of the void, absorbing light around it.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Bow</WeaponType>
+        <UniqueProperties>+2 Dexterity; +1 Constitution</UniqueProperties>
+        <WeaponCapabilities>Arrows silence the target, preventing spellcasting for a brief period.</WeaponCapabilities>
+        <NarrativeLine>The arrow vanishes into shadow as it flies, striking with a muted thud.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

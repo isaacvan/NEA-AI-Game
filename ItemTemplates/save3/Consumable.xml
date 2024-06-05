@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Elixir of Shadows</Name>
+        <Description>A mysterious potion that cloaks the drinker in shadows, granting temporary invisibility.</Description>
+        <Effects>Grants invisibility for 30 seconds</Effects>
+        <UniqueProperties>N/A</UniqueProperties>
+        <StorylineRelevance>Essential for sneaking past the guards in the Castle of Silence</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Potion of Giant's Strength</Name>
+        <Description>This potion temporarily endows the drinker with the legendary strength of a giant.</Description>
+        <Effects>Increases strength by 10 for 5 minutes</Effects>
+        <UniqueProperties>N/A</UniqueProperties>
+        <StorylineRelevance>Used to move the ancient boulder blocking the entrance to the Hidden Caverns</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Phoenix Feather</Name>
+        <Description>A single feather from a phoenix, burning with a life force that can revive the fallen.</Description>
+        <Effects>Revives the player with full health upon death</Effects>
+        <UniqueProperties>One-time use</UniqueProperties>
+        <StorylineRelevance>Critical for surviving the encounter with the Dark Lord Morith</StorylineRelevance>
+    </Consumable>
+</Item>

@@ -167,7 +167,7 @@ namespace ItemFunctionsNamespace
 
         public async Task initialiseItemFactoryFromNarrator(OpenAIAPI api, Conversation chat, bool testing = false)
         {
-            Console.WriteLine("Initialising item factory from narrator...");
+            Console.WriteLine("Initialising Item Factory...");
             
             // initialise path, should be fine with testing
             if (!testing)
@@ -549,6 +549,7 @@ namespace ItemFunctionsNamespace
         {
             try
             {
+                UtilityFunctions.CorrectXmlTags(filePath);
                 XmlSerializer serializer = new XmlSerializer(typeof(ItemContainer));
 
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Open))

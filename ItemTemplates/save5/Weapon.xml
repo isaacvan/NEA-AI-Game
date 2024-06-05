@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Whispering Blade</Name>
+        <Description>A slender sword that hums with an eerie, untraceable melody, known to slice the air with the precision of a calm breeze.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Strength; +1 Charisma</UniqueJoinProperties>
+        <WeaponCapabilities>Grants the ability to cast silence on an opponent, preventing any spell casting for a short duration.</WeaponCapabilities>
+        <NarrativeLine>As the blade cuts through the air, it silences the cries and spells of its foe, enveloping the battlefield in an eerie quiet.</narrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Starlit Staff</Name>
+        <Description>A mystical staff that channels the raw energy of starlight, used by sages of the ancient astral order.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Calls down a barrage of comets on foes, dealing area damage.</WeaponCapabilities>
+        <NarrativeLine>A cascade of stars falls from the heavens, devastating all who stand against the wielder.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Rune-etched Dagger</Name>
+        <Description>A dagger covered in runes, each telling stories of ancient thieves and their exploits across the lands.</Description>
+        <Damage>18</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <WeaponCapabilities>Grants the ability of momentary invisibility with each successful strike.</WeaponCapabilities>
+        <NarrativeLine>With each piercing strike, the wielder fades, becoming a shadow in their enemy’s peripheral.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

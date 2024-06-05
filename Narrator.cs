@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Xml.Serialization;
+using EnemyClassesNamespace;
 using MainNamespace;
 using OpenAI_API;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ namespace GPTControlNamespace
         public void chooseSave();
 
         Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
+
+        Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory);
     }
     
    
@@ -192,5 +195,82 @@ namespace GPTControlNamespace
             return player;
         }
 
+        public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory)
+        {
+            // function to generate a json file representing the enemies and initialise an enemyFactory
+            // function to generate a json file representing the enemies and initialise an enemyFactory
+            Console.WriteLine("Initialising Enemy Factory...");
+
+            string output = "";
+            try
+            {
+                string prompt4 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt4.txt");
+                chat.AppendUserInput(prompt4);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (string.IsNullOrEmpty(output.Trim()))
+            {
+                throw new Exception("No response received from GPT.");
+            }
+
+            try
+            {
+                UtilityFunctions.enemyTemplateSpecificDirectory =
+                    UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
+                if (File.Exists(UtilityFunctions.enemyTemplateSpecificDirectory))
+                {
+                    File.Delete(UtilityFunctions.enemyTemplateSpecificDirectory);
+                    // cahnge to throw error
+                    Console.WriteLine("Old save not deleted. Deleting old save then continuing");
+                }
+
+                // deserialise file into a new EnemyFactory
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            // testing
+            Console.WriteLine(output);
+            
+            output = await UtilityFunctions.FixJson(output);
+            
+            Console.WriteLine(output);
+            
+            // create file to be written to
+            File.Create(UtilityFunctions.enemyTemplateSpecificDirectory).Close();
+            
+            //File.WriteAllText(UtilityFunctions.enemyTemplateSpecificDirectory, output);
+            using (StreamWriter  writer = new StreamWriter(UtilityFunctions.enemyTemplateSpecificDirectory))
+            {
+                await writer.WriteAsync(output);
+            }
+
+            EnemyFactory enemyFactoryToBeReturned;
+            try
+            {
+                
+                // deserialise file into a new EnemyFactory
+                enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
+                    UtilityFunctions.enemyTemplateSpecificDirectory);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (enemyFactoryToBeReturned == null)
+            {
+                throw new Exception("Enemy factory is null");
+            }
+
+            return new EnemyFactory();
+            }
     }
 }

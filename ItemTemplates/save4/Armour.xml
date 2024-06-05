@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Cloak of the Ether</Name>
+        <Description>A cloak that shimmers with a light as ethereal as the stars, providing protection from the unseen.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+2 Intelligence; +2 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Grants immunity to magical attacks</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Boots of the Silent Path</Name>
+        <Description>These boots were crafted from the essence of silence itself, leaving no trace of movement.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Nullifies sound made by the wearer</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Diadem of Insight</Name>
+        <Description>A crown that bestows wisdom upon its bearer, forged from the crystalized thoughts of a long-forgotten sage.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+3 Intelligence</UniqueProperties>
+        <DefensiveCapabilities>Increases mana regeneration</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+</Item>

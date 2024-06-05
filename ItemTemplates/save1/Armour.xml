@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Shroud of the Phantom</Name>
+        <Description>A cloak that seems to flicker in and out of existence, providing excellent concealment.</Description>
+        <Defence>18</Defence>
+        <UniqueProperties>+2 Dexterity; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Increases evasion by 20%</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Mistwalker Boots</Name>
+        <Description>Boots that leave no traces, perfect for silent movement in any terrain.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+1 Dexterity; Increases movement speed</UniqueProperties>
+        <DefensiveCapabilities>Nullifies sound while moving</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Veil of the Nightwalker</Name>
+        <Description>A hood woven from the essence of night, making the wearer blend with the shadows.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+2 Dexterity; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Reduces the chance to be detected by enemies</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+</Item>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Gauntlets of the Riftwalker</Name>
+        <Description>Armour that seems to be crafted from the void itself, pulsating with otherworldly energy.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+3 Strength</UniqueProperties>
+        <DefensiveCapabilities>Nullifies magic damage from one attack</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Boots of the Phantom</Name>
+        <Description>Boots that leave no tracks, perfect for those who walk the unseen paths.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Increases movement speed silently</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Mask of Insight</Name>
+        <Description>A mask that reveals truths hidden to the naked eye.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Allows the wearer to see and interact with ethereal entities</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+</Item>
