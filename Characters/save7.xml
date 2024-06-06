@@ -4,17 +4,17 @@
     <X>0</X>
     <Y>0</Y>
   </playerPos>
-  <Class>Arcane Weaver</Class>
-  <Race>Starborn</Race>
-  <Health>80</Health>
-  <currentHealth>80</currentHealth>
-  <ManaPoints>100</ManaPoints>
+  <Class>ChronoGuardian</Class>
+  <Race>Aetherial Wisp</Race>
+  <Health>75</Health>
+  <currentHealth>75</currentHealth>
+  <ManaPoints>90</ManaPoints>
   <currentMana>0</currentMana>
   <Strength>5</Strength>
   <Intelligence>10</Intelligence>
   <Dexterity>8</Dexterity>
-  <Constitution>7</Constitution>
-  <Charisma>5</Charisma>
+  <Constitution>6</Constitution>
+  <Charisma>6</Charisma>
   <Level>1</Level>
   <currentExp>0</currentExp>
   <maxExp>10</maxExp>

@@ -12,6 +12,7 @@ using ItemFunctionsNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using GameClassNamespace;
+using TestNarratorNamespace;
 
 namespace MainNamespace
 {
@@ -22,9 +23,16 @@ namespace MainNamespace
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // go through and fix bool testing usages with GameSetup usage
         // ENEMY GENERATION. see UML class diagram. clear and restart enemy classes
+        // Player needs to have multiple moves: use enemy attack behaviours?
+        // combat namespace
         //----------------------------------------------------------------------------------------------------------
+        
+        
+        // ------------------------------------------------------------------------------------------------------------
+        // CURRENT STATE
+        // possibly working? enemy template writing to and deserialisation needs checking
+        // ----------------------------------------------------------------------------------------------------------
         
         static async Task Main(string[] args)
         {
@@ -35,10 +43,12 @@ namespace MainNamespace
             switch (debugPointEntry)
             {
                 case "testing":
-                    await game.initialiseGame(new GameTest1(), true);
+                    await game.initialiseGame(new TestNarrator.GameTest1(), true);
                     
-                    game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
-                        game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
+                    Console.WriteLine(game.enemyFactory.enemyTypes[0]);
+                    
+                    //game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
+                        //game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
                     //game.player.equipment.updateEquipmentJSON();
                     
                     Console.ReadLine();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Elixir of Shadows</Name>
+        <Description>A potion that grants the drinker the ability to move unseen in the shadows for a short time.</Description>
+        <Effects>Invisibility for 5 seconds</Effects>
+        <UniqueProperties>N/A</UniqueProperties>
+        <StorylineRelevance>Crucial for espionage missions within the game.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Blood of the Phoenix</Name>
+        <Description>A rare potion made from the mythical Phoenix's blood, granting miraculous healing.</Description>
+        <Effects>Fully restores health and grants a temporary buff to fire resistance</Effects>
+        <UniqueProperties>+5 Fire Resistance for 30 seconds</UniqueProperties>
+        <StorylineRelevance>Key to surviving the trial of flames.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Crystal of Time</Name>
+        <Description>A mystical crystal capable of bending time, allowing the user to react faster to dangers.</Description>
+        <Effects>Slows time for 10 seconds</Effects>
+        <UniqueProperties>N/A</UniqueProperties>
+        <StorylineRelevance>Used to solve puzzles that require precise timing.</StorylineRelevance>
+    </Consumable>
+</Item>

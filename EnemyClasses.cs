@@ -1,221 +1,136 @@
 using UtilityFunctionsNamespace;
 using PlayerClassesNamespace;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using GameClassNamespace;
+using GPTControlNamespace;
+using Newtonsoft.Json;
+using OpenAI_API.Chat;
 
-/**
- * Docs here
- */
 namespace EnemyClassesNamespace
 {
-    public abstract class Enemy
+    public enum AttackSlots
     {
-        public int strength { get; set; }
-        public int dexterity { get; set; }
-        public int intelligence { get; set; }
-        public int maxHealth { get; set; }
+        slot1,
+        slot2,
+        slot3,
+        slot4
+    }
+    
+    public class Enemy : EnemyTemplate
+    {
         public int currentHealth { get; set; }
-        public int defense { get; set; }
-        public int dodge { get; set; }
-        public int level { get; set; }
-        public int expAwarded { get; set; }
-        public string type;
-        public int typeSpeed = 1;
-        public int Bleed { get; set; }
-        public int burningTurns { get; set; }
-        public int roundBonus { get; set; }
-        public abstract void PerformBasicAttack(Player player);
-        public abstract int getDefensePerc();
+        public int currentMana { get; set; }
+        public int Level { get; set; }
+        public Point Position { get; set; }
+    }
 
-        public Enemy()
+    public class EnemyFactory
+    {
+        public List<string> enemyTypes { get; set; }
+        //[JsonPropertyName("enemy")]
+        public List<EnemyTemplate> enemyTemplates { get; set; }
+
+        public Enemy CreateEnemy(string name, int health, int manaPoints, int strength, int intelligence, int dex, int constitution, int charisma, List<string> attackTypes, int lvl, Point pos)
         {
-            expAwarded = 5;
+            Enemy enemy = new Enemy
+            {
+                Name = name,
+                Health = health,
+                currentHealth = health,
+                ManaPoints = manaPoints,
+                currentMana = manaPoints,
+                Strength = strength,
+                Intelligence = intelligence,
+                Dexterity = dex,
+                Constitution = constitution,
+                Charisma = charisma,
+                Level = lvl,
+                Position = pos,
+                AttackBehaviours = new Dictionary<AttackSlots, IAttackBehaviour>
+                {
+                    { AttackSlots.slot1, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[0]) },
+                    { AttackSlots.slot2, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[1]) },
+                    { AttackSlots.slot3, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[2]) },
+                    { AttackSlots.slot4, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[3]) }
+                }
+            };
+
+            return enemy;
+        }
+
+        public async Task initialiseEnemyFactory(GameSetup gameSetup, Conversation chat)
+        {
+            // enemy factory logic, use game setup for diverting to using api key
+            EnemyFactory tempEnemyFactory;
+            tempEnemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, this); // get gpt to write an json file. if testing, this will verify the existance of a test json file.
+            
+            // load temp Enemy factory properties into THIS
         }
     }
 
-    class Orc : Enemy
+    public class EnemyTemplate
     {
-        public Orc()
-        {
-            string[] lines = File.ReadAllLines(UtilityFunctions.mainDirectory + @"Enemies\Orc.txt");
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(':');
-                string statName = parts[0].Trim();
-                int statValue = int.Parse(parts[1].Trim());
+        public string Name { get; set; }
+        public int Health { get; set; }
+        public int ManaPoints { get; set; }
+        public int Strength { get; set; }
+        public int Intelligence { get; set; }
+        public int Dexterity { get; set; }
+        public int Constitution { get; set; }
+        public int Charisma { get; set; }
+        
+        [Newtonsoft.Json.JsonIgnore]
+        public AttackSlots AttackSlot { get; set; }
+        
+        public Dictionary<AttackSlots, IAttackBehaviour> AttackBehaviours { get; set; }
+    }
 
-                if (statName == "strength")
-                {
-                    strength = statValue;
-                }
-                else if (statName == "dexterity")
-                {
-                    dexterity = statValue;
-                }
-                else if (statName == "intelligence")
-                {
-                    intelligence = statValue;
-                }
-                else if (statName == "currentHealth")
-                {
-                    currentHealth = statValue;
-                }
-                else if (statName == "maxHealth")
-                {
-                    maxHealth = statValue;
-                }
-                else if (statName == "defense")
-                {
-                    defense = statValue;
-                }
-                else if (statName == "dodge")
-                {
-                    dodge = statValue;
-                }
-            }
+    public class DynamicAttack : IAttackBehaviour
+    {
+        private readonly Action _attackAction;
+
+        public DynamicAttack(Action attackAction)
+        {
+            _attackAction = attackAction;
         }
 
-        public override void PerformBasicAttack(Player player)
+        public void Attack()
         {
-
-            // Calculate damage based on Orc's unique move and stats
-
-            float damage = (float)strength;
-            damage += (float)dexterity;
-            damage *= (float)1;
-            player.currentHealth -= (int)damage;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "\nOrc performs a powerful strike!\nYou have \x1b[31m" + player.currentHealth + "hp remaining.\x1b[0m\n", typeSpeed);
-        }
-
-        public override int getDefensePerc()
-        {
-            int temp = 1 - (defense / 100);
-            return temp;
+            _attackAction();
         }
     }
 
-    class Snake : Enemy
+    public class AttackBehaviourFactory
     {
-        public Snake()
-        {
-            string[] lines = File.ReadAllLines(UtilityFunctions.mainDirectory + @"Enemies\Snake.txt");
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(':');
-                string statName = parts[0].Trim();
-                int statValue = int.Parse(parts[1].Trim());
+        private static readonly Dictionary<string, Func<IAttackBehaviour>> attackBehaviours = new Dictionary<string, Func<IAttackBehaviour>>();
 
-                if (statName == "strength")
-                {
-                    strength = statValue;
-                }
-                else if (statName == "dexterity")
-                {
-                    dexterity = statValue;
-                }
-                else if (statName == "intelligence")
-                {
-                    intelligence = statValue;
-                }
-                else if (statName == "currentHealth")
-                {
-                    currentHealth = statValue;
-                }
-                else if (statName == "maxHealth")
-                {
-                    maxHealth = statValue;
-                }
-                else if (statName == "defense")
-                {
-                    defense = statValue;
-                }
-                else if (statName == "dodge")
-                {
-                    dodge = statValue;
-                }
+        public static void RegisterAttackBehaviour(string attackType, Func<IAttackBehaviour> createBehaviour)
+        {
+            if (!attackBehaviours.ContainsKey(attackType))
+            {
+                attackBehaviours[attackType] = createBehaviour;
             }
         }
 
-        public override void PerformBasicAttack(Player player)
+        public static IAttackBehaviour CreateAttackBehaviour(string attackType)
         {
+            if (attackBehaviours.ContainsKey(attackType))
+            {
+                return attackBehaviours[attackType]();
+            }
 
-            // Calculate damage based on Snake's unique move and stats
-
-            float damage = (float)dexterity;
-            damage += (float)strength;
-            damage *= (float)1;
-            player.currentHealth -= (int)damage;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "\nSnake performs a powerful strike!\nYou have \x1b[31m" + player.currentHealth + "hp remaining.\x1b[0m\n", typeSpeed);
-        }
-
-        public override int getDefensePerc()
-        {
-            int temp = 1 - (defense / 100);
-            return temp;
+            throw new ArgumentException("Invalid attack type");
         }
     }
 
-
-    class Boar : Enemy
+    public interface IAttackBehaviour
     {
-        public Boar()
-        {
-            string[] lines = File.ReadAllLines(UtilityFunctions.mainDirectory + @"Enemies\Boar.txt");
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(':');
-                string statName = parts[0].Trim();
-                int statValue = int.Parse(parts[1].Trim());
-
-                if (statName == "strength")
-                {
-                    strength = statValue;
-                }
-                else if (statName == "dexterity")
-                {
-                    dexterity = statValue;
-                }
-                else if (statName == "intelligence")
-                {
-                    intelligence = statValue;
-                }
-                else if (statName == "currentHealth")
-                {
-                    currentHealth = statValue;
-                }
-                else if (statName == "maxHealth")
-                {
-                    maxHealth = statValue;
-                }
-                else if (statName == "defense")
-                {
-                    defense = statValue;
-                }
-                else if (statName == "dodge")
-                {
-                    dodge = statValue;
-                }
-            }
-        }
-
-        public override void PerformBasicAttack(Player player)
-        {
-
-            // Calculate damage based on Boar's unique move and stats
-
-            float damage = (float)strength;
-            damage += (float)dexterity;
-            damage *= (float)1;
-            player.currentHealth -= (int)damage;
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "\nBoar performs a powerful strike!\nYou have \x1b[31m" + player.currentHealth + "hp remaining.\x1b[0m\n", typeSpeed);
-        }
-
-        public override int getDefensePerc()
-        {
-            int temp = 1 - (defense / 100);
-            return temp;
-        }
+        void Attack();
     }
 }

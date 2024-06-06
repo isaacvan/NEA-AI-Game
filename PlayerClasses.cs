@@ -25,6 +25,7 @@ namespace PlayerClassesNamespace
         public int Health { get; set; }
         public int currentHealth { get; set; }
         public int ManaPoints { get; set; }
+        public int currentMana { get; set; }
         public int Strength { get; set; }
         public int Intelligence { get; set; }
         public int Dexterity { get; set; }
@@ -32,7 +33,7 @@ namespace PlayerClassesNamespace
         public int Charisma { get; set; }
 
 
-        public int level { get; set; }
+        public int Level { get; set; }
         public int currentExp { get; set; }
         public int maxExp { get; set; }
         public Point playerPos;
@@ -44,7 +45,7 @@ namespace PlayerClassesNamespace
         public Player()
         {
             maxExp = 10;
-            level = 1;
+            Level = 1;
             currentExp = 0;
             playerPos = new Point(0, 0);
         }

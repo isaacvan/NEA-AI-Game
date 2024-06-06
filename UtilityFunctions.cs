@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using ItemFunctionsNamespace;
 using Newtonsoft.Json;
@@ -14,18 +16,22 @@ namespace UtilityFunctionsNamespace
     public class UtilityFunctions
     {
         public static int typeSpeed = 1;
-        public static string saveSlot = ""; // will be written to in main menu
+        public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
         public static string mainDirectory =
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 @"..\..\..\")); // will be written to in main menu
 
-        public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu
-        public static string saveName = "";
+        public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu. WHOLE PATH TO FILE
+        public static string saveName = ""; // ONLY NAME OF SAVE
         
         public static string itemTemplateDir = @$"{mainDirectory}ItemTemplates\";
         public static string itemTemplateSpecificDirectory = "";
-        public static int maxSaves = 5;
+        
+        public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates\";
+        public static string enemyTemplateSpecificDirectory = "";
+        
+        public static int maxSaves = 10;
         public static bool loadedSave = false;
         public static bool Instant = false;
         public static int colourSchemeIndex = 0;
@@ -127,6 +133,90 @@ namespace UtilityFunctionsNamespace
             
             string output = string.Join("\n", newLineList);
             return output;
+        }
+        
+        public static async Task<string> FixJson(string json)
+        {
+            try
+            {
+                JsonConvert.DeserializeObject(json);
+                return json;
+            }
+            catch (JsonReaderException)
+            {
+                // Remove markdown code block indicators
+                json = Regex.Replace(json, @"```json|```", "");
+
+                // Normalize whitespace carefully, avoiding content inside quotes
+                json = Regex.Replace(json, @"(?<!:\s*""[^""]*)\s+|\s+(?![^""]*""\s*:)", " ");
+
+                // Attempt to fix common JSON errors
+                json = Regex.Replace(json, @"([{,])(\s*)([^""{}\s:]+?)\s*:", "$1\"$3\":");
+                json = Regex.Replace(json, @":\s*([^""{}\s:]+?)([},])", ":\"$1\"$2");
+
+                // Ensure curly braces
+                if (!json.Trim().StartsWith("{"))
+                    json = "{" + json;
+                if (!json.Trim().EndsWith("}"))
+                    json += "}";
+
+                // Remove empty lines
+                json = Regex.Replace(json, @"^\s*$\n|\r", "", RegexOptions.Multiline);
+
+                try
+                {
+                    JsonConvert.DeserializeObject(json);
+                    return json;
+                }
+                catch (JsonReaderException)
+                {
+                    return "JSON is still not valid after attempted fixes.";
+                }
+            }
+        }
+        
+        public static void CorrectXmlTags(string filePath)
+        {
+            Stack<string> tagStack = new Stack<string>();
+            StringBuilder correctedXml = new StringBuilder();
+            string line;
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                while ((line = reader.ReadLine()) != null)
+                {
+                    // This regex matches opening tags and closing tags
+                    MatchCollection matches = Regex.Matches(line, @"<(/?)(\w+)[^>]*>");
+                
+                    foreach (Match match in matches)
+                    {
+                        string tag = match.Groups[2].Value;
+                        bool isClosing = match.Groups[1].Value == "/";
+                    
+                        if (!isClosing) // Opening tag
+                        {
+                            tagStack.Push(tag);
+                        }
+                        else if (tagStack.Count > 0 && tagStack.Peek() == tag) // Correct closing tag
+                        {
+                            tagStack.Pop();
+                        }
+                        else // Mismatch found
+                        {
+                            if (tagStack.Count > 0)
+                            {
+                                string correctTag = tagStack.Pop();
+                                line = Regex.Replace(line, $"</{tag}>", $"</{correctTag}>");
+                            }
+                        }
+                    }
+                    correctedXml.AppendLine(line);
+                }
+            }
+
+            // Output the corrected XML to a new file or overwrite the old one
+            File.WriteAllText(filePath, correctedXml.ToString());
+            Console.WriteLine("XML has been corrected and written to " + filePath);
         }
 
         public static void loadSave(string slot)
@@ -253,26 +343,6 @@ namespace UtilityFunctionsNamespace
             int green = (int)(initialg * fraction);
             int blue = (int)(initialb * fraction);
             return new int[] { red, green, blue };
-        }
-
-        public static Enemy CreateEnemyInstance(string enemyName)
-        {
-            if (enemyName == "orc")
-            {
-                return new Orc();
-            }
-            else if (enemyName == "snake")
-            {
-                return new Snake();
-            }
-            else if (enemyName == "boar")
-            {
-                return new Boar();
-            }
-            else
-            {
-                throw new ArgumentException("Invalid enemy name");
-            }
         }
 
         public static Player CreatePlayerInstance()

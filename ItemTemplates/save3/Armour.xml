@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Shadow Mantle</Name>
+        <Description>A cloak that seems to absorb light, perfect for those who wish to move unseen.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Greatly reduces the chance of being detected by enemies</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Boots of Silence</Name>
+        <Description>Boots that muffle the footsteps of the wearer, allowing for silent movement.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+2 Speed</UniqueProperties>
+        <DefensiveCapabilities>Eliminates sound while walking</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Mask of the Phantom</Name>
+        <Description>A mask that obscures the wearer's face, instilling fear into the hearts of their enemies.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+1 Charisma; +2 Intimidation</UniqueProperties>
+        <DefensiveCapabilities>Intimidates lower-level enemies, preventing them from attacking</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+</Item>

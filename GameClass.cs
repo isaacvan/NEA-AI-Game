@@ -16,6 +16,7 @@ namespace GameClassNamespace
     {
         public Player player { get; set; }
         public ItemFactory itemFactory { get; set; }
+        public EnemyFactory enemyFactory { get; set; }
 
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
@@ -37,6 +38,8 @@ namespace GameClassNamespace
             // rewrite player class to XML
             await player.updatePlayerStatsXML();
             
+            // initialise & fill enemyFactory
+            enemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory);
             
             // initialise enemies
             // initialise map
@@ -57,72 +60,5 @@ namespace GameClassNamespace
 
         }
     }
-    
-    class GameTest1 : GameSetup
-        {
-            public void chooseSave()
-            {
-                UtilityFunctions.saveSlot = "saveExample.xml";
-                UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"Characters\saveExample.xml";
-                UtilityFunctions.saveName = "saveExample";
-            }
-
-            public async Task<Player> generateMainXml(Conversation chat, string prompt5, Player player)
-            {
-                string filePath = $@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml";
-
-                // Player player with attributes
-                if (string.IsNullOrEmpty(filePath))
-                    throw new ArgumentException("File path must not be null or empty.");
-
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException($"The file '{filePath}' does not exist.");
-
-                // deserialise xml
-                XmlSerializer serializer = new XmlSerializer(typeof(Player));
-                Player loadedPlayer;
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
-                {
-                    loadedPlayer = (Player)serializer.Deserialize(fileStream);
-                }
-                
-                //Console.WriteLine($"Loaded player charisma1: {loadedPlayer.Charisma}");
-                
-                // set player properties
-                if (loadedPlayer == null)
-                    throw new ArgumentNullException(nameof(loadedPlayer));
-
-                Type playerType = typeof(Player);
-                PropertyInfo[] properties = playerType.GetProperties();
-                //Console.WriteLine($"NumOfProperties: {properties.Length}");
-
-                foreach (PropertyInfo property in properties)
-                {
-                    try
-                    {
-                        object value = property.GetValue(loadedPlayer);
-                        property.SetValue(player, value);
-                        //Console.WriteLine($"Set property {property.Name} to {value}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to set property in GenerateMainXML {property.Name}: {ex.Message}");
-                        // Handle or log the error as necessary
-                    }
-                }
-                
-                //Console.WriteLine($"Player charisma2: {player.Charisma}");
-
-                return player;
-            }
-        };
-
-        class GameTest2 : GameTest1
-        {
-            public void initialisePlayer(Player player)
-            {
-                player.Class = "Wolfman";
-            }
-        };
 }
 

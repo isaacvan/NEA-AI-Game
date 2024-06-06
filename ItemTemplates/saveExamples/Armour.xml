@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Cloak of Whispering Shadows</Name>
+        <Description>A cloak that seems to absorb light, enhancing the wearer's stealth abilities.</Description>
+        <Defence>18</Defence>
+        <UniqueProperties>+3 Dexterity; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Allows the wearer to blend into the shadows, greatly reducing enemy detection.</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Boots of Silent Steps</Name>
+        <Description>These boots make no sound, regardless of the surface they tread upon.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+2 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Increases movement speed silently, perfect for stealth missions.</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Mask of the Night Seer</Name>
+        <Description>A mask that grants its wearer the ability to see clearly in complete darkness.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Grants night vision, revealing hidden traps and enemies in the dark.</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+</Item>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Shroud of the Astral Walker</Name>
+        <Description>A cloak that seems to flicker with starlight, granting the wearer protection and a connection to the astral plane.</Description>
+        <Defence>18</Defence>
+        <UniqueProperties>+3 Intelligence; +2 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Increases resistance to magical attacks and grants minor levitation abilities.</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Circlet of Whispered Secrets</Name>
+        <Description>A delicate circlet that whispers secrets of ancient battles and strategies to its wearer, sharpening their mind.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Wisdom</UniqueProperties>
+        <DefensiveCapabilities>Enhances perception and critical thinking, granting insight into enemy weaknesses.</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Boots of the Silent Path</Name>
+        <Description>These boots are made from an unknown but remarkably quiet material, allowing for silent movement.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+2 Dexterity; Speed Boost</UniqueProperties>
+        <DefensiveCapabilities>Reduces noise created by movement, increasing stealth capabilities.</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+</Item>

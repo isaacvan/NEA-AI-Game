@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Elixir of Shadows</Name>
+        <Description>A dark, swirling potion that grants the drinker temporary invisibility.</Description>
+        <Effect>Grants invisibility for 10 seconds</Effect>
+        <UniqueProperties>Storyline usage: Allows access to secret areas undetected</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Potion of Starlight</Name>
+        <Description>A glowing potion that heals the drinker and grants them a temporary boost in magical power.</Description>
+        <Effect>Heals for 20HP; Increases Mana by 10 for 30 seconds</Effect>
+        <UniqueProperties>Storyline usage: Essential for surviving encounters in the Astral Plane</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Breath of the Ancients</Name>
+        <Description>A rare herb that, when consumed, grants wisdom of ancient warriors, temporarily boosting combat skills.</Description>
+        <Effect>Increases Strength and Dexterity by 2 for 60 seconds</Effect>
+        <UniqueProperties>Storyline usage: Reveals hidden strategies in ancient texts</UniqueProperties>
+    </Consumable>
+</Item>

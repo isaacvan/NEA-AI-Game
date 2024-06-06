@@ -1,0 +1,41 @@
+Hello, Narrator! As part of your role in shaping our game's challenging environment, you are tasked with populating each node of the game map with enemies. Your creative input is needed to design enemy types that fit within the game’s thematic element and storyline, corresponding to your selected choices.
+
+Please provide the following details:
+
+enemyTypes: Enumerate the types of enemies you will create for this game. Each enemy type should embody aspects of the game’s overarching themes and challenges. As these will be used throughout the whole course of the game, generate at least 5 enemy types.
+enemyTemplates: For each type of enemy, provide a template that includes:
+Name: The type of the enemy as a string.
+Health: An integer value for health, ranging from 50 to 100, appropriately scaled based on the enemy's toughness.
+ManaPoints: An integer value for Max mana points, ranging from 50 to 100
+Strength: An integer value representing the enemy's strength, adjusted according to the enemy type. Make this number anywhere from 1 to 20.
+Include Intelligence, Dexterity, Constitution and Charisma, all following the same guideline.
+
+Special Attack: A string describing the special attack narrative that will be executed during combat.
+The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
+{
+  "enemyTypes": ["Goblin", "Orc", "Dragon"],
+  "enemyTemplates": [
+    {
+      "Name": "Goblin",
+      "Health": 50,
+      "Strength": 3,
+…
+      "SpecialAttack": "The Goblin flings a clever trap."
+    },
+    {
+      "Name": "Orc",
+      "Health": 80,
+      "Strength": 11,
+…
+      "SpecialAttack": "The Orc charges with overwhelming force."
+    },
+    {
+      "Name": "Dragon",
+      "Health": 100,
+      "Strength": 20,
+…
+      "SpecialAttack": "The Dragon breathes a searing flame."
+    }
+  ]
+}
+Your input is crucial to the generation of your world. Ensure that all the output is parsable, as any external sentences may break the system.
