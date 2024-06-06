@@ -18,7 +18,6 @@ namespace MainNamespace
 {
     class Program
     {
-
         public static Game game;
         
         // ---------------------------------------------------------------------------------------------------------
@@ -36,33 +35,41 @@ namespace MainNamespace
         
         static async Task Main(string[] args)
         {
-            EnableColors();
-            game = new Game();
-            Console.CancelKeyPress += MyHandler; // triggers save on forced exit
-            string debugPointEntry = "game";
-            switch (debugPointEntry)
+            try
             {
-                case "testing":
-                    await game.initialiseGame(new TestNarrator.GameTest1(), true);
-                    
-                    Console.WriteLine(game.enemyFactory.enemyTypes[0]);
-                    
-                    //game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
+                EnableColors();
+                game = new Game();
+                Console.CancelKeyPress += MyHandler; // triggers save on forced exit
+                string debugPointEntry = "game";
+                switch (debugPointEntry)
+                {
+                    case "testing":
+                        await game.initialiseGame(new TestNarrator.GameTest1(), true);
+
+                        Console.WriteLine(game.enemyFactory.enemyTypes[0]);
+
+                        //game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
                         //game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
-                    //game.player.equipment.updateEquipmentJSON();
-                    
-                    Console.ReadLine();
-                    break;
-                case "game":
-                    await game.initialiseGame(new Narrator());
-                    
-                    // start game
-                    
-                    Console.ReadLine();
-                    break;
-                default:
-                    Environment.FailFast($"debuggingPointEntry Invalid");
-                    break;
+                        //game.player.equipment.updateEquipmentJSON();
+
+                        Console.ReadLine();
+                        break;
+                    case "game":
+                        await game.initialiseGame(new Narrator());
+
+                        // start game
+
+                        Console.ReadLine();
+                        break;
+                    default:
+                        Environment.FailFast($"debuggingPointEntry Invalid");
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw e;
             }
         }
         
@@ -622,7 +629,7 @@ namespace MainNamespace
                     }
                 }
             }
-            
+
             // delete inventories
             string[] inventories =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Inventories", searchPattern: "*.json");
@@ -633,7 +640,7 @@ namespace MainNamespace
                     File.Delete(inventory);
                 }
             }
-            
+
             // delete equipments
             string[] equipments =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Equipments", searchPattern: "*.json");
@@ -644,6 +651,25 @@ namespace MainNamespace
                     File.Delete(equipment);
                 }
             }
+
+            // delete enemy templates
+            List<string> enemyTemplatesXML =
+                Directory.GetFiles($"{UtilityFunctions.mainDirectory}EnemyTemplates",
+                    searchPattern: "*.xml").ToList();
+            List<string> enemyTemplatesJSON = Directory.GetFiles($"{UtilityFunctions.mainDirectory}EnemyTemplates",
+                searchPattern: "*.json").ToList();
+            foreach (string str in enemyTemplatesXML)
+            {
+                enemyTemplatesJSON.Add(str);
+            }
+            foreach (string enemyTemplate in enemyTemplatesJSON)
+            {
+                if (Path.GetFileName(enemyTemplate) != "saveExample.json")
+                {
+                    File.Delete(enemyTemplate);
+                }
+            }
+            
         }
         
         // Constants for standard output handle and enabling virtual terminal processing

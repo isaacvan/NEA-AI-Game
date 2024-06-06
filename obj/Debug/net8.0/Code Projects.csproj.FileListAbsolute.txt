@@ -86,9 +86,9 @@ C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.Assembly
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.AssemblyInfo.cs
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.CoreCompileInputs.cache
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.sourcelink.json
-C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.CopyComplete
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\refint\Code Projects.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.pdb
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\ref\Code Projects.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Pro.3063BC58.Up2Date
