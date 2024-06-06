@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Shroud of the Phantom</Name>
-        <Description>A cloak that seems to flicker in and out of existence, providing excellent concealment.</Description>
-        <Defence>18</Defence>
-        <UniqueProperties>+2 Dexterity; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Increases evasion by 20%</DefensiveCapabilities>
+        <Name>Shroud of Whispering Winds</Name>
+        <Description>A cloak that seems to shift and flow like the breeze, crafted by the ancient wind spirits.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+3 Dexterity; Windwalk ability granting increased movement speed</UniqueProperties>
+        <DefensiveCapabilities>Grants immunity to immobilization and slow effects</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Mistwalker Boots</Name>
-        <Description>Boots that leave no traces, perfect for silent movement in any terrain.</Description>
-        <Defence>12</Defence>
-        <UniqueProperties>+1 Dexterity; Increases movement speed</UniqueProperties>
-        <DefensiveCapabilities>Nullifies sound while moving</DefensiveCapabilities>
+        <Name>Boots of the Silent Pathfinder</Name>
+        <Description>These boots leave no tracks, perfect for those who wish to move unseen and unheard.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+2 Dexterity; Silent movement</UniqueProperties>
+        <DefensiveCapabilities>Nullifies sound created by movement</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Veil of the Nightwalker</Name>
-        <Description>A hood woven from the essence of night, making the wearer blend with the shadows.</Description>
-        <Defence>10</Defence>
-        <UniqueProperties>+2 Dexterity; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Reduces the chance to be detected by enemies</DefensiveCapabilities>
+        <Name>Mask of the Ethereal Vision</Name>
+        <Description>A mask that allows one to see through illusions and identify enemies hidden in the shadows.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+1 Intelligence; +1 Charisma; True sight</UniqueProperties>
+        <DefensiveCapabilities>Allows the wearer to see hidden traps and enemies</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
 </Item>

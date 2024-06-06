@@ -237,11 +237,11 @@ namespace GPTControlNamespace
             }
 
             // testing
-            Console.WriteLine(output);
+            // Console.WriteLine(output);
             
             output = await UtilityFunctions.FixJson(output);
             
-            Console.WriteLine(output);
+            // Console.WriteLine(output);
             
             // create file to be written to
             File.Create(UtilityFunctions.enemyTemplateSpecificDirectory).Close();
@@ -270,7 +270,7 @@ namespace GPTControlNamespace
                 throw new Exception("Enemy factory is null");
             }
 
-            return new EnemyFactory();
+            return enemyFactoryToBeReturned;
             }
     }
 }

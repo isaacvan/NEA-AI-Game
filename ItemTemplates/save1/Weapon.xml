@@ -2,32 +2,32 @@
 <Item>
     <Weapon>
         <Name>Whisperwind Dagger</Name>
-        <Description>A lightweight dagger that hums with an otherworldly energy, ideal for quick, silent strikes.</Description>
-        <Damage>15</Damage>
+        <Description>A blade that slices the air, its origins traced back to the ancient assassins of the Ethereal Plane.</Description>
+        <Damage>18</Damage>
         <WeaponType>Dagger</WeaponType>
         <UniqueProperties>+2 Dexterity</UniqueProperties>
-        <WeaponCapabilities>Grants invisibility for 5 seconds after a critical hit</WeaponCapabilities>
-        <NarrativeLine>As you strike, the world fades, cloaking you in shadows.</NarrativeLine>
+        <WeaponCapabilities>Grants invisibility for 5 seconds after a critical hit.</WeaponCapabilities>
+        <NarrativeLine>As the dagger cuts through, you vanish from sight, leaving your foes bewildered.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Starfire Staff</Name>
-        <Description>A staff pulsing with cosmic energy, carved from a rare meteorite, empowering the wielder with ancient star magic.</Description>
+        <Name>Starfire Wand</Name>
+        <Description>A mystical wand, forged from a rare crystalline material found only in the core of fallen stars.</Description>
         <Damage>25</Damage>
-        <WeaponType>Staff</WeaponType>
-        <UniqueProperties>+3 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Casts a powerful area of effect spell, burning enemies with celestial fire</WeaponCapabilities>
-        <NarrativeLine>With a thrust of the staff, a burst of starfire engulfs your foes.</NarrativeLine>
+        <WeaponType>Wand</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Launches a burst of starlight, dealing area damage.</WeaponCapabilities>
+        <NarrativeLine>The air crackles with energy as a burst of starlight erupts from the wand.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Echoes of the Forgotten</Name>
-        <Description>A two-handed sword that vibrates with the voices of past warriors, instilling fear in the hearts of enemies.</Description>
-        <Damage>30</Damage>
-        <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+2 Strength; +1 Charisma</UniqueProperties>
-        <WeaponCapabilities>Fear aura reduces enemy attack speed by 10%</WeaponCapabilities>
-        <NarrativeLine>As you swing, the air fills with ancient battle cries, weakening your enemies' resolve.</NarrativeLine>
+        <Name>Echoes of the Ancients</Name>
+        <Description>This ancient tome is bound by the skins of mythical creatures and imbued with the souls of past mages.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Tome</WeaponType>
+        <UniqueProperties>+3 Intelligence; +2 Charisma</UniqueProperties>
+        <WeaponCapabilities>Summons an ancestral spirit to fight alongside you.</WeaponCapabilities>
+        <NarrativeLine>The tome glows brightly, and an ethereal figure appears, ready to battle at your side.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

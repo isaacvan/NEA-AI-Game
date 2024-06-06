@@ -4,8 +4,8 @@
     <X>0</X>
     <Y>0</Y>
   </playerPos>
-  <Class>ChronoMage</Class>
-  <Race>Timebender</Race>
+  <Class>Chronomancer</Class>
+  <Race>Time Weaver</Race>
   <Health>80</Health>
   <currentHealth>80</currentHealth>
   <ManaPoints>100</ManaPoints>

@@ -2,20 +2,23 @@
 <Item>
     <Consumable>
         <Name>Elixir of Shadows</Name>
-        <Description>A dark, swirling potion that grants the drinker temporary invisibility.</Description>
-        <Effect>Grants invisibility for 10 seconds</Effect>
-        <UniqueProperties>Storyline usage: Allows access to secret areas undetected</UniqueProperties>
+        <Description>A dark, swirling potion that grants the drinker the ability to move unseen in the shadows.</Description>
+        <Effects>Invisibility for 10 seconds</Effects>
+        <UniqueProperties></UniqueProperties>
+        <StorylineRelevance>A necessity for uncovering the hidden truths within the Shadow Realm.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Potion of Starlight</Name>
-        <Description>A glowing potion that heals the drinker and grants them a temporary boost in magical power.</Description>
-        <Effect>Heals for 20HP; Increases Mana by 10 for 30 seconds</Effect>
-        <UniqueProperties>Storyline usage: Essential for surviving encounters in the Astral Plane</UniqueProperties>
+        <Name>Phoenix Feather</Name>
+        <Description>A single, radiant feather from a phoenix, possessing incredible restorative powers.</Description>
+        <Effects>Instantly revives the player upon death with 50% health</Effects>
+        <UniqueProperties>One-time use</UniqueProperties>
+        <StorylineRelevance>Essential for the quest to defeat the Undying Lich in the Cursed Crypt.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Breath of the Ancients</Name>
-        <Description>A rare herb that, when consumed, grants wisdom of ancient warriors, temporarily boosting combat skills.</Description>
-        <Effect>Increases Strength and Dexterity by 2 for 60 seconds</Effect>
-        <UniqueProperties>Storyline usage: Reveals hidden strategies in ancient texts</UniqueProperties>
+        <Name>Arcanist's Brew</Name>
+        <Description>A potent potion that enhances magical abilities, increasing mana regeneration for a short time.</Description>
+        <Effects>+20 Mana regeneration over 10 seconds</Effects>
+        <UniqueProperties></UniqueProperties>
+        <StorylineRelevance>Crafted from the rare flowers found only in the Enchanted Gardens of Eldoria.</StorylineRelevance>
     </Consumable>
 </Item>

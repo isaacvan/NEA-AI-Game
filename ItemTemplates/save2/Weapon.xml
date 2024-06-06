@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Whisperwind Dagger</Name>
-        <Description>A blade as light as air, forged from the essence of a gentle breeze, yet capable of slicing through the toughest armor.</Description>
-        <Damage>15</Damage>
-        <WeaponType>Dagger</WeaponType>
-        <UniqueProperties>+2 Dexterity</UniqueProperties>
-        <WeaponCapabilities>Grants the user the ability to perform a swift, nearly invisible strike.</WeaponCapabilities>
-        <NarrativeLine>As you move, the air itself seems to part, delivering a silent but deadly blow to your foe.</NarrativeLine>
+        <Name>Whispering Blade</Name>
+        <Description>A slender sword that seems to hum with a strange energy when swung. Crafted from the lost metal of Azurinth.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Chance to silence enemy spellcasters for 5 seconds</WeaponCapabilities>
+        <NarrativeLine>As the blade cuts through the air, a silent hush falls over the enemy’s arcane whispers.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Starfire Staff</Name>
-        <Description>Emblazoned with runes that pulse with a light from another world, this staff channels the raw energy of the cosmos.</Description>
-        <Damage>22</Damage>
+        <Name>Ember Staff</Name>
+        <Description>An ancient staff, smoldering with a contained inferno, once wielded by the pyromancer Eldrit.</Description>
+        <Damage>18</Damage>
         <WeaponType>Staff</WeaponType>
-        <UniqueProperties>+3 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Unleashes a blast of cosmic energy, stunning enemies.</WeaponCapabilities>
-        <NarrativeLine>The heavens themselves seem to bend to your will, engulfing your enemies in a blinding radiance.</NarrativeLine>
+        <UniqueProperties>+3 Intelligence; +2 Mana Points</UniqueProperties>
+        <WeaponCapabilities>Ignites the target for additional fire damage over 10 seconds</WeaponCapabilities>
+        <NarrativeLine>Flames wrap around the foe, burning essence and flesh alike.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Galeforce Axe</Name>
-        <Description>A heavy weapon that roars with the fury of a thousand storms with each swing.</Description>
+        <Name>Bonecrusher Mace</Name>
+        <Description>A hefty mace made from the skull of the dread beast Gormar. Its hits echo the beast’s roars.</Description>
         <Damage>30</Damage>
-        <WeaponType>Axe</WeaponType>
-        <UniqueProperties>+4 Strength</UniqueProperties>
-        <WeaponCapabilities>Creates a tempest that throws enemies off balance.</WeaponCapabilities>
-        <NarrativeLine>With a mighty roar, the storm obeys your command, scattering your foes like leaves in the wind.</NarrativeLine>
+        <WeaponType>Mace</WeaponType>
+        <UniqueProperties>+3 Strength</UniqueProperties>
+        <WeaponCapabilities>Stuns the enemy for 3 seconds</WeaponCapabilities>
+        <NarrativeLine>With every hit, the sound of Gormar's roar fills the air, stunning those who hear it.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

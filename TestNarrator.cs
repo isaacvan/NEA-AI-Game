@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
+using NLog;
 using OpenAI_API.Chat;
 using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;
@@ -13,6 +14,8 @@ namespace TestNarratorNamespace
     {
         public class GameTest1 : GameSetup
         {
+            private static Logger logger = LogManager.GetCurrentClassLogger();
+            
             public void chooseSave()
             {
                 UtilityFunctions.saveSlot = "saveExample.xml";
@@ -74,6 +77,7 @@ namespace TestNarratorNamespace
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
             Console.WriteLine("Initialising Enemy Factory...");
+            logger.Info("Initialising Enemy Factory...");
 
             string output = "";
             try
@@ -95,20 +99,30 @@ namespace TestNarratorNamespace
             try
             {
                 UtilityFunctions.enemyTemplateSpecificDirectory =
-                    UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveSlot;
+                    UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
                 if (File.Exists(UtilityFunctions.enemyTemplateSpecificDirectory))
                 {
                     File.Delete(UtilityFunctions.enemyTemplateSpecificDirectory);
+                    // cahnge to throw error
                     Console.WriteLine("Old save not deleted. Deleting old save then continuing");
                 }
-                    File.Create(UtilityFunctions.enemyTemplateSpecificDirectory);
+
+                // deserialise file into a new EnemyFactory
             }
             catch (Exception e)
             {
                 throw e;
             }
 
-            Console.WriteLine(output);
+            // testing
+            // Console.WriteLine(output);
+            
+            output = await UtilityFunctions.FixJson(output);
+            
+            // Console.WriteLine(output);
+            
+            // create file to be written to
+            File.Create(UtilityFunctions.enemyTemplateSpecificDirectory).Close();
             
             //File.WriteAllText(UtilityFunctions.enemyTemplateSpecificDirectory, output);
             using (StreamWriter  writer = new StreamWriter(UtilityFunctions.enemyTemplateSpecificDirectory))
@@ -119,6 +133,7 @@ namespace TestNarratorNamespace
             EnemyFactory enemyFactoryToBeReturned;
             try
             {
+                
                 // deserialise file into a new EnemyFactory
                 enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
                     UtilityFunctions.enemyTemplateSpecificDirectory);

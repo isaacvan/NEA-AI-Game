@@ -24,25 +24,35 @@ namespace GameClassNamespace
             OpenAIAPI api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);
             
-            // initialise itemFactory & player from api
+            // initialise itemFactory & player from api. Gets UtilityFunctions.loadedSave
             itemFactory = new ItemFactory();
             player = await Program.initializeSaveAndPlayer(gameSetup, api, chat, testing);
-            
-            // fill itemFactory
-            await itemFactory.initialiseItemFactoryFromNarrator(api, chat, testing);
-            
-            // initialise inventory & equipment to XML
-            await player.initialiseInventory();
-            await player.initialiseEquipment();
-            
-            // rewrite player class to XML
-            await player.updatePlayerStatsXML();
-            
-            // initialise & fill enemyFactory
-            enemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory);
-            
-            // initialise enemies
-            // initialise map
+
+            if (!UtilityFunctions.loadedSave)
+            {
+
+                // fill itemFactory
+                await itemFactory.initialiseItemFactoryFromNarrator(api, chat, testing);
+
+                // initialise inventory & equipment to XML
+                await player.initialiseInventory();
+                await player.initialiseEquipment();
+
+                // rewrite player class to XML
+                await player.updatePlayerStatsXML();
+
+                // initialise & fill enemyFactory
+                enemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory);
+
+                // initialise enemies
+                // initialise map
+
+            }
+            else
+            {
+                // do everything above but load from already made files
+                
+            }
         }
 
         public static void saveGame()

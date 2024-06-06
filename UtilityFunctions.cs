@@ -104,7 +104,7 @@ namespace UtilityFunctionsNamespace
             await Task.CompletedTask;
         }
 
-        public static async Task readFromXMLFile<T>(string path, T objectToRead) where T : class
+        public static async Task<T> readFromXMLFile<T>(string path, T objectToRead) where T : class
         {
             // reads an object from an xml file at the path path
             XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -113,6 +113,7 @@ namespace UtilityFunctionsNamespace
                 objectToRead = serializer.Deserialize(reader) as T;
             }
             await Task.CompletedTask;
+            return (T)objectToRead;
         }
 
         public async static Task<string> cleanseXML(string xml)
@@ -162,11 +163,13 @@ namespace UtilityFunctionsNamespace
 
                 // Remove empty lines
                 json = Regex.Replace(json, @"^\s*$\n|\r", "", RegexOptions.Multiline);
+                
+                var jsonObj = JsonConvert.DeserializeObject(json);
+                string prettyJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
 
                 try
                 {
-                    JsonConvert.DeserializeObject(json);
-                    return json;
+                    return prettyJson;
                 }
                 catch (JsonReaderException)
                 {
@@ -216,7 +219,7 @@ namespace UtilityFunctionsNamespace
 
             // Output the corrected XML to a new file or overwrite the old one
             File.WriteAllText(filePath, correctedXml.ToString());
-            Console.WriteLine("XML has been corrected and written to " + filePath);
+            //Console.WriteLine("XML has been corrected and written to " + filePath);
         }
 
         public static void loadSave(string slot)

@@ -12,18 +12,24 @@ using ItemFunctionsNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using GameClassNamespace;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Targets;
 using TestNarratorNamespace;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace MainNamespace
 {
     class Program
     {
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public static Game game;
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
         // ENEMY GENERATION. see UML class diagram. clear and restart enemy classes
+        // LOADING GAMR. for testing ease. Player IDs. load all classes from already made files.
+        // - LOOK AT GAMECLASS !LoadedSave
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
         //----------------------------------------------------------------------------------------------------------
@@ -36,11 +42,22 @@ namespace MainNamespace
         
         static async Task Main(string[] args)
         {
+            // testing NLog setup:
+            // NLog.Common.InternalLogger.LogLevel = NLog.LogLevel.Debug;
+            // NLog.Common.InternalLogger.LogToConsole = true;
+            // NLog.Common.InternalLogger.LogFile = @"c:\temp\nlog-internal.txt"; // On Linux one can use "/home/nlog-internal.txt"
+            // TODO: apparently if we get NLog.config in the right place it should be found automatically, but for now, this is a workaround:
+            NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory + "\\NLog.config");
+            // NLog.LogManager.Configuration.AddTarget(new FileTarget(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory + "\\output.log"));
+            
+            logger.Info("Program started");
+            
             EnableColors();
             game = new Game();
             Console.CancelKeyPress += MyHandler; // triggers save on forced exit
-            string debugPointEntry = "game";
-            switch (debugPointEntry)
+            string mode = args.Length > 0 ? args[0] : "game";
+            logger.Info($"Running mode={mode}");
+            switch (mode)
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
@@ -57,6 +74,7 @@ namespace MainNamespace
                     await game.initialiseGame(new Narrator());
                     
                     // start game
+                    Console.WriteLine(game.enemyFactory.enemyTypes[0]);
                     
                     Console.ReadLine();
                     break;
@@ -344,7 +362,7 @@ namespace MainNamespace
                             // Start the game
                             break;
                         case 2:
-                            loadGame(gameStarted, saveChosen);
+                            getLoadedSaveName(gameStarted, saveChosen);
                             saveChosen = true;
                             UtilityFunctions.loadedSave = true;
                             // Load a saved game
@@ -400,27 +418,9 @@ namespace MainNamespace
                 //player = UtilityFunctions.CreatePlayerInstance(chosenClass);
                 // deserialize the utilityfucntions.saveFile and load it into player
 
-
-
-                // will create a function called loadGame()
-
-                try
-                {
-                    XmlSerializer serializer1 = new XmlSerializer(typeof(Player));
-                    using (TextReader reader = new StreamReader(UtilityFunctions.saveFile))
-                    {
-                        player = (Player)serializer1.Deserialize(reader);
-                    }
-                }
-                catch
-                {
-                    throw new Exception("Not implemented yet");
-                }
-                // UtilityFunctions.clearScreen(player); // clears the screen and pastes exp bar
-
-
-
-                throw new Exception("Not implemented yet");
+                
+                // will create a function called getLoadedSaveName()
+                player = await UtilityFunctions.readFromXMLFile<Player>(UtilityFunctions.saveFile, new Player());
 
             }
             else // if not loaded
@@ -441,8 +441,15 @@ namespace MainNamespace
 
 
 
+        public static void loadGame()
+        {
+            // load all game aspects
+        }
 
-        static void loadGame(bool gameStarted, bool saveChosen)
+
+
+
+        static void getLoadedSaveName(bool gameStarted, bool saveChosen)
         {
             bool startedGame = false;
             while (!startedGame)
@@ -642,6 +649,22 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(equipment) != "saveExample")
                 {
                     File.Delete(equipment);
+                }
+            }
+            
+            // delete enemy templates
+            List<string> enemyTemplates =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}EnemyTemplates", searchPattern: "*.json").ToList();
+            foreach (string xmlfile in Directory.GetFiles($@"{UtilityFunctions.mainDirectory}EnemyTemplates",
+                         searchPattern: "*.xml"))
+            {
+                enemyTemplates.Add(xmlfile);
+            }
+            foreach (string enemyTemplate in enemyTemplates)
+            {
+                if (Path.GetFileNameWithoutExtension(enemyTemplate) != "saveExample")
+                {
+                    File.Delete(enemyTemplate);
                 }
             }
         }
