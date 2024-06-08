@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using ItemFunctionsNamespace;
 using Newtonsoft.Json;
 using DynamicExpresso;
+using MainNamespace;
 
 namespace UtilityFunctionsNamespace
 {
@@ -187,6 +188,8 @@ namespace UtilityFunctionsNamespace
 
                 // Remove empty lines
                 json = Regex.Replace(json, @"^\s*$\n|\r", "", RegexOptions.Multiline);
+                
+                Program.logger.Info(json);
                 
                 var jsonObj = JsonConvert.DeserializeObject(json);
                 string prettyJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);

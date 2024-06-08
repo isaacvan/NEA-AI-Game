@@ -4,6 +4,7 @@ using EnemyClassesNamespace;
 using MainNamespace;
 using OpenAI_API;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Models;
@@ -18,7 +19,7 @@ namespace GPTControlNamespace
 
         Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
 
-        Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory);
+        Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory);
         Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
     }
     
@@ -196,11 +197,10 @@ namespace GPTControlNamespace
             return player;
         }
 
-        public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory)
+        public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
         {
             // function to generate a json file representing the enemies and initialise an enemyFactory
             // function to generate a json file representing the enemies and initialise an enemyFactory
-            Console.WriteLine("Initialising Enemy Factory...");
             Program.logger.Info("Initialising Enemy Factory...");
 
             string output = "";
@@ -271,6 +271,30 @@ namespace GPTControlNamespace
             {
                 throw new Exception("Enemy factory is null");
             }
+            
+            foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
+            { // load attack behaviours into enemy templates
+                foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                {
+                    if (enemyTemplate.AttackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                    {
+                        // load in the attack behaviour
+                        AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                        if (attackSlotNullable == null)
+                        {
+                            throw new Exception("No available attack slots found for enemy template " +
+                                                enemyTemplate.Name);
+                        }
+                        
+                        AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
+
+                        // add the attack behaviour to the enemy templat
+                        enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                    }
+                }
+            }
+
+            Program.logger.Info("Enemy Factory Initialised");
 
             return enemyFactoryToBeReturned;
             }
@@ -278,7 +302,7 @@ namespace GPTControlNamespace
         public async Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat)
         {
             // enemy factory logic, use game setup for diverting to using api key
-            AttackBehaviourFactory tempAttackBehaviourFactory;
+            AttackBehaviourFactory tempAttackBehaviourFactory = new AttackBehaviourFactory();
 
             string output = "";
             try
@@ -315,12 +339,27 @@ namespace GPTControlNamespace
             // deserialise into an attackbehaviour factory
             try
             {
-                tempAttackBehaviourFactory = await UtilityFunctions.readFromJSONFile<AttackBehaviourFactory>(
-                    UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                string json = File.ReadAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                var settings = new JsonSerializerSettings
+                {
+                    Converters = new List<JsonConverter> { new LambdaJsonConverter() }
+                };
+                Dictionary<string, AttackInfo> attackBehaviours = JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
+                foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
+                {
+                    items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
+                }
+                tempAttackBehaviourFactory.InitializeFromSerializedBehaviors(items);
             }
             catch (Exception e)
             {
                 throw e;
+            }
+            
+            if (tempAttackBehaviourFactory == null)
+            {
+                throw new Exception("Attack behaviour factory is null");
             }
             
             return tempAttackBehaviourFactory;

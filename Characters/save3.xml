@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <Class>Chronoshifter</Class>
+    <Race>Timeborne</Race>
+    <Health>90</Health>
+    <ManaPoints>100</ManaPoints>
+    <Strength>5</Strength>
+    <Intelligence>10</Intelligence>
+    <Dexterity>7</Dexterity>
+    <Constitution>8</Constitution>
+    <Charisma>5</Charisma>
+</Player>

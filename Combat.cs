@@ -13,6 +13,19 @@ namespace CombatNamespace
     {
         public Player player { get; set; }
         public Enemy enemy { get; set; }
+        public List<Status> statuses { get; set; }
         // more
+
+        public static void createStatus(string name, string effect) // DYNAMICEXPRESSO ??
+        {
+            // create a new status and add it to statuses
+        }
+    }
+
+    public class Status
+    {
+        public string name { get; set; }
+        public string effect { get; set; }
+        
     }
 }

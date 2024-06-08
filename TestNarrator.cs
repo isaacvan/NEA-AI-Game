@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
+using MainNamespace;
 using Newtonsoft.Json;
 using NLog;
 using OpenAI_API.Chat;
@@ -75,11 +76,11 @@ namespace TestNarratorNamespace
                 return player;
             }
 
-            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory)
+            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
             {
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
-            Console.WriteLine("Initialising Enemy Factory...");
+                Program.logger.Info("Initialising Enemy Factory...");
 
             EnemyFactory enemyFactoryToBeReturned;
             try
@@ -98,7 +99,30 @@ namespace TestNarratorNamespace
             {
                 throw new Exception("Enemy factory is null");
             }
-            Console.WriteLine("Enemy Factory Initialised");
+
+            foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
+            { // load attack behaviours into enemy templates
+                foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                {
+                    if (enemyTemplate.AttackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                    {
+                        // load in the attack behaviour
+                        AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                        if (attackSlotNullable == null)
+                        {
+                            throw new Exception("No available attack slots found for enemy template " +
+                                                enemyTemplate.Name);
+                        }
+                        
+                        AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
+
+                        // add the attack behaviour to the enemy templat
+                        enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                    }
+                }
+            }
+            
+            Program.logger.Info("Enemy Factory Initialised");
             return enemyFactoryToBeReturned;
             }
 

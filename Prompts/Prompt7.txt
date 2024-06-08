@@ -1,11 +1,38 @@
 ﻿Your next job as the narrator is to generate a JSON file that represents a collection of attack behaviors that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
 
 Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys should match to your previously generated keys.
-Expression: A string containing C# code that defines what the attack does when executed. This should be simple console outputs and commands that affect a hypothetical Player class, which includes methods like ReceiveDamage(int amount), Heal(int amount), and Stun().
+Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage). Ensure the damage corresponds to the attack magnitude and the context of the game.
 NicheEffects: A list of strings describing special effects or properties of the attack, which can influence gameplay mechanics or visuals.
 Here is how each component should be formatted and an example for each:
 
 Key: Should be the name of the attack..
-Expression: Should include a console message indicating the attack action and a method call on target, like "Console.WriteLine('Casting Fireball for 50 damage'); target.ReceiveDamage(50);"
+Expression: Should include a method call on target, like "target.ReceiveAttack(50)". 
 NicheEffects: Should include terms that describe the attack’s impact, like ["Burn", "AOE"] for an area damage effect or ["Restore", "Instant"] for a healing effect.
-Please create three attack behaviors using this format.
+
+All behaviours should match the keys used for previous enemies. See the following example:
+
+{
+  "Stab": {
+    "Name": "Stab",
+    "Expression": "target.ReceiveAttack(5)",
+    "NicheEffects": ["Quick", "Direct"]
+  },
+  "Bloody Slice": {
+    "Name": "Bloody Slice",
+    "Expression": "target.ReceiveAttack(10)",
+    "NicheEffects": ["Bleed", "Direct"]
+  },
+  "Backstab": {
+    "Name": "Backstab",
+    "Expression": "target.ReceiveAttack(15)",
+    "NicheEffects": ["Critical", "Stealth"]
+  },
+  "Taunt": {
+    "Name": "Taunt",
+    "Expression": "target.ReceiveAttack(0)",
+    "NicheEffects": ["Aggro", "Area"]
+  }
+  ...
+}
+
+Ensure all output is parsable. This is crucial, as if any of your output is not code parsable, the code will break.

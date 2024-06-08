@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <Class>Chronoshifter</Class>
+    <Race>Time-Woven</Race>
+    <Health>80</Health>
+    <ManaPoints>100</ManaPoints>
+    <Strength>6</Strength>
+    <Intelligence>10</Intelligence>
+    <Dexterity>7</Dexterity>
+    <Constitution>6</Constitution>
+    <Charisma>6</Charisma>
+</Player>

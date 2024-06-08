@@ -11,7 +11,9 @@ using System.Dynamic;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Reflection;
+using CombatNamespace;
 using ItemFunctionsNamespace;
+using MainNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -70,7 +72,7 @@ namespace PlayerClassesNamespace
             inventory.RemoveItem(item);
         }
 
-        public void ReceiveAttack(int damage)
+        public void ReceiveAttack(int damage) // DYNAMICEXPRESSO
         {
             currentHealth -= damage;
             if (currentHealth < 0)
@@ -84,6 +86,11 @@ namespace PlayerClassesNamespace
         {
             Console.WriteLine("You have died. Game over.");
             Environment.Exit(0);
+        }
+
+        public void ApplyStatus(Status status, int turns) // DYNAMICEXPRESSO
+        {
+            
         }
 
         public async Task initialiseInventory()
@@ -132,7 +139,7 @@ namespace PlayerClassesNamespace
 
         public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat, bool testing = false)
         {
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Creating Character...", UtilityFunctions.typeSpeed);
+            Program.logger.Info("Creating Character...");
 
 
             // load prompt 5
@@ -175,7 +182,7 @@ namespace PlayerClassesNamespace
             // set character health to max
             currentHealth = Health;
             // this.
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Character Created!", UtilityFunctions.typeSpeed);
+            Program.logger.Info("Character Created");
             Console.ForegroundColor = ConsoleColor.White;
         }
 

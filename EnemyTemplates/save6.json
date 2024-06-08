@@ -1,0 +1,91 @@
+{
+  "enemyTypes": [
+    "Temporal Wraith",
+    "Astral Phantom",
+    "Chrono Beast",
+    "Void Walker",
+    "Time Shifter"
+  ],
+  "enemyTemplates": [
+    {
+      "Name": "Temporal Wraith",
+      "Health": "60",
+      "ManaPoints": "80",
+      "Strength": "5",
+      "Intelligence": "15",
+      "Dexterity": "10",
+      "Constitution": "8",
+      "Charisma": "2",
+      "AttackBehaviourKeys": [
+        "Time Warp Strike",
+        "Era Decay",
+        "Temporal Fissure",
+        "Ghostly Assault"
+      ]
+    },
+    {
+      "Name": "Astral Phantom",
+      "Health": "70",
+      "ManaPoints": "90",
+      "Strength": "6",
+      "Intelligence": "18",
+      "Dexterity": "12",
+      "Constitution": "9",
+      "Charisma": "1",
+      "AttackBehaviourKeys": [
+        "Astral Siphon",
+        "Void Blast",
+        "Nether Swap",
+        "Phantom Embrace"
+      ]
+    },
+    {
+      "Name": "Chrono Beast",
+      "Health": "80",
+      "ManaPoints": "70",
+      "Strength": "15",
+      "Intelligence": "5",
+      "Dexterity": "8",
+      "Constitution": "15",
+      "Charisma": "2",
+      "AttackBehaviourKeys": [
+        "Temporal Bite",
+        "Chrono Roar",
+        "Time Dilation Dash",
+        "Age Acceleration"
+      ]
+    },
+    {
+      "Name": "Void Walker",
+      "Health": "50",
+      "ManaPoints": "100",
+      "Strength": "4",
+      "Intelligence": "20",
+      "Dexterity": "14",
+      "Constitution": "7",
+      "Charisma": "3",
+      "AttackBehaviourKeys": [
+        "Void Step",
+        "Darkness Surge",
+        "Entropy Touch",
+        "Singularity Pull"
+      ]
+    },
+    {
+      "Name": "Time Shifter",
+      "Health": "90",
+      "ManaPoints": "60",
+      "Strength": "10",
+      "Intelligence": "14",
+      "Dexterity": "11",
+      "Constitution": "12",
+      "Charisma": "8",
+      "AttackBehaviourKeys": [
+        "Future Sight Slash",
+        "Past Reversal",
+        "Chrono Shift",
+        "Eon's Echo"
+      ]
+    }
+  ]
+}

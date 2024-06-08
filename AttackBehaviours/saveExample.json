@@ -1,14 +1,97 @@
 ﻿{
+  "Stab": {
+    "Name": "Stab",
+    "Expression": "target.ReceiveAttack(5)",
+    "NicheEffects": ["Quick", "Direct"]
+  },
+  "Bloody Slice": {
+    "Name": "Bloody Slice",
+    "Expression": "target.ReceiveAttack(10)",
+    "NicheEffects": ["Bleed", "Direct"]
+  },
+  "Backstab": {
+    "Name": "Backstab",
+    "Expression": "target.ReceiveAttack(15)",
+    "NicheEffects": ["Critical", "Stealth"]
+  },
+  "Taunt": {
+    "Name": "Taunt",
+    "Expression": "target.ReceiveAttack(0)",
+    "NicheEffects": ["Aggro", "Area"]
+  },
+  "Slash": {
+    "Name": "Slash",
+    "Expression": "target.ReceiveAttack(12)",
+    "NicheEffects": ["Sweep", "Direct"]
+  },
+  "Spiked Sweep": {
+    "Name": "Spiked Sweep",
+    "Expression": "target.ReceiveAttack(18)",
+    "NicheEffects": ["Stun", "Sweep"]
+  },
+  "Stomp": {
+    "Name": "Stomp",
+    "Expression": "target.ReceiveAttack(20)",
+    "NicheEffects": ["Earth", "Shock"]
+  },
+  "Fortify": {
+    "Name": "Fortify",
+    "Expression": "target.ReceiveAttack(-10)",
+    "NicheEffects": ["Defense", "Instant"]
+  },
   "Fireball": {
+    "Name": "Fireball",
     "Expression": "target.ReceiveAttack(25)",
     "NicheEffects": ["Burn", "AOE"]
   },
-  "Heal": {
-    "Expression": "target.ReceiveAttack(25)",
-    "NicheEffects": ["Restore", "Instant"]
+  "Scaly Slash": {
+    "Name": "Scaly Slash",
+    "Expression": "target.ReceiveAttack(15)",
+    "NicheEffects": ["Deep Cut", "Direct"]
   },
-  "Stun": {
+  "Tail Sweep": {
+    "Name": "Tail Sweep",
     "Expression": "target.ReceiveAttack(10)",
-    "NicheEffects": ["Disable", "SingleTarget"]
+    "NicheEffects": ["Knockback", "Sweep"]
+  },
+  "Roar": {
+    "Name": "Roar",
+    "Expression": "target.ReceiveAttack(0)",
+    "NicheEffects": ["Fear", "AOE"]
+  },
+  "Lightning Strike": {
+    "Name": "Lightning Strike",
+    "Expression": "target.ReceiveAttack(30)",
+    "NicheEffects": ["Electrify", "Instant"]
+  },
+  "Earthquake": {
+    "Name": "Earthquake",
+    "Expression": "target.ReceiveAttack(20)",
+    "NicheEffects": ["Shake", "AOE"]
+  },
+  "Defensive Aura": {
+    "Name": "Defensive Aura",
+    "Expression": "target.ReceiveAttack(-20)",
+    "NicheEffects": ["Shield", "Aura"]
+  },
+  "Rock Strike": {
+    "Name": "Rock Strike",
+    "Expression": "target.ReceiveAttack(25)",
+    "NicheEffects": ["Crush", "Direct"]
+  },
+  "Blizzard": {
+    "Name": "Blizzard",
+    "Expression": "target.ReceiveAttack(25)",
+    "NicheEffects": ["Freeze", "AOE"]
+  },
+  "Tornado Shield": {
+    "Name": "Tornado Shield",
+    "Expression": "target.ReceiveAttack(-15)",
+    "NicheEffects": ["Deflect", "Aura"]
+  },
+  "Ghastly Breath": {
+    "Name": "Ghastly Breath",
+    "Expression": "target.ReceiveAttack(20)",
+    "NicheEffects": ["Poison", "Cone"]
   }
 }

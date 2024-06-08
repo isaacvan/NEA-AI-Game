@@ -27,9 +27,8 @@ namespace MainNamespace
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // ENEMY GENERATION. see UML class diagram. clear and restart enemy classes
-        // GIVE ENEMIES KEYS THAT CORRESPON TO ATTACKS IN PROMPT, THEN LOAD ATTACK BEHAVIOURS INTO ENEMIES
-        // idk whether to store in one big json or not
+        // need to prompt engineer attack behaviours and enemy gen prompts so that the behaviour keys MATCH with the given ones. isnt clear enough.
+        // DYNAMICEXPRESSO SETUP - STATUSES
         // list of all components the ai can affect
         
         // LOADING GAMR. for testing ease. Player IDs. load all classes from already made files.
@@ -71,7 +70,14 @@ namespace MainNamespace
                     //game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0])
                     
                     logger.Info(game.attackBehaviourFactory.attackBehaviours["Fireball"].NicheEffects[0]);
+                    logger.Info(enemy.AttackBehaviours[AttackSlot.slot1].Name);
                     
+                    // perform attack
+                    logger.Info($"Performing attack... {game.player.currentHealth}");
+                    enemy.AttackBehaviours[AttackSlot.slot1].Expression.Invoke(game.player);
+                    logger.Info($"Attack complete... {game.player.currentHealth}");
+                        
+                        
                     //logger.Info(enemy.AttackBehaviours[AttackSlot.slot1]);
                     
                     

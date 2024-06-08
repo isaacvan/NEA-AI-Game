@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Guardian of the Ages Helm</Name>
+        <Description>A helm that has been passed down through generations of Chronomancers, it vibrates with temporal energy.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Wisdom</UniqueProperties>
+        <DefensiveCapabilities>Reduces temporal distortion effects on the wearer</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Aeon Chestplate</Name>
+        <Description>A chestplate that pulses with the power to stabilize and protect its wearer from time anomalies.</Description>
+        <Defence>30</Defence>
+        <UniqueProperties>+3 Constitution; Immunity to time acceleration effects</UniqueProperties>
+        <DefensiveCapabilities>Provides robust protection against all forms of physical damage</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Leggings of the Chrono Walker</Name>
+        <Description>These leggings are adorned with symbols that represent the flow of time, offering unmatched agility.</Description>
+        <Defence>18</Defence>
+        <UniqueProperties>+3 Dexterity; +1 Speed</UniqueProperties>
+        <DefensiveCapabilities>Increases the wearer's movement speed by 10%</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+</Item>

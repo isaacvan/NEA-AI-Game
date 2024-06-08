@@ -33,6 +33,11 @@ namespace EnemyClassesNamespace
         public Point Position { get; set; }
     }
 
+    // ENEMY FACTORY USAGE
+    // Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+    // ^ - To create an enemy of template[0], level 1 at (0, 0)
+    // enemy.AttackBehaviours[AttackSlot.slot1] gives the Name, Expression and NicheEffects of the attack at a given slot
+    
     public class EnemyFactory
     {
         public List<string> enemyTypes { get; set; }
@@ -55,19 +60,11 @@ namespace EnemyClassesNamespace
                 Constitution = enemyTemplate.Constitution,
                 Charisma = enemyTemplate.Charisma,
                 Level = level,
-                Position = pos
+                Position = pos,
+                AttackBehaviours = enemyTemplate.AttackBehaviours
             };
 
             return enemy;
-        }
-
-        public async Task initialiseEnemyFactory(GameSetup gameSetup, Conversation chat)
-        {
-            // enemy factory logic, use game setup for diverting to using api key
-            EnemyFactory tempEnemyFactory;
-            tempEnemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, this); // get gpt to write an json file. if testing, this will verify the existance of a test json file.
-            
-            // load temp Enemy factory properties into THIS
         }
     }
 
@@ -81,7 +78,8 @@ namespace EnemyClassesNamespace
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Charisma { get; set; }
-        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; private set; } // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
+        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
+        public List<string> AttackBehaviourKeys { get; set; } = new List<string>();
         
         public EnemyTemplate()
         {
@@ -99,20 +97,19 @@ namespace EnemyClassesNamespace
                 throw new Exception($"Attack behavior for slot {slot} already exists.");
             }
         }
-        
-        public void InitializeEnemyTemplate(AttackBehaviourFactory attackBehaviourFactory)
+
+        public AttackSlot? getNextAvailableAttackSlot()
         {
-            var enemyTemplate = new EnemyTemplate();
-            
-            // register attack behaviours
-            var magicSpell = attackBehaviourFactory.GetAttackInfo("MagicSpell");
-            var healingSpell = attackBehaviourFactory.GetAttackInfo("HealingSpell");
-
-            // Assigning attacks to specific slots
-            enemyTemplate.AssignAttackBehavior(AttackSlot.slot1, magicSpell);
-            enemyTemplate.AssignAttackBehavior(AttackSlot.slot2, healingSpell);
-
-            // Add additional logic as necessary for more slots or different enemies
+            if (!AttackBehaviours.ContainsKey(AttackSlot.slot1))
+                return AttackSlot.slot1;
+            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot2))
+                return AttackSlot.slot2;
+            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot3))
+                return AttackSlot.slot3;
+            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot4))
+                return AttackSlot.slot4;
+            else
+                return null;
         }
     }
 
@@ -125,7 +122,7 @@ namespace EnemyClassesNamespace
             var parameters = new[] { new Parameter("target", typeof(Player)) };
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
-            AttackInfo attackInfo = new AttackInfo(parsedScript, nicheEffects);
+            AttackInfo attackInfo = new AttackInfo(parsedScript, nicheEffects, key);
             attackBehaviours[key] = attackInfo;
         }
         
@@ -170,13 +167,15 @@ namespace EnemyClassesNamespace
     
     public class AttackInfo
     {
+        public string Name { get; set; }
         public Lambda Expression { get; set; }
         public List<string> NicheEffects { get; set; }
 
-        public AttackInfo(Lambda expression, List<string> nicheEffects)
+        public AttackInfo(Lambda expression, List<string> nicheEffects, string name)
         {
             Expression = expression;
             NicheEffects = nicheEffects;
+            Name = name;
         }
     }
     

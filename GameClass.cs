@@ -44,7 +44,7 @@ namespace GameClassNamespace
                 await player.updatePlayerStatsXML();
 
                 // initialise & fill enemyFactory
-                enemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory);
+                enemyFactory = await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
 
                 // initialise enemies
                 // initialise map

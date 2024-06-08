@@ -1,0 +1,67 @@
+{
+  "FireBlast": {
+    "Key": "FireBlast",
+    "Expression": "Console.WriteLine('Unleashing Fire Blast for 20 damage'); target.ReceiveDamage(20);",
+    "NicheEffects": [
+      "Burn",
+      "AOE"
+    ]
+  },
+  "IceSpike": {
+    "Key": "IceSpike",
+    "Expression": "Console.WriteLine('Casting Ice Spike for 15 damage'); target.ReceiveDamage(15);",
+    "NicheEffects": [
+      "Freeze",
+      "Pierce"
+    ]
+  },
+  "ShadowBind": {
+    "Key": "ShadowBind",
+    "Expression": "Console.WriteLine('Casting Shadow Bind'); target.Stun();",
+    "NicheEffects": [
+      "Stun",
+      "Darkness"
+    ]
+  },
+  "HealingWinds": {
+    "Key": "HealingWinds",
+    "Expression": "Console.WriteLine('Summoning Healing Winds for 25 health restoration'); target.Heal(25);",
+    "NicheEffects": [
+      "Restore",
+      "AOE"
+    ]
+  },
+  "ThunderStrike": {
+    "Key": "ThunderStrike",
+    "Expression": "Console.WriteLine('Calling down Thunder Strike for 30 damage'); target.ReceiveDamage(30);",
+    "NicheEffects": [
+      "Shock",
+      "Direct"
+    ]
+  },
+  "PoisonMist": {
+    "Key": "PoisonMist",
+    "Expression": "Console.WriteLine('Releasing Poison Mist for 10 damage over time'); target.ReceiveDamage(10);",
+    "NicheEffects": [
+      "Poison",
+      "AOE",
+      "DOT"
+    ]
+  },
+  "ArcaneBlast": {
+    "Key": "ArcaneBlast",
+    "Expression": "Console.WriteLine('Focusing Arcane Blast for 25 damage'); target.ReceiveDamage(25);",
+    "NicheEffects": [
+      "Magic",
+      "Direct"
+    ]
+  },
+  "EtherealChains": {
+    "Key": "EtherealChains",
+    "Expression": "Console.WriteLine('Binding with Ethereal Chains'); target.Stun();",
+    "NicheEffects": [
+      "Stun",
+      "Spirit"
+    ]
+  }
+}

@@ -16,7 +16,7 @@
       "Dexterity": "12",
       "Constitution": "5",
       "Charisma": "4",
-      "SpecialAttack": "The Goblin flings a clever trap, ensnaring its foe."
+      "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
     },
     {
       "Name": "Orc",
@@ -27,7 +27,7 @@
       "Dexterity": "8",
       "Constitution": "14",
       "Charisma": "3",
-      "SpecialAttack": "The Orc charges with overwhelming force, stunning its enemy."
+      "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
     },
     {
       "Name": "Dragon",
@@ -38,7 +38,7 @@
       "Dexterity": "10",
       "Constitution": "20",
       "Charisma": "18",
-      "SpecialAttack": "The Dragon breathes a searing flame, engulfing everything in its path."
+      "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
     },
     {
       "Name": "Sorcerer",
@@ -49,7 +49,7 @@
       "Dexterity": "14",
       "Constitution": "6",
       "Charisma": "12",
-      "SpecialAttack": "The Sorcerer casts a dark spell, crippling its adversary."
+      "AttackBehaviourKeys": ["Lightning Strike", "Earthquake", "Fireball", "Defensive Aura"]
     },
     {
       "Name": "Elemental",
@@ -60,7 +60,7 @@
       "Dexterity": "10",
       "Constitution": "15",
       "Charisma": "6",
-      "SpecialAttack": "The Elemental unleashes its fury, summoning a storm to ravage its foes."
+      "AttackBehaviourKeys": ["Rock Strike", "Blizzard", "Tornado Shield", "Ghastly Breath"]
     }
   ]
 }

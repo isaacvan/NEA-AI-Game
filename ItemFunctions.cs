@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml.Serialization;
+using MainNamespace;
 using Newtonsoft.Json;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -167,7 +168,7 @@ namespace ItemFunctionsNamespace
 
         public async Task initialiseItemFactoryFromNarrator(OpenAIAPI api, Conversation chat, bool testing = false)
         {
-            Console.WriteLine("Initialising Item Factory...");
+            Program.logger.Info("Initialising Item Factory...");
             
             // initialise path, should be fine with testing
             if (!testing)
@@ -340,7 +341,7 @@ namespace ItemFunctionsNamespace
             // initialise
             
 
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Item Factory Initialised", UtilityFunctions.typeSpeed);
+            Program.logger.Info("Item Factory Initialised");
         }
 
         public Item createItem(ItemTemplate template)

@@ -9,8 +9,8 @@ Health: An integer value for health, ranging from 50 to 100, appropriately scale
 ManaPoints: An integer value for Max mana points, ranging from 50 to 100
 Strength: An integer value representing the enemy's strength, adjusted according to the enemy type. Make this number anywhere from 1 to 20.
 Include Intelligence, Dexterity, Constitution and Charisma, all following the same guideline.
+AttackBehaviourKeys: Within a later request, you will need to assign a definition to every attack. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain.
 
-Special Attack: A string describing the special attack narrative that will be executed during combat.
 The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
 {
   "enemyTypes": ["Goblin", "Orc", "Dragon"],
@@ -20,22 +20,23 @@ The output should be formatted in JSON format. It is crucial that the entire out
       "Health": 50,
       "Strength": 3,
 …
-      "SpecialAttack": "The Goblin flings a clever trap."
+      "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
     },
     {
       "Name": "Orc",
       "Health": 80,
       "Strength": 11,
 …
-      "SpecialAttack": "The Orc charges with overwhelming force."
+      "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
     },
     {
       "Name": "Dragon",
       "Health": 100,
       "Strength": 20,
 …
-      "SpecialAttack": "The Dragon breathes a searing flame."
+      "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
     }
   ]
 }
+
 Your input is crucial to the generation of your world. Ensure that all the output is parsable, as any external sentences may break the system.

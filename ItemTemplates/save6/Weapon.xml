@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Echoes of Time</Name>
+        <Description>This ancient staff was once wielded by the first Chronomancer, capable of bending the fabric of time.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+5 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Slows enemy movement by 50% for 5 seconds</WeaponCapabilities>
+        <NarrativeLine>As you channel the staff's power, the air thickens and your foes' movements become sluggish.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Astral Dagger</Name>
+        <Description>A blade forged from celestial metal, it phases in and out of reality.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+2 Dexterity; +2 Strength</UniqueProperties>
+        <WeaponCapabilities>Has a 10% chance to bypass enemy armor</WeaponCapabilities>
+        <NarrativeLine>Your enemy barely sees the blade before it cuts through the air, phasing through their defenses.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Orbiting Shield</Name>
+        <Description>A floating disc that orbits the wielder, crafted from the core of a fallen star.</Description>
+        <Damage>8</Damage>
+        <WeaponType>Shield</WeaponType>
+        <UniqueProperties>+4 Constitution</UniqueProperties>
+        <WeaponCapabilities>Reflects 5% of melee damage back to the attacker</WeaponCapabilities>
+        <NarrativeLine>As an enemy strikes, the shield pulses, sending a portion of the force back upon them.</NarrativeLine>
+        <ItemEquipLocation>Accessory</ItemEquipLocation>
+    </Weapon>
+</Item>
