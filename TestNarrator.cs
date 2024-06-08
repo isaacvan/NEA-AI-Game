@@ -1,8 +1,11 @@
 ﻿
+using System.Net.Mime;
 using System.Reflection;
 using System.Xml.Serialization;
+using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
+using Newtonsoft.Json;
 using NLog;
 using OpenAI_API.Chat;
 using PlayerClassesNamespace;
@@ -77,58 +80,6 @@ namespace TestNarratorNamespace
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
             Console.WriteLine("Initialising Enemy Factory...");
-            logger.Info("Initialising Enemy Factory...");
-
-            string output = "";
-            try
-            {
-                string prompt4 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt4.txt");
-                chat.AppendUserInput(prompt4);
-                output = await chat.GetResponseFromChatbotAsync();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            if (string.IsNullOrEmpty(output.Trim()))
-            {
-                throw new Exception("No response received from GPT.");
-            }
-
-            try
-            {
-                UtilityFunctions.enemyTemplateSpecificDirectory =
-                    UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
-                if (File.Exists(UtilityFunctions.enemyTemplateSpecificDirectory))
-                {
-                    File.Delete(UtilityFunctions.enemyTemplateSpecificDirectory);
-                    // cahnge to throw error
-                    Console.WriteLine("Old save not deleted. Deleting old save then continuing");
-                }
-
-                // deserialise file into a new EnemyFactory
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            // testing
-            // Console.WriteLine(output);
-            
-            output = await UtilityFunctions.FixJson(output);
-            
-            // Console.WriteLine(output);
-            
-            // create file to be written to
-            File.Create(UtilityFunctions.enemyTemplateSpecificDirectory).Close();
-            
-            //File.WriteAllText(UtilityFunctions.enemyTemplateSpecificDirectory, output);
-            using (StreamWriter  writer = new StreamWriter(UtilityFunctions.enemyTemplateSpecificDirectory))
-            {
-                await writer.WriteAsync(output);
-            }
 
             EnemyFactory enemyFactoryToBeReturned;
             try
@@ -147,8 +98,45 @@ namespace TestNarratorNamespace
             {
                 throw new Exception("Enemy factory is null");
             }
-
+            Console.WriteLine("Enemy Factory Initialised");
             return enemyFactoryToBeReturned;
+            }
+
+            public async Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat)
+            {
+                UtilityFunctions.attackBehaviourTemplateSpecificDirectory = UtilityFunctions.attackBehaviourTemplateDir + UtilityFunctions.saveName + ".json";
+                AttackBehaviourFactory attackBehaviourFactoryToBeReturned = new AttackBehaviourFactory();
+
+                try
+                {
+                    // deserialise file into a new AttackBehaviourFactory
+                    //attackBehaviourFactoryToBeReturned =
+                    //    await UtilityFunctions.readFromJSONFile<AttackBehaviourFactory>(
+                    //        UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                    string json = File.ReadAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                    var settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new LambdaJsonConverter() }
+                    };
+                    Dictionary<string, AttackInfo> attackBehaviours = JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                    List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
+                    foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
+                    {
+                        items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
+                    }
+                    attackBehaviourFactoryToBeReturned.InitializeFromSerializedBehaviors(items);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                if (attackBehaviourFactoryToBeReturned == null)
+                {
+                    throw new Exception("Attack behaviour factory is null");
+                }
+                
+                return attackBehaviourFactoryToBeReturned;
             }
         };
     }

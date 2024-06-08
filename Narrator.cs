@@ -19,6 +19,7 @@ namespace GPTControlNamespace
         Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
 
         Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory);
+        Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
     }
     
    
@@ -200,6 +201,7 @@ namespace GPTControlNamespace
             // function to generate a json file representing the enemies and initialise an enemyFactory
             // function to generate a json file representing the enemies and initialise an enemyFactory
             Console.WriteLine("Initialising Enemy Factory...");
+            Program.logger.Info("Initialising Enemy Factory...");
 
             string output = "";
             try
@@ -272,5 +274,56 @@ namespace GPTControlNamespace
 
             return enemyFactoryToBeReturned;
             }
+        
+        public async Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat)
+        {
+            // enemy factory logic, use game setup for diverting to using api key
+            AttackBehaviourFactory tempAttackBehaviourFactory;
+
+            string output = "";
+            try
+            {
+                string prompt7 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt7.txt");
+                chat.AppendUserInput(prompt7);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (string.IsNullOrEmpty(output.Trim()))
+            {
+                throw new Exception("No response received from GPT.");
+            }
+            // testing
+            // Console.WriteLine(output);
+
+            output = await UtilityFunctions.FixJson(output);
+            
+            // testing
+            // Console.WriteLine(output);
+            // assign path
+            UtilityFunctions.attackBehaviourTemplateSpecificDirectory =
+                UtilityFunctions.attackBehaviourTemplateDir + UtilityFunctions.saveName + ".json";
+
+            // create file to be written to
+            File.Create(UtilityFunctions.attackBehaviourTemplateSpecificDirectory).Close();
+            
+            File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory, output);
+            
+            // deserialise into an attackbehaviour factory
+            try
+            {
+                tempAttackBehaviourFactory = await UtilityFunctions.readFromJSONFile<AttackBehaviourFactory>(
+                    UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
+            return tempAttackBehaviourFactory;
+        }
     }
 }

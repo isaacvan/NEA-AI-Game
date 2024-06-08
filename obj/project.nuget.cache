@@ -1,15 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "H3IlwjlGC6+o4nItCfjtr8NCPgI3aCWWFVs1C3uYgLZIwFwiCpZXQ0DTH6koW/SK2YyMDynJolJ5rrQUV5ulFw==",
+  "dgSpecHash": "+xqQq2qthlVCKPa8wstDLNEr1F+/X4cSrNfSKGRdJlrAXKJRuU4W4Xj2dx8oLl3t3qszTDfynZzUyBWk1875nw==",
   "success": true,
   "projectFilePath": "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\isaac\\.nuget\\packages\\dynamicexpresso.core\\2.16.1\\dynamicexpresso.core.2.16.1.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\emgu.cv\\4.8.1.5350\\emgu.cv.4.8.1.5350.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\emgu.cv.runtime.windows\\4.8.1.5350\\emgu.cv.runtime.windows.4.8.1.5350.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\emgu.runtime.windows.msvc.rt.arm64\\19.37.32825\\emgu.runtime.windows.msvc.rt.arm64.19.37.32825.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\emgu.runtime.windows.msvc.rt.x64\\19.37.32825\\emgu.runtime.windows.msvc.rt.x64.19.37.32825.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\emgu.runtime.windows.msvc.rt.x86\\19.37.32825\\emgu.runtime.windows.msvc.rt.x86.19.37.32825.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
+    "C:\\Users\\isaac\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\8.0.0\\microsoft.extensions.configuration.fileextensions.8.0.0.nupkg.sha512",

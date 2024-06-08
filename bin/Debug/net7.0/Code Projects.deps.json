@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "Code Projects/1.0.0": {
         "dependencies": {
+          "DynamicExpresso.Core": "2.16.1",
           "Emgu.CV": "4.8.1.5350",
           "Emgu.CV.runtime.windows": "4.8.1.5350",
           "Microsoft.Extensions.Configuration": "8.0.0",
@@ -20,6 +21,17 @@
         },
         "runtime": {
           "Code Projects.dll": {}
+        }
+      },
+      "DynamicExpresso.Core/2.16.1": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/DynamicExpresso.Core.dll": {
+            "assemblyVersion": "2.16.1.0",
+            "fileVersion": "2.16.1.0"
+          }
         }
       },
       "Emgu.CV/4.8.1.5350": {
@@ -206,6 +218,7 @@
           }
         }
       },
+      "Microsoft.CSharp/4.7.0": {},
       "Microsoft.Extensions.Configuration/8.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
@@ -588,6 +601,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "DynamicExpresso.Core/2.16.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RQxI6Ov/cfOcbTEQ8tLBJH5J7/W2uWvZjDCMTLAUZa91Z39Vj31wapSy6dyuEsw1FCZVqTipqoWw+t5qMi2ljA==",
+      "path": "dynamicexpresso.core/2.16.1",
+      "hashPath": "dynamicexpresso.core.2.16.1.nupkg.sha512"
+    },
     "Emgu.CV/4.8.1.5350": {
       "type": "package",
       "serviceable": true,
@@ -629,6 +649,13 @@
       "sha512": "sha512-yuvf07qFWFqtK3P/MRkEKLhn5r2UbSpVueRziSqj0yJQIKFwG1pq9mOayK3zE5qZCTs0CbrwL9M6R8VwqyGy2w==",
       "path": "microsoft.bcl.asyncinterfaces/1.1.1",
       "hashPath": "microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration/8.0.0": {
       "type": "package",

@@ -126,3 +126,4 @@ C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\Microsoft.Extensions.C
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\NLog.dll
 C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\NLog.Extensions.Logging.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\bin\Debug\net7.0\DynamicExpresso.Core.dll

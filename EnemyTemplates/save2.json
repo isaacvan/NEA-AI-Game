@@ -1,0 +1,66 @@
+{
+  "enemyTypes": [
+    "Shadow Reaver",
+    "Crystal Golem",
+    "Ethereal Assassin",
+    "Necrotic Mage",
+    "Feral Spirit"
+  ],
+  "enemyTemplates": [
+    {
+      "Name": "Shadow Reaver",
+      "Health": "75",
+      "ManaPoints": "60",
+      "Strength": "8",
+      "Intelligence": "7",
+      "Dexterity": "10",
+      "Constitution": "5",
+      "Charisma": "3",
+      "SpecialAttack": "The Shadow Reaver vanishes briefly, striking from the shadows for critical damage."
+    },
+    {
+      "Name": "Crystal Golem",
+      "Health": "90",
+      "ManaPoints": "50",
+      "Strength": "15",
+      "Intelligence": "3",
+      "Dexterity": "4",
+      "Constitution": "20",
+      "Charisma": "1",
+      "SpecialAttack": "The Crystal Golem radiates a blinding light, stunning its enemy."
+    },
+    {
+      "Name": "Ethereal Assassin",
+      "Health": "70",
+      "ManaPoints": "70",
+      "Strength": "12",
+      "Intelligence": "12",
+      "Dexterity": "14",
+      "Constitution": "7",
+      "Charisma": "5",
+      "SpecialAttack": "Ethereal Assassin phases through reality, delivering a deadly strike from nowhere."
+    },
+    {
+      "Name": "Necrotic Mage",
+      "Health": "80",
+      "ManaPoints": "90",
+      "Strength": "5",
+      "Intelligence": "18",
+      "Dexterity": "7",
+      "Constitution": "8",
+      "Charisma": "7",
+      "SpecialAttack": "The Necrotic Mage summons undead minions to attack its foe."
+    },
+    {
+      "Name": "Feral Spirit",
+      "Health": "85",
+      "ManaPoints": "60",
+      "Strength": "14",
+      "Intelligence": "6",
+      "Dexterity": "16",
+      "Constitution": "14",
+      "Charisma": "4",
+      "SpecialAttack": "The Feral Spirit howls, calling forth a pack of spectral wolves to assail the enemy."
+    }
+  ]
+}

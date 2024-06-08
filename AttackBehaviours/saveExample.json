@@ -1,0 +1,14 @@
+﻿{
+  "Fireball": {
+    "Expression": "target.ReceiveAttack(25)",
+    "NicheEffects": ["Burn", "AOE"]
+  },
+  "Heal": {
+    "Expression": "target.ReceiveAttack(25)",
+    "NicheEffects": ["Restore", "Instant"]
+  },
+  "Stun": {
+    "Expression": "target.ReceiveAttack(10)",
+    "NicheEffects": ["Disable", "SingleTarget"]
+  }
+}

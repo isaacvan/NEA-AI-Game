@@ -22,12 +22,16 @@ namespace MainNamespace
 {
     class Program
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         public static Game game;
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
         // ENEMY GENERATION. see UML class diagram. clear and restart enemy classes
+        // GIVE ENEMIES KEYS THAT CORRESPON TO ATTACKS IN PROMPT, THEN LOAD ATTACK BEHAVIOURS INTO ENEMIES
+        // idk whether to store in one big json or not
+        // list of all components the ai can affect
+        
         // LOADING GAMR. for testing ease. Player IDs. load all classes from already made files.
         // - LOOK AT GAMECLASS !LoadedSave
         // Player needs to have multiple moves: use enemy attack behaviours?
@@ -62,7 +66,14 @@ namespace MainNamespace
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
                     
-                    Console.WriteLine(game.enemyFactory.enemyTypes[0]);
+                    
+                    Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+                    //game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0])
+                    
+                    logger.Info(game.attackBehaviourFactory.attackBehaviours["Fireball"].NicheEffects[0]);
+                    
+                    //logger.Info(enemy.AttackBehaviours[AttackSlot.slot1]);
+                    
                     
                     //game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
                         //game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
@@ -408,6 +419,9 @@ namespace MainNamespace
             // }).Wait();
             Console.CursorVisible = false;
             gameSetup.chooseSave();
+            
+            UtilityFunctions.enemyTemplateSpecificDirectory =
+                UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
 
             Player player;
 

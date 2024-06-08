@@ -1,0 +1,66 @@
+{
+  "enemyTypes": [
+    "Goblin",
+    "Orc",
+    "Dragon",
+    "Sorcerer",
+    "Elemental"
+  ],
+  "enemyTemplates": [
+    {
+      "Name": "Goblin",
+      "Health": "50",
+      "ManaPoints": "60",
+      "Strength": "3",
+      "Intelligence": "6",
+      "Dexterity": "12",
+      "Constitution": "5",
+      "Charisma": "4",
+      "SpecialAttack": "The Goblin flings a clever trap, ensnaring its foe."
+    },
+    {
+      "Name": "Orc",
+      "Health": "80",
+      "ManaPoints": "50",
+      "Strength": "15",
+      "Intelligence": "4",
+      "Dexterity": "8",
+      "Constitution": "14",
+      "Charisma": "3",
+      "SpecialAttack": "The Orc charges with overwhelming force, stunning its enemy."
+    },
+    {
+      "Name": "Dragon",
+      "Health": "100",
+      "ManaPoints": "90",
+      "Strength": "20",
+      "Intelligence": "15",
+      "Dexterity": "10",
+      "Constitution": "20",
+      "Charisma": "18",
+      "SpecialAttack": "The Dragon breathes a searing flame, engulfing everything in its path."
+    },
+    {
+      "Name": "Sorcerer",
+      "Health": "70",
+      "ManaPoints": "100",
+      "Strength": "4",
+      "Intelligence": "20",
+      "Dexterity": "14",
+      "Constitution": "6",
+      "Charisma": "12",
+      "SpecialAttack": "The Sorcerer casts a dark spell, crippling its adversary."
+    },
+    {
+      "Name": "Elemental",
+      "Health": "90",
+      "ManaPoints": "80",
+      "Strength": "10",
+      "Intelligence": "10",
+      "Dexterity": "10",
+      "Constitution": "15",
+      "Charisma": "6",
+      "SpecialAttack": "The Elemental unleashes its fury, summoning a storm to ravage its foes."
+    }
+  ]
+}

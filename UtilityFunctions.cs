@@ -5,16 +5,21 @@ using System.Threading.Tasks;
 using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using ItemFunctionsNamespace;
 using Newtonsoft.Json;
+using DynamicExpresso;
 
 namespace UtilityFunctionsNamespace
 {
     public class UtilityFunctions
     {
+        public static Interpreter interpreter = new Interpreter()
+            .Reference(typeof(Player));  // Add this line to reference System.Console
+        
         public static int typeSpeed = 1;
         public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
@@ -30,6 +35,9 @@ namespace UtilityFunctionsNamespace
         
         public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates\";
         public static string enemyTemplateSpecificDirectory = "";
+
+        public static string attackBehaviourTemplateDir = @$"{mainDirectory}AttackBehaviours\";
+        public static string attackBehaviourTemplateSpecificDirectory = "";
         
         public static int maxSaves = 10;
         public static bool loadedSave = false;
@@ -114,6 +122,22 @@ namespace UtilityFunctionsNamespace
             }
             await Task.CompletedTask;
             return (T)objectToRead;
+        }
+        
+        public static void CopyProperties(object source, object destination)
+        {
+            if (source.GetType() != destination.GetType())
+                throw new InvalidOperationException("Mismatched types");
+
+            var properties = source.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
 
         public async static Task<string> cleanseXML(string xml)
@@ -351,6 +375,31 @@ namespace UtilityFunctionsNamespace
         public static Player CreatePlayerInstance()
         {
             return new Player();
+        }
+    }
+    
+    public class LambdaJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(Lambda);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.String)
+            {
+                var expression = reader.Value.ToString();
+                  // Allow scripts to use Console
+                return UtilityFunctions.interpreter.Parse(expression, new Parameter("target", typeof(Player)));
+            }
+            throw new JsonSerializationException("Expected string value.");
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            // Serialization logic if needed, or throw an exception if not supported.
+            throw new NotImplementedException("This converter does not support writing.");
         }
     }
 

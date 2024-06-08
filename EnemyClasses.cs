@@ -7,14 +7,17 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using DynamicExpresso;
 using GameClassNamespace;
 using GPTControlNamespace;
+using MainNamespace;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OpenAI_API.Chat;
 
 namespace EnemyClassesNamespace
 {
-    public enum AttackSlots
+    public enum AttackSlot
     {
         slot1,
         slot2,
@@ -35,30 +38,24 @@ namespace EnemyClassesNamespace
         public List<string> enemyTypes { get; set; }
         //[JsonPropertyName("enemy")]
         public List<EnemyTemplate> enemyTemplates { get; set; }
+    
 
-        public Enemy CreateEnemy(string name, int health, int manaPoints, int strength, int intelligence, int dex, int constitution, int charisma, List<string> attackTypes, int lvl, Point pos)
+        public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos)
         {
             Enemy enemy = new Enemy
             {
-                Name = name,
-                Health = health,
-                currentHealth = health,
-                ManaPoints = manaPoints,
-                currentMana = manaPoints,
-                Strength = strength,
-                Intelligence = intelligence,
-                Dexterity = dex,
-                Constitution = constitution,
-                Charisma = charisma,
-                Level = lvl,
-                Position = pos,
-                AttackBehaviours = new Dictionary<AttackSlots, IAttackBehaviour>
-                {
-                    { AttackSlots.slot1, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[0]) },
-                    { AttackSlots.slot2, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[1]) },
-                    { AttackSlots.slot3, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[2]) },
-                    { AttackSlots.slot4, AttackBehaviourFactory.CreateAttackBehaviour(attackTypes[3]) }
-                }
+                Name = enemyTemplate.Name,
+                Health = enemyTemplate.Health,
+                currentHealth = enemyTemplate.Health,
+                ManaPoints = enemyTemplate.ManaPoints,
+                currentMana = enemyTemplate.ManaPoints,
+                Strength = enemyTemplate.Strength,
+                Intelligence = enemyTemplate.Intelligence,
+                Dexterity = enemyTemplate.Dexterity,
+                Constitution = enemyTemplate.Constitution,
+                Charisma = enemyTemplate.Charisma,
+                Level = level,
+                Position = pos
             };
 
             return enemy;
@@ -84,53 +81,114 @@ namespace EnemyClassesNamespace
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Charisma { get; set; }
+        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; private set; } // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
         
-        [Newtonsoft.Json.JsonIgnore]
-        public AttackSlots AttackSlot { get; set; }
-        
-        public Dictionary<AttackSlots, IAttackBehaviour> AttackBehaviours { get; set; }
-    }
-
-    public class DynamicAttack : IAttackBehaviour
-    {
-        private readonly Action _attackAction;
-
-        public DynamicAttack(Action attackAction)
+        public EnemyTemplate()
         {
-            _attackAction = attackAction;
+            AttackBehaviours = new Dictionary<AttackSlot, AttackInfo>();
         }
 
-        public void Attack()
+        public void AssignAttackBehavior(AttackSlot slot, AttackInfo behavior)
         {
-            _attackAction();
+            if (AttackBehaviours[slot] == null)
+            {
+                AttackBehaviours[slot] = behavior; // Replace the existing behavior
+            }
+            else
+            {
+                throw new Exception($"Attack behavior for slot {slot} already exists.");
+            }
+        }
+        
+        public void InitializeEnemyTemplate(AttackBehaviourFactory attackBehaviourFactory)
+        {
+            var enemyTemplate = new EnemyTemplate();
+            
+            // register attack behaviours
+            var magicSpell = attackBehaviourFactory.GetAttackInfo("MagicSpell");
+            var healingSpell = attackBehaviourFactory.GetAttackInfo("HealingSpell");
+
+            // Assigning attacks to specific slots
+            enemyTemplate.AssignAttackBehavior(AttackSlot.slot1, magicSpell);
+            enemyTemplate.AssignAttackBehavior(AttackSlot.slot2, healingSpell);
+
+            // Add additional logic as necessary for more slots or different enemies
         }
     }
 
     public class AttackBehaviourFactory
     {
-        private static readonly Dictionary<string, Func<IAttackBehaviour>> attackBehaviours = new Dictionary<string, Func<IAttackBehaviour>>();
-
-        public static void RegisterAttackBehaviour(string attackType, Func<IAttackBehaviour> createBehaviour)
+        public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
+        
+        public void RegisterAttackBehaviour(string key, string expression, List<string> nicheEffects)
         {
-            if (!attackBehaviours.ContainsKey(attackType))
+            var parameters = new[] { new Parameter("target", typeof(Player)) };
+            Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
+        
+            AttackInfo attackInfo = new AttackInfo(parsedScript, nicheEffects);
+            attackBehaviours[key] = attackInfo;
+        }
+        
+        public void ExecuteAttack(string key, Player target)
+        {
+            if (attackBehaviours.TryGetValue(key, out var attackInfo))
             {
-                attackBehaviours[attackType] = createBehaviour;
+                attackInfo.Expression.Invoke(target); // Execute the script
+                // Optionally handle modifiers here or within the script itself
+                foreach (var effect in attackInfo.NicheEffects)
+                {
+                    Program.logger.Info($"Applying effect: {effect}");
+                }
+            }
+            else
+            {
+                Program.logger.Info($"No attack behavior found for key: {key}");
             }
         }
-
-        public static IAttackBehaviour CreateAttackBehaviour(string attackType)
+        
+        public AttackInfo GetAttackInfo(string key)
         {
-            if (attackBehaviours.ContainsKey(attackType))
+            if (attackBehaviours.TryGetValue(key, out AttackInfo attackInfo))
             {
-                return attackBehaviours[attackType]();
+                return attackInfo;
             }
-
-            throw new ArgumentException("Invalid attack type");
+            else
+            {
+                Console.WriteLine($"No attack behavior found for key: {key}");
+                return null; // Or handle this case as needed, perhaps throwing an exception or returning a default value
+            }
+        }
+        
+        public void InitializeFromSerializedBehaviors(List<SerializableAttackBehaviour> behaviours)
+        {
+            foreach (var behaviour in behaviours)
+            {
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.NicheEffects);
+            }
         }
     }
-
-    public interface IAttackBehaviour
+    
+    public class AttackInfo
     {
-        void Attack();
+        public Lambda Expression { get; set; }
+        public List<string> NicheEffects { get; set; }
+
+        public AttackInfo(Lambda expression, List<string> nicheEffects)
+        {
+            Expression = expression;
+            NicheEffects = nicheEffects;
+        }
+    }
+    
+    public class SerializableAttackBehaviour // helper class to help serialisation in json
+    {
+        public string Key { get; set; }
+        public AttackInfo AttackInfo { get; set; }
+
+        public SerializableAttackBehaviour(string Key, AttackInfo  AttackInfo)
+        {
+            this.Key = Key;
+            this.AttackInfo = AttackInfo;
+        }
     }
 }

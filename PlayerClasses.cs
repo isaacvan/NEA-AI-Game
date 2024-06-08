@@ -70,6 +70,22 @@ namespace PlayerClassesNamespace
             inventory.RemoveItem(item);
         }
 
+        public void ReceiveAttack(int damage)
+        {
+            currentHealth -= damage;
+            if (currentHealth < 0)
+            {
+                currentHealth = 0;
+                PlayerDies();
+            }
+        }
+
+        public void PlayerDies()
+        {
+            Console.WriteLine("You have died. Game over.");
+            Environment.Exit(0);
+        }
+
         public async Task initialiseInventory()
         {
             await inventory.updateInventoryJSON();

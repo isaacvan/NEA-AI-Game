@@ -17,6 +17,7 @@ namespace GameClassNamespace
         public Player player { get; set; }
         public ItemFactory itemFactory { get; set; }
         public EnemyFactory enemyFactory { get; set; }
+        public AttackBehaviourFactory attackBehaviourFactory { get;  set; }
 
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
@@ -27,6 +28,7 @@ namespace GameClassNamespace
             // initialise itemFactory & player from api. Gets UtilityFunctions.loadedSave
             itemFactory = new ItemFactory();
             player = await Program.initializeSaveAndPlayer(gameSetup, api, chat, testing);
+            attackBehaviourFactory = await gameSetup.initialiseAttackBehaviourFactoryFromNarrator(chat);
 
             if (!UtilityFunctions.loadedSave)
             {
