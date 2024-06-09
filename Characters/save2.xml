@@ -4,17 +4,17 @@
     <X>0</X>
     <Y>0</Y>
   </playerPos>
-  <Class>Aetherweaver</Class>
-  <Race>Quintari</Race>
+  <Class>Chronomancer</Class>
+  <Race>Temporal Adept</Race>
   <Health>80</Health>
   <currentHealth>80</currentHealth>
   <ManaPoints>100</ManaPoints>
   <currentMana>0</currentMana>
-  <Strength>6</Strength>
+  <Strength>5</Strength>
   <Intelligence>10</Intelligence>
   <Dexterity>7</Dexterity>
   <Constitution>6</Constitution>
-  <Charisma>6</Charisma>
+  <Charisma>7</Charisma>
   <Level>1</Level>
   <currentExp>0</currentExp>
   <maxExp>10</maxExp>

@@ -2,32 +2,32 @@
 <Item>
     <Weapon>
         <Name>Echoes of the Forgotten</Name>
-        <Description>A blade that whispers tales of ancient battles and long-lost warriors.</Description>
-        <Damage>25</Damage>
+        <Description>A blade that whispers the tales of a fallen civilization, humming with a mysterious energy.</Description>
+        <Damage>35</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+2 Strength; +1 Charisma</UniqueProperties>
-        <WeaponCapabilities>Grants the ability to unleash a spectral warrior to assist in battle for 10 seconds.</WeaponCapabilities>
-        <NarrativeLine>As you swing the blade, echoes of past warriors fill the air, bolstering your strength.</NarrativeLine>
+        <UniqueProperties>+5 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Casts a silence on the enemy, preventing spell casting for 2 turns.</WeaponCapabilities>
+        <NarrativeLine>As the blade cuts through the air, it silences the cries of its foes, drowning them in the quiet of the past.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Starfire Wand</Name>
-        <Description>A slender wand imbued with the essence of celestial bodies, warm to the touch.</Description>
-        <Damage>15</Damage>
-        <WeaponType>Wand</WeaponType>
-        <UniqueProperties>+3 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Casts a radiant beam of light, causing extended damage over time.</WeaponCapabilities>
-        <NarrativeLine>With a flick, a brilliant beam of starfire erupts, searing your foes.</NarrativeLine>
+        <Name>Chrono Staff</Name>
+        <Description>Wielded by the guardians of time, this staff controls the ebb and flow of battle.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+3 Constitution +2 Charisma</UniqueProperties>
+        <WeaponCapabilities>Slows enemy movement by 50% for 3 turns.</WeaponCapabilities>
+        <NarrativeLine>The staff's glow brightens, and the world around seems to slow, bending to the will of its master.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Whispers of the Void</Name>
-        <Description>A bow crafted from the essence of the void, absorbing light around it.</Description>
-        <Damage>20</Damage>
-        <WeaponType>Bow</WeaponType>
-        <UniqueProperties>+2 Dexterity; +1 Constitution</UniqueProperties>
-        <WeaponCapabilities>Arrows silence the target, preventing spellcasting for a brief period.</WeaponCapabilities>
-        <NarrativeLine>The arrow vanishes into shadow as it flies, striking with a muted thud.</NarrativeLine>
+        <Name>Harmony Blade</Name>
+        <Description>A dual-edged sword that balances the essence of light and darkness within each strike.</Description>
+        <Damage>40</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Dexterity +3 Strength</UniqueProperties>
+        <WeaponCapabilities>Restores 5 health to the user on hit.</WeaponCapabilities>
+        <NarrativeLine>With each swing, harmony is restored, sapping the chaos from foes to mend the wielder's wounds.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

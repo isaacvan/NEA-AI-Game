@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Xml.Serialization;
+using CombatNamespace;
 using EnemyClassesNamespace;
 using MainNamespace;
 using OpenAI_API;
@@ -21,6 +22,8 @@ namespace GPTControlNamespace
 
         Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory);
         Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
+        Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
+        Task GenerateUninitialisedStatuses(Conversation chat);
     }
     
    
@@ -32,7 +35,7 @@ namespace GPTControlNamespace
         // Testing
         public static OpenAIAPI initialiseGPT()
         {
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Initialising GPT...", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Initialising GPT...");
             //Thread.Sleep(500);
             string? apiKey = System.Environment.GetEnvironmentVariable("API_KEY");
             Console.WriteLine($"ENV API Key: {apiKey}");
@@ -58,7 +61,7 @@ namespace GPTControlNamespace
             
             
             
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Initialised GPT.", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Initialised GPT.");
             //Thread.Sleep(500);
             Console.Clear();
             
@@ -115,9 +118,7 @@ namespace GPTControlNamespace
                 {
                     if (saves.Length == i)
                     {
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n");
                         string load = Console.ReadLine();
                         if (load == "y")
                         {
@@ -132,8 +133,7 @@ namespace GPTControlNamespace
 
                 if (!started)
                 {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                        "No empty save slots. Exiting Test. Press any key to leave", UtilityFunctions.typeSpeed);
+                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No empty save slots. Exiting Test. Press any key to leave");
                     Console.ReadLine();
                     await Program.saveGameToAllStoragesAsync();
                     Environment.Exit(0);
@@ -345,6 +345,13 @@ namespace GPTControlNamespace
                     Converters = new List<JsonConverter> { new LambdaJsonConverter() }
                 };
                 Dictionary<string, AttackInfo> attackBehaviours = JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                if (attackBehaviours == null)
+                {
+                    Program.logger.Info("No attack behaviours could be deserialized from the provided JSON.");
+                    // attackBehaviours = new Dictionary<string, AttackInfo>();  // Initialize to prevent further errors
+                    Program.logger.Info(json);
+                    throw new Exception("No attack behaviours could be deserialized from the provided JSON.");
+                }
                 List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
                 foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
                 {
@@ -354,7 +361,7 @@ namespace GPTControlNamespace
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception($"An error occurred while initializing attack behaviours: {e.Message}");
             }
             
             if (tempAttackBehaviourFactory == null)
@@ -363,6 +370,147 @@ namespace GPTControlNamespace
             }
             
             return tempAttackBehaviourFactory;
+        }
+
+        public async Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat)
+        {
+            // status factory logic, use game setup for diverting to using api key
+            StatusFactory tempStatusFactory = new StatusFactory();
+
+            string output = "";
+            try
+            {
+                string prompt8 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt8.txt");
+                chat.AppendUserInput(prompt8);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (string.IsNullOrEmpty(output.Trim()))
+            {
+                throw new Exception("No response received from GPT.");
+            }
+            // testing
+            // Console.WriteLine(output);
+
+            output = await UtilityFunctions.FixJson(output);
+            // testing
+            // Console.WriteLine(output);
+            // assign path
+            UtilityFunctions.statusesSpecificDirectory =
+                UtilityFunctions.statusesDir + UtilityFunctions.saveName + ".json";
+            
+            // create file to be written to
+            File.Create(UtilityFunctions.statusesSpecificDirectory).Close();
+            File.WriteAllText(UtilityFunctions.statusesSpecificDirectory, output);
+            // deserialise into a status factory
+            try
+            {
+                tempStatusFactory = await UtilityFunctions.readFromJSONFile<StatusFactory>(
+                    UtilityFunctions.statusesSpecificDirectory);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (tempStatusFactory == null)
+            {
+                throw new Exception("Status factory is null");
+            }
+            
+            return tempStatusFactory;
+        }
+        
+        public async Task GenerateUninitialisedStatuses(Conversation chat)
+        {
+            Program.logger.Info("Generating Uninitialised Statuses...");
+
+            // get all unique statuses from enemy templates
+            
+            List<string> uninitialisedStatuses = new List<string>();
+
+            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            {
+                foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
+                {
+                    if (property.Name == "AttackBehaviours")
+                    {
+                        foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
+                        {
+                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            {
+                                foreach (string statusName in enemyTemplate.AttackBehaviours[slot].Statuses)
+                                {
+                                    List<string> statusNamesList = new List<string>();
+                                    foreach (Status status1 in Program.game.statusFactory.statusList)
+                                    {
+                                        statusNamesList.Add(status1.Name);
+                                    }
+
+                                    Status status = new Status();
+
+                                    try
+                                    {
+                                        status =
+                                            Program.game.statusFactory.statusList[
+                                                Array.IndexOf(statusNamesList.ToArray(), statusName)];
+                                    }
+                                    catch
+                                    {
+                                        // add to unititialsed statuses
+                                        uninitialisedStatuses.Add(statusName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            string output = "";
+            try
+            {
+                string prompt9 = File.ReadAllText(
+                    @$"{UtilityFunctions.promptPath}\Prompt9.txt");
+                foreach (string uninitialisedStatus in uninitialisedStatuses)
+                {
+                    prompt9 += uninitialisedStatus + "\n";
+                }
+
+                chat.AppendUserInput(prompt9);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
+            output = UtilityFunctions.FixJson(output).Result;
+
+            StatusFactory? tempStatusFactory = new StatusFactory();
+            tempStatusFactory =
+                JsonConvert.DeserializeObject<StatusFactory>(
+                    output);
+            if (tempStatusFactory == null)
+            {
+                throw new Exception("Status factory is null, in GenerateUninitialisedStatuses");
+            }
+
+            // add statuses in temp to game.StatusFactory
+            
+            foreach (Status status in tempStatusFactory.statusList)
+            {
+                Program.game.statusFactory.statusList.Add(status);
+            }
+            
+            string newStatusFactory = JsonConvert.SerializeObject(Program.game.statusFactory);
+            File.WriteAllText(UtilityFunctions.statusesSpecificDirectory, newStatusFactory);
+            
+            Program.logger.Info("Status Factory Initialised");
         }
     }
 }

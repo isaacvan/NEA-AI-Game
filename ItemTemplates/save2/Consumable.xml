@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
+        <Name>Potion of Chronal Disruption</Name>
+        <Description>A swirling liquid that seems to flicker in and out of existence, distorting time around it.</Description>
+        <Effects>Grants an extra action for 1 turn.</Effects>
+        <UniqueProperties>Can only be used once per battle.</UniqueProperties>
+        <StorylineRelevance>Created by the Timekeepers, a secret sect devoted to protecting the timeline.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
         <Name>Elixir of Shadows</Name>
-        <Description>A dark, swirling potion that grants the drinker temporary invisibility.</Description>
-        <Effects>Invisibility for 10 seconds</Effects>
-        <UniqueProperties>+5 Dexterity for the duration</UniqueProperties>
-        <StorylineRelevance>Essential for stealth missions within the Dark Citadel.</StorylineRelevance>
+        <Description>A dark potion that grants the drinker the ability to move unseen by mortal eyes.</Description>
+        <Effects>Makes the player invisible for 2 turns.</Effects>
+        <UniqueProperties>Leaves a faint trail of shadow that can only be seen by the most perceptive enemies.</UniqueProperties>
+        <StorylineRelevance>Believed to be a gift from the Nightwalker, a deity worshipped in forgotten times.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Azure Health Potion</Name>
-        <Description>A shimmering blue potion that restores health over time, crafted from the rare Azure Herb.</Description>
-        <Effects>Restores 50 Health over 10 seconds</Effects>
-        <UniqueProperties></UniqueProperties>
-        <StorylineRelevance>Created by the healers of Eldoria, crucial for survival in the wilderness.</StorylineRelevance>
-    </Consumable>
-    <Consumable>
-        <Name>Mana Crystal Shard</Name>
-        <Description>A shard from a larger mana crystal, pulsates with magical energy, instantly restoring mana.</Description>
-        <Effects>Restores 30 Mana Points</Effects>
-        <UniqueProperties>+2 Intelligence for 20 seconds after use</UniqueProperties>
-        <StorylineRelevance>Vital for mages in prolonged battles, especially in the siege of the Arcane Towers.</StorylineRelevance>
+        <Name>Arcane Bomb</Name>
+        <Description>A small orb that pulsates with contained energy, ready to unleash chaos upon detonation.</Description>
+        <Effects>Deals 20 damage to all enemies within range.</Effects>
+        <UniqueProperties>Breaks magical defenses, ignoring enemy magic resist.</UniqueProperties>
+        <StorylineRelevance>Developed by the last of the Arcanists, in a desperate bid to turn the tide of war.</StorylineRelevance>
     </Consumable>
 </Item>

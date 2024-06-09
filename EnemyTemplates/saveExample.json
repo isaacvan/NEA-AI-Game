@@ -1,66 +1,91 @@
 {
   "enemyTypes": [
-    "Goblin",
-    "Orc",
-    "Dragon",
-    "Sorcerer",
-    "Elemental"
+    "Time Wraith",
+    "Chrono Sentinel",
+    "Ethereal Phantom",
+    "Void Serpent",
+    "Temporal Guardian"
   ],
   "enemyTemplates": [
     {
-      "Name": "Goblin",
-      "Health": "50",
-      "ManaPoints": "60",
-      "Strength": "3",
-      "Intelligence": "6",
-      "Dexterity": "12",
-      "Constitution": "5",
+      "Name": "Time Wraith",
+      "Health": "60",
+      "ManaPoints": "70",
+      "Strength": "5",
+      "Intelligence": "12",
+      "Dexterity": "15",
+      "Constitution": "8",
       "Charisma": "4",
-      "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
+      "AttackBehaviourKeys": [
+        "ShadowLeap",
+        "WindSlash",
+        "SpiritCall",
+        "MudThrow"
+      ]
     },
     {
-      "Name": "Orc",
-      "Health": "80",
-      "ManaPoints": "50",
-      "Strength": "15",
-      "Intelligence": "4",
-      "Dexterity": "8",
-      "Constitution": "14",
-      "Charisma": "3",
-      "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
-    },
-    {
-      "Name": "Dragon",
-      "Health": "100",
+      "Name": "Chrono Sentinel",
+      "Health": "85",
       "ManaPoints": "90",
-      "Strength": "20",
+      "Strength": "10",
       "Intelligence": "15",
       "Dexterity": "10",
-      "Constitution": "20",
-      "Charisma": "18",
-      "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
-    },
-    {
-      "Name": "Sorcerer",
-      "Health": "70",
-      "ManaPoints": "100",
-      "Strength": "4",
-      "Intelligence": "20",
-      "Dexterity": "14",
-      "Constitution": "6",
-      "Charisma": "12",
-      "AttackBehaviourKeys": ["Lightning Strike", "Earthquake", "Fireball", "Defensive Aura"]
-    },
-    {
-      "Name": "Elemental",
-      "Health": "90",
-      "ManaPoints": "80",
-      "Strength": "10",
-      "Intelligence": "10",
-      "Dexterity": "10",
-      "Constitution": "15",
+      "Constitution": "14",
       "Charisma": "6",
-      "AttackBehaviourKeys": ["Rock Strike", "Blizzard", "Tornado Shield", "Ghastly Breath"]
+      "AttackBehaviourKeys": [
+        "ThunderStrike",
+        "SolarBeam",
+        "EarthquakePunch",
+        "LightningRod"
+      ]
+    },
+    {
+      "Name": "Ethereal Phantom",
+      "Health": "70",
+      "ManaPoints": "80",
+      "Strength": "8",
+      "Intelligence": "14",
+      "Dexterity": "18",
+      "Constitution": "10",
+      "Charisma": "5",
+      "AttackBehaviourKeys": [
+        "IceShard",
+        "NecroticTouch",
+        "VenomSpit",
+        "ArcaneMissile"
+      ]
+    },
+    {
+      "Name": "Void Serpent",
+      "Health": "90",
+      "ManaPoints": "100",
+      "Strength": "15",
+      "Intelligence": "10",
+      "Dexterity": "12",
+      "Constitution": "13",
+      "Charisma": "7",
+      "AttackBehaviourKeys": [
+        "FlameWhip",
+        "PoisonBite",
+        "WaterBlast",
+        "RockSmash"
+      ]
+    },
+    {
+      "Name": "Temporal Guardian",
+      "Health": "100",
+      "ManaPoints": "60",
+      "Strength": "20",
+      "Intelligence": "8",
+      "Dexterity": "14",
+      "Constitution": "18",
+      "Charisma": "10",
+      "AttackBehaviourKeys": [
+        "DragonBreath",
+        "GoblinJab",
+        "OrcSlam",
+        "SolarBeam"
+      ]
     }
   ]
 }

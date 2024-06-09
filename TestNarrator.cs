@@ -1,7 +1,7 @@
-﻿
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Reflection;
 using System.Xml.Serialization;
+using CombatNamespace;
 using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
@@ -19,7 +19,7 @@ namespace TestNarratorNamespace
         public class GameTest1 : GameSetup
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
-            
+
             public void chooseSave()
             {
                 UtilityFunctions.saveSlot = "saveExample.xml";
@@ -76,59 +76,63 @@ namespace TestNarratorNamespace
                 return player;
             }
 
-            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
+            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat,
+                EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
             {
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
                 Program.logger.Info("Initialising Enemy Factory...");
 
-            EnemyFactory enemyFactoryToBeReturned;
-            try
-            {
-                
-                // deserialise file into a new EnemyFactory
-                enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
-                    UtilityFunctions.enemyTemplateSpecificDirectory);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            if (enemyFactoryToBeReturned == null)
-            {
-                throw new Exception("Enemy factory is null");
-            }
-
-            foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
-            { // load attack behaviours into enemy templates
-                foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                EnemyFactory enemyFactoryToBeReturned;
+                try
                 {
-                    if (enemyTemplate.AttackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
-                    {
-                        // load in the attack behaviour
-                        AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
-                        if (attackSlotNullable == null)
-                        {
-                            throw new Exception("No available attack slots found for enemy template " +
-                                                enemyTemplate.Name);
-                        }
-                        
-                        AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
+                    // deserialise file into a new EnemyFactory
+                    enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
+                        UtilityFunctions.enemyTemplateSpecificDirectory);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
-                        // add the attack behaviour to the enemy templat
-                        enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                if (enemyFactoryToBeReturned == null)
+                {
+                    throw new Exception("Enemy factory is null");
+                }
+
+                foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
+                {
+                    // load attack behaviours into enemy templates
+                    foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                    {
+                        if (enemyTemplate.AttackBehaviourKeys
+                            .Contains(attackBehaviour
+                                .Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                        {
+                            // load in the attack behaviour
+                            AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                            if (attackSlotNullable == null)
+                            {
+                                throw new Exception("No available attack slots found for enemy template " +
+                                                    enemyTemplate.Name);
+                            }
+
+                            AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
+
+                            // add the attack behaviour to the enemy templat
+                            enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                        }
                     }
                 }
-            }
-            
-            Program.logger.Info("Enemy Factory Initialised");
-            return enemyFactoryToBeReturned;
+
+                Program.logger.Info("Enemy Factory Initialised");
+                return enemyFactoryToBeReturned;
             }
 
             public async Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat)
             {
-                UtilityFunctions.attackBehaviourTemplateSpecificDirectory = UtilityFunctions.attackBehaviourTemplateDir + UtilityFunctions.saveName + ".json";
+                UtilityFunctions.attackBehaviourTemplateSpecificDirectory =
+                    UtilityFunctions.attackBehaviourTemplateDir + UtilityFunctions.saveName + ".json";
                 AttackBehaviourFactory attackBehaviourFactoryToBeReturned = new AttackBehaviourFactory();
 
                 try
@@ -142,12 +146,14 @@ namespace TestNarratorNamespace
                     {
                         Converters = new List<JsonConverter> { new LambdaJsonConverter() }
                     };
-                    Dictionary<string, AttackInfo> attackBehaviours = JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                    Dictionary<string, AttackInfo> attackBehaviours =
+                        JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
                     List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
                     foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
                     {
                         items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
                     }
+
                     attackBehaviourFactoryToBeReturned.InitializeFromSerializedBehaviors(items);
                 }
                 catch (Exception e)
@@ -159,9 +165,40 @@ namespace TestNarratorNamespace
                 {
                     throw new Exception("Attack behaviour factory is null");
                 }
-                
+
                 return attackBehaviourFactoryToBeReturned;
             }
-        };
+
+            public async Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat)
+            {
+                // status factory logic, use game setup for diverting to using api key
+                StatusFactory tempStatusFactory = new StatusFactory();
+
+                UtilityFunctions.statusesSpecificDirectory =
+                    UtilityFunctions.statusesDir + UtilityFunctions.saveName + ".json";
+
+                try
+                {
+                    tempStatusFactory = await UtilityFunctions.readFromJSONFile<StatusFactory>(
+                        UtilityFunctions.statusesSpecificDirectory);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                if (tempStatusFactory == null)
+                {
+                    throw new Exception("Status factory is null");
+                }
+
+                return tempStatusFactory;
+            }
+
+            public async Task GenerateUninitialisedStatuses(Conversation chat)
+            {
+                Program.logger.Info("Example file has uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
+            }
+        }
     }
 }

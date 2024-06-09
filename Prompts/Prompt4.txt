@@ -9,7 +9,7 @@ Health: An integer value for health, ranging from 50 to 100, appropriately scale
 ManaPoints: An integer value for Max mana points, ranging from 50 to 100
 Strength: An integer value representing the enemy's strength, adjusted according to the enemy type. Make this number anywhere from 1 to 20.
 Include Intelligence, Dexterity, Constitution and Charisma, all following the same guideline.
-AttackBehaviourKeys: Within a later request, you will need to assign a definition to every attack. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain.
+AttackBehaviourKeys: Within an earlier request, you generated a variety of attacks. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain. They must correspond with the already generated behaviours.
 
 The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
 {

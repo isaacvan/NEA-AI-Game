@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CombatNamespace;
 using DynamicExpresso;
 using GameClassNamespace;
 using GPTControlNamespace;
@@ -36,7 +37,7 @@ namespace EnemyClassesNamespace
     // ENEMY FACTORY USAGE
     // Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
     // ^ - To create an enemy of template[0], level 1 at (0, 0)
-    // enemy.AttackBehaviours[AttackSlot.slot1] gives the Name, Expression and NicheEffects of the attack at a given slot
+    // enemy.AttackBehaviours[AttackSlot.slot1] gives the Name, Expression and Statuses of the attack at a given slot
     
     public class EnemyFactory
     {
@@ -117,12 +118,12 @@ namespace EnemyClassesNamespace
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
         
-        public void RegisterAttackBehaviour(string key, string expression, List<string> nicheEffects)
+        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses)
         {
             var parameters = new[] { new Parameter("target", typeof(Player)) };
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
-            AttackInfo attackInfo = new AttackInfo(parsedScript, nicheEffects, key);
+            AttackInfo attackInfo = new AttackInfo(parsedScript, statuses, key);
             attackBehaviours[key] = attackInfo;
         }
         
@@ -132,7 +133,7 @@ namespace EnemyClassesNamespace
             {
                 attackInfo.Expression.Invoke(target); // Execute the script
                 // Optionally handle modifiers here or within the script itself
-                foreach (var effect in attackInfo.NicheEffects)
+                foreach (var effect in attackInfo.Statuses)
                 {
                     Program.logger.Info($"Applying effect: {effect}");
                 }
@@ -160,7 +161,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.NicheEffects);
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses);
             }
         }
     }
@@ -169,12 +170,12 @@ namespace EnemyClassesNamespace
     {
         public string Name { get; set; }
         public Lambda Expression { get; set; }
-        public List<string> NicheEffects { get; set; }
+        public List<string> Statuses { get; set; }
 
-        public AttackInfo(Lambda expression, List<string> nicheEffects, string name)
+        public AttackInfo(Lambda expression, List<string> statuses, string name)
         {
             Expression = expression;
-            NicheEffects = nicheEffects;
+            Statuses = statuses;
             Name = name;
         }
     }

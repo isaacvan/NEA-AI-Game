@@ -1,13 +1,13 @@
 ﻿Your next job as the narrator is to generate a JSON file that represents a collection of attack behaviors that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
 
-Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys should match to your previously generated keys.
+Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys will be used later. Bear in mind you will generate at least 5 enemies, so you will need 4 keys per enemy (minimum 20).
 Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage). Ensure the damage corresponds to the attack magnitude and the context of the game.
-NicheEffects: A list of strings describing special effects or properties of the attack, which can influence gameplay mechanics or visuals.
+Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
 Here is how each component should be formatted and an example for each:
 
-Key: Should be the name of the attack..
+Key: Should be the name of the attack, like "Fireball".
 Expression: Should include a method call on target, like "target.ReceiveAttack(50)". 
-NicheEffects: Should include terms that describe the attack’s impact, like ["Burn", "AOE"] for an area damage effect or ["Restore", "Instant"] for a healing effect.
+Statuses: These are the status effects that the attack applies. .
 
 All behaviours should match the keys used for previous enemies. See the following example:
 
@@ -15,24 +15,24 @@ All behaviours should match the keys used for previous enemies. See the followin
   "Stab": {
     "Name": "Stab",
     "Expression": "target.ReceiveAttack(5)",
-    "NicheEffects": ["Quick", "Direct"]
+    "Statuses": []
   },
   "Bloody Slice": {
     "Name": "Bloody Slice",
     "Expression": "target.ReceiveAttack(10)",
-    "NicheEffects": ["Bleed", "Direct"]
+    "Statuses": ["Bleed"]
   },
   "Backstab": {
     "Name": "Backstab",
     "Expression": "target.ReceiveAttack(15)",
-    "NicheEffects": ["Critical", "Stealth"]
+    "Statuses": ["Cripple", "Cloaked"]
   },
   "Taunt": {
     "Name": "Taunt",
     "Expression": "target.ReceiveAttack(0)",
-    "NicheEffects": ["Aggro", "Area"]
+    "Statuses": ["AtkPowered", "DefenceBoost"]
   }
   ...
 }
 
-Ensure all output is parsable. This is crucial, as if any of your output is not code parsable, the code will break.
+Ensure all output is parsable. This is crucial, as if any of your output is not code parsable, the code will break. Your only command in target.ReceiveAttack(int), anything else is not accepted. If a single command is of different syntax, the code will break.

@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Whispering Blade</Name>
-        <Description>A slender sword that seems to hum with a strange energy when swung. Crafted from the lost metal of Azurinth.</Description>
-        <Damage>25</Damage>
+        <Name>Echoes of the Forgotten</Name>
+        <Description>A blade that whispers the tales of a fallen civilization, humming with a mysterious energy.</Description>
+        <Damage>35</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+2 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Chance to silence enemy spellcasters for 5 seconds</WeaponCapabilities>
-        <NarrativeLine>As the blade cuts through the air, a silent hush falls over the enemy’s arcane whispers.</NarrativeLine>
+        <UniqueProperties>+5 Intelligence</UniqueProperties>
+        <WeaponCapabilities>Casts a silence on the enemy, preventing spell casting for 2 turns.</WeaponCapabilities>
+        <NarrativeLine>As the blade cuts through the air, it silences the cries of its foes, drowning them in the quiet of the past.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Ember Staff</Name>
-        <Description>An ancient staff, smoldering with a contained inferno, once wielded by the pyromancer Eldrit.</Description>
-        <Damage>18</Damage>
+        <Name>Chrono Staff</Name>
+        <Description>Wielded by the guardians of time, this staff controls the ebb and flow of battle.</Description>
+        <Damage>25</Damage>
         <WeaponType>Staff</WeaponType>
-        <UniqueProperties>+3 Intelligence; +2 Mana Points</UniqueProperties>
-        <WeaponCapabilities>Ignites the target for additional fire damage over 10 seconds</WeaponCapabilities>
-        <NarrativeLine>Flames wrap around the foe, burning essence and flesh alike.</NarrativeLine>
+        <UniqueProperties>+3 Constitution +2 Charisma</UniqueProperties>
+        <WeaponCapabilities>Slows enemy movement by 50% for 3 turns.</WeaponCapabilities>
+        <NarrativeLine>The staff's glow brightens, and the world around seems to slow, bending to the will of its master.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Bonecrusher Mace</Name>
-        <Description>A hefty mace made from the skull of the dread beast Gormar. Its hits echo the beast’s roars.</Description>
-        <Damage>30</Damage>
-        <WeaponType>Mace</WeaponType>
-        <UniqueProperties>+3 Strength</UniqueProperties>
-        <WeaponCapabilities>Stuns the enemy for 3 seconds</WeaponCapabilities>
-        <NarrativeLine>With every hit, the sound of Gormar's roar fills the air, stunning those who hear it.</NarrativeLine>
+        <Name>Harmony Blade</Name>
+        <Description>A dual-edged sword that balances the essence of light and darkness within each strike.</Description>
+        <Damage>40</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Dexterity +3 Strength</UniqueProperties>
+        <WeaponCapabilities>Restores 5 health to the user on hit.</WeaponCapabilities>
+        <NarrativeLine>With each swing, harmony is restored, sapping the chaos from foes to mend the wielder's wounds.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

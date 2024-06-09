@@ -88,8 +88,9 @@ namespace PlayerClassesNamespace
             Environment.Exit(0);
         }
 
-        public void ApplyStatus(Status status, int turns) // DYNAMICEXPRESSO
+        public void ApplyStatus(string statusName, int turns) // DYNAMICEXPRESSO
         {
+            Status status = new Status();
             
         }
 
@@ -144,7 +145,7 @@ namespace PlayerClassesNamespace
 
             // load prompt 5
             string prompt5 = "";
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
             try
             {
                 prompt5 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt5.txt");
@@ -183,7 +184,7 @@ namespace PlayerClassesNamespace
             currentHealth = Health;
             // this.
             Program.logger.Info("Character Created");
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
 

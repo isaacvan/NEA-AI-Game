@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <playerPos>
-    <X>0</X>
-    <Y>0</Y>
-  </playerPos>
-  <Class>Chronomancer</Class>
-  <Race>Time Weaver</Race>
-  <Health>80</Health>
-  <currentHealth>80</currentHealth>
-  <ManaPoints>100</ManaPoints>
-  <currentMana>0</currentMana>
-  <Strength>5</Strength>
-  <Intelligence>10</Intelligence>
-  <Dexterity>8</Dexterity>
-  <Constitution>7</Constitution>
-  <Charisma>5</Charisma>
-  <Level>1</Level>
-  <currentExp>0</currentExp>
-  <maxExp>10</maxExp>
+<Player>
+    <Class>Mystic Knight</Class>
+    <Race>Arcanthurian</Race>
+    <Health>85</Health>
+    <ManaPoints>90</ManaPoints>
+    <Strength>7</Strength>
+    <Intelligence>9</Intelligence>
+    <Dexterity>6</Dexterity>
+    <Constitution>7</Constitution>
+    <Charisma>6</Charisma>
 </Player>

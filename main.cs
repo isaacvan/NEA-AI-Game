@@ -8,14 +8,17 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
+using CombatNamespace;
 using ItemFunctionsNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using GameClassNamespace;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Targets;
 using TestNarratorNamespace;
+using EnemyTemplate = EnemyClassesNamespace.EnemyTemplate;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace MainNamespace
@@ -27,9 +30,9 @@ namespace MainNamespace
         
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // need to prompt engineer attack behaviours and enemy gen prompts so that the behaviour keys MATCH with the given ones. isnt clear enough.
-        // DYNAMICEXPRESSO SETUP - STATUSES
-        // list of all components the ai can affect
+        // DYNAMICEXPRESSO SETUP - STATUSES; give AI more command freedom? crits %? attack details (e.g Direct, AOE)
+        // code to apply a Status status to an object (Player or Enemy), evaluating components
+        // change statusList into a dictionary?? might be fiddly - would need to change prompt and json structure
         
         // LOADING GAMR. for testing ease. Player IDs. load all classes from already made files.
         // - LOOK AT GAMECLASS !LoadedSave
@@ -64,26 +67,8 @@ namespace MainNamespace
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
-                    
-                    
-                    Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
-                    //game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0])
-                    
-                    logger.Info(game.attackBehaviourFactory.attackBehaviours["Fireball"].NicheEffects[0]);
-                    logger.Info(enemy.AttackBehaviours[AttackSlot.slot1].Name);
-                    
-                    // perform attack
-                    logger.Info($"Performing attack... {game.player.currentHealth}");
-                    enemy.AttackBehaviours[AttackSlot.slot1].Expression.Invoke(game.player);
-                    logger.Info($"Attack complete... {game.player.currentHealth}");
                         
-                        
-                    //logger.Info(enemy.AttackBehaviours[AttackSlot.slot1]);
                     
-                    
-                    //game.player.EquipItem(EquippableItem.EquipLocation.Weapon,
-                        //game.itemFactory.createItem(game.itemFactory.weaponTemplates[1]));
-                    //game.player.equipment.updateEquipmentJSON();
                     
                     Console.ReadLine();
                     break;
@@ -110,7 +95,7 @@ namespace MainNamespace
             args.Cancel = true;
             
             saveGameToAllStoragesSync();
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
             
             // exit smoothly
             Environment.Exit(0);
@@ -309,33 +294,16 @@ namespace MainNamespace
                 UtilityFunctions.clearScreen(null);
                 Console.SetWindowSize(80, 15); // Adjust the window size to fit your preference
                 Console.Title = "Dungeon Crawler Menu";
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║",
-                    UtilityFunctions.typeSpeed);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}",
-                    UtilityFunctions.typeSpeed);
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}");
                 Console.WriteLine();
-                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                    $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ", UtilityFunctions.typeSpeed);
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ");
                 int choice;
                 if (int.TryParse(Console.ReadLine(), out choice))
                 {
@@ -351,9 +319,7 @@ namespace MainNamespace
                             {
                                 if (saves.Count == i)
                                 {
-                                    UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                        $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n",
-                                        UtilityFunctions.typeSpeed);
+                                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n");
                                     string load = Console.ReadLine();
                                     if (load == "y")
                                     {
@@ -370,9 +336,7 @@ namespace MainNamespace
 
                             if (!started)
                             {
-                                UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                    "No empty save slots. Please choose a different option.",
-                                    UtilityFunctions.typeSpeed);
+                                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No empty save slots. Please choose a different option.");
                                 Thread.Sleep(1000);
                             }
 
@@ -400,16 +364,14 @@ namespace MainNamespace
                             // Exit the game
                             break;
                         default:
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                                "Invalid choice. Please select a valid option.", UtilityFunctions.typeSpeed);
+                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid choice. Please select a valid option.");
                             Thread.Sleep(1000);
                             break;
                     }
                 }
                 else
                 {
-                    UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid input. Please enter a valid number.",
-                        UtilityFunctions.typeSpeed);
+                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid input. Please enter a valid number.");
                 }
             }
 
@@ -481,15 +443,13 @@ namespace MainNamespace
                     while (!valid)
                     {
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "Choose a save slot:\n",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Choose a save slot:\n");
 
                         for (int i = 0;
                              i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml").Length;
                              i++)
                         {
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant, $"{i + 1}. Save Slot {i + 1}\n",
-                                UtilityFunctions.typeSpeed);
+                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{i + 1}. Save Slot {i + 1}\n");
                         }
 
                         saveSlot = Console.ReadLine();
@@ -500,8 +460,7 @@ namespace MainNamespace
                         }
                         else
                         {
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid input.",
-                                UtilityFunctions.typeSpeed);
+                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid input.");
                             Thread.Sleep(1000);
                         }
                     }
@@ -528,16 +487,15 @@ namespace MainNamespace
         public static bool options(bool gameStarted, bool saveChosen)
         {
             UtilityFunctions.clearScreen(null);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Options menu.\n", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[1] Back to game.\n", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[2] Change type of music.\n",
-                UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[3] Change difficulty.\n", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[4] Change type of sound effects.\n",
-                UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[6] Clear all Saves.\n", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "[5] Exit game.\n", UtilityFunctions.typeSpeed);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Choose an option: ", UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Options menu.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[1] Back to game.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[2] Change type of music.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[3] Change difficulty.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[4] Change type of sound effects.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[5] Exit game.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[6] Clear all saves.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[7] Set example save.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Choose an option: ");
             int choice;
             if (int.TryParse(Console.ReadLine(), out choice))
             {
@@ -549,29 +507,25 @@ namespace MainNamespace
                     // Back to main menu
                     case 2:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "No Music yet, check back later.",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Music yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change type of music
                     case 3:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "No Difficulty yet, check back later.",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Difficulty yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change difficulty
                     case 4:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "No Sound Effects yet, check back later.",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Sound Effects yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change type of sound effects
                     case 6:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant,
-                            "Are you sure you want to clear all Characters? y/n\n", UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Are you sure you want to clear all Characters? y/n\n");
                         string clearSaves = Console.ReadLine();
                         if (clearSaves == "y")
                         {
@@ -586,8 +540,7 @@ namespace MainNamespace
                         else
                         {
                             UtilityFunctions.clearScreen(null);
-                            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Saves not cleared.\n",
-                                UtilityFunctions.typeSpeed);
+                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Saves not cleared.\n");
                             Thread.Sleep(1000);
                             return options(gameStarted, saveChosen);
                         }
@@ -598,10 +551,13 @@ namespace MainNamespace
                         saveGameToAllStoragesAsync().GetAwaiter().GetResult();
                         Environment.Exit(0);
                         return false;
+                    case 7:
+                        SetExampleSaves();
+                        Thread.Sleep(1000);
+                        return options(gameStarted, saveChosen);
                     default:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid option.\n",
-                            UtilityFunctions.typeSpeed);
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid option.\n");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                 }
@@ -609,18 +565,102 @@ namespace MainNamespace
             else
             {
                 UtilityFunctions.clearScreen(null);
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Invalid option.\n", UtilityFunctions.typeSpeed);
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid option.\n");
                 Thread.Sleep(1000);
                 return options(gameStarted, saveChosen);
             }
+        }
+
+        public static void SetExampleSaves()
+        {
+            // this function will overwrite every saveExample.(ext) to a save(int), as inputted.
+            List<string> directories = new List<string>();
+            string main = UtilityFunctions.mainDirectory;
+            directories.Add(@$"{main}AttackBehaviours\");
+            directories.Add(@$"{main}Characters\");
+            directories.Add(@$"{main}EnemyTemplates\");
+            directories.Add(@$"{main}Equipments\");
+            directories.Add(@$"{main}Inventories\");
+            directories.Add(@$"{main}Statuses\");
+            
+            Console.Clear();
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Enter a save (e.g: save1)\n");
+            string saveName = Console.ReadLine();
+
+            try
+            {
+                foreach (string dir in directories)
+                {
+                    string examplePathNoExt = dir + "saveExample";
+                    if (!File.Exists(examplePathNoExt + ".xml") && !File.Exists(examplePathNoExt + ".json"))
+                    {
+                        File.Create(examplePathNoExt).Close();
+                        Program.logger.Info($"No example file. Created a blank.");
+                    }
+                    string pathToReadNoExt = dir + saveName;
+
+                    bool json = true;
+                    
+                    try
+                    {
+                        // if no error, file is json
+                        JsonConvert.DeserializeObject(File.ReadAllText(pathToReadNoExt + ".json"));
+                    }
+                    catch
+                    { // if error, file is xml
+                        json = false;
+                    }
+                    
+                    // copy the example file to the new save file
+                    if (json)
+                    {
+                        File.Copy(pathToReadNoExt + ".json", examplePathNoExt + ".json", true);
+                    }
+                    else
+                    {
+                        File.Copy(pathToReadNoExt + ".xml", examplePathNoExt + ".xml", true);
+                    }
+
+                    Program.logger.Info($"Copied {pathToReadNoExt} to {examplePathNoExt}");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            try
+            {
+                List<string> itemTemplatePaths =
+                    Directory.GetFiles(UtilityFunctions.mainDirectory + @"ItemTemplates\" + saveName).ToList();
+                foreach (string path in itemTemplatePaths)
+                {
+                    List<string> newPaths = Directory
+                        .GetFiles(UtilityFunctions.mainDirectory + @"ItemTemplates\saveExamples").ToList();
+                    foreach (string newPath in newPaths)
+                    {
+                        if (Path.GetFileNameWithoutExtension(path) == Path.GetFileNameWithoutExtension(newPath))
+                        {
+                            File.Copy(path, newPath, true);
+                            Program.logger.Info($"Copied {path} to {newPath}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Done.\n");
+            Thread.Sleep(1000);
         }
 
         public static void DeleteAllSaves()
         {
             // delete Characters
             UtilityFunctions.clearScreen(null);
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Clearing all Characters...\n",
-                UtilityFunctions.typeSpeed);
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Clearing all Characters...\n");
             string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
             foreach (string save in saves)
             {
@@ -685,6 +725,28 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(enemyTemplate) != "saveExample")
                 {
                     File.Delete(enemyTemplate);
+                }
+            }
+            
+            // delete statuses
+            string[] statuses =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Statuses", searchPattern: "*.json");
+            foreach (string status in statuses)
+            {
+                if (Path.GetFileNameWithoutExtension(status) != "saveExample")
+                {
+                    File.Delete(status);
+                }
+            }
+            
+            // delete attackbehaviours
+            string[] attackBehaviours =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}AttackBehaviours", searchPattern: "*.json");
+            foreach (string attackBehaviour in attackBehaviours)
+            {
+                if (Path.GetFileNameWithoutExtension(attackBehaviour) != "saveExample")
+                {
+                    File.Delete(attackBehaviour);
                 }
             }
         }

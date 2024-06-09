@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Cloak of Whispering Shadows</Name>
-        <Description>A cloak that seems to absorb light, enhancing the wearer's stealth abilities.</Description>
-        <Defence>18</Defence>
-        <UniqueProperties>+3 Dexterity; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Allows the wearer to blend into the shadows, greatly reducing enemy detection.</DefensiveCapabilities>
+        <Name>Cloak of the Timeless</Name>
+        <Description>A cloak that shimmers with threads of pure time, wrapping its wearer in moments past and future.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+3 Intelligence; +2 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Has a chance to rewind time, negating the damage from one attack per battle.</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Boots of Silent Steps</Name>
-        <Description>These boots make no sound, regardless of the surface they tread upon.</Description>
-        <Defence>8</Defence>
-        <UniqueProperties>+2 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Increases movement speed silently, perfect for stealth missions.</DefensiveCapabilities>
+        <Name>Boots of the Windwalker</Name>
+        <Description>Boots that carry the blessing of the ancient deity of wind, granting swiftness to the wearer.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Increases movement speed, allowing for faster evasion.</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Mask of the Night Seer</Name>
-        <Description>A mask that grants its wearer the ability to see clearly in complete darkness.</Description>
-        <Defence>12</Defence>
-        <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Grants night vision, revealing hidden traps and enemies in the dark.</DefensiveCapabilities>
+        <Name>Mask of Visions</Name>
+        <Description>A mask that reveals the weak points of enemies, crafted from the essence of foresight.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Charigence</UniqueProperties>
+        <DefensiveCapabilities>Improves critical hit chance by revealing enemy vulnerabilities.</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
 </Item>

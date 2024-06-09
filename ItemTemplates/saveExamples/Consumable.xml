@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
-        <Name>Elixir of the Ancient Sage</Name>
-        <Description>A vial containing a potion brewed from the wisdom of millennia. Restores 20 MP and increases intelligence temporarily.</Description>
-        <Effects>Restores 20 Mana Points; +5 Intelligence for 120 seconds</Effects>
-        <UniqueProperties>One-time use</UniqueProperties>
-        <StorylineRelevance>Discovered in the ruins of the Old Mage Tower, vital for deciphering ancient texts.</StorylineRelevance>
+        <Name>Potion of Chronal Disruption</Name>
+        <Description>A swirling liquid that seems to flicker in and out of existence, distorting time around it.</Description>
+        <Effects>Grants an extra action for 1 turn.</Effects>
+        <UniqueProperties>Can only be used once per battle.</UniqueProperties>
+        <StorylineRelevance>Created by the Timekeepers, a secret sect devoted to protecting the timeline.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Phoenix Feather</Name>
-        <Description>A shimmering feather that holds the essence of a phoenix. Revives the user with 50% health on death.</Description>
-        <Effects>Revives with 50% Health</Effects>
-        <UniqueProperties>One-time use; Automatically activated upon first death</UniqueProperties>
-        <StorylineRelevance>Gifted by the Phoenix Queen after a crucial storyline battle, symbolizing rebirth and new beginnings.</StorylineRelevance>
+        <Name>Elixir of Shadows</Name>
+        <Description>A dark potion that grants the drinker the ability to move unseen by mortal eyes.</Description>
+        <Effects>Makes the player invisible for 2 turns.</Effects>
+        <UniqueProperties>Leaves a faint trail of shadow that can only be seen by the most perceptive enemies.</UniqueProperties>
+        <StorylineRelevance>Believed to be a gift from the Nightwalker, a deity worshipped in forgotten times.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Shadeleaf Extract</Name>
-        <Description>A potent concoction made from the rare Shadeleaf, granting temporary invisibility.</Description>
-        <Effects>Grants invisibility for 30 seconds</Effects>
-        <UniqueProperties>One-time use</UniqueProperties>
-        <StorylineRelevance>Used stealthily to infiltrate the enemy's stronghold in a critical mission.</StorylineRelevance>
+        <Name>Arcane Bomb</Name>
+        <Description>A small orb that pulsates with contained energy, ready to unleash chaos upon detonation.</Description>
+        <Effects>Deals 20 damage to all enemies within range.</Effects>
+        <UniqueProperties>Breaks magical defenses, ignoring enemy magic resist.</UniqueProperties>
+        <StorylineRelevance>Developed by the last of the Arcanists, in a desperate bid to turn the tide of war.</StorylineRelevance>
     </Consumable>
 </Item>
