@@ -199,6 +199,11 @@ namespace TestNarratorNamespace
             {
                 Program.logger.Info("Example file has uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
             }
+            
+            public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
+            {
+                Program.logger.Info("Example file has uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
+            }
         }
     }
 }

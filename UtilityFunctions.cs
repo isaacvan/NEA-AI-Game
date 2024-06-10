@@ -60,6 +60,11 @@ namespace UtilityFunctionsNamespace
 
         public static string statusesDir = $@"{mainDirectory}Statuses\";
         public static string statusesSpecificDirectory = "";
+        
+        public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks\";
+        public static string playerAttacksSpecificDirectory = "";
+
+        public static bool showExampleInSaves = true; // testing purposes
 
         public static int maxSaves = 20;
         public static bool loadedSave = false;
@@ -268,7 +273,10 @@ namespace UtilityFunctionsNamespace
 
                 // Attempt to fix common JSON errors
                 json = Regex.Replace(json, @"([{,])(\s*)([^""{}\s:]+?)\s*:", "$1\"$3\":");
-                json = Regex.Replace(json, @":\s*(?!(?:null|true|false)\b)([^""{}\s:]+?)([},])", ":\"$1\"$2");
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false)(?=[,\]}])|(\[\])|(\{\}))(?:([""'])(?:(?!\3).)*\3|([^""'\s:][^,]*?))([,\]})", ":\"$4\"$5");
+
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false|\[\]|\{\})\b)([^""{}\s:]+?)([},])", ":\"$1\"$2");
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false)\b)([^""{}\s:]+?)([},])", ":\"$1\"$2");
 
                 // Ensure curly braces
                 if (!json.Trim().StartsWith("{"))
@@ -340,12 +348,6 @@ namespace UtilityFunctionsNamespace
             //Console.WriteLine("XML has been corrected and written to " + filePath);
         }
 
-        public static void loadSave(string slot)
-        {
-            // load the save from the save slot
-            UtilityFunctions.loadedSave = true;
-        }
-
         // load the class from the first line of the corresponding save. think of lines needed to add to the save. base stats can be generated from the class. will need exp, level. items.
 
         public static void clearScreen(Player player)
@@ -354,7 +356,7 @@ namespace UtilityFunctionsNamespace
 
             displayStats(player);
 
-            Console.Write("\n\n");
+            //Console.Write("\n\n");
         }
 
         public static T DeserializeXmlFromFile<T>(string filePath)

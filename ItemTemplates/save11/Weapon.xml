@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Chrono Blade</Name>
+        <Description>A sword that vibrates with the energy of the time stream, able to cut through moments.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+5 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>TimeFrozen</StatusName>
+        </StatusNames>
+        <AttackBehaviour>TemporalShift</AttackBehaviour>
+        <NarrativeLine>With a swift slash, the target is caught in a temporal lock.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Ethereal Lance</Name>
+        <Description>A spear that phases in and out of reality, making it nearly impossible to evade.</Description>
+        <Damage>30</Damage>
+        <WeaponType>Lance</WeaponType>
+        <UniqueProperties>+3 Dexterity; +2 Strength</UniqueProperties>
+        <StatusNames>
+            <StatusName>Stunned</StatusName>
+        </StatusNames>
+        <AttackBehaviour>EtherealChains</AttackBehaviour>
+        <NarrativeLine>The lance strikes, binding the enemy's form with unseen chains.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Voidstaff</Name>
+        <Description>A staff that absorbs and redistributes energy from the void, weaving it into destructive spells.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+4 Intelligence; +1 Charisma</UniqueProperties>
+        <StatusNames>
+            <StatusName>Silenced</StatusName>
+        </StatusNames>
+        <AttackBehaviour>VoidPulse</AttackBehaviour>
+        <NarrativeLine>Energy from the void silences the enemy, stifling their abilities.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

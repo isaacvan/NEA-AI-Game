@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Ghostweave Cloak</Name>
+        <Description>A cloak made from ethereal threads that blend with the air, rendering the wearer almost invisible to the naked eye.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+3 Stealth; +2 Speed</UniqueProperties>
+        <DefensiveCapabilities>Greatly reduces enemy detection range</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Silence Boots</Name>
+        <Description>Lightweight boots that make no sound, perfect for silent assassinations.</Description>
+        <Defence>10</Defence>
+        <UniqueProperties>+2 Dexterity; Noiseless Movement</UniqueProperties>
+        <DefensiveCapabilities>Eliminates sound created by movement</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Shade Band</Name>
+        <Description>A simple looking headband that, when worn, sharpens the wearer's senses.</Description>
+        <Defence>8</Defence>
+        <UniqueProperties>+2 Perception; +1 Intelligence</UniqueProperties>
+        <DefensiveCapabilities>Increases awareness of hidden traps and enemies</DefensiveCapabilities>
+        <ItemEquipModel>Head</ItemEquipModel>
+    </Armour>
+</Item>

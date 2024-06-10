@@ -1,0 +1,80 @@
+{
+  "PlayerBasicAttack": {
+    "Name": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 20)",
+    "Statuses": [],
+    "Narrative": "thrusts forward with a basic strike."
+  },
+  "ShadowSting": {
+    "Name": "ShadowSting",
+    "Expression": "target.ReceiveAttack(12, 25)",
+    "Statuses": [
+      "Poison"
+    ],
+    "Narrative": "unleashes a shadowy dart that poisons the target."
+  },
+  "VeilSlash": {
+    "Name": "VeilSlash",
+    "Expression": "target.ReceiveAttack(18, 40)",
+    "Statuses": [
+      "Bleed"
+    ],
+    "Narrative": "slashes through the veil between worlds, causing a deep, bleeding wound."
+  },
+  "EtherPulse": {
+    "Name": "EtherPulse",
+    "Expression": "target.ReceiveAttack(8, 15)",
+    "Statuses": [
+      "Stun"
+    ],
+    "Narrative": "sends out a pulse of ethereal energy, stunning the target."
+  },
+  "DarkFury": {
+    "Name": "DarkFury",
+    "Expression": "target.ReceiveAttack(20, 50)",
+    "Statuses": [
+      "Fury"
+    ],
+    "Narrative": "channels the anger of the shadows, striking with furious might."
+  },
+  "SpectralBind": {
+    "Name": "SpectralBind",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Statuses": [
+      "Root"
+    ],
+    "Narrative": "casts chains from the spectral plane, immobilizing the target."
+  },
+  "GhastlyWail": {
+    "Name": "GhastlyWail",
+    "Expression": "target.ReceiveAttack(10, 30)",
+    "Statuses": [
+      "Fear"
+    ],
+    "Narrative": "lets out a terrifying wail from beyond, instilling fear."
+  },
+  "VoidBurst": {
+    "Name": "VoidBurst",
+    "Expression": "target.ReceiveAttack(15, 35)",
+    "Statuses": [
+      "Silence"
+    ],
+    "Narrative": "releases a burst of void energy, silencing spells."
+  },
+  "NetherSnare": {
+    "Name": "NetherSnare",
+    "Expression": "target.ReceiveAttack(5, 10)",
+    "Statuses": [
+      "Slow"
+    ],
+    "Narrative": "summons a snare from the netherworld, slowing the target."
+  },
+  "ShadowReave": {
+    "Name": "ShadowReave",
+    "Expression": "target.ReceiveAttack(22, 45)",
+    "Statuses": [
+      "Dispel"
+    ],
+    "Narrative": "sweeps the area with a reaving shadow, dispelling magic."
+  }
+}

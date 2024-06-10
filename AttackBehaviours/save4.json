@@ -1,0 +1,22 @@
+{
+  "Elemental Strike": {
+    "Name": "Elemental Strike",
+    "Expression": "target.ReceiveAttack(10)",
+    "Statuses": []
+  },
+  "Wind Gust": {
+    "Name": "Wind Gust",
+    "Expression": "target.ReceiveAttack(15)",
+    "Statuses": ["Stun"]
+  },
+  "Flame Burst": {
+    "Name": "Flame Burst",
+    "Expression": "target.ReceiveAttack(20)",
+    "Statuses": ["Burn"]
+  },
+  "Earthen Crush": {
+    "Name": "Earthen Crush",
+    "Expression": "target.ReceiveAttack(25)",
+    "Statuses": ["Immobilize"]
+  }
+}

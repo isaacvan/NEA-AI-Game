@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <Class>Bounty Hunter</Class>
+    <Race>Alien</Race>
+    <Health>90</Health>
+    <ManaPoints>70</ManaPoints>
+    <Strength>8</Strength>
+    <Intelligence>9</Intelligence>
+    <Dexterity>9</Dexterity>
+    <Constitution>5</Constitution>
+    <Charisma>4</Charisma>
+</Player>

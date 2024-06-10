@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <playerPos>
+    <X>0</X>
+    <Y>0</Y>
+  </playerPos>
+  <Class>Shadowblade</Class>
+  <Race>Veilwalker</Race>
+  <Health>70</Health>
+  <currentHealth>70</currentHealth>
+  <ManaPoints>85</ManaPoints>
+  <currentMana>0</currentMana>
+  <Strength>6</Strength>
+  <Intelligence>9</Intelligence>
+  <Dexterity>10</Dexterity>
+  <Constitution>5</Constitution>
+  <Charisma>5</Charisma>
+  <Level>1</Level>
+  <currentExp>0</currentExp>
+  <maxExp>10</maxExp>
+</Player>

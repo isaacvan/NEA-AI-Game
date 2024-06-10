@@ -1,0 +1,26 @@
+﻿Hello narrator. This is a check to ensure that every attack behaviour for your game has been fully defined. Here is a reminder of each property. You need to provide:
+
+Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys will be used later. Bear in mind you will generate at least 5 enemies, so you will need 4 keys per enemy (minimum 20).
+Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage, crit). Ensure the damage corresponds to the attack magnitude and the context of the game, and crit is an int between 0 - 100. If no crit is entered, it will be defaulted to 20.
+Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
+Narrative: A string containing the output whenever this attack is used. If the enemy is casting it, it will begin with "The {enemyname} {Narrative}", and if the player casts it it will begin with "The player {Narrative}". Ensure this makes grammatical sense.
+Here is how each component should be formatted and an example for each:
+
+Key: Should be the name of the attack, like "Fireball".
+Expression: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
+Statuses: These are the status effects that the attack applies.
+Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
+
+For example:
+
+{
+  "Stab": {
+    "Name": "Stab",
+    "Expression": "target.ReceiveAttack(5, 60)",
+    "Statuses": []
+    "Narrative": "stabs wildly."
+  },
+  ...
+}
+
+These are the names of the attack behaviours that you have not declared yet, and need to include in your output to this message. Bear in mind, all output must be in parsable JSON format. It is pivotal that you do not use any other commands except target.ReceiveAttack(damage, crit), else the system will break:

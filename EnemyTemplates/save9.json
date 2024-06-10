@@ -1,0 +1,91 @@
+{
+  "enemyTypes": [
+    "Shadow Wraith",
+    "Veil Serpent",
+    "Ethereal Stalker",
+    "Cursed Knight",
+    "Phantom Mage"
+  ],
+  "enemyTemplates": [
+    {
+      "Name": "Shadow Wraith",
+      "Health": 70,
+      "ManaPoints": 50,
+      "Strength": 8,
+      "Intelligence": 5,
+      "Dexterity": 15,
+      "Constitution": 7,
+      "Charisma": 1,
+      "AttackBehaviourKeys": [
+        "ShadowSting",
+        "VeilSlash",
+        "EtherPulse",
+        "DarkFury"
+      ]
+    },
+    {
+      "Name": "Veil Serpent",
+      "Health": 60,
+      "ManaPoints": 60,
+      "Strength": 5,
+      "Intelligence": 8,
+      "Dexterity": 14,
+      "Constitution": 6,
+      "Charisma": 2,
+      "AttackBehaviourKeys": [
+        "SpectralBind",
+        "GhastlyWail",
+        "VoidBurst",
+        "NetherSnare"
+      ]
+    },
+    {
+      "Name": "Ethereal Stalker",
+      "Health": 80,
+      "ManaPoints": 70,
+      "Strength": 12,
+      "Intelligence": 7,
+      "Dexterity": 18,
+      "Constitution": 9,
+      "Charisma": 3,
+      "AttackBehaviourKeys": [
+        "DarkFury",
+        "EtherPulse",
+        "ShadowReave",
+        "ShadowSting"
+      ]
+    },
+    {
+      "Name": "Cursed Knight",
+      "Health": 90,
+      "ManaPoints": 50,
+      "Strength": 17,
+      "Intelligence": 4,
+      "Dexterity": 10,
+      "Constitution": 14,
+      "Charisma": 5,
+      "AttackBehaviourKeys": [
+        "VeilSlash",
+        "GhastlyWail",
+        "SpectralBind",
+        "VoidBurst"
+      ]
+    },
+    {
+      "Name": "Phantom Mage",
+      "Health": 50,
+      "ManaPoints": 100,
+      "Strength": 3,
+      "Intelligence": 20,
+      "Dexterity": 12,
+      "Constitution": 5,
+      "Charisma": 10,
+      "AttackBehaviourKeys": [
+        "NetherSnare",
+        "EtherPulse",
+        "DarkFury",
+        "ShadowReave"
+      ]
+    }
+  ]
+}

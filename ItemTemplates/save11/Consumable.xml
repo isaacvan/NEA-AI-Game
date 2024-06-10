@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Chronopotion</Name>
+        <Description>A shimmering liquid that seems to flow backwards, granting the drinker brief foresight.</Description>
+        <Effects>Temporary increase in dodge chance</Effects>
+        <UniqueProperties>+10 Dexterity for 5 turns</UniqueProperties>
+        <StorylineRelevance>Used by the Chronoguardians to anticipate enemy movements in crucial battles.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Ethereal Mist</Name>
+        <Description>A bottle of dense fog that, when released, cloaks the user in an almost invisible sheath.</Description>
+        <Effects>Invisibility for a short duration</Effects>
+        <UniqueProperties>+20 to stealth for 3 turns</UniqueProperties>
+        <StorylineRelevance>Extracted from the Ethereal Plane, used by spies for unseen passage.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Void Shard</Name>
+        <Description>A fragment of the void, pulsating with raw, uncontrolled energy.</Description>
+        <Effects>Casts a shield that absorbs damage</Effects>
+        <UniqueProperties>Absorbs 50 damage for 3 turns</UniqueProperties>
+        <StorylineRelevance>The essence of destroyed realities, utilized in desperate times to turn the tide of battle.</StorylineRelevance>
+    </Consumable>
+</Item>

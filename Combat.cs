@@ -15,13 +15,24 @@ namespace CombatNamespace
         public Player player { get; set; }
         public Enemy enemy { get; set; }
         // more
+
+        public bool didCrit(object caster, int crit)
+        {
+            // logic that assesses caster stats to increase crit %
+            
+            Random r = new Random();
+            if (crit >= r.Next(0, 100)) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public class StatusFactory
     {
         public List<Status> statusList { get; set; } = new List<Status>();
         
-        public static Status CreateStatus(string name, string duration, string type, bool increase, bool percentBool, int? intensityNumber, int? intensityPercent, bool stackable, bool refreshable, string description) 
+        public static Status CreateStatus(string name, string duration, string type, bool increase, bool percentBool, int? intensityNumber, int? intensityPercent, bool stackable, bool refreshable, int chanceToApplyPercent, string description) 
         {
             if (percentBool)
             {
@@ -58,6 +69,7 @@ namespace CombatNamespace
                 IntensityPercent = intensityPercent,
                 Stackable = stackable,
                 Refreshable = refreshable,
+                ChanceToApplyPercent = chanceToApplyPercent,
                 Description = description
             };
         }
@@ -74,6 +86,7 @@ namespace CombatNamespace
         public int? IntensityPercent { get; set; }
         public bool Stackable { get; set; }
         public bool Refreshable { get; set; }
+        public int ChanceToApplyPercent { get; set; }
         public string Description { get; set; }
     }
 }

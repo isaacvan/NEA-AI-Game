@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Time Shard Dagger</Name>
+        <Description>A dagger that looks as if it was chiseled out of a solid piece of time itself, pulsating with temporal energy.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+2 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Slow</StatusName>
+            <StatusName>Temporal Disruption</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ChronoStab</AttackBehaviour>
+        <NarrativeLine>As the dagger pierces the enemy, time around them begins to distort, slowing their movements.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Quantum Blade</Name>
+        <Description>A sword crafted from quantum energy, capable of cutting through the very fabric of reality.</Description>
+        <Damage>30</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+3 Strength</UniqueProperties>
+        <StatusNames>
+            <StatusName>Bleed</StatusName>
+            <StatusName>Quantum Entanglement</StatusName>
+        </StatusNames>
+        <AttackBehaviour>QuantumSlice</AttackBehaviour>
+        <NarrativeLine>With a swift motion, reality bends, slicing the enemy across multiple points in time.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Echoes of the Past</Name>
+        <Description>An enigmatic staff that resonates with the echoes of times long past, imbued with the power to manipulate memories.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Confused</StatusName>
+            <StatusName>Memory Fade</StatusName>
+        </StatusNames>
+        <AttackBehaviour>MemoryRift</AttackBehaviour>
+        <NarrativeLine>The air shimmers as forgotten memories assail the enemy, leaving them bewildered.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

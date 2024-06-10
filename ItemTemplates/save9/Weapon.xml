@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Echoes of the Forgotten</Name>
+        <Description>A blade that whispers with the voices of the past, imbued with the essence of lost souls.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+5 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Silence</StatusName>
+        </StatusNames>
+        <AttackBehaviour>WhisperingCut</AttackBehaviour>
+        <NarrativeLine>The blade cuts through the air, its whispers silencing all who hear it.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Shadow Lash</Name>
+        <Description>A whip formed from condensed shadows, capable of striking fear into the hearts of enemies.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Whip</WeaponType>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Fear</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ShadowStrike</AttackBehaviour>
+        <NarrativeLine>With a flick, the shadow extends, enveloping its target in darkness.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Glimmering Dagger</Name>
+        <Description>A dagger that seems to absorb light, only to release it upon striking an enemy.</Description>
+        <Damage>10</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+2 Strength; +1 Charisma</UniqueProperties>
+        <StatusNames>
+            <StatusName>Blind</StatusName>
+        </StatusNames>
+        <AttackBehaviour>LightPierce</AttackBehaviour>
+        <NarrativeLine>As the dagger pierces, a burst of light blinds the foe.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

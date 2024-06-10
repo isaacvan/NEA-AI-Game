@@ -1,0 +1,91 @@
+{
+  "enemyTypes": [
+    "Temporal Shade",
+    "Void Walker",
+    "Celestial Sentinel",
+    "Ethereal Wraith",
+    "Chrono Beast"
+  ],
+  "enemytemplates": [
+    {
+      "Name": "Temporal Shade",
+      "Health": 70,
+      "ManaPoints": 80,
+      "Strength": 7,
+      "Intelligence": 12,
+      "Dexterity": 15,
+      "Constitution": 8,
+      "Charisma": 4,
+      "AttackBehaviourKeys": [
+        "TemporalShift",
+        "VoidPulse",
+        "SpectralGrasp",
+        "AncientWisdom"
+      ]
+    },
+    {
+      "Name": "Void Walker",
+      "Health": 85,
+      "ManaPoints": 90,
+      "Strength": 10,
+      "Intelligence": 14,
+      "Dexterity": 12,
+      "Constitution": 9,
+      "Charisma": 5,
+      "AttackBehaviourKeys": [
+        "VoidPulse",
+        "EtherealChains",
+        "CelestialBarrage",
+        "DarkMend"
+      ]
+    },
+    {
+      "Name": "Celestial Sentinel",
+      "Health": 90,
+      "ManaPoints": 75,
+      "Strength": 12,
+      "Intelligence": 11,
+      "Dexterity": 10,
+      "Constitution": 14,
+      "Charisma": 6,
+      "AttackBehaviourKeys": [
+        "CelestialBarrage",
+        "StormFury",
+        "FrostveilStrike",
+        "TemporalShift"
+      ]
+    },
+    {
+      "Name": "Ethereal Wraith",
+      "Health": 60,
+      "ManaPoints": 100,
+      "Strength": 5,
+      "Intelligence": 17,
+      "Dexterity": 18,
+      "Constitution": 7,
+      "Charisma": 5,
+      "AttackBehaviourKeys": [
+        "EtherealChains",
+        "SpectralGrasp",
+        "VoidPulse",
+        "DarkMend"
+      ]
+    },
+    {
+      "Name": "Chrono Beast",
+      "Health": 100,
+      "ManaPoints": 60,
+      "Strength": 15,
+      "Intelligence": 8,
+      "Dexterity": 12,
+      "Constitution": 15,
+      "Charisma": 3,
+      "AttackBehaviourKeys": [
+        "TemporalShift",
+        "InfernoBlast",
+        "FrostveilStrike",
+        "StormFury"
+      ]
+    }
+  ]
+}

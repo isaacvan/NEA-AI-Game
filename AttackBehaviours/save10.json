@@ -1,0 +1,164 @@
+{
+  "PlayerBasicAttack": {
+    "Key": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 20)",
+    "Statuses": [],
+    "Narrative": "lunges forward with a basic strike."
+  },
+  "EmberBlast": {
+    "Key": "EmberBlast",
+    "Expression": "target.ReceiveAttack(20, 25)",
+    "Statuses": [
+      "Burn"
+    ],
+    "Narrative": "unleashes a burst of searing flames."
+  },
+  "VoidPulse": {
+    "Key": "VoidPulse",
+    "Expression": "target.ReceiveAttack(15, 35)",
+    "Statuses": [
+      "Confused"
+    ],
+    "Narrative": "sends out a disorienting shockwave of dark energy."
+  },
+  "NatureReclaim": {
+    "Key": "NatureReclaim",
+    "Expression": "target.ReceiveAttack(10, 20)",
+    "Statuses": [
+      "Poison",
+      "Slow"
+    ],
+    "Narrative": "summons thorny vines that lash out."
+  },
+  "IceSpear": {
+    "Key": "IceSpear",
+    "Expression": "target.ReceiveAttack(25, 30)",
+    "Statuses": [
+      "Freeze"
+    ],
+    "Narrative": "hurls a sharp spear of ice."
+  },
+  "ShadowLurk": {
+    "Key": "ShadowLurk",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Statuses": [
+      "Invisible"
+    ],
+    "Narrative": "melds into the shadows, becoming unseen."
+  },
+  "LightningStrike": {
+    "Key": "LightningStrike",
+    "Expression": "target.ReceiveAttack(30, 40)",
+    "Statuses": [
+      "Stun"
+    ],
+    "Narrative": "calls down a fierce bolt of lightning."
+  },
+  "EarthquakeStomp": {
+    "Key": "EarthquakeStomp",
+    "Expression": "target.ReceiveAttack(35, 20)",
+    "Statuses": [
+      "Knockdown"
+    ],
+    "Narrative": "slams the ground, causing the earth to tremble."
+  },
+  "MysticHeal": {
+    "Key": "MysticHeal",
+    "Expression": "target.ReceiveAttack(-20, 0)",
+    "Statuses": [
+      "Heal"
+    ],
+    "Narrative": "channels healing energies, mending wounds."
+  },
+  "FrostBite": {
+    "Key": "FrostBite",
+    "Expression": "target.ReceiveAttack(15, 25)",
+    "Statuses": [
+      "Freeze",
+      "Weakness"
+    ],
+    "Narrative": "exposes the target to extreme cold, biting into flesh."
+  },
+  "SpectralFang": {
+    "Key": "SpectralFang",
+    "Expression": "target.ReceiveAttack(18, 50)",
+    "Statuses": [
+      "Frighten"
+    ],
+    "Narrative": "bites with ethereal teeth, instilling deep fear."
+  },
+  "BlazingMeteor": {
+    "Key": "BlazingMeteor",
+    "Expression": "target.ReceiveAttack(40, 25)",
+    "Statuses": [
+      "Burn",
+      "Stagger"
+    ],
+    "Narrative": "summons a meteor from the heavens to scorch the earth."
+  },
+  "GaleForce": {
+    "Key": "GaleForce",
+    "Expression": "target.ReceiveAttack(20, 15)",
+    "Statuses": [
+      "Knockback"
+    ],
+    "Narrative": "unleashes a powerful wind, forcing enemies back."
+  },
+  "DarkPact": {
+    "Key": "DarkPact",
+    "Expression": "target.ReceiveAttack(10, 20)",
+    "Statuses": [
+      "Curse"
+    ],
+    "Narrative": "binds the target with a curse, weakening their resolve."
+  },
+  "ThunderClap": {
+    "Key": "ThunderClap",
+    "Expression": "target.ReceiveAttack(22, 30)",
+    "Statuses": [
+      "Deafen"
+    ],
+    "Narrative": "creates a deafening sound, stunning those nearby."
+  },
+  "SolarFlare": {
+    "Key": "SolarFlare",
+    "Expression": "target.ReceiveAttack(35, 40)",
+    "Statuses": [
+      "Blind"
+    ],
+    "Narrative": "emits a blinding light, overwhelming foes."
+  },
+  "VenomousBite": {
+    "Key": "VenomousBite",
+    "Expression": "target.ReceiveAttack(12, 50)",
+    "Statuses": [
+      "Poison"
+    ],
+    "Narrative": "bites with toxic fangs, injecting venom."
+  },
+  "SonicScream": {
+    "Key": "SonicScream",
+    "Expression": "target.ReceiveAttack(25, 20)",
+    "Statuses": [
+      "Disorient"
+    ],
+    "Narrative": "emits a piercing scream, disorienting the target."
+  },
+  "InfernalWrath": {
+    "Key": "InfernalWrath",
+    "Expression": "target.ReceiveAttack(30, 35)",
+    "Statuses": [
+      "Burn",
+      "Rage"
+    ],
+    "Narrative": "engulfs the area in flames, inciting fury."
+  },
+  "CrystalShield": {
+    "Key": "CrystalShield",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Statuses": [
+      "Protect"
+    ],
+    "Narrative": "surrounds the ally with a protective crystal barrier."
+  }
+}

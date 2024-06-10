@@ -27,25 +27,41 @@ namespace MainNamespace
     {
         public static Logger logger = LogManager.GetCurrentClassLogger();
         public static Game game;
-        
+
+        // one game costs £0.32 currently with GPT-4o
+        // one game costs $0. currently with
+
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // DYNAMICEXPRESSO SETUP - STATUSES; give AI more command freedom? crits %? attack details (e.g Direct, AOE)
-        // code to apply a Status status to an object (Player or Enemy), evaluating components
+
+        // COMBAT IS NEXT -
+        // - START A COMBAT BETWEEN A PLAYER AND AN ENEMY (made using factories)
+        // - START DEFINING COMBAT CLASS
+        // - COMBAT FUNCTIONS TO APPLY ATTACKS, CONVERT STATUSES INTO ACTION
+
         // change statusList into a dictionary?? might be fiddly - would need to change prompt and json structure
-        
-        // LOADING GAMR. for testing ease. Player IDs. load all classes from already made files.
-        // - LOOK AT GAMECLASS !LoadedSave
+
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
         //----------------------------------------------------------------------------------------------------------
-        
-        
+
+
         // ------------------------------------------------------------------------------------------------------------
         // CURRENT STATE
-        // possibly working? enemy template writing to and deserialisation needs checking
+        // possibly working? might need to check json serialiser for generating uninitialised attacks and statuses, but defo attacks.
+        /*
+         * Unhandled exception. Newtonsoft.Json.JsonSerializationException: Self referencin
+g loop detected for property 'Module' with type 'System.Reflection.RuntimeModule
+'. Path 'attackBehaviours.PlayerBasicAttack.Expression.Expression.Method.Module.
+Assembly.EntryPoint'.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircula
+rReference(JsonWriter writer, Object value, JsonProperty property, JsonContract
+contract, JsonContainerContract containerContract, JsonProperty containerPropert
+y)
+
+         */
         // ----------------------------------------------------------------------------------------------------------
-        
+
         static async Task Main(string[] args)
         {
             // testing NLog setup:
@@ -53,11 +69,13 @@ namespace MainNamespace
             // NLog.Common.InternalLogger.LogToConsole = true;
             // NLog.Common.InternalLogger.LogFile = @"c:\temp\nlog-internal.txt"; // On Linux one can use "/home/nlog-internal.txt"
             // TODO: apparently if we get NLog.config in the right place it should be found automatically, but for now, this is a workaround:
-            NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory + "\\NLog.config");
+            NLog.LogManager.Configuration =
+                new NLog.Config.XmlLoggingConfiguration(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory +
+                                                        "\\NLog.config");
             // NLog.LogManager.Configuration.AddTarget(new FileTarget(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory + "\\output.log"));
-            
+
             logger.Info("Program started");
-            
+
             EnableColors();
             game = new Game();
             Console.CancelKeyPress += MyHandler; // triggers save on forced exit
@@ -67,17 +85,16 @@ namespace MainNamespace
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
-                        
-                    
-                    
+
+
                     Console.ReadLine();
                     break;
                 case "game":
                     await game.initialiseGame(new Narrator());
-                    
+
                     // start game
-                    Console.WriteLine(game.enemyFactory.enemyTypes[0]);
-                    
+                    UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
+
                     Console.ReadLine();
                     break;
                 default:
@@ -85,18 +102,22 @@ namespace MainNamespace
                     break;
             }
         }
-        
-        
+
+
         protected static void MyHandler(object sender, ConsoleCancelEventArgs args)
         {
             Console.WriteLine("Exiting system due to external process kill or shutdown");
-            
+
             // prevent application from terminating immediately
             args.Cancel = true;
-            
-            saveGameToAllStoragesSync();
+
+            if (game.player != null)
+            {
+                saveGameToAllStoragesSync();
+            }
+
             Thread.Sleep(3000);
-            
+
             // exit smoothly
             Environment.Exit(0);
         }
@@ -105,13 +126,13 @@ namespace MainNamespace
         {
             Console.WriteLine("test");
         }
-        
+
         public static async Task saveGameToAllStoragesAsync()
         {
             try
             {
                 // checks before saving
-                
+
                 if (game.player != null)
                 {
                     if (game.player.inventory != null)
@@ -135,17 +156,18 @@ namespace MainNamespace
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving game data: {ex.Message}");
-                throw;  // Rethrow if you want to handle this exception at a higher level or log it
+                throw; // Rethrow if you want to handle this exception at a higher level or log it
             }
-            
+
             // every aspect that needs to be saved
             // map state, game state, story progress etc needs to be saved
         }
-        
+
         public static void saveGameToAllStoragesSync()
         {
             Console.WriteLine("Saving game data...");
-            try {
+            try
+            {
                 if (game.player != null)
                 {
                     if (game.player.inventory != null)
@@ -165,18 +187,17 @@ namespace MainNamespace
                 }
 
                 Console.WriteLine("All game data saved successfully.");
-                
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving game data: {ex}");
-                throw;  // Rethrow if you want to handle this exception at a higher level or log it
+                throw; // Rethrow if you want to handle this exception at a higher level or log it
             }
-            
+
             // every aspect that needs to be saved
             // map state, game state, story progress etc needs to be saved
         }
-        
+
         static void gridLoop(Player player)
         {
             string file = UtilityFunctions.mainDirectory + @"GridSaves\save1.json";
@@ -294,16 +315,25 @@ namespace MainNamespace
                 UtilityFunctions.clearScreen(null);
                 Console.SetWindowSize(80, 15); // Adjust the window size to fit your preference
                 Console.Title = "Dungeon Crawler Menu";
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}");
                 Console.WriteLine();
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ");
                 int choice;
                 if (int.TryParse(Console.ReadLine(), out choice))
                 {
@@ -311,7 +341,8 @@ namespace MainNamespace
                     {
                         case 1:
                             UtilityFunctions.clearScreen(null);
-                            List<string> saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml")
+                            List<string> saves = Directory
+                                .GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml")
                                 .ToList();
                             saves.Remove($@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml");
                             bool started = false;
@@ -319,7 +350,9 @@ namespace MainNamespace
                             {
                                 if (saves.Count == i)
                                 {
-                                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n");
+                                    UtilityFunctions.TypeText(
+                                        new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                                        $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n");
                                     string load = Console.ReadLine();
                                     if (load == "y")
                                     {
@@ -336,7 +369,9 @@ namespace MainNamespace
 
                             if (!started)
                             {
-                                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No empty save slots. Please choose a different option.");
+                                UtilityFunctions.TypeText(
+                                    new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                                    "No empty save slots. Please choose a different option.");
                                 Thread.Sleep(1000);
                             }
 
@@ -364,14 +399,17 @@ namespace MainNamespace
                             // Exit the game
                             break;
                         default:
-                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid choice. Please select a valid option.");
+                            UtilityFunctions.TypeText(
+                                new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                                "Invalid choice. Please select a valid option.");
                             Thread.Sleep(1000);
                             break;
                     }
                 }
                 else
                 {
-                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid input. Please enter a valid number.");
+                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                        "Invalid input. Please enter a valid number.");
                 }
             }
 
@@ -387,7 +425,7 @@ namespace MainNamespace
             // }).Wait();
             Console.CursorVisible = false;
             gameSetup.chooseSave();
-            
+
             UtilityFunctions.enemyTemplateSpecificDirectory =
                 UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
 
@@ -400,35 +438,33 @@ namespace MainNamespace
                 //player = UtilityFunctions.CreatePlayerInstance(chosenClass);
                 // deserialize the utilityfucntions.saveFile and load it into player
 
-                
+
                 // will create a function called getLoadedSaveName()
                 player = await UtilityFunctions.readFromXMLFile<Player>(UtilityFunctions.saveFile, new Player());
-
             }
             else // if not loaded
             {
                 player = UtilityFunctions.CreatePlayerInstance(); // returns new empty player
                 // GridFunctions.CreateGrid(@"D:\isaac\Documents\Code Projects\GridSaves");
+                await player.initialisePlayerFromNarrator(gameSetup, api, chat, testing);
             }
 
             Console.Clear();
 
-
             // call api and initialise narrator, getting charactcer details
             // MAIN INITIALISE FUNCTION FOR CHARACTER
-            player.initialisePlayerFromNarrator(gameSetup, api, chat, testing);
+
+            UtilityFunctions.playerAttacksSpecificDirectory =
+                UtilityFunctions.playerAttacksDir + UtilityFunctions.saveName + ".json";
 
             return player;
         }
-
 
 
         public static void loadGame()
         {
             // load all game aspects
         }
-
-
 
 
         static void getLoadedSaveName(bool gameStarted, bool saveChosen)
@@ -443,31 +479,41 @@ namespace MainNamespace
                     while (!valid)
                     {
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Choose a save slot:\n");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "Enter a save slot. These are your options:");
 
-                        for (int i = 0;
-                             i < Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml").Length;
-                             i++)
+                        List<string> saveNameList =
+                            Directory.GetFiles(UtilityFunctions.mainDirectory + "Characters", "*.xml").ToList();
+
+                        if (!UtilityFunctions.showExampleInSaves)
                         {
-                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), $"{i + 1}. Save Slot {i + 1}\n");
+                            saveNameList.Remove($@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml");
                         }
 
-                        saveSlot = Console.ReadLine();
+                        List<string> saveNameListWithoutExt = new List<string>();
+                        Console.WriteLine("-------------------------");
 
-                        if (Convert.ToInt32(saveSlot) > 0 && Convert.ToInt32(saveSlot) <= UtilityFunctions.maxSaves)
+                        foreach (string save in saveNameList)
                         {
+                            saveNameListWithoutExt.Add(Path.GetFileNameWithoutExtension(save));
+                            Console.WriteLine($"{Path.GetFileNameWithoutExtension(save)}");
+                        }
+
+                        Console.WriteLine("-------------------------");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "Enter a save slot: ");
+                        string saveNameUnchecked = Console.ReadLine();
+
+                        if (saveNameUnchecked.Contains("save") && saveNameListWithoutExt.Contains(saveNameUnchecked))
+                        {
+                            saveSlot = saveNameUnchecked;
                             valid = true;
-                        }
-                        else
-                        {
-                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid input.");
-                            Thread.Sleep(1000);
                         }
                     }
 
-                    UtilityFunctions.saveSlot = "save" + (saveSlot) + ".xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"Characters\save" + (saveSlot) + ".xml";
-                    UtilityFunctions.saveName = "save" + (saveSlot);
+                    UtilityFunctions.saveSlot = saveSlot + ".xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"Characters\" + (saveSlot) + ".xml";
+                    UtilityFunctions.saveName = saveSlot;
                 }
 
                 startedGame = true;
@@ -487,15 +533,24 @@ namespace MainNamespace
         public static bool options(bool gameStarted, bool saveChosen)
         {
             UtilityFunctions.clearScreen(null);
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Options menu.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[1] Back to game.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[2] Change type of music.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[3] Change difficulty.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[4] Change type of sound effects.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[5] Exit game.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[6] Clear all saves.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "[7] Set example save.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Choose an option: ");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "Options menu.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[1] Back to game.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[2] Change type of music.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[3] Change difficulty.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[4] Change type of sound effects.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[5] Exit game.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[6] Clear all saves.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[7] Set example save.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "Choose an option: ");
             int choice;
             if (int.TryParse(Console.ReadLine(), out choice))
             {
@@ -507,29 +562,32 @@ namespace MainNamespace
                     // Back to main menu
                     case 2:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Music yet, check back later.");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "No Music yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change type of music
                     case 3:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Difficulty yet, check back later.");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "No Difficulty yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change difficulty
                     case 4:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "No Sound Effects yet, check back later.");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "No Sound Effects yet, check back later.");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     // Change type of sound effects
                     case 6:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Are you sure you want to clear all Characters? y/n\n");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "Are you sure you want to clear all Characters? y/n\n");
                         string clearSaves = Console.ReadLine();
                         if (clearSaves == "y")
                         {
-
                             DeleteAllSaves();
 
                             Thread.Sleep(1000);
@@ -540,7 +598,9 @@ namespace MainNamespace
                         else
                         {
                             UtilityFunctions.clearScreen(null);
-                            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Saves not cleared.\n");
+                            UtilityFunctions.TypeText(
+                                new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                                "Saves not cleared.\n");
                             Thread.Sleep(1000);
                             return options(gameStarted, saveChosen);
                         }
@@ -557,7 +617,8 @@ namespace MainNamespace
                         return options(gameStarted, saveChosen);
                     default:
                         UtilityFunctions.clearScreen(null);
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid option.\n");
+                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                            "Invalid option.\n");
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                 }
@@ -565,7 +626,8 @@ namespace MainNamespace
             else
             {
                 UtilityFunctions.clearScreen(null);
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Invalid option.\n");
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    "Invalid option.\n");
                 Thread.Sleep(1000);
                 return options(gameStarted, saveChosen);
             }
@@ -582,9 +644,10 @@ namespace MainNamespace
             directories.Add(@$"{main}Equipments\");
             directories.Add(@$"{main}Inventories\");
             directories.Add(@$"{main}Statuses\");
-            
+
             Console.Clear();
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Enter a save (e.g: save1)\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "Enter a save (e.g: save1)\n");
             string saveName = Console.ReadLine();
 
             try
@@ -597,20 +660,22 @@ namespace MainNamespace
                         File.Create(examplePathNoExt).Close();
                         Program.logger.Info($"No example file. Created a blank.");
                     }
+
                     string pathToReadNoExt = dir + saveName;
 
                     bool json = true;
-                    
+
                     try
                     {
                         // if no error, file is json
                         JsonConvert.DeserializeObject(File.ReadAllText(pathToReadNoExt + ".json"));
                     }
                     catch
-                    { // if error, file is xml
+                    {
+                        // if error, file is xml
                         json = false;
                     }
-                    
+
                     // copy the example file to the new save file
                     if (json)
                     {
@@ -660,7 +725,8 @@ namespace MainNamespace
         {
             // delete Characters
             UtilityFunctions.clearScreen(null);
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "Clearing all Characters...\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "Clearing all Characters...\n");
             string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
             foreach (string save in saves)
             {
@@ -689,7 +755,7 @@ namespace MainNamespace
                     }
                 }
             }
-            
+
             // delete inventories
             string[] inventories =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Inventories", searchPattern: "*.json");
@@ -700,7 +766,7 @@ namespace MainNamespace
                     File.Delete(inventory);
                 }
             }
-            
+
             // delete equipments
             string[] equipments =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Equipments", searchPattern: "*.json");
@@ -711,15 +777,17 @@ namespace MainNamespace
                     File.Delete(equipment);
                 }
             }
-            
+
             // delete enemy templates
             List<string> enemyTemplates =
-                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}EnemyTemplates", searchPattern: "*.json").ToList();
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}EnemyTemplates", searchPattern: "*.json")
+                    .ToList();
             foreach (string xmlfile in Directory.GetFiles($@"{UtilityFunctions.mainDirectory}EnemyTemplates",
                          searchPattern: "*.xml"))
             {
                 enemyTemplates.Add(xmlfile);
             }
+
             foreach (string enemyTemplate in enemyTemplates)
             {
                 if (Path.GetFileNameWithoutExtension(enemyTemplate) != "saveExample")
@@ -727,7 +795,7 @@ namespace MainNamespace
                     File.Delete(enemyTemplate);
                 }
             }
-            
+
             // delete statuses
             string[] statuses =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Statuses", searchPattern: "*.json");
@@ -738,7 +806,7 @@ namespace MainNamespace
                     File.Delete(status);
                 }
             }
-            
+
             // delete attackbehaviours
             string[] attackBehaviours =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}AttackBehaviours", searchPattern: "*.json");
@@ -750,7 +818,7 @@ namespace MainNamespace
                 }
             }
         }
-        
+
         // Constants for standard output handle and enabling virtual terminal processing
         private const int STD_OUTPUT_HANDLE = -11;
         private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;

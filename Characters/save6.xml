@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+  <Class>Knight</Class>
+  <Race>Human</Race>
+  <Health>90</Health>
+  <ManaPoints>60</ManaPoints>
+  <Strength>9</Strength>
+  <Intelligence>6</Intelligence>
+  <Dexterity>7</Dexterity>
+  <Constitution>8</Constitution>
+  <Charisma>5</Charisma>
+</Player>

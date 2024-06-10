@@ -1,0 +1,88 @@
+{
+  "PlayerBasicAttack": {
+    "Key": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 20)",
+    "Statuses": [],
+    "Narrative": "launches a fundamental attack."
+  },
+  "TemporalShift": {
+    "Key": "TemporalShift",
+    "Expression": "target.ReceiveAttack(20, 50)",
+    "Statuses": [
+      "TimeFrozen"
+    ],
+    "Narrative": "unleashes a time-bending blow, freezing the opponent momentarily."
+  },
+  "CelestialBarrage": {
+    "Key": "CelestialBarrage",
+    "Expression": "target.ReceiveAttack(30, 40)",
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "summons a hail of celestial projectiles."
+  },
+  "EtherealChains": {
+    "Key": "EtherealChains",
+    "Expression": "target.ReceiveAttack(15, 30)",
+    "Statuses": [
+      "Restrained"
+    ],
+    "Narrative": "binds the target with chains forged from aether, crippling their movement."
+  },
+  "VoidPulse": {
+    "Key": "VoidPulse",
+    "Expression": "target.ReceiveAttack(25, 25)",
+    "Statuses": [
+      "Silenced"
+    ],
+    "Narrative": "emits a pulse of void energy, silencing magic use."
+  },
+  "DarkMend": {
+    "Key": "DarkMend",
+    "Expression": "target.ReceiveAttack(-20, 0)",
+    "Statuses": [
+      "Healed"
+    ],
+    "Narrative": "envelops in dark energy, restoring health."
+  },
+  "InfernoBlast": {
+    "Key": "InfernoBlast",
+    "Expression": "target.ReceiveAttack(35, 45)",
+    "Statuses": [
+      "Burning"
+    ],
+    "Narrative": "casts a devastating explosion of fire."
+  },
+  "FrostveilStrike": {
+    "Key": "FrostveilStrike",
+    "Expression": "target.ReceiveAttack(18, 35)",
+    "Statuses": [
+      "Frozen"
+    ],
+    "Narrative": "strikes with a blade encased in ice, chilling their foe to the bone."
+  },
+  "StormFury": {
+    "Key": "StormFury",
+    "Expression": "target.ReceiveAttack(40, 50)",
+    "Statuses": [
+      "Shocked"
+    ],
+    "Narrative": "calls down a relentless storm to smite foes with lightning."
+  },
+  "SpectralGrasp": {
+    "Key": "SpectralGrasp",
+    "Expression": "target.ReceiveAttack(22, 25)",
+    "Statuses": [
+      "Terrified"
+    ],
+    "Narrative": "reaches out with ghostly hands, instilling fear."
+  },
+  "AncientWisdom": {
+    "Key": "AncientWisdom",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Statuses": [
+      "Enlightened"
+    ],
+    "Narrative": "shares ancient knowledge, bolstering allies."
+  }
+}

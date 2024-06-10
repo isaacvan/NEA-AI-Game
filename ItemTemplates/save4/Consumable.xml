@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Starlight Staff</Name>
+        <Description>A staff crafted from a fallen star, radiating a gentle glow that soothes the soul.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+3 Constitution</UniqueProperties>
+        <WeaponCapabilities>Heals the player and grants temporary immunity to status effects.</WeaponCapabilities>
+        <StatusNames>
+            <StatusName>Heal</StatusName>
+            <StatusName>Immune</StatusName>
+        </StatusNames>
+        <NarrativeLine>The staff emanates a soft light, enveloping the player in healing energy.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

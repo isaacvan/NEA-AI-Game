@@ -1,0 +1,121 @@
+{
+  "statusList": [
+    {
+      "Name": "Poison",
+      "Duration": "3",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 5,
+      "Stackable": true,
+      "Refreshable": false,
+      "ChanceToApplyPercent": 60,
+      "Description": "Gradually reduces the enemy's health over time."
+    },
+    {
+      "Name": "Bleed",
+      "Duration": "4",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 3,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 65,
+      "Description": "Causes the enemy to lose health every turn."
+    },
+    {
+      "Name": "Stun",
+      "Duration": "1",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": false,
+      "ChanceToApplyPercent": 50,
+      "Description": "Temporarily immobilizes the enemy, preventing them from acting."
+    },
+    {
+      "Name": "Fury",
+      "Duration": "2",
+      "Type": "Player_Strength",
+      "Increase": true,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 10,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 70,
+      "Description": "Increases the player's strength for a short period."
+    },
+    {
+      "Name": "Root",
+      "Duration": "2",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": false,
+      "ChanceToApplyPercent": 40,
+      "Description": "Roots the enemy in place, preventing movement."
+    },
+    {
+      "Name": "Fear",
+      "Duration": "3",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 50,
+      "Description": "Induces a state of fear in the enemy, reducing their ability to fight."
+    },
+    {
+      "Name": "Silence",
+      "Duration": "2",
+      "Type": "Enemy_currentManaPoints",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 55,
+      "Description": "Prevents the enemy from casting spells."
+    },
+    {
+      "Name": "Slow",
+      "Duration": "3",
+      "Type": "Enemy_Dexterity",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 20,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 60,
+      "Description": "Reduces the enemy's speed and reaction time."
+    },
+    {
+      "Name": "Dispel",
+      "Duration": "1",
+      "Type": "Player_currentHealth",
+      "Increase": true,
+      "PercentBool": false,
+      "IntensityNumber": 5,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": false,
+      "ChanceToApplyPercent": 85,
+      "Description": "Removes negative effects and heals the player slightly."
+    }
+  ]
+}

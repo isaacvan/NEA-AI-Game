@@ -1,1 +1,136 @@
-{"statusList":[{"Name":"Burn","Duration":3,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":5,"Stackable":true,"Refreshable":true,"Description":"Burns the enemy, applying damage over time for 3 turns."},{"Name":"Freeze","Duration":2,"Type":"Enemy_Speed","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":30,"Stackable":false,"Refreshable":true,"Description":"Freezes the enemy, reducing their speed for 2 turns."},{"Name":"Stun","Duration":1,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":false,"IntensityNumber":0,"IntensityPercent":null,"Stackable":false,"Refreshable":true,"Description":"Stuns the enemy, making them unable to move for 1 turn."},{"Name":"Poison","Duration":4,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":10,"Stackable":true,"Refreshable":false,"Description":"Poisons the enemy, slowly draining their health over 4 turns."},{"Name":"Invisible","Duration":2,"Type":"Player_Visibility","Increase":true,"PercentBool":false,"IntensityNumber":0,"IntensityPercent":null,"Stackable":false,"Refreshable":true,"Description":"Makes the player invisible, avoiding enemy attacks for 2 turns."},{"Name":"Knockdown","Duration":1,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":false,"IntensityNumber":0,"IntensityPercent":null,"Stackable":true,"Refreshable":false,"Description":"Knocks down the enemy, preventing them from attacking for 1 turn."},{"Name":"Blind","Duration":2,"Type":"Enemy_Accuracy","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":20,"Stackable":false,"Refreshable":true,"Description":"Blinds the enemy, decreasing their attack accuracy for 2 turns."},{"Name":"Silence","Duration":3,"Type":"Enemy_Mana","Increase":false,"PercentBool":false,"IntensityNumber":0,"IntensityPercent":null,"Stackable":false,"Refreshable":true,"Description":"Silences the enemy, preventing them from using mana for 3 turns."},{"Name":"Curse","Duration":3,"Type":"Enemy_Strength","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":15,"Stackable":true,"Refreshable":true,"Description":"Curses the enemy, reducing their strength by 15% for 3 turns."},{"Name":"Fear","Duration":2,"Type":"Enemy_Morale","Increase":false,"PercentBool":false,"IntensityNumber":0,"IntensityPercent":null,"Stackable":true,"Refreshable":true,"Description":"Induces fear in the enemy, potentially causing them to flee or not attack for 2 turns."},{"Name":"Slow","Duration":2,"Type":"Speed","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":30,"Stackable":true,"Refreshable":true,"Description":"Reduces the target's speed by 30% for 2 turns."},{"Name":"Shock","Duration":3,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":false,"IntensityNumber":5,"IntensityPercent":null,"Stackable":false,"Refreshable":false,"Description":"Shocks the enemy, dealing 5 damage each turn for 3 turns."},{"Name":"ManaBurn","Duration":1,"Type":"Mana","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":50,"Stackable":false,"Refreshable":true,"Description":"Burns 50% of the target's current mana."},{"Name":"Toxin","Duration":4,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":false,"IntensityNumber":3,"IntensityPercent":null,"Stackable":true,"Refreshable":false,"Description":"Poisons the enemy, causing 3 damage over 4 turns."},{"Name":"Drench","Duration":3,"Type":"Resistance","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":20,"Stackable":false,"Refreshable":true,"Description":"Drenches the target, reducing their resistance by 20% for 3 turns."},{"Name":"Stagger","Duration":2,"Type":"Accuracy","Increase":false,"PercentBool":false,"IntensityNumber":10,"IntensityPercent":null,"Stackable":false,"Refreshable":true,"Description":"Causes the target to stagger, reducing their accuracy by 10 for 2 turns."},{"Name":"Crush","Duration":2,"Type":"Defense","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":25,"Stackable":false,"Refreshable":true,"Description":"Crushes the target's defenses, reducing it by 25% for 2 turns."},{"Name":"Scorch","Duration":3,"Type":"Enemy_currentHealth","Increase":false,"PercentBool":true,"IntensityNumber":null,"IntensityPercent":10,"Stackable":true,"Refreshable":false,"Description":"Scorches the target, burning 10% of their current health each turn for 3 turns."}]}
+{
+  "statusList": [
+    {
+      "Name": "Poison",
+      "Duration": 3,
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 5,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "Description": "Gradually reduces enemy health over 3 turns."
+    },
+    {
+      "Name": "Confused",
+      "Duration": 2,
+      "Type": "Enemy_Dexterity",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 20,
+      "Stackable": false,
+      "Refreshable": true,
+      "Description": "Lowers enemy dexterity by 20%, increasing their chance to miss attacks for 2 turns."
+    },
+    {
+      "Name": "Stunned",
+      "Duration": 1,
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": true,
+      "Description": "Stuns the target, making them unable to act for 1 turn."
+    },
+    {
+      "Name": "Slowed",
+      "Duration": 2,
+      "Type": "Enemy_Dexterity",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 30,
+      "Stackable": true,
+      "Refreshable": true,
+      "Description": "Reduces target's speed by 30%, decreasing their evasion and attack speed for 2 turns."
+    },
+    {
+      "Name": "Burned",
+      "Duration": 3,
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 7,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "Description": "Inflicts burn on the target, dealing 7 damage over 3 turns."
+    },
+    {
+      "Name": "Disoriented",
+      "Duration": 2,
+      "Type": "Enemy_Intelligence",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 25,
+      "Stackable": false,
+      "Refreshable": true,
+      "Description": "Reduces target's intelligence by 25%, affecting their ability to use abilities for 2 turns."
+    },
+    {
+      "Name": "Blinded",
+      "Duration": 1,
+      "Type": "Enemy_Dexterity",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": false,
+      "Description": "Blinds the enemy, significantly increasing their chance to miss attacks for 1 turn."
+    },
+    {
+      "Name": "Weakened",
+      "Duration": 3,
+      "Type": "Enemy_Strength",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 15,
+      "Stackable": true,
+      "Refreshable": true,
+      "Description": "Weakens the enemy, reducing their attack damage by 15% for 3 turns."
+    },
+    {
+      "Name": "Teleported",
+      "Duration": 0,
+      "Type": "Player_Position",
+      "Increase": true,
+      "PercentBool": false,
+      "IntensityNumber": 1,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": false,
+      "Description": "Instantly moves the player to a random location. One-time effect."
+    },
+    {
+      "Name": "Disarmed",
+      "Duration": 1,
+      "Type": "Enemy_Strength",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 0,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": true,
+      "Description": "Disarms the enemy, preventing them from attacking for 1 turn."
+    },
+    {
+      "Name": "Crushed",
+      "Duration": 2,
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 10,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "Description": "Crushes the enemy under immense pressure, dealing 10 damage over 2 turns."
+    }
+  ]
+}

@@ -12,8 +12,10 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Reflection;
 using CombatNamespace;
+using GameClassNamespace;
 using ItemFunctionsNamespace;
 using MainNamespace;
+using Newtonsoft.Json;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -34,7 +36,8 @@ namespace PlayerClassesNamespace
         public int Constitution { get; set; }
         public int Charisma { get; set; }
 
-
+        [XmlIgnore] public Dictionary<AttackSlot, AttackInfo> PlayerAttacks { get; set; } =
+            new Dictionary<AttackSlot, AttackInfo>();
         public int Level { get; set; }
         public int currentExp { get; set; }
         public int maxExp { get; set; }
@@ -50,6 +53,10 @@ namespace PlayerClassesNamespace
             Level = 1;
             currentExp = 0;
             playerPos = new Point(0, 0);
+            PlayerAttacks[AttackSlot.slot1] = null;
+            PlayerAttacks[AttackSlot.slot2] = null;
+            PlayerAttacks[AttackSlot.slot3] = null;
+            PlayerAttacks[AttackSlot.slot4] = null;
         }
         
         public void EquipItem(EquippableItem.EquipLocation slot, Item item)
@@ -72,13 +79,25 @@ namespace PlayerClassesNamespace
             inventory.RemoveItem(item);
         }
 
-        public void ReceiveAttack(int damage) // DYNAMICEXPRESSO
+        public void ReceiveAttack(int damage, int crit = 20) // DYNAMICEXPRESSO
         {
-            currentHealth -= damage;
-            if (currentHealth < 0)
+            if (Program.game.currentCombat != null)
             {
-                currentHealth = 0;
-                PlayerDies();
+                bool didCrit = Program.game.currentCombat.didCrit(Program.game.currentCombat.enemy, crit);
+                if (didCrit)
+                {
+                    damage *= 2;
+                }
+                currentHealth -= damage;
+                if (currentHealth < 0)
+                {
+                    currentHealth = 0;
+                    PlayerDies();
+                }
+            }
+            else
+            {
+                Program.logger.Error("No current combat. Attempt to receive attack failed.");
             }
         }
 
@@ -92,6 +111,37 @@ namespace PlayerClassesNamespace
         {
             Status status = new Status();
             
+        }
+
+        public async Task writePlayerAttacksToJSON()
+        {
+            string path = UtilityFunctions.playerAttacksSpecificDirectory;
+            try
+            {
+                // serialise PlayerAttacks into path
+                string json = JsonConvert.SerializeObject(PlayerAttacks, Formatting.Indented);
+                await File.WriteAllTextAsync(path, json);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error writing to JSON file in writePlayerAttacksToJSON: {e}");
+            }
+        }
+
+        public async Task<Dictionary<AttackSlot, AttackInfo>> readPlayerAttacksFromJSON()
+        {
+            string path = UtilityFunctions.playerAttacksSpecificDirectory;
+            try
+            {
+                // deserialise from path into PlayerAttacks
+                string json = await File.ReadAllTextAsync(path);
+                PlayerAttacks = JsonConvert.DeserializeObject<Dictionary<AttackSlot, AttackInfo>>(json);
+                return PlayerAttacks;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error reading from JSON file in readPlayerAttacksFromJSON: {e}");
+            }
         }
 
         public async Task initialiseInventory()

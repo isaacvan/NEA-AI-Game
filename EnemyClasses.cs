@@ -79,12 +79,15 @@ namespace EnemyClassesNamespace
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Charisma { get; set; }
-        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
+        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } = new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
         public List<string> AttackBehaviourKeys { get; set; } = new List<string>();
         
         public EnemyTemplate()
         {
-            AttackBehaviours = new Dictionary<AttackSlot, AttackInfo>();
+            AttackBehaviours[AttackSlot.slot1] = null;
+            AttackBehaviours[AttackSlot.slot2] = null;
+            AttackBehaviours[AttackSlot.slot3] = null;
+            AttackBehaviours[AttackSlot.slot4] = null;
         }
 
         public void AssignAttackBehavior(AttackSlot slot, AttackInfo behavior)
@@ -101,13 +104,13 @@ namespace EnemyClassesNamespace
 
         public AttackSlot? getNextAvailableAttackSlot()
         {
-            if (!AttackBehaviours.ContainsKey(AttackSlot.slot1))
+            if (AttackBehaviours[AttackSlot.slot1] == null)
                 return AttackSlot.slot1;
-            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot2))
+            else if (AttackBehaviours[AttackSlot.slot2] == null)
                 return AttackSlot.slot2;
-            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot3))
+            else if (AttackBehaviours[AttackSlot.slot3] == null)
                 return AttackSlot.slot3;
-            else if (!AttackBehaviours.ContainsKey(AttackSlot.slot4))
+            else if (AttackBehaviours[AttackSlot.slot4] == null)
                 return AttackSlot.slot4;
             else
                 return null;
@@ -118,12 +121,12 @@ namespace EnemyClassesNamespace
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
         
-        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses)
+        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative)
         {
             var parameters = new[] { new Parameter("target", typeof(Player)) };
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
-            AttackInfo attackInfo = new AttackInfo(parsedScript, statuses, key);
+            AttackInfo attackInfo = new AttackInfo(parsedScript, statuses, key, narrative);
             attackBehaviours[key] = attackInfo;
         }
         
@@ -161,7 +164,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses);
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative);
             }
         }
     }
@@ -171,12 +174,14 @@ namespace EnemyClassesNamespace
         public string Name { get; set; }
         public Lambda Expression { get; set; }
         public List<string> Statuses { get; set; }
+        public string Narrative { get; set; }
 
-        public AttackInfo(Lambda expression, List<string> statuses, string name)
+        public AttackInfo(Lambda expression, List<string> statuses, string name, string narrative)
         {
             Expression = expression;
             Statuses = statuses;
             Name = name;
+            Narrative = narrative;
         }
     }
     

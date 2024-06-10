@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Thunderclap Warhammer</Name>
+        <Description>A massive warhammer that crackles with thunderous energy, capable of shattering armor.</Description>
+        <Damage>40</Damage>
+        <WeaponType>Warhammer</WeaponType>
+        <UniqueProperties>+5 Strength</UniqueProperties>
+        <WeaponCapabilities>Stuns enemies on impact and reduces their Defence.</WeaponCapabilities>
+        <StatusNames>
+            <StatusName>Stun</StatusName>
+            <StatusName>Debuff</StatusName>
+        </StatusNames>
+        <NarrativeLine>The warhammer smashes down with a deafening roar, leaving enemies dazed and vulnerable.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

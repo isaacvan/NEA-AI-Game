@@ -2,6 +2,8 @@
 using System.Xml.Serialization;
 using CombatNamespace;
 using EnemyClassesNamespace;
+using GameClassNamespace;
+using ItemFunctionsNamespace;
 using MainNamespace;
 using OpenAI_API;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,7 @@ namespace GPTControlNamespace
         Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
         Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
         Task GenerateUninitialisedStatuses(Conversation chat);
+        Task GenerateUninitialisedAttackBehaviours(Conversation chat);
     }
     
    
@@ -71,7 +74,8 @@ namespace GPTControlNamespace
         public static Conversation initialiseChat(OpenAIAPI api)
         {
             Conversation chat = api.Chat.CreateConversation();
-            chat.Model = Model.GPT4_Turbo;
+            Model model = Model.GPT4_Turbo;
+            chat.Model = model;
             chat.RequestParameters.Temperature = 0.9;
             return chat;
         }
@@ -88,6 +92,19 @@ namespace GPTControlNamespace
         
         public async Task<Player> generateMainXml(Conversation chat, string prompt5, Player player)
         {
+            // get user input
+            Console.Clear();
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "As the player, you get to add a level of context for your generated story.\nThis can be any request, such as 'Begin as a knight in a medieval setting'.\nIf you would like a completely random story, just type 'Random':\n");
+            string context = Console.ReadLine();
+            if (string.IsNullOrEmpty(context.Trim()))
+            {
+                context = "Random";
+            }
+
+            prompt5 += "\n" + context;
+
+            // get GPT response
+            
             string output;
             try
             {
@@ -99,6 +116,9 @@ namespace GPTControlNamespace
             {
                 throw new Exception($"Could not get response: {e}");
             }
+            
+            Thread.Sleep(500);
+            Console.Clear();
 
             if (string.IsNullOrEmpty(output.Trim()))
             {
@@ -342,7 +362,8 @@ namespace GPTControlNamespace
                 string json = File.ReadAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
                 var settings = new JsonSerializerSettings
                 {
-                    Converters = new List<JsonConverter> { new LambdaJsonConverter() }
+                    Converters = new List<JsonConverter> { new LambdaJsonConverter() },
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 };
                 Dictionary<string, AttackInfo> attackBehaviours = JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
                 if (attackBehaviours == null)
@@ -462,8 +483,45 @@ namespace GPTControlNamespace
                                     catch
                                     {
                                         // add to unititialsed statuses
-                                        uninitialisedStatuses.Add(statusName);
+                                        if (uninitialisedStatuses.Contains(statusName) == false)
+                                        {
+                                            uninitialisedStatuses.Add(statusName);
+                                        }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (WeaponTemplate weaponTemplate in Program.game.itemFactory.weaponTemplates)
+            {
+                foreach (PropertyInfo property in typeof(WeaponTemplate).GetProperties())
+                {
+                    if (property.Name == "Statuses")
+                    {
+                        foreach (string statusName in weaponTemplate.StatusNames)
+                        {
+                            List<string> statusNamesList = new List<string>();
+                            foreach (Status status1 in Program.game.statusFactory.statusList)
+                            {
+                                statusNamesList.Add(status1.Name);
+                            }
+
+                            Status status = new Status();
+
+                            try
+                            {
+                                status =
+                                    Program.game.statusFactory.statusList[
+                                        Array.IndexOf(statusNamesList.ToArray(), statusName)];
+                            }
+                            catch
+                            {
+                                if (uninitialisedStatuses.Contains(statusName) == false)
+                                {
+                                    uninitialisedStatuses.Add(statusName);
                                 }
                             }
                         }
@@ -489,12 +547,18 @@ namespace GPTControlNamespace
                 throw e;
             }
             
-            output = UtilityFunctions.FixJson(output).Result;
+            output = await UtilityFunctions.FixJson(output);
+            
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
             StatusFactory? tempStatusFactory = new StatusFactory();
             tempStatusFactory =
                 JsonConvert.DeserializeObject<StatusFactory>(
-                    output);
+                    output, settings);
+            
             if (tempStatusFactory == null)
             {
                 throw new Exception("Status factory is null, in GenerateUninitialisedStatuses");
@@ -511,6 +575,96 @@ namespace GPTControlNamespace
             File.WriteAllText(UtilityFunctions.statusesSpecificDirectory, newStatusFactory);
             
             Program.logger.Info("Status Factory Initialised");
+        }
+
+        public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
+        {
+            Program.logger.Info("Generating Uninitialised Attack Behaviours...");
+
+            List<string> uninitialisedAttackBehaviours = new List<string>();
+            List<string> initialisedAttackBehaviours = Program.game.attackBehaviourFactory.attackBehaviours.Keys.ToList();
+
+            foreach (WeaponTemplate weaponTemplate in Program.game.itemFactory.weaponTemplates)
+            { // checks through the weapon attack behaviours
+                foreach (PropertyInfo property in typeof(WeaponTemplate).GetProperties())
+                {
+                    if (property.Name == "AttackBehaviour")
+                    {
+                        if (initialisedAttackBehaviours.Contains(weaponTemplate.AttackBehaviour) == false)
+                        {
+                            uninitialisedAttackBehaviours.Add(weaponTemplate.AttackBehaviour);
+                        }
+                    }
+                }
+            }
+
+            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            { // checks through enemy template attack behaviours
+                foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
+                {
+                    if (property.Name == "AttackBehaviours")
+                    {
+                        foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
+                        {
+                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            {
+                                if (initialisedAttackBehaviours.Contains(enemyTemplate.AttackBehaviours[slot].Name) == false)
+                                {
+                                    uninitialisedAttackBehaviours.Add(enemyTemplate.AttackBehaviours[slot].Name);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            string output = "";
+            try
+            {
+                string prompt10 = File.ReadAllText(
+                    @$"{UtilityFunctions.promptPath}\Prompt10.txt");
+                foreach (string uninitialisedAttack in uninitialisedAttackBehaviours)
+                {
+                    prompt10 += uninitialisedAttack + "\n";
+                }
+
+                chat.AppendUserInput(prompt10);
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
+            output = await UtilityFunctions.FixJson(output);
+
+            AttackBehaviourFactory? tempAttackBehaviourFactory = new AttackBehaviourFactory();
+            tempAttackBehaviourFactory =
+                JsonConvert.DeserializeObject<AttackBehaviourFactory>(
+                    output);
+            
+            if (tempAttackBehaviourFactory == null)
+            {
+                throw new Exception("TempAttackBehaviourFactory factory is null, in GenerateUninitialisedAttackBehaviours");
+            }
+
+            // add statuses in temp to game.StatusFactory
+            
+            foreach (AttackInfo attackBehaviour in tempAttackBehaviourFactory.attackBehaviours.Values)
+            {
+                Program.game.attackBehaviourFactory.attackBehaviours.TryAdd(attackBehaviour.Name, attackBehaviour);
+            }
+            
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            
+            string newAttackBehaviourFactory = JsonConvert.SerializeObject(Program.game.attackBehaviourFactory, settings);
+            
+            File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory, newAttackBehaviourFactory);
+            
+            Program.logger.Info("Attack Behaviour Factory Initialised");
         }
     }
 }
