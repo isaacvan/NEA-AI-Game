@@ -30,7 +30,7 @@ namespace MainNamespace
 
         // one game costs £0.30 currently with GPT-4o. 3 minutes to generate.
 
-        // ---------------------------------------------------------------------------------------------------------
+        /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
 
         // COMBAT IS NEXT -
@@ -40,9 +40,14 @@ namespace MainNamespace
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
         // 
+        // NEXT - ENEMY COMBAT AI
+        // implement the natures for each type of enemy
+        // design each ai system in combat
+        // 
         // NEXT - MAP GENERATION
+        // big topic
         //----------------------------------------------------------------------------------------------------------
-
+        */
 
         // ------------------------------------------------------------------------------------------------------------
         // CURRENT STATE
@@ -804,6 +809,17 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(attackBehaviour) != "saveExample")
                 {
                     File.Delete(attackBehaviour);
+                }
+            }
+            
+            // delete characterattacks
+            string[] characterAttacks =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}CharacterAttacks", searchPattern: "*.json");
+            foreach (string characterAttack in characterAttacks)
+            {
+                if (Path.GetFileNameWithoutExtension(characterAttack) != "saveExample")
+                {
+                    File.Delete(characterAttack);
                 }
             }
         }
