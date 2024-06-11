@@ -4,17 +4,17 @@
     <X>0</X>
     <Y>0</Y>
   </playerPos>
-  <Class>Survivor</Class>
-  <Race>Human</Race>
+  <Class>Rogue Automaton</Class>
+  <Race>Robot</Race>
   <Health>80</Health>
   <currentHealth>80</currentHealth>
   <ManaPoints>70</ManaPoints>
   <currentMana>0</currentMana>
-  <Strength>6</Strength>
+  <Strength>8</Strength>
   <Intelligence>9</Intelligence>
-  <Dexterity>8</Dexterity>
+  <Dexterity>10</Dexterity>
   <Constitution>6</Constitution>
-  <Charisma>6</Charisma>
+  <Charisma>2</Charisma>
   <Level>1</Level>
   <currentExp>0</currentExp>
   <maxExp>10</maxExp>

@@ -28,8 +28,7 @@ namespace MainNamespace
         public static Logger logger = LogManager.GetCurrentClassLogger();
         public static Game game;
 
-        // one game costs £0.32 currently with GPT-4o
-        // one game costs $0. currently with
+        // one game costs £0.30 currently with GPT-4o. 3 minutes to generate.
 
         // ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
@@ -38,28 +37,18 @@ namespace MainNamespace
         // - START A COMBAT BETWEEN A PLAYER AND AN ENEMY (made using factories)
         // - START DEFINING COMBAT CLASS
         // - COMBAT FUNCTIONS TO APPLY ATTACKS, CONVERT STATUSES INTO ACTION
-
-        // change statusList into a dictionary?? might be fiddly - would need to change prompt and json structure
-
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
+        // 
+        // NEXT - MAP GENERATION
         //----------------------------------------------------------------------------------------------------------
 
 
         // ------------------------------------------------------------------------------------------------------------
         // CURRENT STATE
-        // possibly working? might need to check json serialiser for generating uninitialised attacks and statuses, but defo attacks.
-        /*
-         * Unhandled exception. Newtonsoft.Json.JsonSerializationException: Self referencin
-g loop detected for property 'Module' with type 'System.Reflection.RuntimeModule
-'. Path 'attackBehaviours.PlayerBasicAttack.Expression.Expression.Method.Module.
-Assembly.EntryPoint'.
-   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircula
-rReference(JsonWriter writer, Object value, JsonProperty property, JsonContract
-contract, JsonContainerContract containerContract, JsonProperty containerPropert
-y)
-
-         */
+        // TESTING - works.
+        // GAME - loadGame works.
+        // GAME - game works, with occaisonal api errors in generation.
         // ----------------------------------------------------------------------------------------------------------
 
         static async Task Main(string[] args)

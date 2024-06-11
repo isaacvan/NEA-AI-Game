@@ -12,10 +12,12 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Reflection;
 using CombatNamespace;
+using DynamicExpresso;
 using GameClassNamespace;
 using ItemFunctionsNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -116,15 +118,26 @@ namespace PlayerClassesNamespace
         public async Task writePlayerAttacksToJSON()
         {
             string path = UtilityFunctions.playerAttacksSpecificDirectory;
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                Converters = new List<JsonConverter> { new ExpressionConverter(), new StringEnumConverter() },
+                NullValueHandling = NullValueHandling.Include,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
             try
             {
-                // serialise PlayerAttacks into path
-                string json = JsonConvert.SerializeObject(PlayerAttacks, Formatting.Indented);
-                await File.WriteAllTextAsync(path, json);
+                string json = JsonConvert.SerializeObject(PlayerAttacks, settings);
+                using (var writer = new StreamWriter(path))
+                {
+                    await writer.WriteAsync(json);
+                }
+                Program.logger.Info("Player attacks data has been written to JSON successfully.");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception($"Error writing to JSON file in writePlayerAttacksToJSON: {e}");
+                throw new Exception("Failed to write player attacks to JSON: " + ex.Message);
             }
         }
 

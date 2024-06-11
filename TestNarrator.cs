@@ -142,6 +142,7 @@ namespace TestNarratorNamespace
                     //    await UtilityFunctions.readFromJSONFile<AttackBehaviourFactory>(
                     //        UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
                     string json = File.ReadAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                    json = await UtilityFunctions.FixJson(json);
                     var settings = new JsonSerializerSettings
                     {
                         Converters = new List<JsonConverter> { new LambdaJsonConverter() }
@@ -197,12 +198,12 @@ namespace TestNarratorNamespace
 
             public async Task GenerateUninitialisedStatuses(Conversation chat)
             {
-                Program.logger.Info("Example file has uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
+                Program.logger.Info("Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
             }
             
             public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
             {
-                Program.logger.Info("Example file has uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
+                Program.logger.Info("Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
             }
         }
     }

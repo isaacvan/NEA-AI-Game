@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
-        <Name>Hyper-stim Med Pack</Name>
-        <Description>A medical pack containing fast-acting stimulants that can heal wounds and rejuvenate the user's body.</Description>
-        <Effects>Heals 50 HP; Increases Dexterity by 2 for 5 turns</Effects>
-        <UniqueProperties>None</UniqueProperties>
-        <StorylineRelevance>Found in the infirmary of the spacecraft, crucial for surviving tough battles.</StorylineRelevance>
+        <Name>Energy Capsule</Name>
+        <Description>A compact container of condensed energy, instantly recharges the user's power cells.</Description>
+        <Effects>+20 Mana Points</Effects>
+        <UniqueProperties>Instant Use</UniqueProperties>
+        <StorylineRelevance>Essential for Rogue Automatons when energy runs critically low.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Energy Cell</Name>
-        <Description>An advanced power cell that can be used to recharge energy-based weapons or shields.</Description>
-        <Effects>Restores 100% of weapon energy; grants a temporary shield absorbing 30 damage</Effects>
-        <UniqueProperties>None</UniqueProperties>
-        <StorylineRelevance>Essential for keeping energy weapons operational and providing a defensive boost.</StorylineRelevance>
+        <Name>Nano-Repair Kit</Name>
+        <Description>A kit containing nanobots programmed for rapid machinery repair.</Description>
+        <Effects>+30 Health</Effects>
+        <UniqueProperties>Single Use; Out of Combat</UniqueProperties>
+        <StorylineRelevance>Crucial for on-field self-repairs after combat engagements.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Gravity Grenade</Name>
-        <Description>A grenade that temporarily alters the gravity in a small area, floating enemies helplessly.</Description>
-        <Effects>Stuns enemies for 2 turns; deals 15 damage</Effects>
-        <UniqueProperties>None</UniqueProperties>
-        <StorylineRelevance>Can turn the tide of battle by disabling groups of enemies.</StorylineRelevance>
+        <Name>Stealth Field Generator</Name>
+        <Description>A one-time-use device that envelops the user in a near-invisible stealth field.</Description>
+        <Effects>Grants temporary invisibility</Effects>
+        <UniqueProperties>Single Use; Lasts for 5 Turns</UniqueProperties>
+        <StorylineRelevance>Allows for tactical repositioning or escaping from unwinnable fights.</StorylineRelevance>
     </Consumable>
 </Item>

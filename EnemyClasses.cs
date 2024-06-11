@@ -3,6 +3,7 @@ using PlayerClassesNamespace;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -172,13 +173,20 @@ namespace EnemyClassesNamespace
     public class AttackInfo
     {
         public string Name { get; set; }
+        
+        [Newtonsoft.Json.JsonIgnore]
         public Lambda Expression { get; set; }
+       
+        //[Newtonsoft.Json.JsonConverter(typeof(ExpressionConverter))] 
+        public string ExpressionString { get; set; }
+        
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
 
         public AttackInfo(Lambda expression, List<string> statuses, string name, string narrative)
         {
             Expression = expression;
+            ExpressionString = expression.ToString();
             Statuses = statuses;
             Name = name;
             Narrative = narrative;
@@ -195,5 +203,33 @@ namespace EnemyClassesNamespace
             this.Key = Key;
             this.AttackInfo = AttackInfo;
         }
+    }
+    
+    public class ExpressionConverter : Newtonsoft.Json.JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(Expression) || objectType.IsSubclassOf(typeof(Expression));
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            Expression exp = value as Expression;
+            if (exp != null)
+            {
+                writer.WriteValue(exp.ToString());
+            }
+            else
+            {
+                writer.WriteNull();
+            }
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException("Deserialization of Expression is not supported.");
+        }
+
+        public override bool CanRead => false;
     }
 }

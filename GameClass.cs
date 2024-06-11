@@ -28,6 +28,7 @@ namespace GameClassNamespace
             // initialise api & chat
             OpenAIAPI api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);
+            GameSetup normalNarrator = new Narrator();
 
             // initialise itemFactory & player from api. Gets UtilityFunctions.loadedSave
             itemFactory = new ItemFactory();

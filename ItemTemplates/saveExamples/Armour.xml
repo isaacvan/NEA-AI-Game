@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Photon Mesh Vest</Name>
-        <Description>Lightweight body armour that offers excellent protection while allowing full range of movement.</Description>
-        <Defence>25</Defence>
-        <UniqueProperties>+3 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Reduces damage from energy weapons</DefensiveCapabilities>
+        <Name>Alloyed Exoskeleton</Name>
+        <Description>A durable body armor enhancing physical protections and electronic warfare capabilities.</Description>
+        <Defence>35</Defence>
+        <UniqueProperties>+3 Strength; +2 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Increases resistance to physical and energy attacks</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Nano-fiber Leggings</Name>
-        <Description>Leggings made from advanced nano-fibers, providing unmatched durability and flexibility.</Description>
-        <Defence>20</Defence>
-        <UniqueProperties>+2 Dexterity; +1 Speed</UniqueProperties>
-        <DefensiveCapabilities>Increases evasion against physical attacks</DefensiveCapabilities>
+        <Name>Circuitry Boots</Name>
+        <Description>Footwear embedded with advanced circuitry to enhance movement speed and agility.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Improves evasion rate</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Quantum Visor</Name>
-        <Description>An advanced piece of headgear that offers both protection and enhanced situational awareness.</Description>
-        <Defence>15</Defence>
-        <UniqueProperties>+4 Intelligence</UniqueProperties>
-        <DefensiveCapabilities>Grants immunity to blind and confusion effects</DefensiveCapabilities>
+        <Name>Signal Jamming Helm</Name>
+        <Description>An armored headpiece capable of jamming enemy communications and scans.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Reduces chance of detection by enemies</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
 </Item>

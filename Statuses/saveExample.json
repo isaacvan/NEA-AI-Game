@@ -1,20 +1,8 @@
 {
   "statusList": [
     {
-      "Name": "Poison",
-      "Duration": 3,
-      "Type": "Enemy_currentHealth",
-      "Increase": false,
-      "PercentBool": false,
-      "IntensityNumber": 5,
-      "IntensityPercent": null,
-      "Stackable": true,
-      "Refreshable": true,
-      "Description": "Gradually reduces enemy health over 3 turns."
-    },
-    {
-      "Name": "Confused",
-      "Duration": 2,
+      "Name": "Disoriented",
+      "Duration": "3",
       "Type": "Enemy_Dexterity",
       "Increase": false,
       "PercentBool": true,
@@ -22,115 +10,99 @@
       "IntensityPercent": 20,
       "Stackable": false,
       "Refreshable": true,
-      "Description": "Lowers enemy dexterity by 20%, increasing their chance to miss attacks for 2 turns."
-    },
-    {
-      "Name": "Stunned",
-      "Duration": 1,
-      "Type": "Enemy_currentHealth",
-      "Increase": false,
-      "PercentBool": false,
-      "IntensityNumber": 0,
-      "IntensityPercent": null,
-      "Stackable": false,
-      "Refreshable": true,
-      "Description": "Stuns the target, making them unable to act for 1 turn."
-    },
-    {
-      "Name": "Slowed",
-      "Duration": 2,
-      "Type": "Enemy_Dexterity",
-      "Increase": false,
-      "PercentBool": true,
-      "IntensityNumber": null,
-      "IntensityPercent": 30,
-      "Stackable": true,
-      "Refreshable": true,
-      "Description": "Reduces target's speed by 30%, decreasing their evasion and attack speed for 2 turns."
+      "ChanceToApplyPercent": 60,
+      "Description": "Lowers the enemy's dexterity by 20%, making them less likely to dodge attacks."
     },
     {
       "Name": "Burned",
-      "Duration": 3,
+      "Duration": "4",
       "Type": "Enemy_currentHealth",
       "Increase": false,
       "PercentBool": false,
-      "IntensityNumber": 7,
+      "IntensityNumber": 5,
       "IntensityPercent": null,
       "Stackable": true,
-      "Refreshable": true,
-      "Description": "Inflicts burn on the target, dealing 7 damage over 3 turns."
+      "Refreshable": false,
+      "ChanceToApplyPercent": 70,
+      "Description": "Inflicts damage over time, reducing the enemy's current health by 5 points each turn."
     },
     {
-      "Name": "Disoriented",
-      "Duration": 2,
-      "Type": "Enemy_Intelligence",
+      "Name": "Paralyzed",
+      "Duration": "2",
+      "Type": "Enemy_Strength",
       "Increase": false,
       "PercentBool": true,
       "IntensityNumber": null,
       "IntensityPercent": 25,
       "Stackable": false,
       "Refreshable": true,
-      "Description": "Reduces target's intelligence by 25%, affecting their ability to use abilities for 2 turns."
+      "ChanceToApplyPercent": 50,
+      "Description": "Reduces the enemy's strength by 25%, decreasing their damage output."
     },
     {
-      "Name": "Blinded",
-      "Duration": 1,
-      "Type": "Enemy_Dexterity",
-      "Increase": false,
+      "Name": "Cloaked",
+      "Duration": "3",
+      "Type": "Player_Dexterity",
+      "Increase": true,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 30,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 80,
+      "Description": "Increases the player's dexterity by 30%, improving evasion and accuracy."
+    },
+    {
+      "Name": "Healing",
+      "Duration": "1",
+      "Type": "Player_currentHealth",
+      "Increase": true,
       "PercentBool": false,
-      "IntensityNumber": 0,
+      "IntensityNumber": 20,
       "IntensityPercent": null,
       "Stackable": false,
-      "Refreshable": false,
-      "Description": "Blinds the enemy, significantly increasing their chance to miss attacks for 1 turn."
+      "Refreshable": true,
+      "ChanceToApplyPercent": 90,
+      "Description": "Heals the player, restoring 20 points of current health instantly."
     },
     {
-      "Name": "Weakened",
-      "Duration": 3,
-      "Type": "Enemy_Strength",
+      "Name": "Hacked",
+      "Duration": "3",
+      "Type": "Enemy_Intelligence",
       "Increase": false,
       "PercentBool": true,
       "IntensityNumber": null,
-      "IntensityPercent": 15,
+      "IntensityPercent": 30,
       "Stackable": true,
       "Refreshable": true,
-      "Description": "Weakens the enemy, reducing their attack damage by 15% for 3 turns."
+      "ChanceToApplyPercent": 40,
+      "Text": "Reduces the enemy's intelligence by 30%, impairing their ability to use special attacks effectively."
     },
     {
-      "Name": "Teleported",
-      "Duration": 0,
-      "Type": "Player_Position",
-      "Increase": true,
-      "PercentBool": false,
-      "IntensityNumber": 1,
-      "IntensityPercent": null,
-      "Stackable": false,
-      "Refreshable": false,
-      "Description": "Instantly moves the player to a random location. One-time effect."
-    },
-    {
-      "Name": "Disarmed",
-      "Duration": 1,
-      "Type": "Enemy_Strength",
-      "Increase": false,
-      "PercentBool": false,
-      "IntensityNumber": 0,
-      "IntensityPercent": null,
-      "Stackable": false,
-      "Refreshable": true,
-      "Description": "Disarms the enemy, preventing them from attacking for 1 turn."
-    },
-    {
-      "Name": "Crushed",
-      "Duration": 2,
-      "Type": "Enemy_currentHealth",
+      "Name": "Stunned",
+      "Duration": "2",
+      "Type": "Enemy_Charisma",
       "Increase": false,
       "PercentBool": false,
       "IntensityNumber": 10,
       "IntensityPercent": null,
       "Stackable": true,
       "Refreshable": true,
-      "Description": "Crushes the enemy under immense pressure, dealing 10 damage over 2 turns."
+      "ChanceToApplyPercent": 65,
+      "Description": "Stuns the enemy, reducing their charisma by 10 points and preventing them from using charm-based abilities."
+    },
+    {
+      "Name": "DefenceBoost",
+      "Duration": "3",
+      "Type": "Player_Constitution",
+      "Increase": true,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 20,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 85,
+      "Description": "Provides a temporary boost to the player's constitution by 20%, increasing overall defense."
     }
   ]
 }

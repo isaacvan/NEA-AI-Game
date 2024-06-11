@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Galactic Pulse Rifle</Name>
-        <Description>This rifle, equipped with an AI targeting system, was salvaged from the armory of the alien spacecraft. It hums with an otherworldly energy.</Description>
+        <Name>Photon Blade</Name>
+        <Description>A sleek, energy-based sword that hums with raw power, designed for the Rogue Automaton class.</Description>
         <Damage>25</Damage>
-        <WeaponType>Rifle</WeaponType>
-        <UniqueProperties>+5 Intelligence</UniqueProperties>
-        <WeaponCapabilities>The rifle's shots can penetrate multiple enemies</WeaponCapabilities>
-        <StatusNames>
-            <StatusName>Stun</StatusName>
-        </StatusNames>
-        <NarrativeLine>As you pull the trigger, a beam of concentrated energy blasts through the horde.</NarrativeLine>
-        <ItemEquipLocation>Weapon</ItemEquipLocation>
-    </Weapon>
-    <Weapon>
-        <Name>Plasma Blade</Name>
-        <Description>A sword with a blade made of pure plasma energy. It vibrates intensely when close to enemies.</Description>
-        <Damage>35</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+3 Dexterity</UniqueProperties>
-        <WeaponCapabilities>Ignites enemies with a plasma field</WeaponCapabilities>
+        <UniqueProperties>+5 Dexterity</UniqueProperties>
         <StatusNames>
-            <StatusName>Burn</StatusName>
+            <StatusName>Stunned</StatusName>
         </StatusNames>
-        <NarrativeLine>With a swift motion, you swing the blade, engulfing the enemy in flames.</NarrativeLine>
+        <AttackBehaviour>ElectroSlice</AttackBehaviour>
+        <NarrativeLine>With a swift motion, the blade cuts through the air, electrifying the target.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Quantum Disruptor</Name>
-        <Description>A handheld device that can disrupt the fabric of space-time around a target, used by advanced alien assassins.</Description>
-        <Damage>40</Damage>
-        <WeaponType>Device</WeaponType>
-        <UniqueProperties>+2 Strength; +2 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Can displace enemies to a different location</WeaponCapabilities>
+        <Name>Mechanical Bow</Name>
+        <Description>An advanced compound bow with mechanized draw strength settings for precise shots.</Description>
+        <Damage>18</Damage>
+        <WeaponType>Bow</WeaponType>
+        <UniqueProperties>+2 Strength; +3 Dexterity</UniqueProperties>
         <StatusNames>
-            <StatusName>Teleport</StatusName>
+            <StatusName>Paralyzed</StatusName>
         </StatusNames>
-        <NarrativeLine>The air shimmers as the enemy vanishes, only to reappear in chaos.</NarrativeLine>
+        <AttackBehaviour>AutoAimShot</AttackBehaviour>
+        <NarrativeLine>The arrow flies true, hitting its mark with mechanical precision.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Viral Injector</Name>
+        <Description>A sinister weapon used to inject enemies with a rapidly spreading nanite virus.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Hacked</StatusName>
+        </StatusNames>
+        <AttackBehaviour>NaniteSwarm</AttackBehaviour>
+        <NarrativeLine>The dagger releases a cloud of nanites, consuming the enemy from within.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

@@ -1,144 +1,83 @@
 {
-  "AcidSpray": {
-    "Name": "AcidSpray",
-    "Expression": "target.ReceiveAttack(20)",
-    "Statuses": [
-      "Poison"
-    ]
-  },
-  "PsychicScream": {
-    "Name": "PsychicScream",
-    "Expression": "target.ReceiveAttack(15)",
-    "Statuses": [
-      "Confused"
-    ]
-  },
-  "ElectroPulse": {
-    "Name": "ElectroPulse",
-    "Expression": "target.ReceiveAttack(25)",
-    "Statuses": [
-      "Stunned"
-    ]
-  },
-  "GravitationalCrush": {
-    "Name": "GravitationalCrush",
-    "Expression": "target.ReceiveAttack(30)",
-    "Statuses": [
-      "Slowed"
-    ]
-  },
-  "PlasmaBeam": {
-    "Name": "PlasmaBeam",
-    "Expression": "target.ReceiveAttack(35)",
-    "Statuses": [
-      "Burned"
-    ]
-  },
-  "SonicWave": {
-    "Name": "SonicWave",
-    "Expression": "target.ReceiveAttack(18)",
-    "Statuses": [
-      "Disoriented"
-    ]
-  },
-  "VoidSlash": {
-    "Name": "VoidSlash",
-    "Expression": "target.ReceiveAttack(22)",
-    "Statuses": []
-  },
-  "ToxicFog": {
-    "Name": "ToxicFog",
-    "Expression": "target.ReceiveAttack(12)",
-    "Statuses": [
-      "Poison",
-      "Blinded"
-    ]
-  },
-  "NaniteSwarm": {
-    "Name": "NaniteSwarm",
-    "Expression": "target.ReceiveAttack(28)",
-    "Statuses": [
-      "Weakened"
-    ]
-  },
-  "HyperBeam": {
-    "Name": "HyperBeam",
-    "Expression": "target.ReceiveAttack(40)",
-    "Statuses": []
-  },
-  "MagneticField": {
-    "Name": "MagneticField",
-    "Expression": "target.ReceiveAttack(10)",
-    "Statuses": [
-      "Stunned",
-      "Disarmed"
-    ]
-  },
-  "QuantumDisruption": {
-    "Name": "QuantumDisruption",
-    "Expression": "target.ReceiveAttack(32)",
-    "Statuses": [
-      "Confused",
-      "Slowed"
-    ]
-  },
-  "DarkEnergyBlast": {
-    "Name": "DarkEnergyBlast",
-    "Expression": "target.ReceiveAttack(27)",
-    "Statuses": [
-      "Blinded"
-    ]
-  },
-  "SolarFlare": {
-    "Name": "SolarFlare",
-    "Expression": "target.ReceiveAttack(20)",
-    "Statuses": [
-      "Burned",
-      "Disoriented"
-    ]
-  },
-  "CosmicRift": {
-    "Name": "CosmicRift",
-    "Expression": "target.ReceiveAttack(50)",
-    "Statuses": [
-      "Teleported"
-    ]
-  },
-  "NeuralHack": {
-    "Name": "NeuralHack",
-    "Expression": "target.ReceiveAttack(16)",
-    "Statuses": [
-      "Confused",
-      "Weakened"
-    ]
-  },
-  "IonStorm": {
-    "Name": "IonStorm",
-    "Expression": "target.ReceiveAttack(24)",
-    "Statuses": [
-      "Stunned",
-      "Burned"
-    ]
-  },
-  "GravityWell": {
-    "Name": "GravityWell",
-    "Expression": "target.ReceiveAttack(35)",
-    "Statuses": [
-      "Slowed",
-      "Crushed"
-    ]
-  },
-  "PhotonSpike": {
-    "Name": "PhotonSpike",
-    "Expression": "target.ReceiveAttack(29)",
-    "Statuses": []
-  },
-  "TemporalShift": {
-    "Name": "TemporalShift",
-    "Expression": "target.ReceiveAttack(0)",
-    "Statuses": [
-      "Teleported",
-      "Confused"
-    ]
+  "attackBehaviours": {
+    "PlayerBasicAttack": {
+      "Name": "PlayerBasicAttack",
+      "ExpressionString": "target.ReceiveAttack(5, 20)",
+      "Statuses": [],
+      "Narrative": "launches a basic combat maneuver."
+    },
+    "IonicPulse": {
+      "Name": "IonicPulse",
+      "ExpressionString": "target.ReceiveAttack(20, 25)",
+      "Statuses": [
+        "Disoriented"
+      ],
+      "Narrative": "emits a powerful ionic pulse."
+    },
+    "LaserBlast": {
+      "Name": "LaserBlast",
+      "ExpressionString": "target.ReceiveAttack(25, 40)",
+      "Statuses": [
+        "Burned"
+      ],
+      "Narrative": "fires a concentrated laser blast."
+    },
+    "ElectroShock": {
+      "Name": "ElectroShock",
+      "ExpressionString": "target.ReceiveAttack(15, 50)",
+      "Statuses": [
+        "Paralyzed"
+      ],
+      "Narrative": "unleashes an electroshock wave."
+    },
+    "StealthHack": {
+      "Name": "StealthHack",
+      "ExpressionString": "target.ReceiveAttack(10, 80)",
+      "Statuses": [
+        "Cloaked"
+      ],
+      "Narrative": "initiates a stealth hack, becoming temporarily invisible."
+    },
+    "PlasmaGrenade": {
+      "Name": "PlasmaGrenade",
+      "ExpressionString": "target.ReceiveAttack(30, 30)",
+      "Statuses": [
+        "Burned",
+        "Disoriented"
+      ],
+      "Narrative": "throws a plasma grenade, causing an explosion."
+    },
+    "MagneticField": {
+      "Name": "MagneticField",
+      "ExpressionString": "target.ReceiveAttack(0, 0)",
+      "Statuses": [
+        "DefenceBoost"
+      ],
+      "Narrative": "activates a magnetic field, enhancing defense mechanisms."
+    },
+    "NanoRepair": {
+      "Name": "NanoRepair",
+      "ExpressionString": "target.ReceiveAttack(-20, 0)",
+      "Statuses": [
+        "Healing"
+      ],
+      "Narrative": "deploys nanobots for self-repair."
+    },
+    "SystemOverride": {
+      "Name": "SystemOverride",
+      "ExpressionString": "target.ReceiveAttack(35, 20)",
+      "Statuses": [
+        "Hacked"
+      ],
+      "Narrative": "executes a system override on the target."
+    },
+    "EnergyDischarge": {
+      "Name": "EnergyDischarge",
+      "ExpressionString": "target.ReceiveAttack(40, 10)",
+      "Statuses": [
+        "Stunned"
+      ],
+      "Narrative": "releases a massive energy discharge."
+    }
   }
 }

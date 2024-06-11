@@ -529,6 +529,12 @@ namespace GPTControlNamespace
                 }
             }
 
+            if (uninitialisedStatuses.Count == 0)
+            {
+                Program.logger.Info("No uninitialised statuses found");
+                return;
+            }
+
             string output = "";
             try
             {
@@ -617,6 +623,12 @@ namespace GPTControlNamespace
                     }
                 }
             }
+
+            if (uninitialisedAttackBehaviours.Count == 0)
+            {
+                Program.logger.Info("No uninitialised attack behaviours found");
+                return;
+            }
             
             string output = "";
             try
@@ -664,7 +676,7 @@ namespace GPTControlNamespace
             
             File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory, newAttackBehaviourFactory);
             
-            Program.logger.Info("Attack Behaviour Factory Initialised");
+            Program.logger.Info("Uninitialised Attack Behaviours Initialised");
         }
     }
 }
