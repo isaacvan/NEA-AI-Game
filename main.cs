@@ -79,15 +79,18 @@ namespace MainNamespace
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
-
+                    Console.Clear();
+                    Console.WriteLine("Testing mode");
 
                     Console.ReadLine();
                     break;
                 case "game":
                     await game.initialiseGame(new Narrator());
+                    Console.Clear();
+                    Console.WriteLine("Game mode");
 
                     // start game
-                    UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
+                    // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
 
                     Console.ReadLine();
                     break;

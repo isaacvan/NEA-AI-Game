@@ -155,7 +155,10 @@ namespace TestNarratorNamespace
                         items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
                     }
 
-                    attackBehaviourFactoryToBeReturned.InitializeFromSerializedBehaviors(items);
+                    foreach (var behaviour in items)
+                    {
+                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative);
+                    }
                 }
                 catch (Exception e)
                 {

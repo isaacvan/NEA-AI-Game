@@ -69,6 +69,9 @@ namespace GameClassNamespace
                 await player.writePlayerAttacksToJSON();
                 
                 // initialise map
+                
+                
+                Console.WriteLine("Started Game.");
             }
             else
             {
@@ -93,6 +96,9 @@ namespace GameClassNamespace
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
 
                 // load map
+                
+                
+                Console.WriteLine("Loaded save.");
             }
         }
 

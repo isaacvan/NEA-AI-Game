@@ -1,2 +1,5 @@
-2024-06-11 22:29:28.7133|INFO|MainNamespace.Program|Program started
-2024-06-11 22:29:28.7346|INFO|MainNamespace.Program|Running mode=game
+2024-06-12 23:06:08.8417|INFO|MainNamespace.Program|Program started
+2024-06-12 23:06:08.8625|INFO|MainNamespace.Program|Running mode=game
+2024-06-12 23:06:15.0741|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-06-12 23:06:15.1290|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-06-12 23:06:15.1290|INFO|MainNamespace.Program|Enemy Factory Initialised

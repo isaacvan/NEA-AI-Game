@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -127,7 +128,7 @@ namespace EnemyClassesNamespace
             var parameters = new[] { new Parameter("target", typeof(Player)) };
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
-            AttackInfo attackInfo = new AttackInfo(parsedScript, statuses, key, narrative);
+            AttackInfo attackInfo = new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative);
             attackBehaviours[key] = attackInfo;
         }
         
@@ -183,10 +184,14 @@ namespace EnemyClassesNamespace
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
 
-        public AttackInfo(Lambda expression, List<string> statuses, string name, string narrative)
+        public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name, string narrative)
         {
             Expression = expression;
-            ExpressionString = expression.ToString();
+            ExpressionString = expressionString;
+            if (ExpressionString == null)
+            {
+                Program.logger.Info("ExpressionString is null");
+            }
             Statuses = statuses;
             Name = name;
             Narrative = narrative;
