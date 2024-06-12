@@ -53,7 +53,7 @@ namespace MainNamespace
         // CURRENT STATE
         // TESTING - works.
         // GAME - loadGame works.
-        // GAME - game works, with occaisonal api errors in generation.
+        // GAME - game works, with occasional api errors in generation.
         // ----------------------------------------------------------------------------------------------------------
 
         static async Task Main(string[] args)
