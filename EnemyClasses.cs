@@ -27,6 +27,13 @@ namespace EnemyClassesNamespace
         slot3,
         slot4
     }
+
+    public enum Nature
+    {
+        aggressive,
+        neutral,
+        timid
+    }
     
     public class Enemy : EnemyTemplate
     {
@@ -83,6 +90,7 @@ namespace EnemyClassesNamespace
         public int Charisma { get; set; }
         public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } = new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
         public List<string> AttackBehaviourKeys { get; set; } = new List<string>();
+        public Nature nature { get; set; }
         
         public EnemyTemplate()
         {

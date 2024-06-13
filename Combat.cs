@@ -6,15 +6,136 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using Emgu.CV.Ocl;
 using EnemyClassesNamespace;
+using MainNamespace;
 
 namespace CombatNamespace
 {
     public class Combat
     {
         public Player player { get; set; }
-        public Enemy enemy { get; set; }
+        public Enemy? enemy { get; set; }
+        public Dictionary<int, Enemy> enemies { get; set; } // key is ID, value is Enemy
+        public int turnCount { get; set; } = 1;
+        public int playerTurn { get; set; } = 1;
+        public int enemyTurn { get; set; } = 2;
+        public int enemiesTurnCount { get; set; } = 1; // count of which enemy's turn it is
+        public bool playerTurnBool { get; set; } = true;
+        public bool enemyTurnBool { get; set; } = false;
+        public bool playerAlive { get; set; } = true;
+        public bool enemyAlive { get; set; } = true;
+        public bool playerWon { get; set; } = false;
+        public bool enemyWon { get; set; } = false;
+        public bool playerDied { get; set; } = false;
+        public bool enemyDied { get; set; } = false;
+        public bool playerRan { get; set; } = false;
+        public bool enemyRan { get; set; } = false;
         // more
+
+        public Combat(Player player, Dictionary<int, Enemy> enemies)
+        {
+            if (enemies.Count == 0)
+            {
+                throw new Exception("No enemies provided.");
+            } else if (enemies.Count == 1)
+            {
+                this.enemy = enemies[0];
+            } else if (enemies.Count > 1)
+            {
+                this.enemies = enemies;
+            }
+            if (player != null)
+            {
+                this.player = player;
+            }
+            else
+            {
+                throw new Exception("Player cannot be null.");
+            }
+        }
+
+        public bool beginCombat()
+        {
+            while (playerAlive && enemyAlive) {
+                if (playerTurnBool) {
+                    playerTurnAction();
+                    
+                    playerTurnBool = false;
+                } else if (enemyTurnBool) {
+                    for (int i = 0; i < enemies.Keys.Count; i++) {
+                        switch (enemies[i].nature.ToString().ToLower())
+                        {
+                            case "aggressive":
+                                aggressiveEnemyTurnAction();
+                                break;
+                            case "neutral":
+                                neutralEnemyTurnAction();
+                                break;
+                            case "timid":
+                                timidEnemyTurnAction();
+                                break;
+                            default:
+                                throw new Exception("Invalid enemy nature.");
+                        }
+                    }
+                    
+                    enemyTurnBool = false;
+                }
+            }
+
+            if (playerAlive && !enemyAlive) {
+                playerWon = true;
+                return playerWon;
+            } else if (!playerAlive && enemyAlive) {
+                enemyWon = true;
+                return false;
+            }
+            else
+            {
+                MainNamespace.Program.logger.Info(
+                    $"Unexpected result. playerAlive: {playerAlive}, enemyAlive: {enemyAlive}");
+                return false;
+            }
+        }
+        
+        public void playerTurnAction()
+        {
+            // player turn logic
+            turnCount++;
+            
+            // more
+        }
+        
+        public void aggressiveEnemyTurnAction()
+        {
+            // enemy turn logic. Implement logic based off enemy natures.
+            turnCount++;
+            
+            // more
+        }
+        
+        public void neutralEnemyTurnAction()
+        {
+            // enemy turn logic. Implement logic based off enemy natures.
+            turnCount++;
+            
+            // more
+        }
+        
+        public void timidEnemyTurnAction()
+        {
+            // enemy turn logic
+            turnCount++;
+            
+            // more
+        }
+
+        public void displayCombatUI()
+        {
+            // combat ui
+        }
+        
 
         public bool didCrit(object caster, int crit)
         {

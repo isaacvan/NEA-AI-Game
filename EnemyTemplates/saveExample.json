@@ -21,7 +21,8 @@
         "LaserBlast",
         "ElectroShock",
         "SystemOverride"
-      ]
+      ],
+      "nature": "timid"
     },
     {
       "Name": "Nanite Swarm",
@@ -37,7 +38,8 @@
         "NanoRepair",
         "ElectroShock",
         "PlasmaGrenade"
-      ]
+      ],
+      "nature": "neutral"
     },
     {
       "Name": "Corrupted Sentinel",
@@ -53,7 +55,8 @@
         "MagneticField",
         "PlasmaGrenade",
         "EnergyDischarge"
-      ]
+      ],
+      "nature": "aggressive"
     },
     {
       "Name": "Hacker Drone",
@@ -69,7 +72,8 @@
         "SystemOverride",
         "ElectroShock",
         "NanoRepair"
-      ]
+      ],
+      "nature": "aggressive"
     },
     {
       "Name": "Plasma Spectre",
@@ -85,7 +89,8 @@
         "EnergyDischarge",
         "IonicPulse",
         "MagneticField"
-      ]
+      ],
+      "nature": "neutral"
     }
   ]
 }

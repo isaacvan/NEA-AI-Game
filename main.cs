@@ -46,6 +46,10 @@ namespace MainNamespace
         // 
         // NEXT - MAP GENERATION
         // big topic
+        // 
+        // NEXT - ENEMY MOVEMENT AI
+        //
+        // NEXT - DATABASES
         //----------------------------------------------------------------------------------------------------------
         */
 
@@ -81,13 +85,17 @@ namespace MainNamespace
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
                     Console.Clear();
                     Console.WriteLine("Testing mode");
-
+                    logger.Info("Testing mode");
+                    
+                    game.currentCombat.beginCombat();
+                    
                     Console.ReadLine();
                     break;
                 case "game":
                     await game.initialiseGame(new Narrator());
                     Console.Clear();
                     Console.WriteLine("Game mode");
+                    logger.Info("Game mode");
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
