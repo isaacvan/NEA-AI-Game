@@ -103,8 +103,14 @@ namespace CombatNamespace
         {
             // player turn logic
             turnCount++;
-            
+
+            string turnResult = playerTurnUI();
             // more
+        }
+
+        public string playerTurnUI()
+        {
+            return "";
         }
         
         public void aggressiveEnemyTurnAction()
@@ -140,6 +146,19 @@ namespace CombatNamespace
         public bool didCrit(object caster, int crit)
         {
             // logic that assesses caster stats to increase crit %
+            switch (caster.GetType().Name.ToLower())
+            {
+                case "player":
+                    // player crit logic
+                    break;
+                case "enemy":
+                    // enemy logic
+                    break;
+                default:
+                    throw new Exception("Invalid caster type.");
+            }
+
+            // more logic
             
             Random r = new Random();
             if (crit >= r.Next(0, 100)) {
