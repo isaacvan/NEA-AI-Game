@@ -37,7 +37,6 @@ C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Emgu.CV.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
-C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.Configuration.UserSecrets.dll
@@ -92,3 +91,7 @@ C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.pdb
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\ref\Code Projects.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Pro.3063BC58.Up2Date
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\DynamicExpresso.Core.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\NLog.dll
+C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\NLog.Extensions.Logging.dll

@@ -34,6 +34,7 @@ namespace MainNamespace
         // NEXT STEPS
 
         // COMBAT IS NEXT -
+        // doing playerTurnAction right now
         // - START A COMBAT BETWEEN A PLAYER AND AN ENEMY (made using factories)
         // - START DEFINING COMBAT CLASS
         // - COMBAT FUNCTIONS TO APPLY ATTACKS, CONVERT STATUSES INTO ACTION
@@ -47,6 +48,8 @@ namespace MainNamespace
         // NEXT - MAP GENERATION
         // big topic
         // 
+        // NEXT - UI CONSTRUCTOR
+        //
         // NEXT - ENEMY MOVEMENT AI
         //
         // NEXT - DATABASES
@@ -57,7 +60,7 @@ namespace MainNamespace
         // CURRENT STATE
         // TESTING - works.
         // GAME - loadGame works.
-        // GAME - game works, with occasional api errors in generation.
+        // GAME - game works, with very occasional api errors in generation.
         // ----------------------------------------------------------------------------------------------------------
 
         static async Task Main(string[] args)
@@ -87,7 +90,7 @@ namespace MainNamespace
                     Console.WriteLine("Testing mode");
                     logger.Info("Testing mode");
                     
-                    game.currentCombat.beginCombat();
+                    // game.currentCombat.beginCombat();
                     
                     Console.ReadLine();
                     break;

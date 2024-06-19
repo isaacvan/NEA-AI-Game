@@ -11,6 +11,7 @@ using MainNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using TestNarratorNamespace;
+using UIGenerationNamespace;
 
 namespace GameClassNamespace
 {
@@ -22,9 +23,13 @@ namespace GameClassNamespace
         public AttackBehaviourFactory attackBehaviourFactory { get; set; }
         public StatusFactory statusFactory { get; set; }
         public Combat currentCombat { get; set; }
+        public UIConstructer uiConstructer { get; set; }
 
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
+            // initialise uiConstructor
+            uiConstructer = new UIConstructer();
+            
             // initialise api & chat
             OpenAIAPI api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);

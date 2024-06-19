@@ -103,15 +103,52 @@ namespace CombatNamespace
         {
             // player turn logic
             turnCount++;
-
-            string turnResult = playerTurnUI();
+            
             // more
-        }
+            int i = 1;
+            Console.WriteLine("These are your attacks:");
+            foreach (AttackInfo attack in player.PlayerAttacks.Values)
+            {
+                if (attack != null)
+                {
+                    Console.WriteLine($"{i}. {attack.Name}");
+                    i++;
+                }
+            }
+            Console.WriteLine($"\nPlease enter an attack");
 
-        public string playerTurnUI()
-        {
-            return "";
+            AttackInfo attackInfo;
+            bool valid = false;
+            while (!valid)
+            {
+                try
+                {
+                    int input = Convert.ToInt16(Console.ReadLine());
+                    if (input < 1 || input > player.PlayerAttacks.Values.Count)
+                    {
+                        throw null;
+                    }
+                    else
+                    {
+                        AttackSlot attackSlot;
+                        attackInfo = player.PlayerAttacks[(AttackSlot)Enum.Parse(typeof(AttackSlot), $"slot{input}")];
+                        valid = true;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine($"Invalid input. Input should range from 1 - {player.PlayerAttacks.Values.Count}.");
+                }
+            }
+            
+            /*
+            if (attackInfo != null)
+            {
+                
+            }
+            */
         }
+        
         
         public void aggressiveEnemyTurnAction()
         {
@@ -135,11 +172,6 @@ namespace CombatNamespace
             turnCount++;
             
             // more
-        }
-
-        public void displayCombatUI()
-        {
-            // combat ui
         }
         
 
