@@ -41,6 +41,48 @@ namespace EnemyClassesNamespace
         public int currentMana { get; set; }
         public int Level { get; set; }
         public Point Position { get; set; }
+        
+        public void ReceiveAttack(int damage, int crit = 20) // DYNAMICEXPRESSO
+        {
+            if (Program.game.currentCombat != null)
+            {
+                bool didCrit = Program.game.currentCombat.didCrit(this, crit);
+                if (didCrit)
+                {
+                    damage *= 2;
+                }
+                Console.WriteLine($"{Name} took {damage} damage.");
+                currentHealth -= damage;
+                if (currentHealth < 0)
+                {
+                    currentHealth = 0;
+                    Program.game.currentCombat.enemyDied = true;
+                }
+                Thread.Sleep(1000);
+                Console.Clear();
+            }
+            else
+            {
+                Program.logger.Error("No current combat. Attempt to receive attack failed.");
+            }
+        }
+        
+        public void ExecuteAttack(string key, Player target)
+        {
+            if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
+            {
+                attackInfo.Expression.Invoke(target); // Execute the script
+                // Optionally handle modifiers here or within the script itself
+                foreach (var effect in attackInfo.Statuses)
+                {
+                    Program.logger.Info($"Applying effect: {effect}");
+                }
+            }
+            else
+            {
+                Program.logger.Info($"No attack behavior found for key: {key}");
+            }
+        }
     }
 
     // ENEMY FACTORY USAGE
@@ -131,30 +173,24 @@ namespace EnemyClassesNamespace
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
         
-        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative)
+        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative, Type targetType)
         {
-            var parameters = new[] { new Parameter("target", typeof(Player)) };
+            Parameter[] parameters = null;
+            if (targetType == typeof(Player))
+            {
+                parameters = new[] { new Parameter("target", typeof(Player)) };
+            } else if (targetType == typeof(Enemy))
+            {
+                parameters = new[] { new Parameter("target", typeof(Enemy)) };
+            }
+            else
+            {
+                throw new Exception("Invalid target type in attackbehaviourfactory");
+            }
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
             AttackInfo attackInfo = new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative);
             attackBehaviours[key] = attackInfo;
-        }
-        
-        public void ExecuteAttack(string key, Player target)
-        {
-            if (attackBehaviours.TryGetValue(key, out var attackInfo))
-            {
-                attackInfo.Expression.Invoke(target); // Execute the script
-                // Optionally handle modifiers here or within the script itself
-                foreach (var effect in attackInfo.Statuses)
-                {
-                    Program.logger.Info($"Applying effect: {effect}");
-                }
-            }
-            else
-            {
-                Program.logger.Info($"No attack behavior found for key: {key}");
-            }
         }
         
         public AttackInfo GetAttackInfo(string key)
@@ -174,7 +210,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative);
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player));
             }
         }
     }

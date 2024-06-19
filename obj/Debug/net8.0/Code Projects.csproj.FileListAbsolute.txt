@@ -90,8 +90,8 @@ C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\refint\Code Projects.d
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.pdb
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.genruntimeconfig.cache
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\ref\Code Projects.dll
-C:\Users\Isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Pro.3063BC58.Up2Date
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\DynamicExpresso.Core.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\NLog.dll
 C:\Users\Isaac\RiderProjects\NEA-AI-Game\bin\Debug\net8.0\NLog.Extensions.Logging.dll
+C:\Users\isaac\RiderProjects\NEA-AI-Game\obj\Debug\net8.0\Code Projects.csproj.CopyComplete

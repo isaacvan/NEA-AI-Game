@@ -157,7 +157,7 @@ namespace TestNarratorNamespace
 
                     foreach (var behaviour in items)
                     {
-                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative);
+                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Enemy));
                     }
                 }
                 catch (Exception e)

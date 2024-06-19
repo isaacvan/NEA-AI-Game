@@ -90,6 +90,7 @@ namespace PlayerClassesNamespace
                 {
                     damage *= 2;
                 }
+                Console.WriteLine($"You have taken {damage} damage.");
                 currentHealth -= damage;
                 if (currentHealth < 0)
                 {
@@ -100,6 +101,23 @@ namespace PlayerClassesNamespace
             else
             {
                 Program.logger.Error("No current combat. Attempt to receive attack failed.");
+            }
+        }
+        
+        public void ExecuteAttack(string key, Enemy target)
+        {
+            if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
+            {
+                attackInfo.Expression.Invoke(target); // Execute the script
+                // Optionally handle modifiers here or within the script itself
+                foreach (var effect in attackInfo.Statuses)
+                {
+                    Program.logger.Info($"Applying effect: {effect}");
+                }
+            }
+            else
+            {
+                Program.logger.Info($"No attack behavior found for key: {key}");
             }
         }
 

@@ -40,7 +40,8 @@ namespace CombatNamespace
                 throw new Exception("No enemies provided.");
             } else if (enemies.Count == 1)
             {
-                this.enemy = enemies[0];
+                this.enemy = enemies[1];
+                this.enemies = enemies;
             } else if (enemies.Count > 1)
             {
                 this.enemies = enemies;
@@ -59,11 +60,14 @@ namespace CombatNamespace
         {
             while (playerAlive && enemyAlive) {
                 if (playerTurnBool) {
+                    
                     playerTurnAction();
                     
+                    enemyTurnBool = true;
                     playerTurnBool = false;
-                } else if (enemyTurnBool) {
-                    for (int i = 0; i < enemies.Keys.Count; i++) {
+                    
+                } else if (enemyTurnBool && !playerTurnBool) {
+                    for (int i = 1; i <= enemies.Keys.Count; i++) {
                         switch (enemies[i].nature.ToString().ToLower())
                         {
                             case "aggressive":
@@ -81,6 +85,7 @@ namespace CombatNamespace
                     }
                     
                     enemyTurnBool = false;
+                    playerTurnBool = true;
                 }
             }
 
@@ -117,7 +122,7 @@ namespace CombatNamespace
             }
             Console.WriteLine($"\nPlease enter an attack");
 
-            AttackInfo attackInfo;
+            AttackInfo? attackInfo = null;
             bool valid = false;
             while (!valid)
             {
@@ -141,12 +146,16 @@ namespace CombatNamespace
                 }
             }
             
-            /*
-            if (attackInfo != null)
+            
+            if (attackInfo == null)
             {
-                
+                throw new Exception("Attack info cannot be null. In PlayerTurnAction.");
             }
-            */
+            
+            Console.Clear();
+            
+            Console.WriteLine($"You used {attackInfo.Name}!");
+            player.ExecuteAttack(attackInfo.Name, enemy);
         }
         
         
@@ -172,6 +181,9 @@ namespace CombatNamespace
             turnCount++;
             
             // more
+            string chosenAttack = enemy.AttackBehaviourKeys[0];
+            Console.WriteLine($"Enemy used {chosenAttack}!");
+            enemy.ExecuteAttack(chosenAttack, player);
         }
         
 

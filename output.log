@@ -1,12 +1,12 @@
-2024-06-19 09:38:10.4015|INFO|MainNamespace.Program|Program started
-2024-06-19 09:38:10.5104|INFO|MainNamespace.Program|Running mode=testing
-2024-06-19 09:38:11.1286|INFO|MainNamespace.Program|Creating Character...
-2024-06-19 09:38:11.6455|INFO|MainNamespace.Program|Character Created
-2024-06-19 09:38:12.3870|INFO|MainNamespace.Program|Initialising Item Factory...
-2024-06-19 09:38:12.5840|INFO|MainNamespace.Program|Item Factory Initialised
-2024-06-19 09:38:12.6860|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2024-06-19 09:38:12.7271|INFO|MainNamespace.Program|Enemy Factory Initialised
-2024-06-19 09:38:12.7271|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
-2024-06-19 09:38:12.7271|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
-2024-06-19 09:38:12.7545|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
-2024-06-19 09:38:12.7997|INFO|MainNamespace.Program|Testing mode
+2024-06-19 22:08:55.3379|INFO|MainNamespace.Program|Program started
+2024-06-19 22:08:55.3567|INFO|MainNamespace.Program|Running mode=testing
+2024-06-19 22:08:55.4660|INFO|MainNamespace.Program|Creating Character...
+2024-06-19 22:08:55.5069|INFO|MainNamespace.Program|Character Created
+2024-06-19 22:08:55.6285|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-06-19 22:08:55.6613|INFO|MainNamespace.Program|Item Factory Initialised
+2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Enemy Factory Initialised
+2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
+2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
+2024-06-19 22:08:55.6960|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
+2024-06-19 22:08:55.6960|INFO|MainNamespace.Program|Testing mode

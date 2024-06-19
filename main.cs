@@ -40,21 +40,24 @@ namespace MainNamespace
         // - COMBAT FUNCTIONS TO APPLY ATTACKS, CONVERT STATUSES INTO ACTION
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
-        // 
+        //
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
         // design each ai system in combat
-        // 
+        //
         // NEXT - MAP GENERATION
         // big topic
-        // 
+        //
         // NEXT - UI CONSTRUCTOR
         //
         // NEXT - ENEMY MOVEMENT AI
         //
+        //
+        //
         // NEXT - DATABASES
         //----------------------------------------------------------------------------------------------------------
         */
+
 
         // ------------------------------------------------------------------------------------------------------------
         // CURRENT STATE
@@ -89,9 +92,16 @@ namespace MainNamespace
                     Console.Clear();
                     Console.WriteLine("Testing mode");
                     logger.Info("Testing mode");
+
                     
-                    // game.currentCombat.beginCombat();
-                    
+                    Enemy enemy =
+                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+                    Dictionary<int, Enemy> dict = new Dictionary<int, Enemy>();
+                    dict.Add(1, enemy);
+                    game.currentCombat = new Combat(game.player, dict);
+                    game.currentCombat.beginCombat();
+
+
                     Console.ReadLine();
                     break;
                 case "game":
@@ -825,7 +835,7 @@ namespace MainNamespace
                     File.Delete(attackBehaviour);
                 }
             }
-            
+
             // delete characterattacks
             string[] characterAttacks =
                 Directory.GetFiles($@"{UtilityFunctions.mainDirectory}CharacterAttacks", searchPattern: "*.json");
