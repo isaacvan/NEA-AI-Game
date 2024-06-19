@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Echoes of the Forgotten</Name>
-        <Description>A blade that whispers tales of ancient battles and long-lost warriors.</Description>
+        <Name>Photon Blade</Name>
+        <Description>A sleek, energy-based sword that hums with raw power, designed for the Rogue Automaton class.</Description>
         <Damage>25</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+2 Strength; +1 Charisma</UniqueProperties>
-        <WeaponCapabilities>Grants the ability to unleash a spectral warrior to assist in battle for 10 seconds.</WeaponCapabilities>
-        <NarrativeLine>As you swing the blade, echoes of past warriors fill the air, bolstering your strength.</NarrativeLine>
+        <UniqueProperties>+5 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Stunned</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ElectroSlice</AttackBehaviour>
+        <NarrativeLine>With a swift motion, the blade cuts through the air, electrifying the target.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Starfire Wand</Name>
-        <Description>A slender wand imbued with the essence of celestial bodies, warm to the touch.</Description>
-        <Damage>15</Damage>
-        <WeaponType>Wand</WeaponType>
-        <UniqueProperties>+3 Intelligence</UniqueProperties>
-        <WeaponCapabilities>Casts a radiant beam of light, causing extended damage over time.</WeaponCapabilities>
-        <NarrativeLine>With a flick, a brilliant beam of starfire erupts, searing your foes.</NarrativeLine>
-        <ItemEquipLocation>Weapon</ItemEquipLocation>
-    </Weapon>
-    <Weapon>
-        <Name>Whispers of the Void</Name>
-        <Description>A bow crafted from the essence of the void, absorbing light around it.</Description>
-        <Damage>20</Damage>
+        <Name>Mechanical Bow</Name>
+        <Description>An advanced compound bow with mechanized draw strength settings for precise shots.</Description>
+        <Damage>18</Damage>
         <WeaponType>Bow</WeaponType>
-        <UniqueProperties>+2 Dexterity; +1 Constitution</UniqueProperties>
-        <WeaponCapabilities>Arrows silence the target, preventing spellcasting for a brief period.</WeaponCapabilities>
-        <NarrativeLine>The arrow vanishes into shadow as it flies, striking with a muted thud.</NarrativeLine>
+        <UniqueProperties>+2 Strength; +3 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Paralyzed</StatusName>
+        </StatusNames>
+        <AttackBehaviour>AutoAimShot</AttackBehaviour>
+        <NarrativeLine>The arrow flies true, hitting its mark with mechanical precision.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Viral Injector</Name>
+        <Description>A sinister weapon used to inject enemies with a rapidly spreading nanite virus.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Hacked</StatusName>
+        </StatusNames>
+        <AttackBehaviour>NaniteSwarm</AttackBehaviour>
+        <NarrativeLine>The dagger releases a cloud of nanites, consuming the enemy from within.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

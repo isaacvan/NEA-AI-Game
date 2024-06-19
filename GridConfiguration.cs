@@ -142,7 +142,7 @@ namespace GridConfigurationNamespace
                             int r = colours[0];
                             int g = colours[1];
                             int b = colours[2];
-                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
                             //Console.Write($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
                             Console.Write($" {grid[j][i].t} ");
                             //arr.Add($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");

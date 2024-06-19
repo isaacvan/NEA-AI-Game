@@ -11,7 +11,13 @@ using System.Dynamic;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Reflection;
+using CombatNamespace;
+using DynamicExpresso;
+using GameClassNamespace;
 using ItemFunctionsNamespace;
+using MainNamespace;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -32,7 +38,8 @@ namespace PlayerClassesNamespace
         public int Constitution { get; set; }
         public int Charisma { get; set; }
 
-
+        [XmlIgnore] public Dictionary<AttackSlot, AttackInfo> PlayerAttacks { get; set; } =
+            new Dictionary<AttackSlot, AttackInfo>();
         public int Level { get; set; }
         public int currentExp { get; set; }
         public int maxExp { get; set; }
@@ -48,6 +55,10 @@ namespace PlayerClassesNamespace
             Level = 1;
             currentExp = 0;
             playerPos = new Point(0, 0);
+            PlayerAttacks[AttackSlot.slot1] = null;
+            PlayerAttacks[AttackSlot.slot2] = null;
+            PlayerAttacks[AttackSlot.slot3] = null;
+            PlayerAttacks[AttackSlot.slot4] = null;
         }
         
         public void EquipItem(EquippableItem.EquipLocation slot, Item item)
@@ -68,6 +79,82 @@ namespace PlayerClassesNamespace
         public void RemoveItem(Item item)
         {
             inventory.RemoveItem(item);
+        }
+
+        public void ReceiveAttack(int damage, int crit = 20) // DYNAMICEXPRESSO
+        {
+            if (Program.game.currentCombat != null)
+            {
+                bool didCrit = Program.game.currentCombat.didCrit(Program.game.currentCombat.enemy, crit);
+                if (didCrit)
+                {
+                    damage *= 2;
+                }
+                currentHealth -= damage;
+                if (currentHealth < 0)
+                {
+                    currentHealth = 0;
+                    PlayerDies();
+                }
+            }
+            else
+            {
+                Program.logger.Error("No current combat. Attempt to receive attack failed.");
+            }
+        }
+
+        public void PlayerDies()
+        {
+            Console.WriteLine("You have died. Game over.");
+            Environment.Exit(0);
+        }
+
+        public void ApplyStatus(string statusName, int turns) // DYNAMICEXPRESSO
+        {
+            Status status = new Status();
+            
+        }
+
+        public async Task writePlayerAttacksToJSON()
+        {
+            string path = UtilityFunctions.playerAttacksSpecificDirectory;
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                Converters = new List<JsonConverter> { new ExpressionConverter(), new StringEnumConverter() },
+                NullValueHandling = NullValueHandling.Include,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            try
+            {
+                string json = JsonConvert.SerializeObject(PlayerAttacks, settings);
+                using (var writer = new StreamWriter(path))
+                {
+                    await writer.WriteAsync(json);
+                }
+                Program.logger.Info("Player attacks data has been written to JSON successfully.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to write player attacks to JSON: " + ex.Message);
+            }
+        }
+
+        public async Task<Dictionary<AttackSlot, AttackInfo>> readPlayerAttacksFromJSON()
+        {
+            string path = UtilityFunctions.playerAttacksSpecificDirectory;
+            try
+            {
+                // deserialise from path into PlayerAttacks
+                string json = await File.ReadAllTextAsync(path);
+                PlayerAttacks = JsonConvert.DeserializeObject<Dictionary<AttackSlot, AttackInfo>>(json);
+                return PlayerAttacks;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error reading from JSON file in readPlayerAttacksFromJSON: {e}");
+            }
         }
 
         public async Task initialiseInventory()
@@ -116,12 +203,12 @@ namespace PlayerClassesNamespace
 
         public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat, bool testing = false)
         {
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Creating Character...", UtilityFunctions.typeSpeed);
+            Program.logger.Info("Creating Character...");
 
 
             // load prompt 5
             string prompt5 = "";
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
             try
             {
                 prompt5 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt5.txt");
@@ -159,8 +246,8 @@ namespace PlayerClassesNamespace
             // set character health to max
             currentHealth = Health;
             // this.
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Character Created!", UtilityFunctions.typeSpeed);
-            Console.ForegroundColor = ConsoleColor.White;
+            Program.logger.Info("Character Created");
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
 

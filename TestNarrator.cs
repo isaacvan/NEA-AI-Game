@@ -1,8 +1,13 @@
-﻿
+﻿using System.Net.Mime;
 using System.Reflection;
 using System.Xml.Serialization;
+using CombatNamespace;
+using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
+using MainNamespace;
+using Newtonsoft.Json;
+using NLog;
 using OpenAI_API.Chat;
 using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;
@@ -13,6 +18,8 @@ namespace TestNarratorNamespace
     {
         public class GameTest1 : GameSetup
         {
+            private static Logger logger = LogManager.GetCurrentClassLogger();
+
             public void chooseSave()
             {
                 UtilityFunctions.saveSlot = "saveExample.xml";
@@ -69,72 +76,138 @@ namespace TestNarratorNamespace
                 return player;
             }
 
-            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory)
+            public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat,
+                EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
             {
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
-            Console.WriteLine("Initialising Enemy Factory...");
+                Program.logger.Info("Initialising Enemy Factory...");
 
-            string output = "";
-            try
-            {
-                string prompt4 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt4.txt");
-                chat.AppendUserInput(prompt4);
-                output = await chat.GetResponseFromChatbotAsync();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            if (string.IsNullOrEmpty(output.Trim()))
-            {
-                throw new Exception("No response received from GPT.");
-            }
-
-            try
-            {
-                UtilityFunctions.enemyTemplateSpecificDirectory =
-                    UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveSlot;
-                if (File.Exists(UtilityFunctions.enemyTemplateSpecificDirectory))
+                EnemyFactory enemyFactoryToBeReturned;
+                try
                 {
-                    File.Delete(UtilityFunctions.enemyTemplateSpecificDirectory);
-                    Console.WriteLine("Old save not deleted. Deleting old save then continuing");
+                    // deserialise file into a new EnemyFactory
+                    enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
+                        UtilityFunctions.enemyTemplateSpecificDirectory);
                 }
-                    File.Create(UtilityFunctions.enemyTemplateSpecificDirectory);
-            }
-            catch (Exception e)
-            {
-                throw e;
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                if (enemyFactoryToBeReturned == null)
+                {
+                    throw new Exception("Enemy factory is null");
+                }
+
+                foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
+                {
+                    // load attack behaviours into enemy templates
+                    foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                    {
+                        if (enemyTemplate.AttackBehaviourKeys
+                            .Contains(attackBehaviour
+                                .Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                        {
+                            // load in the attack behaviour
+                            AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                            if (attackSlotNullable == null)
+                            {
+                                throw new Exception("No available attack slots found for enemy template " +
+                                                    enemyTemplate.Name);
+                            }
+
+                            AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
+
+                            // add the attack behaviour to the enemy templat
+                            enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                        }
+                    }
+                }
+
+                Program.logger.Info("Enemy Factory Initialised");
+                return enemyFactoryToBeReturned;
             }
 
-            Console.WriteLine(output);
+            public async Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat)
+            {
+                UtilityFunctions.attackBehaviourTemplateSpecificDirectory =
+                    UtilityFunctions.attackBehaviourTemplateDir + UtilityFunctions.saveName + ".json";
+                AttackBehaviourFactory attackBehaviourFactoryToBeReturned = new AttackBehaviourFactory();
+
+                try
+                {
+                    // deserialise file into a new AttackBehaviourFactory
+                    //attackBehaviourFactoryToBeReturned =
+                    //    await UtilityFunctions.readFromJSONFile<AttackBehaviourFactory>(
+                    //        UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                    string json = File.ReadAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory);
+                    json = await UtilityFunctions.FixJson(json);
+                    var settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new LambdaJsonConverter() }
+                    };
+                    Dictionary<string, AttackInfo> attackBehaviours =
+                        JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                    List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
+                    foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
+                    {
+                        items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
+                    }
+
+                    foreach (var behaviour in items)
+                    {
+                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                if (attackBehaviourFactoryToBeReturned == null)
+                {
+                    throw new Exception("Attack behaviour factory is null");
+                }
+
+                return attackBehaviourFactoryToBeReturned;
+            }
+
+            public async Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat)
+            {
+                // status factory logic, use game setup for diverting to using api key
+                StatusFactory tempStatusFactory = new StatusFactory();
+
+                UtilityFunctions.statusesSpecificDirectory =
+                    UtilityFunctions.statusesDir + UtilityFunctions.saveName + ".json";
+
+                try
+                {
+                    tempStatusFactory = await UtilityFunctions.readFromJSONFile<StatusFactory>(
+                        UtilityFunctions.statusesSpecificDirectory);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                if (tempStatusFactory == null)
+                {
+                    throw new Exception("Status factory is null");
+                }
+
+                return tempStatusFactory;
+            }
+
+            public async Task GenerateUninitialisedStatuses(Conversation chat)
+            {
+                Program.logger.Info("Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
+            }
             
-            //File.WriteAllText(UtilityFunctions.enemyTemplateSpecificDirectory, output);
-            using (StreamWriter  writer = new StreamWriter(UtilityFunctions.enemyTemplateSpecificDirectory))
+            public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
             {
-                await writer.WriteAsync(output);
+                Program.logger.Info("Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
             }
-
-            EnemyFactory enemyFactoryToBeReturned;
-            try
-            {
-                // deserialise file into a new EnemyFactory
-                enemyFactoryToBeReturned = await UtilityFunctions.readFromJSONFile<EnemyFactory>(
-                    UtilityFunctions.enemyTemplateSpecificDirectory);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            if (enemyFactoryToBeReturned == null)
-            {
-                throw new Exception("Enemy factory is null");
-            }
-
-            return enemyFactoryToBeReturned;
-            }
-        };
+        }
     }
 }

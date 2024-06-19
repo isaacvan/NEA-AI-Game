@@ -1,0 +1,108 @@
+{
+  "statusList": [
+    {
+      "Name": "Disoriented",
+      "Duration": "3",
+      "Type": "Enemy_Dexterity",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 20,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 60,
+      "Description": "Lowers the enemy's dexterity by 20%, making them less likely to dodge attacks."
+    },
+    {
+      "Name": "Burned",
+      "Duration": "4",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 5,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": false,
+      "ChanceToApplyPercent": 70,
+      "Description": "Inflicts damage over time, reducing the enemy's current health by 5 points each turn."
+    },
+    {
+      "Name": "Paralyzed",
+      "Duration": "2",
+      "Type": "Enemy_Strength",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 25,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 50,
+      "Description": "Reduces the enemy's strength by 25%, decreasing their damage output."
+    },
+    {
+      "Name": "Cloaked",
+      "Duration": "3",
+      "Type": "Player_Dexterity",
+      "Increase": true,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 30,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 80,
+      "Description": "Increases the player's dexterity by 30%, improving evasion and accuracy."
+    },
+    {
+      "Name": "Healing",
+      "Duration": "1",
+      "Type": "Player_currentHealth",
+      "Increase": true,
+      "PercentBool": false,
+      "IntensityNumber": 20,
+      "IntensityPercent": null,
+      "Stackable": false,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 90,
+      "Description": "Heals the player, restoring 20 points of current health instantly."
+    },
+    {
+      "Name": "Hacked",
+      "Duration": "3",
+      "Type": "Enemy_Intelligence",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 30,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 40,
+      "Text": "Reduces the enemy's intelligence by 30%, impairing their ability to use special attacks effectively."
+    },
+    {
+      "Name": "Stunned",
+      "Duration": "2",
+      "Type": "Enemy_Charisma",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": 10,
+      "IntensityPercent": null,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 65,
+      "Description": "Stuns the enemy, reducing their charisma by 10 points and preventing them from using charm-based abilities."
+    },
+    {
+      "Name": "DefenceBoost",
+      "Duration": "3",
+      "Type": "Player_Constitution",
+      "Increase": true,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 20,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 85,
+      "Description": "Provides a temporary boost to the player's constitution by 20%, increasing overall defense."
+    }
+  ]
+}

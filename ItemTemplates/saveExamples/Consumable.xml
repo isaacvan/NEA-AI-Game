@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
-        <Name>Elixir of the Ancient Sage</Name>
-        <Description>A vial containing a potion brewed from the wisdom of millennia. Restores 20 MP and increases intelligence temporarily.</Description>
-        <Effects>Restores 20 Mana Points; +5 Intelligence for 120 seconds</Effects>
-        <UniqueProperties>One-time use</UniqueProperties>
-        <StorylineRelevance>Discovered in the ruins of the Old Mage Tower, vital for deciphering ancient texts.</StorylineRelevance>
+        <Name>Energy Capsule</Name>
+        <Description>A compact container of condensed energy, instantly recharges the user's power cells.</Description>
+        <Effects>+20 Mana Points</Effects>
+        <UniqueProperties>Instant Use</UniqueProperties>
+        <StorylineRelevance>Essential for Rogue Automatons when energy runs critically low.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Phoenix Feather</Name>
-        <Description>A shimmering feather that holds the essence of a phoenix. Revives the user with 50% health on death.</Description>
-        <Effects>Revives with 50% Health</Effects>
-        <UniqueProperties>One-time use; Automatically activated upon first death</UniqueProperties>
-        <StorylineRelevance>Gifted by the Phoenix Queen after a crucial storyline battle, symbolizing rebirth and new beginnings.</StorylineRelevance>
+        <Name>Nano-Repair Kit</Name>
+        <Description>A kit containing nanobots programmed for rapid machinery repair.</Description>
+        <Effects>+30 Health</Effects>
+        <UniqueProperties>Single Use; Out of Combat</UniqueProperties>
+        <StorylineRelevance>Crucial for on-field self-repairs after combat engagements.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Shadeleaf Extract</Name>
-        <Description>A potent concoction made from the rare Shadeleaf, granting temporary invisibility.</Description>
-        <Effects>Grants invisibility for 30 seconds</Effects>
-        <UniqueProperties>One-time use</UniqueProperties>
-        <StorylineRelevance>Used stealthily to infiltrate the enemy's stronghold in a critical mission.</StorylineRelevance>
+        <Name>Stealth Field Generator</Name>
+        <Description>A one-time-use device that envelops the user in a near-invisible stealth field.</Description>
+        <Effects>Grants temporary invisibility</Effects>
+        <UniqueProperties>Single Use; Lasts for 5 Turns</UniqueProperties>
+        <StorylineRelevance>Allows for tactical repositioning or escaping from unwinnable fights.</StorylineRelevance>
     </Consumable>
 </Item>

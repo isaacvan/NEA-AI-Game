@@ -38,6 +38,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "DynamicExpresso.Core": {
+              "target": "Package",
+              "version": "[2.16.1, )"
+            },
             "Emgu.CV": {
               "target": "Package",
               "version": "[4.8.1.5350, )"
@@ -61,6 +65,10 @@
             "Microsoft.Extensions.Configuration.UserSecrets": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "NLog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.3.11, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

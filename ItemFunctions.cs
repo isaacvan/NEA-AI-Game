@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml.Serialization;
+using MainNamespace;
 using Newtonsoft.Json;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -165,9 +166,62 @@ namespace ItemFunctionsNamespace
         public List<ConsumableTemplate> consumableTemplates { get; set; } = new List<ConsumableTemplate>();
         public List<ArmourTemplate> armourTemplates { get; set; } = new List<ArmourTemplate>();
 
+        public async Task initialiseItemFactoryFromFile()
+        {
+            Program.logger.Info("Initialising Item Factory...");
+
+            if (UtilityFunctions.saveName == "saveExample")
+            {
+                UtilityFunctions.itemTemplateSpecificDirectory =
+                    UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName + "s";
+            }
+            else
+            {
+                UtilityFunctions.itemTemplateSpecificDirectory =
+                    UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName;
+            }
+            
+            // load item templates from file
+            // FOLLOW LOGIC OF OTHER ONE BUT JUST LOAD AN ITEM FACTORY FROM ONE FILE
+            
+            // initialise xml files into respective item templates HERE
+            ItemContainer itemContainer = new ItemContainer();
+            
+            
+            var armourItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Armour.xml").Armours;
+            var weaponItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Weapon.xml").Weapons;
+            var consumableItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Consumable.xml").Consumables;
+            //itemContainer.Armours = new List<Armour>();
+            // convert to itemTemplates
+            
+            
+            // add to item factory
+            foreach (Armour armour in armourItems)
+            {
+                ArmourTemplate template = new ArmourTemplate();
+                armour.ItemType = typeof(Armour);
+                template.createTemplate(armour);
+                this.armourTemplates.Add(template);
+            }
+            foreach (Weapon weapon in weaponItems)
+            {
+                WeaponTemplate template = new WeaponTemplate();
+                weapon.ItemType = typeof(Weapon);
+                template.createTemplate(weapon);
+                this.weaponTemplates.Add(template);
+            }
+            foreach (Consumable consumable in consumableItems)
+            {
+                ConsumableTemplate template = new ConsumableTemplate();
+                consumable.ItemType = typeof(Consumable);
+                template.createTemplate(consumable);
+                this.consumableTemplates.Add(template);
+            }
+        }
+
         public async Task initialiseItemFactoryFromNarrator(OpenAIAPI api, Conversation chat, bool testing = false)
         {
-            Console.WriteLine("Initialising Item Factory...");
+            Program.logger.Info("Initialising Item Factory...");
             
             // initialise path, should be fine with testing
             if (!testing)
@@ -340,7 +394,7 @@ namespace ItemFunctionsNamespace
             // initialise
             
 
-            UtilityFunctions.TypeText(UtilityFunctions.Instant, "Item Factory Initialised", UtilityFunctions.typeSpeed);
+            Program.logger.Info("Item Factory Initialised");
         }
 
         public Item createItem(ItemTemplate template)
@@ -508,7 +562,8 @@ namespace ItemFunctionsNamespace
         public int Damage { get; set; }
         public string WeaponType { get; set; }
         public string UniqueProperties { get; set; }
-        public string WeaponCapabilities { get; set; }
+        public string AttackBehaviour { get; set; }
+        public List<string> StatusNames { get; set; } = new List<string>();
         public string NarrativeLine { get; set; }
     }
 
@@ -591,7 +646,8 @@ namespace ItemFunctionsNamespace
         public int Damage { get; set; }
         public string WeaponType { get; set; }
         public string UniqueProperties { get; set; }
-        public string WeaponCapabilities { get; set; }
+        public string AttackBehaviour { get; set; }
+        public List<string> StatusNames { get; set; } = new List<string>();
         public string NarrativeLine { get; set; }
     }
 

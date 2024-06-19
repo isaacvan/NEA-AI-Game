@@ -1,0 +1,38 @@
+﻿Hello narrator. This is a check to ensure that every status for your game has been fully defined. Here is a reminder of each property. You need to provide:
+
+name: A string representing the name of the status.
+duration: A string representing the duration the status effect lasts, which is converted to an integer.
+type: A string specifying the attribute that the status will modify.
+increase: A boolean indicating whether the status effect increases (true) or decreases (false) the attribute.
+percentBool: A boolean that, if true, indicates the effect is based on a percentage, requiring an intensityPercent. If false, the effect is a direct numerical value, requiring an intensityNumber.
+intensityNumber: An optional integer specifying the numerical value of the effect, required when percentBool is false.
+intensityPercent: An optional integer specifying the percentage value of the effect, required when percentBool is true.
+stackable: A boolean indicating whether multiple instances of this status can be stacked on the target.
+refreshable: A boolean indicating whether applying the same status refreshes its duration.
+chanceToApplyPercent: An int from 0 - 100 that dictates the % chance for the status to actually apply. This should be lower for more powerful statuses for balancing.
+description: A string providing a user-friendly description of the status effect.
+If percentBool is true and intensityPercent is not provided, the function throws an exception stating that intensityPercent cannot be null. Similarly, if percentBool is false and intensityNumber is not provided, it throws an exception stating that intensityNumber cannot be null. The function ensures that only relevant intensity fields are populated based on the value of percentBool, setting the other to null and parsing the numeric value from duration.
+
+You now need to output a list of Statuses in parsable JSON format that correspond to the statuses defined at the end of this message. For example:
+
+{
+  "statusList": [
+    {
+      "Name": "Energy Sap",
+      "Duration": 2,
+      "Type": "Enemy_currentManaPoints",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 15,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 75,
+      "Description": "Saps the enemy's mana over a prolonged period."
+    },
+    ...
+  ]
+}
+
+These are the names of the statuses that you have not declared yet, and need to include in your output to this message. Bear in mind, all output must be in parsable JSON format:
+

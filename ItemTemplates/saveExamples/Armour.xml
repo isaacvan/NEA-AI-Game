@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Cloak of Whispering Shadows</Name>
-        <Description>A cloak that seems to absorb light, enhancing the wearer's stealth abilities.</Description>
-        <Defence>18</Defence>
-        <UniqueProperties>+3 Dexterity; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Allows the wearer to blend into the shadows, greatly reducing enemy detection.</DefensiveCapabilities>
+        <Name>Alloyed Exoskeleton</Name>
+        <Description>A durable body armor enhancing physical protections and electronic warfare capabilities.</Description>
+        <Defence>35</Defence>
+        <UniqueProperties>+3 Strength; +2 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Increases resistance to physical and energy attacks</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Boots of Silent Steps</Name>
-        <Description>These boots make no sound, regardless of the surface they tread upon.</Description>
-        <Defence>8</Defence>
-        <UniqueProperties>+2 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Increases movement speed silently, perfect for stealth missions.</DefensiveCapabilities>
+        <Name>Circuitry Boots</Name>
+        <Description>Footwear embedded with advanced circuitry to enhance movement speed and agility.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Improves evasion rate</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Mask of the Night Seer</Name>
-        <Description>A mask that grants its wearer the ability to see clearly in complete darkness.</Description>
-        <Defence>12</Defence>
+        <Name>Signal Jamming Helm</Name>
+        <Description>An armored headpiece capable of jamming enemy communications and scans.</Description>
+        <Defence>20</Defence>
         <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Grants night vision, revealing hidden traps and enemies in the dark.</DefensiveCapabilities>
+        <DefensiveCapabilities>Reduces chance of detection by enemies</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
 </Item>

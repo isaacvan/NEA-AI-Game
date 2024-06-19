@@ -5,16 +5,38 @@ using System.Threading.Tasks;
 using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using CombatNamespace;
 using ItemFunctionsNamespace;
 using Newtonsoft.Json;
+using DynamicExpresso;
+using MainNamespace;
+using OpenAI_API.Chat;
 
 namespace UtilityFunctionsNamespace
 {
+    public class TypeText
+    {
+        public bool _newLine;
+        public int _typingSpeed;
+        public bool _inst;
+
+        public TypeText(bool inst, int typingSpeed, bool newLine = true)
+        {
+            _inst = inst;
+            _typingSpeed = typingSpeed;
+            _newLine = newLine;
+        }
+    }
+
     public class UtilityFunctions
     {
+        public static Interpreter interpreter = new Interpreter()
+            .Reference(typeof(Player)); // Add this line to reference System.Console
+
         public static int typeSpeed = 1;
         public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
@@ -22,16 +44,29 @@ namespace UtilityFunctionsNamespace
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 @"..\..\..\")); // will be written to in main menu
 
-        public static string saveFile = @mainDirectory + saveSlot; // will be written to in main menu. WHOLE PATH TO FILE
+        public static string
+            saveFile = @mainDirectory + saveSlot; // will be written to in main menu. WHOLE PATH TO FILE
+
         public static string saveName = ""; // ONLY NAME OF SAVE
-        
+
         public static string itemTemplateDir = @$"{mainDirectory}ItemTemplates\";
         public static string itemTemplateSpecificDirectory = "";
-        
+
         public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates\";
         public static string enemyTemplateSpecificDirectory = "";
+
+        public static string attackBehaviourTemplateDir = @$"{mainDirectory}AttackBehaviours\";
+        public static string attackBehaviourTemplateSpecificDirectory = "";
+
+        public static string statusesDir = $@"{mainDirectory}Statuses\";
+        public static string statusesSpecificDirectory = "";
         
-        public static int maxSaves = 10;
+        public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks\";
+        public static string playerAttacksSpecificDirectory = "";
+
+        public static bool showExampleInSaves = true; // testing purposes
+
+        public static int maxSaves = 20;
         public static bool loadedSave = false;
         public static bool Instant = false;
         public static int colourSchemeIndex = 0;
@@ -50,18 +85,20 @@ namespace UtilityFunctionsNamespace
                     // The file will now be empty, and you can start writing new data to it
                 }
 
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, "Save file cleared successfully.", typeSpeed);
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
+                    "Save file cleared successfully.");
             }
             catch (Exception ex)
             {
-                UtilityFunctions.TypeText(UtilityFunctions.Instant, $"An error occurred: {ex.Message}", typeSpeed);
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
+                    $"An error occurred: {ex.Message}");
             }
         }
 
         public static async Task writeToJSONFile<T>(string path, T objectToWrite) where T : class
         {
             string json = JsonConvert.SerializeObject(objectToWrite, Formatting.Indented);
-            
+
             // writes an object to a json file at the path path
             using (StreamWriter file = File.CreateText(path))
             {
@@ -72,14 +109,14 @@ namespace UtilityFunctionsNamespace
         public static void writeToJSONFileSync<T>(string path, T objectToWrite) where T : class
         {
             string json = JsonConvert.SerializeObject(objectToWrite, Formatting.Indented);
-            
+
             // writes an object to a json file at the path path
             using (StreamWriter file = File.CreateText(path))
             {
                 file.Write(json);
             }
         }
-        
+
         public static async Task<T> readFromJSONFile<T>(string path) where T : class
         {
             // reads an object from a json file at the path path
@@ -94,17 +131,17 @@ namespace UtilityFunctionsNamespace
         {
             // writes an object to an xml file at the path path
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-            
-                using (StreamWriter writer = new StreamWriter(path))
-                {
-                    serializer.Serialize(writer, objectToWrite);
-                }
-            
+
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                serializer.Serialize(writer, objectToWrite);
+            }
+
 
             await Task.CompletedTask;
         }
 
-        public static async Task readFromXMLFile<T>(string path, T objectToRead) where T : class
+        public static async Task<T> readFromXMLFile<T>(string path, T objectToRead) where T : class
         {
             // reads an object from an xml file at the path path
             XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -112,13 +149,31 @@ namespace UtilityFunctionsNamespace
             {
                 objectToRead = serializer.Deserialize(reader) as T;
             }
+
             await Task.CompletedTask;
+            return (T)objectToRead;
+        }
+
+        public static void CopyProperties(object source, object destination)
+        {
+            if (source.GetType() != destination.GetType())
+                throw new InvalidOperationException("Mismatched types");
+
+            var properties = source.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
 
         public async static Task<string> cleanseXML(string xml)
         {
             // this function will ensure that the output the narrator gives is parseable
-            
+
             string[] lines = xml.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             List<string> lineList = lines.ToList();
             List<string> newLineList = new List<string>();
@@ -130,11 +185,75 @@ namespace UtilityFunctionsNamespace
                     newLineList.Add(line);
                 }
             }
-            
+
             string output = string.Join("\n", newLineList);
             return output;
         }
-        
+
+        public static void DisplayAllEnemyTemplatesWithDetails()
+        {
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            {
+                Console.WriteLine($"Enemy Template: {enemyTemplate.Name}");
+                foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
+                {
+                    if (property.Name == "AttackBehaviours")
+                    {
+                        foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
+                        {
+                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            {
+                                Console.WriteLine($"     {slot}: {enemyTemplate.AttackBehaviours[slot].Name}");
+                                if (enemyTemplate.AttackBehaviours[slot].Statuses.Count == 0)
+                                {
+                                    Console.WriteLine(
+                                        $"               This attack applies no statuses.");
+                                }
+
+                                foreach (string statusName in enemyTemplate.AttackBehaviours[slot].Statuses)
+                                {
+                                    Console.WriteLine($"          Status: {statusName}");
+                                    List<string> statusNamesList = new List<string>();
+                                    foreach (Status status1 in Program.game.statusFactory.statusList)
+                                    {
+                                        statusNamesList.Add(status1.Name);
+                                    }
+
+                                    Status status = new Status();
+
+                                    try
+                                    {
+                                        status =
+                                            Program.game.statusFactory.statusList[
+                                                Array.IndexOf(statusNamesList.ToArray(), statusName)];
+                                        foreach (PropertyInfo statusProperty in typeof(Status).GetProperties())
+                                        {
+                                            Console.WriteLine(
+                                                $"          {statusProperty.Name}: {statusProperty.GetValue(status)}");
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine(
+                                            $"               Status {statusName} not found in status list.");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (property.Name == "AttackBehaviourKeys")
+                    {
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{property.Name}: {property.GetValue(enemyTemplate)}");
+                    }
+                }
+            }
+        }
+
         public static async Task<string> FixJson(string json)
         {
             try
@@ -144,6 +263,8 @@ namespace UtilityFunctionsNamespace
             }
             catch (JsonReaderException)
             {
+                Program.logger.Info($"Before FixJson: {json}");
+
                 // Remove markdown code block indicators
                 json = Regex.Replace(json, @"```json|```", "");
 
@@ -152,7 +273,10 @@ namespace UtilityFunctionsNamespace
 
                 // Attempt to fix common JSON errors
                 json = Regex.Replace(json, @"([{,])(\s*)([^""{}\s:]+?)\s*:", "$1\"$3\":");
-                json = Regex.Replace(json, @":\s*([^""{}\s:]+?)([},])", ":\"$1\"$2");
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false)(?=[,\]}])|(\[\])|(\{\}))(?:([""'])(?:(?!\3).)*\3|([^""'\s:][^,]*?))([,\]})", ":\"$4\"$5");
+
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false|\[\]|\{\})\b)([^""{}\s:]+?)([},])", ":\"$1\"$2");
+                //json = Regex.Replace(json, @":\s*(?!(?:null|true|false)\b)([^""{}\s:]+?)([},])", ":\"$1\"$2");
 
                 // Ensure curly braces
                 if (!json.Trim().StartsWith("{"))
@@ -163,10 +287,14 @@ namespace UtilityFunctionsNamespace
                 // Remove empty lines
                 json = Regex.Replace(json, @"^\s*$\n|\r", "", RegexOptions.Multiline);
 
+                var jsonObj = JsonConvert.DeserializeObject(json);
+                string prettyJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+
+                Program.logger.Info($"After FixJson: {prettyJson}");
+
                 try
                 {
-                    JsonConvert.DeserializeObject(json);
-                    return json;
+                    return prettyJson;
                 }
                 catch (JsonReaderException)
                 {
@@ -174,7 +302,7 @@ namespace UtilityFunctionsNamespace
                 }
             }
         }
-        
+
         public static void CorrectXmlTags(string filePath)
         {
             Stack<string> tagStack = new Stack<string>();
@@ -187,12 +315,12 @@ namespace UtilityFunctionsNamespace
                 {
                     // This regex matches opening tags and closing tags
                     MatchCollection matches = Regex.Matches(line, @"<(/?)(\w+)[^>]*>");
-                
+
                     foreach (Match match in matches)
                     {
                         string tag = match.Groups[2].Value;
                         bool isClosing = match.Groups[1].Value == "/";
-                    
+
                         if (!isClosing) // Opening tag
                         {
                             tagStack.Push(tag);
@@ -210,19 +338,14 @@ namespace UtilityFunctionsNamespace
                             }
                         }
                     }
+
                     correctedXml.AppendLine(line);
                 }
             }
 
             // Output the corrected XML to a new file or overwrite the old one
             File.WriteAllText(filePath, correctedXml.ToString());
-            Console.WriteLine("XML has been corrected and written to " + filePath);
-        }
-
-        public static void loadSave(string slot)
-        {
-            // load the save from the save slot
-            UtilityFunctions.loadedSave = true;
+            //Console.WriteLine("XML has been corrected and written to " + filePath);
         }
 
         // load the class from the first line of the corresponding save. think of lines needed to add to the save. base stats can be generated from the class. will need exp, level. items.
@@ -233,9 +356,9 @@ namespace UtilityFunctionsNamespace
 
             displayStats(player);
 
-            Console.Write("\n\n");
+            //Console.Write("\n\n");
         }
-        
+
         public static T DeserializeXmlFromFile<T>(string filePath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -279,19 +402,19 @@ namespace UtilityFunctionsNamespace
                 /*
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Testing Environment");
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 */
                 //Console.WriteLine("X: 0 Y: 0");
             }
         }
 
-        public static void TypeText(bool inst, string text, int typingSpeed, bool newLine = true)
+        public static void TypeText(TypeText typeText, string text)
         {
-            if (inst)
+            if (typeText._inst)
             {
                 Console.WriteLine($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
             }
-            else if (!newLine)
+            else if (!typeText._newLine)
             {
                 Thread.Sleep(20);
                 Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
@@ -348,6 +471,33 @@ namespace UtilityFunctionsNamespace
         public static Player CreatePlayerInstance()
         {
             return new Player();
+        }
+    }
+
+    public class LambdaJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(Lambda);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.String)
+            {
+                var expression = reader.Value.ToString();
+                // Allow scripts to use Console
+                return UtilityFunctions.interpreter.Parse(expression, new Parameter("target", typeof(Player)));
+            }
+
+            throw new JsonSerializationException("Expected string value.");
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            // Serialization logic if needed, or throw an exception if not supported.
+            throw new NotImplementedException("This converter does not support writing.");
         }
     }
 
