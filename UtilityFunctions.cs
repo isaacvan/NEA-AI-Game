@@ -374,24 +374,7 @@ namespace UtilityFunctionsNamespace
             if (player != null)
             {
                 DisplayExpBar(player.currentExp, player.maxExp, Console.WindowWidth);
-                int currentHealth = player.currentHealth;
-                int maxHealth = player.Health;
-                double healthPercentage = (double)currentHealth / maxHealth;
-
-                int redValue, greenValue;
-                if (healthPercentage > 0.5)
-                {
-                    redValue = (int)(255 * (1 - healthPercentage) * 2);
-                    greenValue = 255;
-                }
-                else
-                {
-                    redValue = 255;
-                    greenValue = (int)(255 * healthPercentage * 2);
-                }
-
-                string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
-                Console.WriteLine($"Health: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[0m");
+                DrawHealthBar(player);
                 //DisplayHealthBar(player.currentHealth, player.maxHealth, Console.WindowWidth);
                 Console.WriteLine($"X: {player.playerPos.X} Y: {player.playerPos.Y}");
             }
@@ -406,6 +389,28 @@ namespace UtilityFunctionsNamespace
                 */
                 //Console.WriteLine("X: 0 Y: 0");
             }
+        }
+
+        public static string DrawHealthBar(Player player)
+        {
+            int currentHealth = player.currentHealth;
+            int maxHealth = player.Health;
+            double healthPercentage = (double)currentHealth / maxHealth;
+
+            int redValue, greenValue;
+            if (healthPercentage > 0.5)
+            {
+                redValue = (int)(255 * (1 - healthPercentage) * 2);
+                greenValue = 255;
+            }
+            else
+            {
+                redValue = 255;
+                greenValue = (int)(255 * healthPercentage * 2);
+            }
+
+            string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+            return ($"Health: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[0m");
         }
 
         public static void TypeText(TypeText typeText, string text)

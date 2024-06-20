@@ -93,7 +93,7 @@ namespace MainNamespace
                     Console.WriteLine("Testing mode");
                     logger.Info("Testing mode");
 
-                    
+
                     Enemy enemy =
                         game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
                     Dictionary<int, Enemy> dict = new Dictionary<int, Enemy>();
@@ -109,6 +109,16 @@ namespace MainNamespace
                     Console.Clear();
                     Console.WriteLine("Game mode");
                     logger.Info("Game mode");
+
+                    game.player.PlayerAttacks[AttackSlot.slot1] =
+                        game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
+
+                    Enemy enemy1 =
+                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+                    Dictionary<int, Enemy> dict1 = new Dictionary<int, Enemy>();
+                    dict1.Add(1, enemy1);
+                    game.currentCombat = new Combat(game.player, dict1);
+                    game.currentCombat.beginCombat();
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();

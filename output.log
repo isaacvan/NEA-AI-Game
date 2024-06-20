@@ -1,12 +1,6 @@
-2024-06-19 22:08:55.3379|INFO|MainNamespace.Program|Program started
-2024-06-19 22:08:55.3567|INFO|MainNamespace.Program|Running mode=testing
-2024-06-19 22:08:55.4660|INFO|MainNamespace.Program|Creating Character...
-2024-06-19 22:08:55.5069|INFO|MainNamespace.Program|Character Created
-2024-06-19 22:08:55.6285|INFO|MainNamespace.Program|Initialising Item Factory...
-2024-06-19 22:08:55.6613|INFO|MainNamespace.Program|Item Factory Initialised
-2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Enemy Factory Initialised
-2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
-2024-06-19 22:08:55.6818|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
-2024-06-19 22:08:55.6960|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
-2024-06-19 22:08:55.6960|INFO|MainNamespace.Program|Testing mode
+2024-06-20 10:10:28.0518|INFO|MainNamespace.Program|Program started
+2024-06-20 10:10:28.1100|INFO|MainNamespace.Program|Running mode=game
+2024-06-20 10:10:44.1653|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-06-20 10:10:44.3826|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-06-20 10:10:44.4121|INFO|MainNamespace.Program|Enemy Factory Initialised
+2024-06-20 10:10:44.4499|INFO|MainNamespace.Program|Game mode

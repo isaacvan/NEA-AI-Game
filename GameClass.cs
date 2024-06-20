@@ -27,9 +27,6 @@ namespace GameClassNamespace
 
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
-            // initialise uiConstructor
-            uiConstructer = new UIConstructer();
-            
             // initialise api & chat
             OpenAIAPI api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);
@@ -105,6 +102,9 @@ namespace GameClassNamespace
                 
                 Console.WriteLine("Loaded save.");
             }
+            
+            // initialise uiConstructor
+            uiConstructer = new UIConstructer(player);
         }
 
         public static void saveGame()

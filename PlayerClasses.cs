@@ -49,6 +49,8 @@ namespace PlayerClassesNamespace
 
         [XmlIgnore] public Equipment equipment { get; set; } = new Equipment();
 
+        [XmlIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
+
         public Player()
         {
             maxExp = 10;

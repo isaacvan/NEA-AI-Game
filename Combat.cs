@@ -9,6 +9,7 @@ using System.Transactions;
 using Emgu.CV.Ocl;
 using EnemyClassesNamespace;
 using MainNamespace;
+using Program = MainNamespace.Program;
 
 namespace CombatNamespace
 {
@@ -32,6 +33,14 @@ namespace CombatNamespace
         public bool playerRan { get; set; } = false;
         public bool enemyRan { get; set; } = false;
         // more
+        
+        public enum CombatMenuState
+        {
+            Player,
+            Inventory,
+            Enemy,
+            Run
+        }
 
         public Combat(Player player, Dictionary<int, Enemy> enemies)
         {
@@ -108,6 +117,8 @@ namespace CombatNamespace
         {
             // player turn logic
             turnCount++;
+            
+            Program.game.uiConstructer.displayCombatUI();
             
             // more
             int i = 1;
