@@ -7,9 +7,9 @@
   <Class>Rogue Automaton</Class>
   <Race>Robot</Race>
   <Health>80</Health>
-  <currentHealth>80</currentHealth>
+  <currentHealth>0</currentHealth>
   <ManaPoints>70</ManaPoints>
-  <currentMana>0</currentMana>
+  <currentMana>70</currentMana>
   <Strength>8</Strength>
   <Intelligence>9</Intelligence>
   <Dexterity>10</Dexterity>

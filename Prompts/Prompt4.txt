@@ -3,7 +3,7 @@ Hello, Narrator! As part of your role in shaping our game's challenging environm
 Please provide the following details:
 
 enemyTypes: Enumerate the types of enemies you will create for this game. Each enemy type should embody aspects of the game’s overarching themes and challenges. As these will be used throughout the whole course of the game, generate at least 5 enemy types.
-enemyTemplates: For each type of enemy, provide a template that includes:
+enemyTemplates: A dictionary structure. For each type of enemy, provide a template that includes:
 Name: The type of the enemy as a string.
 Health: An integer value for health, ranging from 50 to 100, appropriately scaled based on the enemy's toughness.
 ManaPoints: An integer value for Max mana points, ranging from 50 to 100
@@ -15,7 +15,8 @@ nature: This is an enum value, either "aggressive", "neutral" or "timid". Aggres
 The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
 {
   "enemyTypes": ["Goblin", "Orc", "Dragon"],
-  "enemyTemplates": [
+  "enemyTemplates": {
+  "Goblin":
     {
       "Name": "Goblin",
       "Health": 50,
@@ -24,6 +25,7 @@ The output should be formatted in JSON format. It is crucial that the entire out
       "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
       "nature": "timid"
     },
+    "Orc":
     {
       "Name": "Orc",
       "Health": 80,
@@ -32,6 +34,7 @@ The output should be formatted in JSON format. It is crucial that the entire out
       "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
       "nature": "neutral"
     },
+    "Dragon":
     {
       "Name": "Dragon",
       "Health": 100,
@@ -40,7 +43,7 @@ The output should be formatted in JSON format. It is crucial that the entire out
       "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
       "nature": "aggressive"
     }
-  ]
+  }
 }
 
 Your input is crucial to the generation of your world. Ensure that all the output is parsable, as any external sentences may break the system.

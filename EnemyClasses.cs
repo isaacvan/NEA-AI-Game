@@ -71,11 +71,33 @@ namespace EnemyClassesNamespace
         {
             if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
             {
-                attackInfo.Expression.Invoke(target); // Execute the script
-                // Optionally handle modifiers here or within the script itself
-                foreach (var effect in attackInfo.Statuses)
+                try
                 {
-                    Program.logger.Info($"Applying effect: {effect}");
+                    // Debugging: Ensure expression and parameters are correct
+                    var expression = attackInfo.Expression; // e.g., "target.ReceiveAttack(20, 25)"
+                    var parameters = new[] { new Parameter("target", typeof(Player)) };
+
+                    // Debugging: Log the expression and parameter information
+                    Program.logger.Info($"Expression to parse: {expression}");
+                    Program.logger.Info($"Target type: {target.GetType().FullName}");
+
+                    // Parse the expression with the correct context
+                    var attackExpression = UtilityFunctions.interpreter.Parse(expression.ExpressionText, parameters);
+
+                    // Invoke the parsed expression
+                    attackExpression.Invoke(target); // Execute the script
+
+                    // Optionally handle modifiers here or within the script itself
+                    foreach (var effect in attackInfo.Statuses)
+                    {
+                        Program.logger.Info($"Applying effect: {effect}");
+                        // APPLY STATUSES
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Program.logger.Error($"Error invoking attack expression: {ex.Message}");
+                    Program.logger.Error($"Stack Trace: {ex.StackTrace}");
                 }
             }
             else
@@ -94,7 +116,7 @@ namespace EnemyClassesNamespace
     {
         public List<string> enemyTypes { get; set; }
         //[JsonPropertyName("enemy")]
-        public List<EnemyTemplate> enemyTemplates { get; set; }
+        public Dictionary<string, EnemyTemplate> enemyTemplates { get; set; }
     
 
         public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos)
@@ -113,7 +135,8 @@ namespace EnemyClassesNamespace
                 Charisma = enemyTemplate.Charisma,
                 Level = level,
                 Position = pos,
-                AttackBehaviours = enemyTemplate.AttackBehaviours
+                AttackBehaviours = enemyTemplate.AttackBehaviours,
+                nature = enemyTemplate.nature
             };
 
             return enemy;
@@ -131,7 +154,7 @@ namespace EnemyClassesNamespace
         public int Constitution { get; set; }
         public int Charisma { get; set; }
         public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } = new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
-        public List<string> AttackBehaviourKeys { get; set; } = new List<string>();
+        public List<string> attackBehaviourKeys { get; set; } = new List<string>();
         public Nature nature { get; set; }
         
         public EnemyTemplate()

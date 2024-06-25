@@ -34,9 +34,11 @@ namespace UtilityFunctionsNamespace
 
     public class UtilityFunctions
     {
-        public static Interpreter interpreter = new Interpreter()
-            .Reference(typeof(Player)); // Add this line to reference System.Console
+        // public static Interpreter interpreter = new Interpreter()
+        //    .Reference(typeof(Player));
 
+        public static Interpreter interpreter = new Interpreter().Reference(typeof(Player)).Reference(typeof(Enemy)); // gets set up 
+        
         public static int typeSpeed = 1;
         public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
@@ -194,25 +196,25 @@ namespace UtilityFunctionsNamespace
         {
             Console.ForegroundColor = ConsoleColor.Black;
 
-            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in Program.game.enemyFactory.enemyTemplates)
             {
-                Console.WriteLine($"Enemy Template: {enemyTemplate.Name}");
+                Console.WriteLine($"Enemy Template: {enemyTemplate.Value.Name}");
                 foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
                 {
                     if (property.Name == "AttackBehaviours")
                     {
                         foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
                         {
-                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            if (enemyTemplate.Value.AttackBehaviours[slot] != null)
                             {
-                                Console.WriteLine($"     {slot}: {enemyTemplate.AttackBehaviours[slot].Name}");
-                                if (enemyTemplate.AttackBehaviours[slot].Statuses.Count == 0)
+                                Console.WriteLine($"     {slot}: {enemyTemplate.Value.AttackBehaviours[slot].Name}");
+                                if (enemyTemplate.Value.AttackBehaviours[slot].Statuses.Count == 0)
                                 {
                                     Console.WriteLine(
                                         $"               This attack applies no statuses.");
                                 }
 
-                                foreach (string statusName in enemyTemplate.AttackBehaviours[slot].Statuses)
+                                foreach (string statusName in enemyTemplate.Value.AttackBehaviours[slot].Statuses)
                                 {
                                     Console.WriteLine($"          Status: {statusName}");
                                     List<string> statusNamesList = new List<string>();
@@ -410,7 +412,32 @@ namespace UtilityFunctionsNamespace
             }
 
             string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
-            return ($"Health: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[0m");
+            return ($"HP: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[0m");
+        }
+        
+        public static string DrawManaBar(Player player)
+        {
+            int currentMana = player.currentMana;
+            int maxMana = player.ManaPoints;
+            double manaPercentage = (double)currentMana / maxMana;
+            
+
+            int redValue, greenValue, blueValue;
+            if (manaPercentage > 0.5)
+            {
+                redValue = 50;
+                blueValue = (int)(255 * manaPercentage);
+                greenValue = (int)(200 * manaPercentage);
+            }
+            else
+            {
+                redValue = (int)(50 * manaPercentage * 2);
+                blueValue = (int)(50 * manaPercentage * 2) + 120;
+                greenValue = (int)(50 * manaPercentage * 2) + 100;
+            }
+
+            string manaColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+            return ($"MP: \x1b[38;2;{redValue};{greenValue};{blueValue}m{currentMana}/{maxMana}\x1b[0m");
         }
 
         public static void TypeText(TypeText typeText, string text)

@@ -265,6 +265,7 @@ namespace PlayerClassesNamespace
 
             // set character health to max
             currentHealth = Health;
+            currentMana = ManaPoints;
             // this.
             Program.logger.Info("Character Created");
             Console.ForegroundColor = ConsoleColor.Black;

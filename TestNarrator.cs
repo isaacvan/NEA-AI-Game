@@ -103,24 +103,22 @@ namespace TestNarratorNamespace
                 foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
                 {
                     // load attack behaviours into enemy templates
-                    foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                    foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
                     {
-                        if (enemyTemplate.AttackBehaviourKeys
-                            .Contains(attackBehaviour
-                                .Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                        if (enemyTemplate.Value.attackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
                         {
                             // load in the attack behaviour
-                            AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                            AttackSlot? attackSlotNullable = enemyTemplate.Value.getNextAvailableAttackSlot();
                             if (attackSlotNullable == null)
                             {
                                 throw new Exception("No available attack slots found for enemy template " +
-                                                    enemyTemplate.Name);
+                                                    enemyTemplate.Value.Name);
                             }
 
                             AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
 
                             // add the attack behaviour to the enemy templat
-                            enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                            enemyTemplate.Value.AttackBehaviours[attackSlot] = attackBehaviour.Value;
                         }
                     }
                 }

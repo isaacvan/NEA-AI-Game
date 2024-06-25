@@ -294,22 +294,22 @@ namespace GPTControlNamespace
             
             foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
             { // load attack behaviours into enemy templates
-                foreach (EnemyTemplate enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
                 {
-                    if (enemyTemplate.AttackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                    if (enemyTemplate.Value.attackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
                     {
                         // load in the attack behaviour
-                        AttackSlot? attackSlotNullable = enemyTemplate.getNextAvailableAttackSlot();
+                        AttackSlot? attackSlotNullable = enemyTemplate.Value.getNextAvailableAttackSlot();
                         if (attackSlotNullable == null)
                         {
                             throw new Exception("No available attack slots found for enemy template " +
-                                                enemyTemplate.Name);
+                                                enemyTemplate.Value.Name);
                         }
                         
                         AttackSlot attackSlot = (AttackSlot)attackSlotNullable; // ensure it isnt null
 
                         // add the attack behaviour to the enemy templat
-                        enemyTemplate.AttackBehaviours[attackSlot] = attackBehaviour.Value;
+                        enemyTemplate.Value.AttackBehaviours[attackSlot] = attackBehaviour.Value;
                     }
                 }
             }
@@ -454,7 +454,7 @@ namespace GPTControlNamespace
             
             List<string> uninitialisedStatuses = new List<string>();
 
-            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in Program.game.enemyFactory.enemyTemplates)
             {
                 foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
                 {
@@ -462,9 +462,9 @@ namespace GPTControlNamespace
                     {
                         foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
                         {
-                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            if (enemyTemplate.Value.AttackBehaviours[slot] != null)
                             {
-                                foreach (string statusName in enemyTemplate.AttackBehaviours[slot].Statuses)
+                                foreach (string statusName in enemyTemplate.Value.AttackBehaviours[slot].Statuses)
                                 {
                                     List<string> statusNamesList = new List<string>();
                                     foreach (Status status1 in Program.game.statusFactory.statusList)
@@ -604,7 +604,7 @@ namespace GPTControlNamespace
                 }
             }
 
-            foreach (EnemyTemplate enemyTemplate in Program.game.enemyFactory.enemyTemplates)
+            foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in Program.game.enemyFactory.enemyTemplates)
             { // checks through enemy template attack behaviours
                 foreach (PropertyInfo property in typeof(EnemyTemplate).GetProperties())
                 {
@@ -612,11 +612,11 @@ namespace GPTControlNamespace
                     {
                         foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
                         {
-                            if (enemyTemplate.AttackBehaviours[slot] != null)
+                            if (enemyTemplate.Value.AttackBehaviours[slot] != null)
                             {
-                                if (initialisedAttackBehaviours.Contains(enemyTemplate.AttackBehaviours[slot].Name) == false)
+                                if (initialisedAttackBehaviours.Contains(enemyTemplate.Value.AttackBehaviours[slot].Name) == false)
                                 {
-                                    uninitialisedAttackBehaviours.Add(enemyTemplate.AttackBehaviours[slot].Name);
+                                    uninitialisedAttackBehaviours.Add(enemyTemplate.Value.AttackBehaviours[slot].Name);
                                 }
                             }
                         }

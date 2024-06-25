@@ -28,4 +28,8 @@
     <Folder Include="Characters\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="obj\Debug\net8.0\Code Projects.csproj.CopyComplete" />
+  </ItemGroup>
+
 </Project>

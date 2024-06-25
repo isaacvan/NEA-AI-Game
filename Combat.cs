@@ -9,6 +9,7 @@ using System.Transactions;
 using Emgu.CV.Ocl;
 using EnemyClassesNamespace;
 using MainNamespace;
+using NLog;
 using Program = MainNamespace.Program;
 
 namespace CombatNamespace
@@ -18,6 +19,7 @@ namespace CombatNamespace
         public Player player { get; set; }
         public Enemy? enemy { get; set; }
         public Dictionary<int, Enemy> enemies { get; set; } // key is ID, value is Enemy
+        public Dictionary<Enemy, bool> enemiesAlive = new Dictionary<Enemy, bool>();
         public int turnCount { get; set; } = 1;
         public int playerTurn { get; set; } = 1;
         public int enemyTurn { get; set; } = 2;
@@ -42,41 +44,50 @@ namespace CombatNamespace
             Run
         }
 
-        public Combat(Player player, Dictionary<int, Enemy> enemies)
+        public Combat(Player playerInp, Dictionary<int, Enemy> enemiesInp)
         {
-            if (enemies.Count == 0)
+            if (enemiesInp.Count == 0)
             {
                 throw new Exception("No enemies provided.");
-            } else if (enemies.Count == 1)
+            } else if (enemiesInp.Count == 1)
             {
-                this.enemy = enemies[1];
-                this.enemies = enemies;
-            } else if (enemies.Count > 1)
+                this.enemy = enemiesInp[0];
+                this.enemies = enemiesInp;
+            } 
+            if (playerInp != null)
             {
-                this.enemies = enemies;
-            }
-            if (player != null)
-            {
-                this.player = player;
+                this.player = playerInp;
             }
             else
             {
                 throw new Exception("Player cannot be null.");
             }
+
+            foreach (KeyValuePair<int, Enemy> enemyValuePair in enemiesInp)
+            {
+                enemiesAlive.Add(enemyValuePair.Value, true);
+            }
         }
 
         public bool beginCombat()
         {
+            Program.logger.Info($"Combat started. Player vs {enemies.Count} enemies.");
+            foreach (KeyValuePair<int, Enemy> enemy in enemies)
+            {
+                Program.logger.Info($"Name: {enemy.Value.Name}, Nature: {enemy.Value.nature.ToString()}");
+            }
+            
             while (playerAlive && enemyAlive) {
-                if (playerTurnBool) {
-                    
+                if (playerTurnBool)
+                {
                     playerTurnAction();
-                    
                     enemyTurnBool = true;
                     playerTurnBool = false;
                     
                 } else if (enemyTurnBool && !playerTurnBool) {
-                    for (int i = 1; i <= enemies.Keys.Count; i++) {
+                    
+                    
+                    for (int i = 0; i < enemies.Keys.Count; i++) {
                         switch (enemies[i].nature.ToString().ToLower())
                         {
                             case "aggressive":
@@ -112,6 +123,11 @@ namespace CombatNamespace
                 return false;
             }
         }
+
+        public void checkForEndOfCombat()
+        {
+            if ()
+        }
         
         public void playerTurnAction()
         {
@@ -132,6 +148,7 @@ namespace CombatNamespace
                 }
             }
             Console.WriteLine($"\nPlease enter an attack");
+            Console.WriteLine("----------------------------------------");
 
             AttackInfo? attackInfo = null;
             bool valid = false;
@@ -190,11 +207,11 @@ namespace CombatNamespace
         {
             // enemy turn logic
             turnCount++;
-            
+            Enemy thisEnemy = (Enemy)enemy;
             // more
-            string chosenAttack = enemy.AttackBehaviourKeys[0];
+            string chosenAttack = thisEnemy.AttackBehaviours[AttackSlot.slot1].Name;
             Console.WriteLine($"Enemy used {chosenAttack}!");
-            enemy.ExecuteAttack(chosenAttack, player);
+            thisEnemy.ExecuteAttack(chosenAttack, player);
         }
         
 

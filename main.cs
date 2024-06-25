@@ -35,9 +35,9 @@ namespace MainNamespace
 
         // COMBAT IS NEXT -
         // doing playerTurnAction right now
-        // - START A COMBAT BETWEEN A PLAYER AND AN ENEMY (made using factories)
-        // - START DEFINING COMBAT CLASS
-        // - COMBAT FUNCTIONS TO APPLY ATTACKS, CONVERT STATUSES INTO ACTION
+        // ADD MANA COST TO ATTACK BEHAVIOURS
+        // ADD CHECKS TO SEE COMBAT OUTCOME
+        // - CONVERT STATUSES INTO ACTION
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
         //
@@ -95,11 +95,16 @@ namespace MainNamespace
 
 
                     Enemy enemy =
-                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
                     Dictionary<int, Enemy> dict = new Dictionary<int, Enemy>();
-                    dict.Add(1, enemy);
+                    dict.Add(0, enemy);
                     game.currentCombat = new Combat(game.player, dict);
                     game.currentCombat.beginCombat();
+
+                    while (Console.ReadLine() != "q")
+                    {
+                        game.player.currentMana -= 5;
+                    }
 
 
                     Console.ReadLine();
@@ -114,9 +119,9 @@ namespace MainNamespace
                         game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
 
                     Enemy enemy1 =
-                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
+                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
                     Dictionary<int, Enemy> dict1 = new Dictionary<int, Enemy>();
-                    dict1.Add(1, enemy1);
+                    dict1.Add(0, enemy1);
                     game.currentCombat = new Combat(game.player, dict1);
                     game.currentCombat.beginCombat();
 

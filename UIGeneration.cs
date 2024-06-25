@@ -42,10 +42,14 @@ namespace UIGenerationNamespace
             
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("[ Player ]");
-            Console.WriteLine($"Class: {player.Class}");
+            //Console.WriteLine($"Class: {player.Class}");
             Console.WriteLine($"Level: {player.Level}");
-            Console.WriteLine($"HP: [{UtilityFunctions.DrawHealthBar(player)}\x1b[0m]");
-            Console.WriteLine($"Statuses: {String.Join(", ", player.statusMap.Values.Select(status => status))}");
+            Console.WriteLine($"{UtilityFunctions.DrawHealthBar(player)}\x1b[0m");
+            Console.WriteLine($"{UtilityFunctions.DrawManaBar(player)}\x1b[0m");
+            if (player.statusMap.Count == 0) 
+                Console.WriteLine($"No Statuses");
+            else 
+                Console.WriteLine($"Statuses: {String.Join(", ", player.statusMap.Values.Select(status => status))}");
             Console.WriteLine("----------------------------------------");
         }
     }

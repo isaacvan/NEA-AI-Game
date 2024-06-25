@@ -6,8 +6,8 @@
     "Hacker Drone",
     "Plasma Spectre"
   ],
-  "enemyTemplates": [
-    {
+  "enemyTemplates": {
+    "Rogue AI": {
       "Name": "Rogue AI",
       "Health": 70,
       "ManaPoints": 80,
@@ -24,7 +24,7 @@
       ],
       "nature": "timid"
     },
-    {
+    "Nanite Swarm": {
       "Name": "Nanite Swarm",
       "Health": 60,
       "ManaPoints": 50,
@@ -41,7 +41,7 @@
       ],
       "nature": "neutral"
     },
-    {
+    "Corrupted Sentinel": {
       "Name": "Corrupted Sentinel",
       "Health": 85,
       "ManaPoints": 75,
@@ -58,7 +58,7 @@
       ],
       "nature": "aggressive"
     },
-    {
+    "Hacker Drone": {
       "Name": "Hacker Drone",
       "Health": 55,
       "ManaPoints": 95,
@@ -75,7 +75,7 @@
       ],
       "nature": "aggressive"
     },
-    {
+    "Plasma Spectre": {
       "Name": "Plasma Spectre",
       "Health": 90,
       "ManaPoints": 60,
@@ -92,5 +92,5 @@
       ],
       "nature": "neutral"
     }
-  ]
+  }
 }

@@ -1,6 +1,23 @@
-2024-06-20 10:10:28.0518|INFO|MainNamespace.Program|Program started
-2024-06-20 10:10:28.1100|INFO|MainNamespace.Program|Running mode=game
-2024-06-20 10:10:44.1653|INFO|MainNamespace.Program|Initialising Item Factory...
-2024-06-20 10:10:44.3826|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2024-06-20 10:10:44.4121|INFO|MainNamespace.Program|Enemy Factory Initialised
-2024-06-20 10:10:44.4499|INFO|MainNamespace.Program|Game mode
+2024-06-25 22:48:43.3640|INFO|MainNamespace.Program|Program started
+2024-06-25 22:48:43.3838|INFO|MainNamespace.Program|Running mode=testing
+2024-06-25 22:48:43.4650|INFO|MainNamespace.Program|Creating Character...
+2024-06-25 22:48:43.5015|INFO|MainNamespace.Program|Character Created
+2024-06-25 22:48:43.6235|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-06-25 22:48:43.6612|INFO|MainNamespace.Program|Item Factory Initialised
+2024-06-25 22:48:43.6823|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Enemy Factory Initialised
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Testing mode
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Combat started. Player vs 1 enemies.
+2024-06-25 22:48:43.6904|INFO|MainNamespace.Program|Name: Rogue AI, Nature: timid
+2024-06-25 22:48:47.5496|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(20, 25)
+2024-06-25 22:48:47.5496|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2024-06-25 22:48:47.5496|INFO|MainNamespace.Program|Applying effect: Disoriented
+2024-06-25 22:49:03.8585|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(20, 25)
+2024-06-25 22:49:03.8585|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2024-06-25 22:49:03.8585|INFO|MainNamespace.Program|Applying effect: Disoriented
+2024-06-25 22:49:11.7194|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(20, 25)
+2024-06-25 22:49:11.7194|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2024-06-25 22:49:11.7194|INFO|MainNamespace.Program|Applying effect: Disoriented
