@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Reflection;
 using CombatNamespace;
 using DynamicExpresso;
+using Emgu.CV.Dnn;
 using GameClassNamespace;
 using ItemFunctionsNamespace;
 using MainNamespace;
@@ -83,7 +84,7 @@ namespace PlayerClassesNamespace
             inventory.RemoveItem(item);
         }
 
-        public void ReceiveAttack(int damage, int crit = 20) // DYNAMICEXPRESSO
+        public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
             {
@@ -111,6 +112,20 @@ namespace PlayerClassesNamespace
             if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
             {
                 attackInfo.Expression.Invoke(target); // Execute the script
+                try
+                {
+                    var parameterNames = attackInfo.Expression.Identifiers;
+                    if (parameterNames.Last().Name == "manacost")
+                    {
+                        
+                    }
+                    currentMana -= Convert.ToInt16(attackInfo.Expression.Identifiers.Last());
+                }
+                catch
+                {
+                    Program.logger.Info("Mana not taken. 'currentMana -= Convert.ToInt16(attackInfo.Expression.Identifiers.Last());' hasn't worked.");
+                }
+
                 // Optionally handle modifiers here or within the script itself
                 foreach (var effect in attackInfo.Statuses)
                 {
@@ -125,7 +140,9 @@ namespace PlayerClassesNamespace
 
         public void PlayerDies()
         {
+            Console.Clear();
             Console.WriteLine("You have died. Game over.");
+            Thread.Sleep(3000);
             Environment.Exit(0);
         }
 

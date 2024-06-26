@@ -1,13 +1,13 @@
 {
     "PlayerBasicAttack": {
       "Name": "PlayerBasicAttack",
-      "ExpressionString": "target.ReceiveAttack(5, 20)",
+      "ExpressionString": "target.ReceiveAttack(5, 20, 1)",
       "Statuses": [],
       "Narrative": "launches a basic combat maneuver."
     },
     "IonicPulse": {
       "Name": "IonicPulse",
-      "ExpressionString": "target.ReceiveAttack(20, 25)",
+      "ExpressionString": "target.ReceiveAttack(20, 25, 10)",
       "Statuses": [
         "Disoriented"
       ],
@@ -15,7 +15,7 @@
     },
     "LaserBlast": {
       "Name": "LaserBlast",
-      "ExpressionString": "target.ReceiveAttack(25, 40)",
+      "ExpressionString": "target.ReceiveAttack(25, 40, 15)",
       "Statuses": [
         "Burned"
       ],
@@ -23,7 +23,7 @@
     },
     "ElectroShock": {
       "Name": "ElectroShock",
-      "ExpressionString": "target.ReceiveAttack(15, 50)",
+      "ExpressionString": "target.ReceiveAttack(15, 50, 10)",
       "Statuses": [
         "Paralyzed"
       ],
@@ -31,7 +31,7 @@
     },
     "StealthHack": {
       "Name": "StealthHack",
-      "ExpressionString": "target.ReceiveAttack(10, 80)",
+      "ExpressionString": "target.ReceiveAttack(10, 80, 14)",
       "Statuses": [
         "Cloaked"
       ],
@@ -39,7 +39,7 @@
     },
     "PlasmaGrenade": {
       "Name": "PlasmaGrenade",
-      "ExpressionString": "target.ReceiveAttack(30, 30)",
+      "ExpressionString": "target.ReceiveAttack(30, 30, 12)",
       "Statuses": [
         "Burned",
         "Disoriented"
@@ -48,7 +48,7 @@
     },
     "MagneticField": {
       "Name": "MagneticField",
-      "ExpressionString": "target.ReceiveAttack(0, 0)",
+      "ExpressionString": "target.ReceiveAttack(0, 0, 20)",
       "Statuses": [
         "DefenceBoost"
       ],
@@ -56,7 +56,7 @@
     },
     "NanoRepair": {
       "Name": "NanoRepair",
-      "ExpressionString": "target.ReceiveAttack(-20, 0)",
+      "ExpressionString": "target.ReceiveAttack(-20, 0, 10)",
       "Statuses": [
         "Healing"
       ],
@@ -64,7 +64,7 @@
     },
     "SystemOverride": {
       "Name": "SystemOverride",
-      "ExpressionString": "target.ReceiveAttack(35, 20)",
+      "ExpressionString": "target.ReceiveAttack(35, 20, 15)",
       "Statuses": [
         "Hacked"
       ],
@@ -72,7 +72,7 @@
     },
     "EnergyDischarge": {
       "Name": "EnergyDischarge",
-      "ExpressionString": "target.ReceiveAttack(40, 10)",
+      "ExpressionString": "target.ReceiveAttack(40, 10, 9)",
       "Statuses": [
         "Stunned"
       ],

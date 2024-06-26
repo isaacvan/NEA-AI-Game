@@ -1,6 +1,7 @@
 ﻿using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using System.Xml.Serialization;
 using CombatNamespace;
@@ -106,6 +107,17 @@ namespace GameClassNamespace
             
             // initialise uiConstructor
             uiConstructer = new UIConstructer(player);
+        }
+
+        public bool startCombat(List<Enemy> enemies)
+        {
+            Dictionary<int, Enemy> dict = new Dictionary<int, Enemy>();
+            foreach (Enemy enemy in enemies)
+            {
+                dict.Add(enemies.IndexOf(enemy), enemy);
+            }
+            currentCombat = new Combat(player, dict);
+            return currentCombat.beginCombat();
         }
 
         public static void saveGame()

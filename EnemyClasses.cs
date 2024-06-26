@@ -42,7 +42,7 @@ namespace EnemyClassesNamespace
         public int Level { get; set; }
         public Point Position { get; set; }
         
-        public void ReceiveAttack(int damage, int crit = 20) // DYNAMICEXPRESSO
+        public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
             {
@@ -53,11 +53,6 @@ namespace EnemyClassesNamespace
                 }
                 Console.WriteLine($"{Name} took {damage} damage.");
                 currentHealth -= damage;
-                if (currentHealth < 0)
-                {
-                    currentHealth = 0;
-                    Program.game.currentCombat.enemyDied = true;
-                }
                 Thread.Sleep(1000);
                 Console.Clear();
             }
@@ -156,6 +151,7 @@ namespace EnemyClassesNamespace
         public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } = new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
         public List<string> attackBehaviourKeys { get; set; } = new List<string>();
         public Nature nature { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
         
         public EnemyTemplate()
         {

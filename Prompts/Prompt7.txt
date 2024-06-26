@@ -1,7 +1,7 @@
 ﻿Your next job as the narrator is to generate a JSON file that represents a collection of attack behaviors that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
 
 Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys will be used later. Bear in mind you will generate at least 5 enemies, so you will need 4 keys per enemy (minimum 20).
-Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage, crit). Ensure the damage corresponds to the attack magnitude and the context of the game, and crit is an int between 0 - 100. If no crit is entered, it will be defaulted to 20.
+Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage, crit, manacost). Ensure the damage corresponds to the attack magnitude and the context of the game, and crit is an int between 0 - 100. If no crit is entered, it will be defaulted to 20. manacost should be a number, minimum 0 and maximum 25.
 Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
 Narrative: A string containing the output whenever this attack is used. If the enemy is casting it, it will begin with "The {enemyname} {Narrative}", and if the player casts it it will begin with "The player {Narrative}". Ensure this makes grammatical sense.
 Here is how each component should be formatted and an example for each:
@@ -16,25 +16,25 @@ All behaviours should match the keys used for previous enemies, however, one att
 {
   "PlayerBasicAttack": {
     "Name": "PlayerBasicAttack",
-    "Expression": "target.ReceiveAttack(5, 60)",
+    "Expression": "target.ReceiveAttack(5, 60, 0)",
     "Statuses": []
     "Narrative": "throws a punch."
   },
   "Bloody Slice": {
     "Name": "Bloody Slice",
-    "Expression": "target.ReceiveAttack(10, 30)",
+    "Expression": "target.ReceiveAttack(10, 30, 5)",
     "Statuses": ["Bleed"]
     "Narrative": "slices violently, causing blood to fly."
   },
   "Backstab": {
     "Name": "Backstab",
-    "Expression": "target.ReceiveAttack(15, 90)",
+    "Expression": "target.ReceiveAttack(15, 90, 0)",
     "Statuses": ["Cripple", "Cloaked"]
     "Narrative": "uses the element of surprise to cause severe damage."
   },
   "Taunt": {
     "Name": "Taunt",
-    "Expression": "target.ReceiveAttack(0, 0)",
+    "Expression": "target.ReceiveAttack(0, 0, 10)",
     "Statuses": ["AtkPowered", "DefenceBoost"]
     "Narrative": "calls out rude names, taunting everybody in the area."
   }

@@ -37,6 +37,12 @@ namespace UtilityFunctionsNamespace
         // public static Interpreter interpreter = new Interpreter()
         //    .Reference(typeof(Player));
 
+        public static string universalSeperator = "------------------------------------------";
+        public static string playerANSIUI = $"\x1b[38;2;80;200;120m";
+        public static string aggressiveANSIUI = $"\x1b[38;2;210;43;43m";
+        public static string neutralANSIUI = $"\x1b[38;2;204;85;0m";
+        public static string timidANSIUI = $"\x1b[38;2;255;191;0m";
+
         public static Interpreter interpreter = new Interpreter().Reference(typeof(Player)).Reference(typeof(Enemy)); // gets set up 
         
         public static int typeSpeed = 1;
@@ -393,51 +399,109 @@ namespace UtilityFunctionsNamespace
             }
         }
 
-        public static string DrawHealthBar(Player player)
+        public static string DrawHealthBar(object playerObj)
         {
-            int currentHealth = player.currentHealth;
-            int maxHealth = player.Health;
-            double healthPercentage = (double)currentHealth / maxHealth;
-
-            int redValue, greenValue;
-            if (healthPercentage > 0.5)
+            if (playerObj.GetType() == typeof(Player))
             {
-                redValue = (int)(255 * (1 - healthPercentage) * 2);
-                greenValue = 255;
+                Player player = (Player)playerObj;
+                int currentHealth = player.currentHealth;
+                int maxHealth = player.Health;
+                double healthPercentage = (double)currentHealth / maxHealth;
+
+                int redValue, greenValue;
+                if (healthPercentage > 0.5)
+                {
+                    redValue = (int)(255 * (1 - healthPercentage) * 2);
+                    greenValue = 255;
+                }
+                else
+                {
+                    redValue = 255;
+                    greenValue = (int)(255 * healthPercentage * 2);
+                }
+
+                string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+                //Console.ForegroundColor = ConsoleColor.White;
+                return ($"HP: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[38;2;0m");
             }
             else
             {
-                redValue = 255;
-                greenValue = (int)(255 * healthPercentage * 2);
-            }
+                // stupid name ik
+                Enemy player = (Enemy)playerObj;
+                int currentHealth = player.currentHealth;
+                int maxHealth = player.Health;
+                double healthPercentage = (double)currentHealth / maxHealth;
 
-            string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
-            return ($"HP: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[0m");
+                int redValue, greenValue;
+                if (healthPercentage > 0.5)
+                {
+                    redValue = (int)(255 * (1 - healthPercentage) * 2);
+                    greenValue = 255;
+                }
+                else
+                {
+                    redValue = 255;
+                    greenValue = (int)(255 * healthPercentage * 2);
+                }
+
+                string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+                return ($"HP: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[38;2;0m");
+            }
         }
         
-        public static string DrawManaBar(Player player)
+        public static string DrawManaBar(object playerObj)
         {
-            int currentMana = player.currentMana;
-            int maxMana = player.ManaPoints;
-            double manaPercentage = (double)currentMana / maxMana;
+            if (playerObj.GetType() == typeof(Player))
+            {
+                Player player = (Player)playerObj;
+                int currentMana = player.currentMana;
+                int maxMana = player.ManaPoints;
+                double manaPercentage = (double)currentMana / maxMana;
             
 
-            int redValue, greenValue, blueValue;
-            if (manaPercentage > 0.5)
-            {
-                redValue = 50;
-                blueValue = (int)(255 * manaPercentage);
-                greenValue = (int)(200 * manaPercentage);
+                int redValue, greenValue, blueValue;
+                if (manaPercentage > 0.5)
+                {
+                    redValue = 50;
+                    blueValue = (int)(255 * manaPercentage);
+                    greenValue = (int)(200 * manaPercentage);
+                }
+                else
+                {
+                    redValue = (int)(50 * manaPercentage * 2);
+                    blueValue = (int)(50 * manaPercentage * 2) + 120;
+                    greenValue = (int)(50 * manaPercentage * 2) + 100;
+                }
+
+                string manaColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+                return ($"MP: \x1b[38;2;{redValue};{greenValue};{blueValue}m{currentMana}/{maxMana}\x1b[0m");
             }
             else
             {
-                redValue = (int)(50 * manaPercentage * 2);
-                blueValue = (int)(50 * manaPercentage * 2) + 120;
-                greenValue = (int)(50 * manaPercentage * 2) + 100;
-            }
+                // again, stupid name ik
+                Enemy player = (Enemy)playerObj;
+                int currentMana = player.currentMana;
+                int maxMana = player.ManaPoints;
+                double manaPercentage = (double)currentMana / maxMana;
+            
 
-            string manaColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
-            return ($"MP: \x1b[38;2;{redValue};{greenValue};{blueValue}m{currentMana}/{maxMana}\x1b[0m");
+                int redValue, greenValue, blueValue;
+                if (manaPercentage > 0.5)
+                {
+                    redValue = 50;
+                    blueValue = (int)(255 * manaPercentage);
+                    greenValue = (int)(200 * manaPercentage);
+                }
+                else
+                {
+                    redValue = (int)(50 * manaPercentage * 2);
+                    blueValue = (int)(50 * manaPercentage * 2) + 120;
+                    greenValue = (int)(50 * manaPercentage * 2) + 100;
+                }
+
+                string manaColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
+                return ($"MP: \x1b[38;2;{redValue};{greenValue};{blueValue}m{currentMana}/{maxMana}\x1b[0m");
+            }
         }
 
         public static void TypeText(TypeText typeText, string text)

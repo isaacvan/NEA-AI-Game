@@ -34,12 +34,13 @@ namespace MainNamespace
         // NEXT STEPS
 
         // COMBAT IS NEXT -
-        // doing playerTurnAction right now
-        // ADD MANA COST TO ATTACK BEHAVIOURS
-        // ADD CHECKS TO SEE COMBAT OUTCOME
-        // - CONVERT STATUSES INTO ACTION
+        // ADD MANA COST TO ATTACK BEHAVIOURS - CURRENTLY DOING
+        // maybe add a manacost int to attackInfos??
+        // 
+        // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
+        // change prompt to make enemy damage lower?
         //
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
@@ -96,15 +97,10 @@ namespace MainNamespace
 
                     Enemy enemy =
                         game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
-                    Dictionary<int, Enemy> dict = new Dictionary<int, Enemy>();
-                    dict.Add(0, enemy);
-                    game.currentCombat = new Combat(game.player, dict);
-                    game.currentCombat.beginCombat();
-
-                    while (Console.ReadLine() != "q")
-                    {
-                        game.player.currentMana -= 5;
-                    }
+                    Enemy enemy2 = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
+                    List<Enemy> enemiesToFight = new List<Enemy>() { enemy, enemy2 };
+                    bool outcome = game.startCombat(enemiesToFight);
+                    
 
 
                     Console.ReadLine();
@@ -118,12 +114,11 @@ namespace MainNamespace
                     game.player.PlayerAttacks[AttackSlot.slot1] =
                         game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
 
+                    
                     Enemy enemy1 =
                         game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
-                    Dictionary<int, Enemy> dict1 = new Dictionary<int, Enemy>();
-                    dict1.Add(0, enemy1);
-                    game.currentCombat = new Combat(game.player, dict1);
-                    game.currentCombat.beginCombat();
+                    List<Enemy> enemiesToFight1 = new List<Enemy>() { enemy1 };
+                    bool outcome1 = game.startCombat(enemiesToFight1);
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
@@ -149,15 +144,10 @@ namespace MainNamespace
                 saveGameToAllStoragesSync();
             }
 
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
 
             // exit smoothly
             Environment.Exit(0);
-        }
-
-        static void test()
-        {
-            Console.WriteLine("test");
         }
 
         public static async Task saveGameToAllStoragesAsync()
