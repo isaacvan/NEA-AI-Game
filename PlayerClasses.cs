@@ -88,6 +88,7 @@ namespace PlayerClassesNamespace
         {
             if (Program.game.currentCombat != null)
             {
+                damage = Program.game.currentCombat.DamageConverterFromLevel(damage, Level);
                 bool didCrit = Program.game.currentCombat.didCrit(Program.game.currentCombat.enemy, crit);
                 if (didCrit)
                 {
@@ -112,19 +113,12 @@ namespace PlayerClassesNamespace
             if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
             {
                 attackInfo.Expression.Invoke(target); // Execute the script
-                try
+                currentMana -= attackInfo.Manacost;
+                if (currentMana < 0)
                 {
-                    var parameterNames = attackInfo.Expression.Identifiers;
-                    if (parameterNames.Last().Name == "manacost")
-                    {
-                        
-                    }
-                    currentMana -= Convert.ToInt16(attackInfo.Expression.Identifiers.Last());
+                    throw new Exception("Not enough mana to cast. error check didnt work. at executeattack in player");
                 }
-                catch
-                {
-                    Program.logger.Info("Mana not taken. 'currentMana -= Convert.ToInt16(attackInfo.Expression.Identifiers.Last());' hasn't worked.");
-                }
+                
 
                 // Optionally handle modifiers here or within the script itself
                 foreach (var effect in attackInfo.Statuses)

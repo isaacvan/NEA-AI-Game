@@ -81,6 +81,11 @@ namespace EnemyClassesNamespace
 
                     // Invoke the parsed expression
                     attackExpression.Invoke(target); // Execute the script
+                    currentMana -= attackInfo.Manacost;
+                    if (currentMana < 0)
+                    {
+                        throw new Exception("Not enough mana to cast. error check didnt work. at executeattack in enemy");
+                    }
 
                     // Optionally handle modifiers here or within the script itself
                     foreach (var effect in attackInfo.Statuses)
@@ -192,7 +197,7 @@ namespace EnemyClassesNamespace
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
         
-        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative, Type targetType)
+        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative, Type targetType, int manacost)
         {
             Parameter[] parameters = null;
             if (targetType == typeof(Player))
@@ -208,7 +213,7 @@ namespace EnemyClassesNamespace
             }
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
         
-            AttackInfo attackInfo = new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative);
+            AttackInfo attackInfo = new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative,  manacost);
             attackBehaviours[key] = attackInfo;
         }
         
@@ -229,7 +234,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player));
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player), behaviour.AttackInfo.Manacost);
             }
         }
     }
@@ -244,10 +249,12 @@ namespace EnemyClassesNamespace
         //[Newtonsoft.Json.JsonConverter(typeof(ExpressionConverter))] 
         public string ExpressionString { get; set; }
         
+        public int Manacost { get; set; }
+        
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
 
-        public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name, string narrative)
+        public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name, string narrative, int manacost)
         {
             Expression = expression;
             ExpressionString = expressionString;
@@ -258,6 +265,7 @@ namespace EnemyClassesNamespace
             Statuses = statuses;
             Name = name;
             Narrative = narrative;
+            Manacost = manacost;
         }
     }
     

@@ -1,15 +1,21 @@
-2024-06-26 22:45:00.0134|INFO|MainNamespace.Program|Program started
-2024-06-26 22:45:00.0397|INFO|MainNamespace.Program|Running mode=testing
-2024-06-26 22:45:00.1973|INFO|MainNamespace.Program|Creating Character...
-2024-06-26 22:45:00.3060|INFO|MainNamespace.Program|Character Created
-2024-06-26 22:45:00.4896|INFO|MainNamespace.Program|Initialising Item Factory...
-2024-06-26 22:45:00.5351|INFO|MainNamespace.Program|Item Factory Initialised
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Enemy Factory Initialised
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
-2024-06-26 22:45:00.5603|INFO|MainNamespace.Program|Testing mode
-2024-06-26 22:45:00.5762|INFO|MainNamespace.Program|Combat started. Player vs 2 enemies.
-2024-06-26 22:45:00.5762|INFO|MainNamespace.Program|Name: Rogue AI, Nature: timid
-2024-06-26 22:45:00.5762|INFO|MainNamespace.Program|Name: Rogue AI, Nature: timid
+2024-07-16 15:55:27.2539|INFO|MainNamespace.Program|Program started
+2024-07-16 15:55:27.2747|INFO|MainNamespace.Program|Running mode=testing
+2024-07-16 15:55:27.3630|INFO|MainNamespace.Program|Creating Character...
+2024-07-16 15:55:27.4018|INFO|MainNamespace.Program|Character Created
+2024-07-16 15:55:27.5239|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-07-16 15:55:27.5594|INFO|MainNamespace.Program|Item Factory Initialised
+2024-07-16 15:55:27.5794|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Enemy Factory Initialised
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Testing mode
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Combat started. Player vs 2 enemies.
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Name: Rogue AI, Nature: timid
+2024-07-16 15:55:27.5868|INFO|MainNamespace.Program|Name: Rogue AI, Nature: timid
+2024-07-16 15:55:45.4591|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(20, 25, 10)
+2024-07-16 15:55:45.4591|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2024-07-16 15:55:45.4630|INFO|MainNamespace.Program|Applying effect: Disoriented
+2024-07-16 15:55:46.9729|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(20, 25, 10)
+2024-07-16 15:55:46.9729|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2024-07-16 15:55:46.9729|INFO|MainNamespace.Program|Applying effect: Disoriented

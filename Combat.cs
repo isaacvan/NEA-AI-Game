@@ -3,6 +3,7 @@ using PlayerClassesNamespace;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -26,7 +27,7 @@ namespace CombatNamespace
     public class Combat
     {
         public Player player { get; set; }
-        public Enemy? enemy { get; set; }
+        public Enemy enemy { get; set; }
         public Dictionary<int, Enemy> enemies { get; set; } // key is ID, value is Enemy
         public Dictionary<Enemy, bool> enemiesAlive = new Dictionary<Enemy, bool>();
         public int turnCount { get; set; } = 1;
@@ -185,7 +186,7 @@ namespace CombatNamespace
                 }
 
                 Console.WriteLine($"\nPlease enter an attack");
-                Console.WriteLine("----------------------------------------");
+                Console.WriteLine(UtilityFunctions.universalSeperator);
                 
                 try
                 {
@@ -222,7 +223,7 @@ namespace CombatNamespace
                 catch
                 {
                     Console.Clear();
-                    Console.WriteLine("----------------------------------------");
+                    Console.WriteLine(UtilityFunctions.universalSeperator);
                     Console.WriteLine(
                         $"Invalid input. Input should range from 1 - {player.PlayerAttacks.Values.Count}.");
                 }
@@ -234,10 +235,67 @@ namespace CombatNamespace
                 throw new Exception("Attack info cannot be null. In PlayerTurnAction.");
             }
 
+            Enemy target = null;
+
+            if (enemies.Count > 1) // AND ISNT AOE TARGETTING
+            {
+                Console.Clear();
+                Console.WriteLine($"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                int i = 1;
+                foreach (Enemy en in enemies.Values)
+                {
+                    Console.WriteLine($"{i}: {en.Name} - {en.currentHealth}/{en.Health}");
+                    i++;
+                }
+
+                bool v = false;
+                while (!v)
+                {
+                    try
+                    {
+                        int inp = Convert.ToInt16(Console.ReadLine());
+                        Console.Clear();
+                        if (inp > enemies.Count || inp < 1)
+                        {
+                            throw null;
+                        }
+
+                        try
+                        {
+                            target = enemies[inp - 1];
+                        }
+                        catch
+                        {
+                            throw new Exception("External error");
+                        }
+
+                        v = true;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input.");
+                        Thread.Sleep(500);
+                        Console.Clear();
+                        Console.WriteLine($"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                        int i1 = 1;
+                        foreach (Enemy en in enemies.Values)
+                        {
+                            Console.WriteLine($"{i1}: {en.Name} - {en.currentHealth}/{en.Health}");
+                            i1++;
+                        }
+                    }
+                }
+            }
+
+            if (target == null)
+            {
+                target = (Enemy)enemy;
+            }
+            
             Console.Clear();
 
             Console.WriteLine($"You used {attackInfo.Name}!");
-            player.ExecuteAttack(attackInfo.Name, enemy);
+            player.ExecuteAttack(attackInfo.Name, target);
         }
 
 
@@ -295,6 +353,39 @@ namespace CombatNamespace
             }
 
             return false;
+        }
+
+        public int DamageConverterFromLevel(int damage, int level)
+        {
+            if (level >= 1 && level <= 10)
+            {
+                try
+                {
+                    double lvlDouble = Convert.ToDouble(level);
+                    double mult = (double)(lvlDouble / 10);
+                    return Convert.ToInt16(Convert.ToDouble(damage) * mult);
+                }
+                catch
+                {
+                    throw new Exception("float to int multiplication thrown error in damageConverter in combat.cs");
+                }
+            }
+
+            if (level > 10 && level <= 20)
+            {
+                try
+                {
+                    double lvlDouble = Convert.ToDouble(level);
+                    double mult = (double)(lvlDouble / 10);
+                    return Convert.ToInt16(Convert.ToDouble(damage) * mult);
+                }
+                catch
+                {
+                    throw new Exception("float to int multiplication thrown error in damageConverter in combat.cs");
+                }
+            }
+
+            return damage;
         }
     }
 

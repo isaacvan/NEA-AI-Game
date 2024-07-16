@@ -33,14 +33,11 @@ namespace MainNamespace
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
 
-        // COMBAT IS NEXT -
-        // ADD MANA COST TO ATTACK BEHAVIOURS - CURRENTLY DOING
-        // maybe add a manacost int to attackInfos??
-        // 
         // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
         // change prompt to make enemy damage lower?
+        // implement AOE down the line
         //
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
