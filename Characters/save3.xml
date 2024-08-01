@@ -4,17 +4,17 @@
     <X>0</X>
     <Y>0</Y>
   </playerPos>
-  <Class>Rogue Automaton</Class>
-  <Race>Robot</Race>
-  <Health>80</Health>
-  <currentHealth>80</currentHealth>
-  <ManaPoints>70</ManaPoints>
-  <currentMana>70</currentMana>
-  <Strength>8</Strength>
+  <Class>Assassin</Class>
+  <Race>Shadow Elf</Race>
+  <Health>70</Health>
+  <currentHealth>70</currentHealth>
+  <ManaPoints>80</ManaPoints>
+  <currentMana>80</currentMana>
+  <Strength>6</Strength>
   <Intelligence>9</Intelligence>
   <Dexterity>10</Dexterity>
-  <Constitution>6</Constitution>
-  <Charisma>2</Charisma>
+  <Constitution>5</Constitution>
+  <Charisma>5</Charisma>
   <Level>1</Level>
   <currentExp>0</currentExp>
   <maxExp>10</maxExp>

@@ -32,7 +32,16 @@ namespace MainNamespace
 
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-
+        // 
+        // NEXT - MAP GENERATION
+        // TODO: create a generategraph function in narrator that uses prompt1 or similar:
+        // 
+        //
+        // NEXT - UI CONSTRUCTOR
+        //
+        // NEXT - ENEMY MOVEMENT AI
+        //
+        //
         // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
         // Player needs to have multiple moves: use enemy attack behaviours?
         // combat namespace
@@ -43,16 +52,7 @@ namespace MainNamespace
         // implement the natures for each type of enemy
         // design each ai system in combat
         //
-        // NEXT - MAP GENERATION
-        // big topic
-        //
-        // NEXT - UI CONSTRUCTOR
-        //
-        // NEXT - ENEMY MOVEMENT AI
-        //
-        //
-        //
-        // NEXT - DATABASES
+        // NEXT - DATABASES ?!
         //----------------------------------------------------------------------------------------------------------
         */
 
@@ -87,18 +87,6 @@ namespace MainNamespace
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
-                    Console.Clear();
-                    Console.WriteLine("Testing mode");
-                    logger.Info("Testing mode");
-
-
-                    Enemy enemy =
-                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
-                    Enemy enemy2 = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
-                    List<Enemy> enemiesToFight = new List<Enemy>() { enemy, enemy2 };
-                    bool outcome = game.startCombat(enemiesToFight);
-                    
-
 
                     Console.ReadLine();
                     break;
@@ -108,14 +96,8 @@ namespace MainNamespace
                     Console.WriteLine("Game mode");
                     logger.Info("Game mode");
 
-                    game.player.PlayerAttacks[AttackSlot.slot1] =
-                        game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
-
                     
-                    Enemy enemy1 =
-                        game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates["Rogue AI"], 1, new Point(0, 0));
-                    List<Enemy> enemiesToFight1 = new List<Enemy>() { enemy1 };
-                    bool outcome1 = game.startCombat(enemiesToFight1);
+                    GridFunctions.GenerateMap(game.map);
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
@@ -216,116 +198,6 @@ namespace MainNamespace
 
             // every aspect that needs to be saved
             // map state, game state, story progress etc needs to be saved
-        }
-
-        static void gridLoop(Player player)
-        {
-            string file = UtilityFunctions.mainDirectory + @"GridSaves\save1.json";
-            Point playerloc = new Point(0, 0);
-            if (player != null)
-            {
-                player.changePlayerPos(playerloc);
-            }
-            else
-            {
-            }
-
-            List<List<Tile>> grid = GridFunctions.CreateGrid(20, 20);
-            GridFunctions.SaveGrid(grid, file);
-            //GridFunctions.PrintGrid(grid, playerloc, playerloc, sightRange.X, sightRange.Y, player);
-            Point sightRange = new Point(4, 4);
-            GridFunctions.PrintGrid(grid, playerloc, playerloc, sightRange.X, sightRange.Y, player);
-            ConsoleKeyInfo keyInfo;
-            bool gameRunning = true;
-            while (gameRunning)
-            {
-                do
-                {
-                    keyInfo = Console.ReadKey();
-
-                    // Check if the key is not Enter or Escape
-                    if (keyInfo.Key != ConsoleKey.Enter && keyInfo.Key != ConsoleKey.Escape)
-                    {
-                        Point newplayerloc = move(playerloc, keyInfo.KeyChar, grid);
-                        if (player != null)
-                        {
-                            player.changePlayerPos(newplayerloc);
-                        }
-
-                        //GridFunctions.PrintGrid(grid, playerloc, newplayerloc, sightRange.X, sightRange.Y, player);
-                        if (GridFunctions.PrintGrid(grid, playerloc, newplayerloc, sightRange.X, sightRange.Y, player))
-                        {
-                            playerloc = newplayerloc;
-                        }
-                        else
-                        {
-                        }
-                    }
-                } while (keyInfo.Key != ConsoleKey.Q);
-
-                gameRunning = options(true, true);
-                GridFunctions.PrintGrid(grid, playerloc, playerloc, sightRange.X, sightRange.Y, player);
-            }
-        }
-
-        static Point move(Point loc, char inp, List<List<Tile>> grid)
-        {
-            bool moved = false;
-            while (!moved)
-            {
-                switch (inp)
-                {
-                    case 'w':
-                        if (loc.Y != 0)
-                        {
-                            loc.Y -= 1;
-                            moved = true;
-                            return loc;
-                        }
-                        else
-                        {
-                            return loc;
-                        }
-                    case 'a':
-                        if (loc.X != 0)
-                        {
-                            loc.X -= 1;
-                            moved = true;
-                            return loc;
-                        }
-                        else
-                        {
-                            return loc;
-                        }
-                    case 's':
-                        if (loc.Y != grid[loc.X].Count - 1)
-                        {
-                            loc.Y += 1;
-                            moved = true;
-                            return loc;
-                        }
-                        else
-                        {
-                            return loc;
-                        }
-                    case 'd':
-                        if (loc.X != grid.Count - 1)
-                        {
-                            loc.X += 1;
-                            moved = true;
-                            return loc;
-                        }
-                        else
-                        {
-                            return loc;
-                        }
-                    default:
-                        moved = true;
-                        break;
-                }
-            }
-
-            return loc;
         }
 
         public static bool menu(bool gameStarted, bool saveChosen, bool testing = false)
@@ -446,8 +318,12 @@ namespace MainNamespace
             Console.CursorVisible = false;
             gameSetup.chooseSave();
 
+            UtilityFunctions.logsSpecificDirectory = @$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}";
             UtilityFunctions.enemyTemplateSpecificDirectory =
                 UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
+            
+            // initialise GPT logging
+            UtilityFunctions.initialiseGPTLogging();
 
             Player player;
 

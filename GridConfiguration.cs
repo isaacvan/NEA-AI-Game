@@ -1,225 +1,107 @@
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using UtilityFunctionsNamespace;
-using EnemyClassesNamespace;
-using PlayerClassesNamespace;
-using System.Xml.Linq;
-using System.Text.Json;
-using System.Reflection.Metadata.Ecma335;
-using System.Drawing;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
-using Emgu.CV.Structure;
-using Emgu.CV.Util;
+
+
+using MainNamespace;
 
 namespace GridConfigurationNamespace
 {
     public class GridFunctions
     {
-        private const string wallChar = $"\x1b[38;2;0;0;0m\u25a0";
-        private const string expChar = $"\x1b[38;2;100;100;255me";
-        private const string floorChar = $"\x1b[38;2;200;200;200m.\x1b[0m";
+        public static Map GenerateMap(Map mapToBeFilled)
+        {
+            mapToBeFilled = new Map();
+            mapToBeFilled.Graphs = new List<Graph>();
+            mapToBeFilled.Graphs.Add(GenerateGraph(mapToBeFilled));
+            return new Map();
+        }
         
-        public static List<List<Tile>> CreateGrid(int width, int height)
+        public static Graph GenerateGraph(Map currentMap)
         {
-            List<List<Tile>> grid = new List<List<Tile>>();
-            string t;
+            int IDofGraph = currentMap.GetNextID();
+            Graph graph = new Graph(IDofGraph);
+            // graph = GENERATE NEW GRAPH FROM NARRATOR FUNCTION
+            return null;
+        }
+    }
 
-            for (int i = 0; i < width; i++)
-            {
-                List<Tile> row = new List<Tile>();
-                for (int j = 0; j < height; j++)
-                {
-                    
-                    Event @event;
+    public class Map
+    {
+        public List<Graph> Graphs { get; set; }
 
-                    if (i == 5 && j == 5)
-                    {
-                        t = expChar;
-                        List<string> desc = new List<string> { "plrExp" };
-                        List<string> consq = new List<string> { "5" };
-                        @event = new Event("exp", desc, consq);
+        public int GetNextID()
+        {
+            return (Graphs.Count);
+        }
+    }
 
-                    } else {
-                        t = floorChar;
-                        List<string> desc = new List<string> { "none" };
-                        List<string> consq = new List<string> { "none" };
-                        @event = new Event("none", desc, consq);
-                    }
-                    
-                    row.Add(new Tile(i, j, t, false, 1, false, @event));
+    public class Node
+    {
+        public int NodeID { get; set; }
+        public List<Node> ConnectedNodes { get; set; }
+        // public List<>
+        public int NodeDepth { get; set; }
 
-                }
-                grid.Add(row);
-            }
-
-            return grid;
+        public Node(int id)
+        {
+            this.NodeID = id;
+            this.ConnectedNodes = new List<Node>();
         }
 
-        public static List<List<Tile>> LoadGrid(string fileName)
+        public void AddNeighbour(Node node)
         {
-            string json = File.ReadAllText(fileName);
-            List<List<Tile>> grid = JsonSerializer.Deserialize<List<List<Tile>>>(json);
-            return grid;
+            this.ConnectedNodes.Add(node);
+        }
+    }
+
+    public class Graph
+    {
+        public List<Node> Nodes { get; set; }
+        public int Id { get; set; }
+
+        public Graph(int id)
+        {
+            Nodes = new List<Node>();
+            Id = id;
         }
 
-
-
-
-        public static bool PrintGrid(List<List<Tile>> grid, Point oldplayerLocation, Point newplayerLocation, int scopeWidth, int scopeHeight, Player player)
+        public Node AddNode(int id)
         {
-            bool moveDone = true;
-            UtilityFunctions.clearScreen(player);
-            int playerX = newplayerLocation.X;
-            int playerY = newplayerLocation.Y;
-            grid[oldplayerLocation.X][oldplayerLocation.Y].playerHere = false;
-            grid[oldplayerLocation.X][oldplayerLocation.Y].t = floorChar;
-            
-            if (playerX >= 0 && playerX < grid.Count && playerY >= 0 && playerY < grid[playerX].Count) // if in bounds
+            Node node = new Node(id);
+            this.Nodes.Add(node);
+            return node;
+        }
+
+        public bool ConnectNodes(Node nodeStart, Node nodeEnd) // true if successful
+        {
+            if (nodeStart.ConnectedNodes.Contains(nodeEnd))
             {
-                grid[playerX][playerY].playerHere = true;
-                grid[playerX][playerY].t = "@";
+                // already connected
+                Program.logger.Info($"Node with ID {nodeStart.NodeID} is already connected to Node with ID {nodeEnd.NodeID}.");
+                return false;
             }
             else
             {
-                if (player != null) {
-                    player.playerPos = oldplayerLocation;
-                }
-                playerX = oldplayerLocation.X;
-                playerY = oldplayerLocation.Y;
-                grid[playerX][playerY].playerHere = true;
-                moveDone = false;
-                //Environment.FailFast($"Player out of bounds. X: {playerX} Y: {playerY} Width: {grid.Count} Height: {grid[playerX].Count}");
+                nodeStart.ConnectedNodes.Add(nodeEnd);
+                return true;
             }
-            
-            //grid[playerX][playerY].playerHere = true;
-            //Console.CursorTop = 3 + scopeHeight;
-            //Console.CursorLeft = scopeWidth;
-            
-            if (grid[playerX][playerY].eventHere.name == "exp")
-            {
-                for (var i = 0; i < grid[playerX][playerY].eventHere.description.Count; i++)
-                {
-                    if (grid[playerX][playerY].eventHere.description[i] == "plrExp")
-                    {
-                        //player.changePlayerStats("currentExp", player.currentExp + Convert.ToInt32(grid[playerX][playerY].eventHere.consequences[i]));
-
-                    }
-                }
-            }
-            
-            UtilityFunctions.clearScreen(player);
-            List<string> arr = new List<string>();
-
-            for (int i = playerY - scopeHeight; i <= playerY + scopeHeight; i++)
-            {
-                for (int j = playerX - scopeWidth; j <= playerX + scopeWidth; j++)
-                {
-                    if (i >= 0 && i < grid.Count && j >= 0 && j < grid[i].Count) // if in bounds
-                    {
-                        if (grid[j][i].playerHere)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write($" {grid[j][i].t} ");
-                            //Console.Write($" @ ");
-                            //arr.Add($"\x1b[38;2;{255};{0};{0}m" + grid[j][i].t + " \x1b[0m");
-                            arr.Add($" @ ");
-                            Console.ResetColor();
-                        } else if (grid[i][j].eventHere.name == "exp") {
-                            //Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write($" {expChar} ");
-                            arr.Add($" {expChar} ");
-                            //Console.ResetColor();
-                        
-                        }
-                        else
-                        {
-                            Console.ResetColor();
-                            double distance = Math.Sqrt(Math.Pow(i - playerX, 2) + Math.Pow(j - playerY, 2));
-                            int[] colours = UtilityFunctions.getShadeFromDist(255, 255, 255, distance, scopeWidth, scopeHeight);
-                            int r = colours[0];
-                            int g = colours[1];
-                            int b = colours[2];
-                            Console.ForegroundColor = ConsoleColor.White;
-                            //Console.Write($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
-                            Console.Write($" {grid[j][i].t} ");
-                            //arr.Add($"\x1b[38;2;{r};{g};{b}m" + grid[j][i].t + " \x1b[0m");
-                            arr.Add($" {grid[j][i].t} ");
-                        }
-                        Console.ResetColor();
-                    }
-                }
-                if (i >= 0)
-                {
-                    arr.Add("\n");
-                    Console.Write("\n");
-                }
-            }
-            
-            if (player != null)
-            {
-                //UtilityFunctions.clearScreen(player);
-            }
-            //Console.WriteLine($"X: {playerX} Y: {playerY}\n");
-            //printArr(arr);
-            return moveDone;
         }
 
-        static void printArr(List<string> arr)
+        public Node? GetNode(int id)
         {
-            // this function prints the array as one whole string with \n as new indexes
-            string result = "";
-            for (int i = 0; i < arr.Count; i++)
+            foreach (Node node in this.Nodes)
             {
-                result += arr[i];
+                if (node.NodeID == id)
+                {
+                    return node;
+                }
             }
-            Console.WriteLine(result);
-        }
-
-        public static List<List<Tile>> SaveGrid(List<List<Tile>> grid, string fileName)
-        {
-            string json = JsonSerializer.Serialize(grid);
-            File.WriteAllText(fileName, json);
-            return grid;
+            return null;
         }
     }
 
-    public class Tile
+    public class Edge
     {
-        public int x { get; set; }
-        public int y { get; set; }
-        public string t { get; set; }
-        public bool playerHere { get; set; }
-        public float darkness { get; set; }
-        public bool wallV { get; set;}
-        public Event eventHere { get; set; }
-
-
-        public Tile(int x, int y, string t, bool playerHere, float darkness, bool wallV, Event eventHere)
-        {
-            this.x = x;
-            this.y = y;
-            this.t = t;
-            this.playerHere = false;
-            this.darkness = darkness;
-            this.wallV = wallV;
-            this.eventHere = eventHere;
-        }
+        public Node start { get; set; }
+        public Node end { get; set; }
+        public string name { get; set; } // e.g crumbling bridge, road, path etc   
     }
-
-    public class Event {
-        public string name { get; set; }
-        public List<string> description { get; set; }
-        public List<string> consequences { get; set; }
-        
-        public Event(string name, List<string> description, List<string> consequences) {
-            this.name = name;
-            this.description = description;
-            this.consequences = consequences;
-        }
-    }
-
-
 }

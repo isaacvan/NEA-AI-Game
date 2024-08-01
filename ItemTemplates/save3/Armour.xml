@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Armour>
+        <Name>Veil of the Shadow Dancer</Name>
+        <Description>A lightweight hood that makes its wearer as elusive as the waning moon.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+3 Dexterity; +2 Stealth</UniqueProperties>
+        <DefensiveCapabilities>Greatly reduces visibility to enemies</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Twilight Mantle</Name>
+        <Description>A cloak woven from the essence of twilight, offering protection against the elements.</Description>
+        <Defence>20</Defence>
+        <UniqueProperties>+2 Constitution; +1 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Resistant to elemental magic</DefensiveCapabilities>
+        <ItemEquipLocation>Body</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Shadowsilk Leggings</Name>
+        <Description>Leggings crafted from a material as dark as the void, offering unmatched freedom of movement.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Increases evasion rate</DefensiveCapabilities>
+        <ItemEquipLocation>Legs</ItemEquipLocation>
+    </Armour>
+</Item>

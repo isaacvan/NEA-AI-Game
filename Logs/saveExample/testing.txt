@@ -1,0 +1,3 @@
+INPUT: hello! this is a test message, reply a simple response.
+
+OUTPUT: Hello! How can I assist you today?

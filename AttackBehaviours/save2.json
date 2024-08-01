@@ -1,0 +1,89 @@
+{
+  "PlayerBasicAttack": {
+    "Key": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "throws a basic punch."
+  },
+  "ShadowStrike": {
+    "Key": "ShadowStrike",
+    "Expression": "target.ReceiveAttack(20, 40)",
+    "Manacost": 8,
+    "Statuses": [
+      "Weakened"
+    ],
+    "Narrative": "launches a dark, unseen strike from the shadows."
+  },
+  "TimeRipple": {
+    "Key": "TimeRipple",
+    "Expression": "target.ReceiveAttack(15, 25)",
+    "Manacost": 12,
+    "Statuses": [
+      "Slowed",
+      "Disoriented"
+    ],
+    "Narrative": "creates a ripple in the fabric of time, slowing and confusing the enemy."
+  },
+  "AetherBlast": {
+    "Key": "AetherBlast",
+    "Expression": "target.ReceiveAttack(25, 30)",
+    "Manacost": 15,
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "unleashes a powerful blast of pure aether energy."
+  },
+  "VoidPulse": {
+    "Key": "VoidPulse",
+    "Expression": "target.ReceiveAttack(10, 50)",
+    "Manacost": 5,
+    "Statuses": [
+      "Feared"
+    ],
+    "Narrative": "emits a pulse of void energy, instilling fear into its target."
+  },
+  "ArcaneMissile": {
+    "Key": "ArcaneMissile",
+    "Expression": "target.ReceiveAttack(18, 20)",
+    "Manacost": 7,
+    "Statuses": [],
+    "Narrative": "conjures and releases a missile of arcane energy at the target."
+  },
+  "InfernoWrath": {
+    "Key": "InfernoWrath",
+    "Expression": "target.ReceiveAttack(30, 15)",
+    "Manacost": 20,
+    "Statuses": [
+      "Burning"
+    ],
+    "Narrative": "summons a searing inferno to engulf its foes."
+  },
+  "EtherealChains": {
+    "Key": "EtherealChains",
+    "Expression": "target.ReceiveAttack(12, 35)",
+    "Manacost": 10,
+    "Statuses": [
+      "Rooted"
+    ],
+    "Narrative": "binds the target with chains made from ethereal energy, rendering them immobile."
+  },
+  "GlacialSpike": {
+    "Key": "GlacialSpike",
+    "Expression": "target.ReceiveAttack(20, 60)",
+    "Manacost": 14,
+    "Statuses": [
+      "Frozen"
+    ],
+    "Narrative": "hurls a spike of ice, freezing the enemy upon impact."
+  },
+  "PoisonDart": {
+    "Key": "PoisonDart",
+    "Expression": "target.ReceiveAttack(8, 80)",
+    "Manacost": 4,
+    "Statuses": [
+      "Poisoned"
+    ],
+    "Narrative": "shoots a dart laced with lethal poison."
+  }
+}

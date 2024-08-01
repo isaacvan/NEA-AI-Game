@@ -19,6 +19,11 @@ namespace TestNarratorNamespace
         public class GameTest1 : GameSetup
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
+            
+            public async Task GenerateGraphStructure(Conversation chat)
+            {
+            
+            }
 
             public void chooseSave()
             {

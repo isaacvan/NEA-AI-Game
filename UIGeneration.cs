@@ -8,6 +8,10 @@ using UtilityFunctionsNamespace;
 
 namespace UIGenerationNamespace
 {
+    public class Tile // PLACEHOLDER
+    {
+        
+    }
     public class UIConstructer
     {
         public Player player { get; set; }

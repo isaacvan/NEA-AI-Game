@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Shadow's Whisper</Name>
+        <Description>A dagger that murmurs with the voices of the past, as silent as the shadows it was born from.</Description>
+        <Damage>18</Damage>
+        <WeaponType>Dagger</WeaponType>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Silence</StatusName>
+            <StatusName>Bleed</StatusName>
+        </StatusNames>
+        <AttackBehaviour>StealthStrike</AttackBehaviour>
+        <NarrativeLine>As you strike from the shadows, your enemy's voice fades into silence.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Echoes of the Void</Name>
+        <Description>A longbow imbued with the essence of the void, its arrows whisper death as they fly.</Description>
+        <Damage>22</Damage>
+        <WeaponType>Bow</WeaponType>
+        <UniqueProperties>+2 Intelligence; +1 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Slow</StatusName>
+            <StatusName>Confuse</StatusName>
+        </StatusNames>
+        <AttackBehaviour>VoidArrow</AttackBehaviour>
+        <NarrativeLine>An arrow, silent but deadly, sows chaos among your foes.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Twilight's Edge</Name>
+        <Description>A sword that was forged in the dying light of the twilight, harnessing the day's last shadows.</Description>
+        <Damage>27</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+3 Strength; +1 Constitution</UniqueProperties>
+        <StatusNames>
+            <StatusName>Stun</StatusName>
+        </StatusNames>
+        <AttackBehaviour>NightfallSlash</AttackBehaviour>
+        <NarrativeLine>With a swing, darkness envelops your enemies, leaving them paralyzed by fear.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

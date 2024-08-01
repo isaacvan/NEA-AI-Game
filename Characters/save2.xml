@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <Class>ChronoGuardian</Class>
+    <Race>Aethertouched</Race>
+    <Health>90</Health>
+    <ManaPoints>80</ManaPoints>
+    <Strength>7</Strength>
+    <Intelligence>10</Intelligence>
+    <Dexterity>6</Dexterity>
+    <Constitution>7</Constitution>
+    <Charisma>5</Charisma>
+</Player>

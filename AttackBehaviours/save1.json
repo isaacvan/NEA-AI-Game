@@ -1,0 +1,91 @@
+{
+  "PlayerBasicAttack": {
+    "Key": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "delivers a basic strike."
+  },
+  "ShadowLash": {
+    "Key": "ShadowLash",
+    "Expression": "target.ReceiveAttack(12, 25)",
+    "Manacost": 4,
+    "Statuses": [
+      "Weakened"
+    ],
+    "Narrative": "unleashes a whip of dark energy."
+  },
+  "SearingBlast": {
+    "Key": "SearingBlast",
+    "Expression": "target.ReceiveAttack(18, 30)",
+    "Manacost": 6,
+    "Statuses": [
+      "Burn"
+    ],
+    "Narrative": "casts a powerful ball of fire."
+  },
+  "IceShard": {
+    "Key": "IceShard",
+    "Expression": "target.ReceiveAttack(15, 20)",
+    "Manacost": 5,
+    "Statuses": [
+      "Frozen"
+    ],
+    "Narrative": "hurls a piercing shard of ice."
+  },
+  "ElectroPulse": {
+    "Key": "ElectroPulse",
+    "Expression": "target.ReceiveAttack(20, 40)",
+    "Manacost": 8,
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "emits a sudden surge of electric energy."
+  },
+  "VenomousSting": {
+    "Key": "VenomousSting",
+    "Expression": "target.ReceiveAttack(10, 50)",
+    "Manacost": 3,
+    "Statuses": [
+      "Poisoned"
+    ],
+    "Narrative": "strikes with a toxin-laden barb."
+  },
+  "MysticBind": {
+    "Key": "MysticBind",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 12,
+    "Statuses": [
+      "Rooted",
+      "Silenced"
+    ],
+    "Narrative": "casts ancient runes to immobilize and silence."
+  },
+  "ArcaneFury": {
+    "Key": "ArcaneFury",
+    "Expression": "target.ReceiveAttack(25, 10)",
+    "Manacost": 10,
+    "Statuses": [
+      "MagicBoost"
+    ],
+    "Narrative": "unleashes a torrent of raw magical energy."
+  },
+  "GaleForceSlash": {
+    "Key": "GaleForceSlash",
+    "Expression": "target.ReceiveAttack(17, 30)",
+    "Manacost": 7,
+    "Statuses": [
+      "Disarmed"
+    ],
+    "Narrative": "executes a sword attack with the force of a tempest."
+  },
+  "DarkMending": {
+    "Key": "DarkMending",
+    "Expression": "target.ReceiveAttack(-15, 0)",
+    "Manacost": 8,
+    "Statuses": [
+      "Healing"
+    ],
+    "Narrative": "summons dark energies to mend wounds."
+  }
+}

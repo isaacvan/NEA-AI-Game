@@ -37,6 +37,12 @@ namespace UtilityFunctionsNamespace
         // public static Interpreter interpreter = new Interpreter()
         //    .Reference(typeof(Player));
 
+        public static string playerContextInput = "";
+        public static int maxNodeDepth;
+        public static int maxGraphDepth;
+        public static int stdNodeDepth = 5; // PRESET
+        public static int stdGraphDepth = 10; // PRESET
+
         public static string universalSeperator = "------------------------------------------";
         public static string playerANSIUI = $"\x1b[38;2;80;200;120m";
         public static string aggressiveANSIUI = $"\x1b[38;2;210;43;43m";
@@ -69,8 +75,14 @@ namespace UtilityFunctionsNamespace
         public static string statusesDir = $@"{mainDirectory}Statuses\";
         public static string statusesSpecificDirectory = "";
         
+        public static string logsDir = $@"{mainDirectory}Logs\";
+        public static string logsSpecificDirectory = "";
+        
         public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks\";
         public static string playerAttacksSpecificDirectory = "";
+        
+        public static string mapsDir = @$"{mainDirectory}Maps\";
+        public static string mapsSpecificDirectory = ""; // TO BE DONE
 
         public static bool showExampleInSaves = true; // testing purposes
 
@@ -101,6 +113,30 @@ namespace UtilityFunctionsNamespace
                 UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
                     $"An error occurred: {ex.Message}");
             }
+        }
+
+        public static void initialiseGPTLogging()
+        {
+            if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false && UtilityFunctions.saveName != "saveExample")
+            {
+                Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
+            }
+            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false && UtilityFunctions.saveName == "saveExample")
+            {
+                Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
+            }
+            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true && UtilityFunctions.saveName == "saveExample")
+            {
+                // check to see what user wants, for now just replace
+                Directory.Delete(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}", true);
+                Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
+            } else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true &&
+                       UtilityFunctions.saveName != "saveExample")
+            {
+                // the directory should be archived down the line; for now just leaving
+                
+            }
+            
         }
 
         public static async Task writeToJSONFile<T>(string path, T objectToWrite) where T : class

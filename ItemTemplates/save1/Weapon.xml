@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Echo Blade</Name>
+        <Description>A sword that resonates with the ancient powers of sound and vibration, causing disorientation in its targets.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Strength; +1 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Disorient</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ResonantStrike</AttackBehaviour>
+        <NarrativeLine>With a hum, the blade disrupts the very air around it, leaving foes bewildered.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Astral Staff</Name>
+        <Description>This staff is bound with celestial energies, allowing the wielder to channel powerful cosmic spells.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Stun</Status'Name>
+        </StatusNames>
+        <AttackBehaviour>CosmicPulse</AttackBehaviour>
+        <NarrativeLine>Galactic energy surges through the staff, overwhelming adversaries with its might.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Phantom Daggers</Name>
+        <Description>A set of daggers that phase in and out of reality, making it nearly impossible for enemies to predict or parry attacks.</Description>
+        <Damage>18</Damage>
+        <WeaponType>Daggers</WeaponType>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Bleed</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ShadowStrike</AttackBehaviour>
+        <NarrativeLine>The daggers slice through air and flesh alike, leaving wounds that are slow to heal.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

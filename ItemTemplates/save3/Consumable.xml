@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Phantom Brew</Name>
+        <Description>A mystical potion that blurs the line between visibility and invisibility.</Description>
+        <Effects>Grants temporary invisibility</Effects>
+        <UniqueProperties>+5 to stealth activities</UniqueProperties>
+        <StorylineRelevance>A necessity for sneaking past the guards of the Dark Fortress.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Elixir of Shadows</Name>
+        <Description>A dark, shimmering liquid that enhances one's affinity with the darkness.</Description>
+        <Effects>Increases Dexterity and Stealth</Effects>
+        <UniqueProperties>+3 Dexterity for 10 minutes</UniqueProperties>
+        <StorylineRelevance>Used to navigate through the Shadow Realm unscathed.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Ancient Whisper</Name>
+        <Description>A rare artifact that allows direct communication with the ancestral spirits of the Shadow Elf race.</Description>
+        <Effects>Reveals hidden paths and secrets in the environment</Effects>
+        <UniqueProperties>One-time use</UniqueProperties>
+        <StorylineRelevance>Key to uncovering the lost history of the Shadow Elves and advancing the plot.</StorylineRelevance>
+    </Consumable>
+</Item>

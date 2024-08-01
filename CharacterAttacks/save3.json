@@ -1,0 +1,12 @@
+{
+  "slot1": {
+    "Name": "PlayerBasicAttack",
+    "ExpressionString": "target.ReceiveAttack(5, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "throws a quick, focused strike."
+  },
+  "slot2": null,
+  "slot3": null,
+  "slot4": null
+}

@@ -8,6 +8,7 @@ using CombatNamespace;
 using ItemFunctionsNamespace;
 using EnemyClassesNamespace;
 using GPTControlNamespace;
+using GridConfigurationNamespace;
 using MainNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -18,6 +19,9 @@ namespace GameClassNamespace
 {
     public class Game
     {
+        public GameSetup gameSetup { get; set; }
+        public Narrator narrator { get; set; }
+        public Conversation chat { get; set; }
         public Player player { get; set; }
         public ItemFactory itemFactory { get; set; }
         public EnemyFactory enemyFactory { get; set; }
@@ -25,6 +29,7 @@ namespace GameClassNamespace
         public StatusFactory statusFactory { get; set; }
         public Combat currentCombat { get; set; }
         public UIConstructer uiConstructer { get; set; }
+        public Map map { get; set; }
 
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
@@ -32,11 +37,16 @@ namespace GameClassNamespace
             OpenAIAPI api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);
             GameSetup normalNarrator = new Narrator();
+            this.gameSetup = gameSetup;
+            this.narrator = (Narrator)normalNarrator;
+            this.chat = chat;
             
 
-            // initialise itemFactory & player from api. Gets UtilityFunctions.loadedSave
+            // initialise itemFactory & player from api. Gets UtilityFunctions.loadedSave.
+            // Also initialises logging and logging directory
             itemFactory = new ItemFactory();
             player = await Program.initializeSaveAndPlayer(gameSetup, api, chat, testing);
+            
 
             if (!UtilityFunctions.loadedSave)
             {
@@ -73,7 +83,7 @@ namespace GameClassNamespace
                 await player.writePlayerAttacksToJSON();
                 
                 // initialise map
-                
+                // GridFunctions.GenerateMap(map);
                 
                 Console.WriteLine("Started Game.");
             }
@@ -100,13 +110,15 @@ namespace GameClassNamespace
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
 
                 // load map
-                
+                //GridFunctions.GenerateMap(map); // GENERATING MAP AT THE MOMENT
                 
                 Console.WriteLine("Loaded save.");
             }
             
             // initialise uiConstructor
             uiConstructer = new UIConstructer(player);
+
+            //normalNarrator.GenerateGraphStructure(chat);
         }
 
         public bool startCombat(List<Enemy> enemies)
