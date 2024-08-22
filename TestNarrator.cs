@@ -22,6 +22,7 @@ namespace TestNarratorNamespace
             
             public async Task GenerateGraphStructure(Conversation chat)
             {
+            // empty for now
             
             }
 

@@ -1,8 +1,229 @@
-2024-08-01 17:34:36.0630|INFO|MainNamespace.Program|Program started
-2024-08-01 17:34:36.0821|INFO|MainNamespace.Program|Running mode=game
-2024-08-01 17:34:43.9631|INFO|MainNamespace.Program|ExpressionString is null
-2024-08-01 17:34:43.9631|INFO|MainNamespace.Program|ExpressionString is null
-2024-08-01 17:34:43.9954|INFO|MainNamespace.Program|Initialising Item Factory...
-2024-08-01 17:34:44.0467|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2024-08-01 17:34:44.0467|INFO|MainNamespace.Program|Enemy Factory Initialised
-2024-08-01 17:34:44.0551|INFO|MainNamespace.Program|Game mode
+2024-08-22 15:27:04.4580|INFO|MainNamespace.Program|Program started
+2024-08-22 15:27:04.4767|INFO|MainNamespace.Program|Running mode=testing
+2024-08-22 15:27:04.5517|INFO|MainNamespace.Program|Creating Character...
+2024-08-22 15:27:04.5895|INFO|MainNamespace.Program|Character Created
+2024-08-22 15:27:04.7092|INFO|MainNamespace.Program|Initialising Item Factory...
+2024-08-22 15:27:04.7424|INFO|MainNamespace.Program|Item Factory Initialised
+2024-08-22 15:27:04.7636|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2024-08-22 15:27:04.7716|INFO|MainNamespace.Program|Enemy Factory Initialised
+2024-08-22 15:27:04.7716|INFO|MainNamespace.Program|Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.
+2024-08-22 15:27:04.7716|INFO|MainNamespace.Program|Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.
+2024-08-22 15:27:04.7716|INFO|MainNamespace.Program|Player attacks data has been written to JSON successfully.
+2024-08-22 15:27:35.5448|INFO|MainNamespace.Program|Before FixJson: ```json
+{
+  "Graph": {
+    "Id": 1,
+    "Nodes": [
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "ConnectedNodes": [1, 2],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Crumbling Ruins",
+        "Milestone": false
+      },
+      {
+        "NodeID": 1,
+        "NodeDepth": 1,
+        "ConnectedNodes": [3],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Ancient Forest",
+        "Milestone": false
+      },
+      {
+        "NodeID": 2,
+        "NodeDepth": 1,
+        "ConnectedNodes": [4, 5],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Abandoned Village",
+        "Milestone": false
+      },
+      {
+        "NodeID": 3,
+        "NodeDepth": 2,
+        "ConnectedNodes": [6],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Mystical Spring",
+        "Milestone": false
+      },
+      {
+        "NodeID": 4,
+        "NodeDepth": 2,
+        "ConnectedNodes": [6, 7],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Forgotten Pathway",
+        "Milestone": false
+      },
+      {
+        "NodeID": 5,
+        "NodeDepth": 2,
+        "ConnectedNodes": [7],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Desolate Tower",
+        "Milestone": false
+      },
+      {
+        "NodeID": 6,
+        "NodeDepth": 3,
+        "ConnectedNodes": [8],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Enchanted Grove",
+        "Milestone": false
+      },
+      {
+        "NodeID": 7,
+        "NodeDepth": 3,
+        "ConnectedNodes": [8],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Hidden Cave",
+        "Milestone": false
+      },
+      {
+        "NodeID": 8,
+        "NodeDepth": 4,
+        "ConnectedNodes": [9],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Ancient Library",
+        "Milestone": false
+      },
+      {
+        "NodeID": 9,
+        "NodeDepth": 5,
+        "ConnectedNodes": [],
+        "ConnectedNodesEdges": [],
+        "NodePOI": "Crystal Sanctuary",
+        "Milestone": true
+      }
+    ]
+  }
+}
+```
+2024-08-22 15:27:35.5518|INFO|MainNamespace.Program|After FixJson: {
+  "Graph": {
+    "Id": 1,
+    "Nodes": [
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "ConnectedNodes": [
+          1,
+          2
+        ],
+        "ConnectedNodesEdges": [
+          "directed",
+          "directed"
+        ],
+        "NodePOI": "Crumbling Ruins",
+        "Milestone": false
+      },
+      {
+        "NodeID": 1,
+        "NodeDepth": 1,
+        "ConnectedNodes": [
+          3
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Ancient Forest",
+        "Milestone": false
+      },
+      {
+        "NodeID": 2,
+        "NodeDepth": 1,
+        "ConnectedNodes": [
+          4,
+          5
+        ],
+        "ConnectedNodesEdges": [
+          "directed",
+          "directed"
+        ],
+        "NodePOI": "Abandoned Village",
+        "Milestone": false
+      },
+      {
+        "NodeID": 3,
+        "NodeDepth": 2,
+        "ConnectedNodes": [
+          6
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Mystical Spring",
+        "Milestone": false
+      },
+      {
+        "NodeID": 4,
+        "NodeDepth": 2,
+        "ConnectedNodes": [
+          6,
+          7
+        ],
+        "ConnectedNodesEdges": [
+          "directed",
+          "directed"
+        ],
+        "NodePOI": "Forgotten Pathway",
+        "Milestone": false
+      },
+      {
+        "NodeID": 5,
+        "NodeDepth": 2,
+        "ConnectedNodes": [
+          7
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Desolate Tower",
+        "Milestone": false
+      },
+      {
+        "NodeID": 6,
+        "NodeDepth": 3,
+        "ConnectedNodes": [
+          8
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Enchanted Grove",
+        "Milestone": false
+      },
+      {
+        "NodeID": 7,
+        "NodeDepth": 3,
+        "ConnectedNodes": [
+          8
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Hidden Cave",
+        "Milestone": false
+      },
+      {
+        "NodeID": 8,
+        "NodeDepth": 4,
+        "ConnectedNodes": [
+          9
+        ],
+        "ConnectedNodesEdges": [
+          "directed"
+        ],
+        "NodePOI": "Ancient Library",
+        "Milestone": false
+      },
+      {
+        "NodeID": 9,
+        "NodeDepth": 5,
+        "ConnectedNodes": [],
+        "ConnectedNodesEdges": [],
+        "NodePOI": "Crystal Sanctuary",
+        "Milestone": true
+      }
+    ]
+  }
+}

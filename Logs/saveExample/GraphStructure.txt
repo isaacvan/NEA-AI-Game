@@ -1,0 +1,126 @@
+INPUT: As the game narrator, your next job is to generate a map for this game. The actual plot of the game should follow a uniquely decided story arc that you have already designed to invoke specific feelings within the player: similar to epics, the protagonist must experience doom, hope, inspiration, peril and awe.
+
+Each node represents a point of interest (POI). Nodes can connect to adjacent nodes, but connections are not mandatory. The graph has a defined 'length,' which is the longest path from the origin node to the furthest node. Each edge represents a path between connected nodes. A key feature of every graph is its “milestone.” the milestone of any generated graph within this game is the node with the greatest depth that every other path should lead to. This is so that no Node is a dead end: the path taken from the starting position to the milestone can have effects on the content experienced at the milestone. This is crucial to the game that each graph has 1 milestone at the end. Bear in mind, multiple graphs will be created; each milestone represents the start of the next graph.
+
+The graph should start from a single origin node with a NodeDepth of 0. Ensure that some nodes have multiple connections to create diverse paths. The output should be in a format that can be read into a program, not in normal English. Use the following format for each node:
+
+{NodeID, NodeDepth, ConnectedNodes[NodeID1, NodeID2...], ConnectedNodesEdges[EdgeStatus1, EdgeStatus2...], NodePOI, Milestone}.
+
+NodeID: an integer representing the node identifier.
+NodeDepth: an integer representing the depth of the node in the graph, starting from 0 for the origin node.
+ConnectedNodes: a list of integers representing the IDs of connected nodes.
+ConnectedNodesEdges: a list of strings such as "undirected", "directed", etc., corresponding to the connections listed in ConnectedNodes.
+NodePOI: a string describing the point of interest, such as "empty", "Town", "Dungeon", etc.
+Milestone: a bool that dictates whether the Node is the milestone of the graph or not
+
+Example:
+
+{
+  "Graph": {
+    "Id": 2,
+    "Nodes": [
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "ConnectedNodes": [1, 2],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Starting Point",
+        "Milestone": false
+      },
+      ...
+  }
+}
+
+
+Please generate a similar graph with the specified format and structure. This must be in json format, external sentences are not accepted. This will break the code. Do not type anything else as to what I have asked.
+The maximum nodeDepth you should go up to (and the milestone should have) is 5.
+
+OUTPUT: ```json
+{
+  "Graph": {
+    "Id": 1,
+    "Nodes": [
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "ConnectedNodes": [1, 2],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Crumbling Ruins",
+        "Milestone": false
+      },
+      {
+        "NodeID": 1,
+        "NodeDepth": 1,
+        "ConnectedNodes": [3],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Ancient Forest",
+        "Milestone": false
+      },
+      {
+        "NodeID": 2,
+        "NodeDepth": 1,
+        "ConnectedNodes": [4, 5],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Abandoned Village",
+        "Milestone": false
+      },
+      {
+        "NodeID": 3,
+        "NodeDepth": 2,
+        "ConnectedNodes": [6],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Mystical Spring",
+        "Milestone": false
+      },
+      {
+        "NodeID": 4,
+        "NodeDepth": 2,
+        "ConnectedNodes": [6, 7],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Forgotten Pathway",
+        "Milestone": false
+      },
+      {
+        "NodeID": 5,
+        "NodeDepth": 2,
+        "ConnectedNodes": [7],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Desolate Tower",
+        "Milestone": false
+      },
+      {
+        "NodeID": 6,
+        "NodeDepth": 3,
+        "ConnectedNodes": [8],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Enchanted Grove",
+        "Milestone": false
+      },
+      {
+        "NodeID": 7,
+        "NodeDepth": 3,
+        "ConnectedNodes": [8],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Hidden Cave",
+        "Milestone": false
+      },
+      {
+        "NodeID": 8,
+        "NodeDepth": 4,
+        "ConnectedNodes": [9],
+        "ConnectedNodesEdges": ["directed"],
+        "NodePOI": "Ancient Library",
+        "Milestone": false
+      },
+      {
+        "NodeID": 9,
+        "NodeDepth": 5,
+        "ConnectedNodes": [],
+        "ConnectedNodesEdges": [],
+        "NodePOI": "Crystal Sanctuary",
+        "Milestone": true
+      }
+    ]
+  }
+}
+```

@@ -48,10 +48,15 @@ namespace GPTControlNamespace
             string output = "";
             try
             {
-                prompt = File.ReadAllText($"{UtilityFunctions.promptPath
-                }Prompt1.txt");
+                prompt = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt1.txt");
+                    
+                if (UtilityFunctions.maxNodeDepth == 0)
+                {
+                    UtilityFunctions.maxNodeDepth = 5; // testing purposes
+                }
                 
                 prompt = $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
+                // ADD EXTRA DETAILS DEPENDING ON WHAT NUMBER GRAPH WE ARE ONE SO IT KNOWS IT IS CONTINUING THE PREVIOUS GRAPHS
                 
                 chat.AppendUserInput(prompt);
                 output = await GetGPTOutput(chat, "GraphStructure");
@@ -66,7 +71,6 @@ namespace GPTControlNamespace
             File.Create(UtilityFunctions.mapsSpecificDirectory).Close();
             File.WriteAllText(UtilityFunctions.mapsSpecificDirectory, output);
             
-            Console.WriteLine(output);
             Console.ReadLine();
         }
 

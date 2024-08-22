@@ -1,6 +1,8 @@
 
 
+using System.Drawing;
 using MainNamespace;
+using Newtonsoft.Json;
 
 namespace GridConfigurationNamespace
 {
@@ -21,6 +23,37 @@ namespace GridConfigurationNamespace
             // graph = GENERATE NEW GRAPH FROM NARRATOR FUNCTION
             return null;
         }
+
+        public static void FillNode(Node node)
+        {
+            // for now im going to fill it with an empty 2d array of tiles with the '.' char.
+            node.tiles = new List<List<Tile>>();
+            for (int i = 0; i < node.NodeWidth; i++) // for each x axis tile
+            {
+                node.tiles.Add(new List<Tile>());
+                for (int j = 0; j < node.NodeHeight; j++) // for each y axis tile
+                {
+                    node.tiles[i].Add(new Tile() { tileChar = '.', tileXY = new Point(i, j) });
+                }
+            }
+        }
+
+        public static void DrawWholeNode(Node node)
+        {
+            for (int i = 0; i < node.NodeWidth; i++) // for each x axis tile
+            {
+                for (int j = 0; j < node.NodeHeight; j++) // for each y axis tile
+                {
+                    Console.Write(node.tiles[i][j].tileChar);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static void PlacePlayer(Node node, Point point)
+        {
+            node.tiles[point.X][point.Y].tileChar = 'P';
+        }
     }
 
     public class Map
@@ -39,6 +72,9 @@ namespace GridConfigurationNamespace
         public List<Node> ConnectedNodes { get; set; }
         // public List<>
         public int NodeDepth { get; set; }
+        public int NodeWidth { get; set; }
+        public int NodeHeight { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
 
         public Node(int id)
         {
@@ -50,6 +86,18 @@ namespace GridConfigurationNamespace
         {
             this.ConnectedNodes.Add(node);
         }
+    }
+
+    public class Tile
+    {
+        // the Tile class will represent the basic block in maps. A Tile represents a singular space that the player can move into and out of.
+        // Therefore, Tiles will need all the basic attributes such as a character that displays what it is, x-y locations on its nodde, etc.
+        // Tiles will also have a list of connected nodes, which will be used to determine the player's movement options.
+        // And to clarify, NODES represent a small map. Eventually nodes will contain a 2d list of Tiles each. Nodes are like areas in a map, containing tiles.
+        public char tileChar { get; set; }
+        public Point tileXY { get; set; }
+        
+        
     }
 
     public class Graph

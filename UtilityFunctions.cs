@@ -81,7 +81,7 @@ namespace UtilityFunctionsNamespace
         public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks\";
         public static string playerAttacksSpecificDirectory = "";
         
-        public static string mapsDir = @$"{mainDirectory}Maps\";
+        public static string mapsDir = @$"{mainDirectory}MapStructures\";
         public static string mapsSpecificDirectory = ""; // TO BE DONE
 
         public static bool showExampleInSaves = true; // testing purposes

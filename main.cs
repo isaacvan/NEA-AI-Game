@@ -34,12 +34,13 @@ namespace MainNamespace
         // NEXT STEPS
         // 
         // NEXT - MAP GENERATION
-        // TODO: create a generategraph function in narrator that uses prompt1 or similar:
+        // TODO: make empty maps you can walk around in
         // 
         //
         // NEXT - UI CONSTRUCTOR
         //
         // NEXT - ENEMY MOVEMENT AI
+        //
         //
         //
         // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
@@ -87,6 +88,12 @@ namespace MainNamespace
             {
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
+                    Console.Clear();
+                    
+                    Console.WriteLine("Testing mode");
+                    GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
+                    GridFunctions.PlacePlayer(game.map.Graphs[0].Nodes[0], new Point(0, 0));
+                    GridFunctions.DrawWholeNode(game.map.Graphs[0].Nodes[0]);
 
                     Console.ReadLine();
                     break;
