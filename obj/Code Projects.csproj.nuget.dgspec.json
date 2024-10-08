@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj": {}
+    "/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/Code Projects.csproj": {}
   },
   "projects": {
-    "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj": {
+    "/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/Code Projects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj",
+        "projectUniqueName": "/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/Code Projects.csproj",
         "projectName": "Code Projects",
-        "projectPath": "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\Code Projects.csproj",
-        "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\isaac\\RiderProjects\\NEA-AI-Game\\obj\\",
+        "projectPath": "/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/Code Projects.csproj",
+        "packagesPath": "/Users/18vanenckevorti/.nuget/packages/",
+        "outputPath": "/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/18vanenckevorti/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -102,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/18vanenckevorti/.dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

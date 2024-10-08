@@ -35,7 +35,7 @@ namespace TestNarratorNamespace
 
             public async Task<Player> generateMainXml(Conversation chat, string prompt5, Player player)
             {
-                string filePath = $@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml";
+                string filePath = $@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml";
 
                 // Player player with attributes
                 if (string.IsNullOrEmpty(filePath))

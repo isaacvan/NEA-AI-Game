@@ -59,27 +59,27 @@
           "runtimes/win-arm64/native/cvextern.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "4.8.1.5350"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/cvextern.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "4.8.1.5350"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/opencv_videoio_ffmpeg481_64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "2023.6.0.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/cvextern.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "4.8.1.5350"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/opencv_videoio_ffmpeg481.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "2023.6.0.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -88,42 +88,42 @@
           "runtimes/win-arm64/native/concrt140.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/msvcp140.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/msvcp140_1.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/msvcp140_2.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/msvcp140_atomic_wait.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/msvcp140_codecvt_ids.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/vcruntime140.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-arm64/native/vcruntime140_1.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -132,42 +132,42 @@
           "runtimes/win-x64/native/concrt140.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/msvcp140.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/msvcp140_1.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/msvcp140_2.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/msvcp140_atomic_wait.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/msvcp140_codecvt_ids.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/vcruntime140.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/vcruntime140_1.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -176,37 +176,37 @@
           "runtimes/win-x86/native/concrt140.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/msvcp140.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/msvcp140_1.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/msvcp140_2.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/msvcp140_atomic_wait.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/msvcp140_codecvt_ids.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x86/native/vcruntime140.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "14.36.32532.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       },

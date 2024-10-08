@@ -67,6 +67,11 @@ namespace MainNamespace
 
         static async Task Main(string[] args)
         {
+            //UtilityFunctions.mainDirectory = UtilityFunctions.getBaseDir();
+            UtilityFunctions.mainDirectory = @"/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/";
+            
+            
+            
             // testing NLog setup:
             // NLog.Common.InternalLogger.LogLevel = NLog.LogLevel.Debug;
             // NLog.Common.InternalLogger.LogToConsole = true;
@@ -74,7 +79,7 @@ namespace MainNamespace
             // TODO: apparently if we get NLog.config in the right place it should be found automatically, but for now, this is a workaround:
             NLog.LogManager.Configuration =
                 new NLog.Config.XmlLoggingConfiguration(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory +
-                                                        "\\NLog.config");
+                                                        @$"{Path.DirectorySeparatorChar}NLog.config");
             // NLog.LogManager.Configuration.AddTarget(new FileTarget(UtilityFunctionsNamespace.UtilityFunctions.mainDirectory + "\\output.log"));
 
             logger.Info("Program started");
@@ -749,13 +754,20 @@ namespace MainNamespace
 
         static void EnableColors()
         {
-            IntPtr handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
-            if (GetConsoleMode(handle, out uint mode))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-                SetConsoleMode(handle, mode);
+                IntPtr handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+                if (GetConsoleMode(handle, out uint mode))
+                {
+                    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                    SetConsoleMode(handle, mode);
+                }
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+            }
+            
         } //\x1b[38;2;r;g;bm
     }
 }

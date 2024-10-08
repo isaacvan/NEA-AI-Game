@@ -55,33 +55,32 @@ namespace UtilityFunctionsNamespace
         public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
         public static string mainDirectory =
-            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\")); // will be written to in main menu
+            @"/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/"; // will be written to in main menu
 
         public static string
             saveFile = @mainDirectory + saveSlot; // will be written to in main menu. WHOLE PATH TO FILE
 
         public static string saveName = ""; // ONLY NAME OF SAVE
 
-        public static string itemTemplateDir = @$"{mainDirectory}ItemTemplates\";
+        public static string itemTemplateDir = @$"{mainDirectory}ItemTemplates{Path.DirectorySeparatorChar}";
         public static string itemTemplateSpecificDirectory = "";
 
-        public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates\";
+        public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates{Path.DirectorySeparatorChar}";
         public static string enemyTemplateSpecificDirectory = "";
 
-        public static string attackBehaviourTemplateDir = @$"{mainDirectory}AttackBehaviours\";
+        public static string attackBehaviourTemplateDir = @$"{mainDirectory}AttackBehaviours{Path.DirectorySeparatorChar}";
         public static string attackBehaviourTemplateSpecificDirectory = "";
 
-        public static string statusesDir = $@"{mainDirectory}Statuses\";
+        public static string statusesDir = $@"{mainDirectory}Statuses{Path.DirectorySeparatorChar}";
         public static string statusesSpecificDirectory = "";
         
-        public static string logsDir = $@"{mainDirectory}Logs\";
+        public static string logsDir = $@"{mainDirectory}Logs{Path.DirectorySeparatorChar}";
         public static string logsSpecificDirectory = "";
         
-        public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks\";
+        public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks{Path.DirectorySeparatorChar}";
         public static string playerAttacksSpecificDirectory = "";
         
-        public static string mapsDir = @$"{mainDirectory}MapStructures\";
+        public static string mapsDir = @$"{mainDirectory}MapStructures{Path.DirectorySeparatorChar}";
         public static string mapsSpecificDirectory = ""; // TO BE DONE
 
         public static bool showExampleInSaves = true; // testing purposes
@@ -91,7 +90,7 @@ namespace UtilityFunctionsNamespace
         public static bool Instant = false;
         public static int colourSchemeIndex = 0;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
-        public static string promptPath = @$"{mainDirectory}Prompts\";
+        public static string promptPath = @$"{mainDirectory}Prompts{Path.DirectorySeparatorChar}";
 
         public static void overrideSave(string slot)
         {
@@ -113,6 +112,30 @@ namespace UtilityFunctionsNamespace
                 UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
                     $"An error occurred: {ex.Message}");
             }
+        }
+
+        public static string getBaseDir()
+        {
+            string fullDir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory)); // bin debug net
+            List<string> directories = fullDir.Split(Path.DirectorySeparatorChar).ToList();
+            string finalPath = "";
+            foreach (string dir in directories)
+            {
+                if (dir == "bin" && directories.IndexOf(dir) + 4 == directories.Count )
+                {
+                     finalPath.Remove(finalPath.LastIndexOf(Path.DirectorySeparatorChar));
+                     return finalPath;
+                     // /Users/18vanenckevorti/RiderProjects/NEA-AI-Game
+                }
+                else if (dir != "")
+                {
+
+                    finalPath += dir + Path.DirectorySeparatorChar;
+                    
+                }
+            }
+            // error
+            throw new DirectoryNotFoundException($"Could not find the directory {finalPath}.");
         }
 
         public static void initialiseGPTLogging()
