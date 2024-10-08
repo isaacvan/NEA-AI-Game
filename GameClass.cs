@@ -83,7 +83,7 @@ namespace GameClassNamespace
                 await player.writePlayerAttacksToJSON();
                 
                 // initialise map
-                await normalNarrator.GenerateGraphStructure(chat);
+                await gameSetup.GenerateGraphStructure(chat);
                 
                 Console.WriteLine("Started Game.");
             }

@@ -94,11 +94,13 @@ namespace MainNamespace
                 case "testing":
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
                     Console.Clear();
-                    
                     Console.WriteLine("Testing mode");
-                    GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
-                    GridFunctions.PlacePlayer(game.map.Graphs[0].Nodes[0], new Point(0, 0));
-                    GridFunctions.DrawWholeNode(game.map.Graphs[0].Nodes[0]);
+                    
+                    
+                    game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
+                    
+                    GamePlayLoop(ref game);
+                    
 
                     Console.ReadLine();
                     break;
@@ -119,6 +121,44 @@ namespace MainNamespace
                 default:
                     Environment.FailFast($"debuggingPointEntry Invalid");
                     break;
+            }
+        }
+
+
+        public static void GamePlayLoop(ref Game game)
+        {
+            GridFunctions.DrawWholeNode(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID], game.player.playerPos);
+            string input = Console.ReadLine();
+            bool GameRunning = true;
+            while (GameRunning) // while overall game running
+            {
+                while (!GetAllowedInputs("Inp").Contains(input) && input.Length != 1 && GridFunctions.CheckIfOutOfBounds(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles, game.player.playerPos, input))
+                {
+                    Console.WriteLine("Please enter a valid input");
+                    input = Console.ReadLine();
+                }
+                
+                
+                GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game);
+                GridFunctions.DrawWholeNode(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID], game.player.playerPos);
+                input = Console.ReadLine();
+            }
+            
+            
+        }
+
+        public static string GetAllowedInputs(string condition)
+        {
+            if (condition == "Inp")
+            {
+                return "WASDwasd";
+            } else if (condition == "Attack")
+            {
+                return "1234"; // etc etc
+            }
+            else
+            {
+                return "";
             }
         }
 

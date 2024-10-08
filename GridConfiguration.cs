@@ -1,6 +1,7 @@
 
 
 using System.Drawing;
+using GameClassNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
 
@@ -24,7 +25,7 @@ namespace GridConfigurationNamespace
             return null;
         }
 
-        public static void FillNode(Node node)
+        public static Node FillNode(Node node)
         {
             // for now im going to fill it with an empty 2d array of tiles with the '.' char.
             node.tiles = new List<List<Tile>>();
@@ -36,9 +37,69 @@ namespace GridConfigurationNamespace
                     node.tiles[i].Add(new Tile() { tileChar = '.', tileXY = new Point(i, j) });
                 }
             }
+            return node;
         }
 
-        public static void DrawWholeNode(Node node)
+        public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
+        {
+            switch (input.ToLower())
+            { 
+                case "w":
+                    PlayerPos.Y += 1;
+                    break;
+                case "a":
+                    PlayerPos.X -= 1;
+                    break;
+                case "s":
+                    PlayerPos.Y -= 1;
+                    break;
+                case "d":
+                    PlayerPos.X += 1;
+                    break;
+                default:
+                    Console.WriteLine("Invalid input");
+                    break;
+            }
+
+            if (PlayerPos.X < 0 || PlayerPos.X >= tiles.Count || PlayerPos.Y < 0 ||
+                PlayerPos.Y >= tiles[PlayerPos.X].Count)
+            {
+                return false;
+            } else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != '.')
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static void MovePlayer(string input, ref Point PlayerPos, ref Game game)
+        {
+            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y].tileChar = '.';
+            switch (input.ToLower())
+            { // assuming input validated already
+                case "w":
+                    PlayerPos.Y += 1;
+                    break;
+                case "a":
+                    PlayerPos.X -= 1;
+                    break;
+                case "s":
+                    PlayerPos.Y -= 1;
+                    break;
+                case "d":
+                    PlayerPos.X += 1;
+                    break;
+                default:
+                    Console.WriteLine("Invalid input");
+                    break;
+            }
+            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y].tileChar = 'P';
+        }
+
+        public static void DrawWholeNode(Node node, Point PlayerPos)
         {
             for (int i = 0; i < node.NodeWidth; i++) // for each x axis tile
             {
@@ -49,16 +110,13 @@ namespace GridConfigurationNamespace
                 Console.WriteLine();
             }
         }
-
-        public static void PlacePlayer(Node node, Point point)
-        {
-            node.tiles[point.X][point.Y].tileChar = 'P';
-        }
     }
 
     public class Map
     {
         public List<Graph> Graphs { get; set; }
+        public Node CurrentNode { get; set; }
+        public Graph CurrentGraph { get; set; }
 
         public int GetNextID()
         {
