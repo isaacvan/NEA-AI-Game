@@ -82,8 +82,9 @@ namespace GameClassNamespace
                 // write player attack slots to JSON file
                 await player.writePlayerAttacksToJSON();
                 
-                // initialise map
-                await gameSetup.GenerateGraphStructure(chat);
+                // initialise first map
+                await map = GridFunctions.GenerateMap(map);
+                await gameSetup.GenerateGraphStructure(chat, this);
                 
                 Console.WriteLine("Started Game.");
             }

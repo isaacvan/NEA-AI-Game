@@ -140,6 +140,7 @@ namespace MainNamespace
                 
                 
                 GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game);
+                if (GridFunctions.CheckIfNewNode(game.map.CurrentNode.tiles, game.player.playerPos)) GridFunctions.UpdateToNewNode(ref game);
                 GridFunctions.DrawWholeNode(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID], game.player.playerPos);
                 input = Console.ReadLine();
             }

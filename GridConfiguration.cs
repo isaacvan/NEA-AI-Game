@@ -1,28 +1,22 @@
-
-
 using System.Drawing;
 using GameClassNamespace;
+using GPTControlNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
+using OpenAI_API.Chat;
 
 namespace GridConfigurationNamespace
 {
     public class GridFunctions
     {
-        public static Map GenerateMap(Map mapToBeFilled)
+        public Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
+            { { "NodeExit", "U+220F" }, { "Empty", "." } };
+
+        public async Task<Map> GenerateMap(Game game, GameSetup gameSetup, Conversation chat)
         {
-            mapToBeFilled = new Map();
-            mapToBeFilled.Graphs = new List<Graph>();
-            mapToBeFilled.Graphs.Add(GenerateGraph(mapToBeFilled));
-            return new Map();
-        }
-        
-        public static Graph GenerateGraph(Map currentMap)
-        {
-            int IDofGraph = currentMap.GetNextID();
-            Graph graph = new Graph(IDofGraph);
-            // graph = GENERATE NEW GRAPH FROM NARRATOR FUNCTION
-            return null;
+            Game newGame = await gameSetup.GenerateGraphStructure(chat, game);
+            game.map = newGame.map;
+            return game.map;
         }
 
         public static Node FillNode(Node node)
@@ -37,13 +31,14 @@ namespace GridConfigurationNamespace
                     node.tiles[i].Add(new Tile() { tileChar = '.', tileXY = new Point(i, j) });
                 }
             }
+
             return node;
         }
 
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
         {
             switch (input.ToLower())
-            { 
+            {
                 case "w":
                     PlayerPos.Y += 1;
                     break;
@@ -65,7 +60,8 @@ namespace GridConfigurationNamespace
                 PlayerPos.Y >= tiles[PlayerPos.X].Count)
             {
                 return false;
-            } else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != '.')
+            }
+            else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != '.')
             {
                 return false;
             }
@@ -75,11 +71,35 @@ namespace GridConfigurationNamespace
             }
         }
 
+        public static bool CheckIfNewNode(List<List<Tile>> tiles, Point PlayerPos)
+        {
+            if (tiles[PlayerPos.X][PlayerPos.Y].tileDesc == "NodeExit")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void UpdateToNewNode(ref Game game)
+        {
+            if (game.map.Graphs[game.map.GetNextID()].Nodes[0] != null)
+            {
+                game.map.CurrentNode = game.map.Graphs[game.map.GetNextID()].Nodes[0];
+            }
+            else
+            {
+                throw new Exception("No node found");
+            }
+        }
+
         public static void MovePlayer(string input, ref Point PlayerPos, ref Game game)
         {
-            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y].tileChar = '.';
+            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                .tileChar = '.';
             switch (input.ToLower())
-            { // assuming input validated already
+            {
+                // assuming input validated already
                 case "w":
                     PlayerPos.Y += 1;
                     break;
@@ -96,7 +116,9 @@ namespace GridConfigurationNamespace
                     Console.WriteLine("Invalid input");
                     break;
             }
-            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y].tileChar = 'P';
+
+            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                .tileChar = 'P';
         }
 
         public static void DrawWholeNode(Node node, Point PlayerPos)
@@ -107,6 +129,7 @@ namespace GridConfigurationNamespace
                 {
                     Console.Write(node.tiles[i][j].tileChar);
                 }
+
                 Console.WriteLine();
             }
         }
@@ -127,7 +150,9 @@ namespace GridConfigurationNamespace
     public class Node
     {
         public int NodeID { get; set; }
+
         public List<Node> ConnectedNodes { get; set; }
+
         // public List<>
         public int NodeDepth { get; set; }
         public int NodeWidth { get; set; }
@@ -154,8 +179,7 @@ namespace GridConfigurationNamespace
         // And to clarify, NODES represent a small map. Eventually nodes will contain a 2d list of Tiles each. Nodes are like areas in a map, containing tiles.
         public char tileChar { get; set; }
         public Point tileXY { get; set; }
-        
-        
+        public string tileDesc { get; set; }
     }
 
     public class Graph
@@ -181,7 +205,8 @@ namespace GridConfigurationNamespace
             if (nodeStart.ConnectedNodes.Contains(nodeEnd))
             {
                 // already connected
-                Program.logger.Info($"Node with ID {nodeStart.NodeID} is already connected to Node with ID {nodeEnd.NodeID}.");
+                Program.logger.Info(
+                    $"Node with ID {nodeStart.NodeID} is already connected to Node with ID {nodeEnd.NodeID}.");
                 return false;
             }
             else
@@ -200,6 +225,7 @@ namespace GridConfigurationNamespace
                     return node;
                 }
             }
+
             return null;
         }
     }

@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using CombatNamespace;
 using EnemyClassesNamespace;
 using GameClassNamespace;
+using GridConfigurationNamespace;
 using ItemFunctionsNamespace;
 using MainNamespace;
 using OpenAI_API;
@@ -31,7 +32,7 @@ namespace GPTControlNamespace
         Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
         Task GenerateUninitialisedStatuses(Conversation chat);
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
-        Task GenerateGraphStructure(Conversation chat);
+        Task<Game> GenerateGraphStructure(Conversation chat, Game game);
     }
 
 
@@ -40,7 +41,7 @@ namespace GPTControlNamespace
         private OpenAIAPI api;
         private Conversation chat;
 
-        public async Task GenerateGraphStructure(Conversation chat)
+        public async Task<Game> GenerateGraphStructure(Conversation chat, Game game)
         {
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Generating graph structure...");
@@ -71,7 +72,14 @@ namespace GPTControlNamespace
             File.Create(UtilityFunctions.mapsSpecificDirectory).Close();
             File.WriteAllText(UtilityFunctions.mapsSpecificDirectory, output);
             
-            Console.ReadLine();
+            game.map.CurrentGraph = JsonConvert.DeserializeObject<Graph>(output);
+            if (game.map.Graphs == null || game.map.Graphs.Count == 0)
+            {
+                game.map.Graphs = new List<Graph>();
+            }
+            game.map.Graphs.Add(game.map.CurrentGraph);
+            return game;
+            
         }
 
         // Testing

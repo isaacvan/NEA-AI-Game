@@ -4,7 +4,9 @@ using System.Xml.Serialization;
 using CombatNamespace;
 using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
+using GameClassNamespace;
 using GPTControlNamespace;
+using GridConfigurationNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
 using NLog;
@@ -20,10 +22,22 @@ namespace TestNarratorNamespace
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
             
-            public async Task GenerateGraphStructure(Conversation chat)
+            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game)
             {
-            // empty for now
-            
+                Graph graph;
+                try
+                {
+                    graph = JsonConvert.DeserializeObject<Graph>(File.ReadAllText(UtilityFunctions.mapsDir + "saveExample.json"));
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e);
+                    throw e;
+                }
+
+                game.map.CurrentGraph = new Graph(game.map.GetNextID());
+                game.map.CurrentGraph = graph;
+                return game;
             }
 
             public void chooseSave()
