@@ -83,8 +83,8 @@ namespace GameClassNamespace
                 await player.writePlayerAttacksToJSON();
                 
                 // initialise first map
-                await map = GridFunctions.GenerateMap(map);
-                await gameSetup.GenerateGraphStructure(chat, this);
+                
+                await gameSetup.GenerateMapStructure(chat, this, gameSetup);
                 
                 Console.WriteLine("Started Game.");
             }

@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Drawing;
+using System.Net.Mime;
 using System.Reflection;
 using System.Xml.Serialization;
 using CombatNamespace;
@@ -22,20 +23,51 @@ namespace TestNarratorNamespace
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
             
-            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game)
+            public async Task<Graph> PopulateNodesWithTiles(Graph graph)
+            {
+                Graph graphToReturn = new Graph(graph.Id, new List<Node>());
+                foreach (var node in graph.Nodes)
+                {
+                    node.tiles = new List<List<Tile>>();
+                    for (int i = 0; i < node.NodeWidth; i++)
+                    {
+                        for (int j = 0; j < node.NodeHeight; j++)
+                        {
+                            node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
+                        }
+                    }
+                    graphToReturn.Nodes.Add(node);
+                }
+                return graphToReturn;
+            }
+            
+            public async Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup)
+            {
+                if (game.map == null)
+                {
+                    game.map = new Map();
+                    game.map.Graphs = new List<Graph>();
+                    await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup).GetAwaiter().GetResult().map.CurrentGraph);
+                }
+                return game.map;
+            }
+            
+            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup)
             {
                 Graph graph;
                 try
                 {
-                    graph = JsonConvert.DeserializeObject<Graph>(File.ReadAllText(UtilityFunctions.mapsDir + "saveExample.json"));
+                    string txt = File.ReadAllText(UtilityFunctions.mapsDir + "saveExample.json");
+                    graph = JsonConvert.DeserializeObject<Graph>(txt);
                 }
                 catch (Exception e)
                 {
                     logger.Error(e);
                     throw e;
                 }
-
-                game.map.CurrentGraph = new Graph(game.map.GetNextID());
+                
+                // populate node tiles
+                graph = await gameSetup.PopulateNodesWithTiles(graph);
                 game.map.CurrentGraph = graph;
                 return game;
             }

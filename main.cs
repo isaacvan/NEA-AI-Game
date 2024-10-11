@@ -111,7 +111,7 @@ namespace MainNamespace
                     logger.Info("Game mode");
 
                     
-                    GridFunctions.GenerateMap(game.map);
+                    //GridFunctions.GenerateMap(game.map);
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();

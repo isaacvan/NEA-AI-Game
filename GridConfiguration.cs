@@ -12,9 +12,9 @@ namespace GridConfigurationNamespace
         public Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
             { { "NodeExit", "U+220F" }, { "Empty", "." } };
 
-        public async Task<Map> GenerateMap(Game game, GameSetup gameSetup, Conversation chat)
+        public static async Task<Map> GenerateMap(Game game, GameSetup gameSetup, Conversation chat)
         {
-            Game newGame = await gameSetup.GenerateGraphStructure(chat, game);
+            Game newGame = await gameSetup.GenerateGraphStructure(chat, game, gameSetup);
             game.map = newGame.map;
             return game.map;
         }
@@ -28,7 +28,7 @@ namespace GridConfigurationNamespace
                 node.tiles.Add(new List<Tile>());
                 for (int j = 0; j < node.NodeHeight; j++) // for each y axis tile
                 {
-                    node.tiles[i].Add(new Tile() { tileChar = '.', tileXY = new Point(i, j) });
+                    node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
                 }
             }
 
@@ -141,6 +141,13 @@ namespace GridConfigurationNamespace
         public Node CurrentNode { get; set; }
         public Graph CurrentGraph { get; set; }
 
+        public async Task<Graph> AppendGraph(Graph graphToAppend)
+        {
+            Graphs.Add(graphToAppend);
+            CurrentGraph = graphToAppend;
+            return CurrentGraph;
+        }
+
         public int GetNextID()
         {
             return (Graphs.Count);
@@ -150,24 +157,31 @@ namespace GridConfigurationNamespace
     public class Node
     {
         public int NodeID { get; set; }
-
-        public List<Node> ConnectedNodes { get; set; }
-
-        // public List<>
+        public List<int> ConnectedNodes { get; set; }
+        public List<string> ConnectedNodesEdges { get; set; }
+        public string NodePOI { get; set; }
         public int NodeDepth { get; set; }
-        public int NodeWidth { get; set; }
-        public int NodeHeight { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public int NodeWidth { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public int NodeHeight { get; set; }
+        public bool Milestone { get; set; }
         [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
 
-        public Node(int id)
+        public Node(int id, int width, int height, string nodePOI, bool milestone)
         {
             this.NodeID = id;
-            this.ConnectedNodes = new List<Node>();
+            this.ConnectedNodes = new List<int>();
+            this.ConnectedNodesEdges = new List<string>();
+            this.NodeDepth = 0;
+            this.NodeWidth = width;
+            this.NodeHeight = height;
+            this.NodePOI = nodePOI;
+            this.Milestone = milestone;
+            this.tiles = new List<List<Tile>>();
         }
 
         public void AddNeighbour(Node node)
         {
-            this.ConnectedNodes.Add(node);
+            this.ConnectedNodes.Add(node.NodeID);
         }
     }
 
@@ -180,6 +194,13 @@ namespace GridConfigurationNamespace
         public char tileChar { get; set; }
         public Point tileXY { get; set; }
         public string tileDesc { get; set; }
+
+        public Tile(char tileChar, Point tileXY, string tileDesc)
+        {
+            this.tileChar = tileChar;
+            this.tileXY = tileXY;
+            this.tileDesc = tileDesc;
+        }
     }
 
     public class Graph
@@ -187,33 +208,10 @@ namespace GridConfigurationNamespace
         public List<Node> Nodes { get; set; }
         public int Id { get; set; }
 
-        public Graph(int id)
+        public Graph(int id, List<Node> nodes)
         {
-            Nodes = new List<Node>();
+            Nodes = nodes;
             Id = id;
-        }
-
-        public Node AddNode(int id)
-        {
-            Node node = new Node(id);
-            this.Nodes.Add(node);
-            return node;
-        }
-
-        public bool ConnectNodes(Node nodeStart, Node nodeEnd) // true if successful
-        {
-            if (nodeStart.ConnectedNodes.Contains(nodeEnd))
-            {
-                // already connected
-                Program.logger.Info(
-                    $"Node with ID {nodeStart.NodeID} is already connected to Node with ID {nodeEnd.NodeID}.");
-                return false;
-            }
-            else
-            {
-                nodeStart.ConnectedNodes.Add(nodeEnd);
-                return true;
-            }
         }
 
         public Node? GetNode(int id)

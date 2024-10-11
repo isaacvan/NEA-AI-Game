@@ -32,7 +32,10 @@ namespace GPTControlNamespace
         Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
         Task GenerateUninitialisedStatuses(Conversation chat);
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
-        Task<Game> GenerateGraphStructure(Conversation chat, Game game);
+        Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup);
+        Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
+
+        Task<Graph> PopulateNodesWithTiles(Graph graph);
     }
 
 
@@ -40,8 +43,18 @@ namespace GPTControlNamespace
     {
         private OpenAIAPI api;
         private Conversation chat;
+        
+        public async Task<Graph> PopulateNodesWithTiles(Graph graph)
+        {
+            return null;
+        }
 
-        public async Task<Game> GenerateGraphStructure(Conversation chat, Game game)
+        public async Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup)
+        {
+            return null; // placeholder
+        }
+
+        public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup)
         {
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Generating graph structure...");
