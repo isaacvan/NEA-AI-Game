@@ -83,8 +83,8 @@ namespace GameClassNamespace
                 await player.writePlayerAttacksToJSON();
                 
                 // initialise first map
-                
-                await gameSetup.GenerateMapStructure(chat, this, gameSetup);
+                // GridFunctions.GenerateMap(this, gameSetup, chat);
+                await gameSetup.GenerateMapStructure(chat, this, gameSetup); // SWITCH
                 
                 Console.WriteLine("Started Game.");
             }
@@ -111,6 +111,8 @@ namespace GameClassNamespace
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
 
                 // load map
+                this.map = new Map();
+                await narrator.LoadGraphStructure(this, gameSetup);
                 //GridFunctions.GenerateMap(map); // GENERATING MAP AT THE MOMENT
                 
                 Console.WriteLine("Loaded save.");

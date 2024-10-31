@@ -13,6 +13,8 @@ using CombatNamespace;
 using ItemFunctionsNamespace;
 using Newtonsoft.Json;
 using DynamicExpresso;
+using GameClassNamespace;
+using GridConfigurationNamespace;
 using MainNamespace;
 using OpenAI_API.Chat;
 
@@ -420,10 +422,28 @@ namespace UtilityFunctionsNamespace
         public static void clearScreen(Player player)
         {
             Console.Clear();
-
+            if (Program.testing)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("MODE: Testing");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("MODE: Game");
+                Console.ResetColor();
+            }
+            
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($"CLASS: ");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write($"{player.Class}\n");
+            Console.ResetColor();
+            
             displayStats(player);
 
-            //Console.Write("\n\n");
+            Console.Write("\n");
         }
 
         public static T DeserializeXmlFromFile<T>(string filePath)
@@ -438,11 +458,13 @@ namespace UtilityFunctionsNamespace
 
         public static void displayStats(Player player, bool menu = false)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             if (player != null)
             {
-                DisplayExpBar(player.currentExp, player.maxExp, Console.WindowWidth);
-                DrawHealthBar(player);
+                DisplayExpBar(player.currentExp, player.maxExp, 80);
+                Console.WriteLine(DrawHealthBar(player));
                 //DisplayHealthBar(player.currentHealth, player.maxHealth, Console.WindowWidth);
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"X: {player.playerPos.X} Y: {player.playerPos.Y}");
             }
             else if (menu)
@@ -506,6 +528,31 @@ namespace UtilityFunctionsNamespace
                 string healthColor = string.Format("{0:X2}{1:X2}00", redValue, greenValue);
                 return ($"HP: \x1b[38;2;{redValue};{greenValue};0m{currentHealth}/{maxHealth}\x1b[38;2;0m");
             }
+        }
+
+        public static void UpdateVars(ref Game game)
+        {
+            int consoleHeight = Console.WindowHeight;
+            game.player.sightRange = (consoleHeight - 8) / 2;
+            Player player = (Player)game.player;
+            int currentHealth = player.currentHealth;
+            int maxHealth = player.Health;
+            double healthPercentage = (double)currentHealth / maxHealth;
+
+            int redValue, greenValue;
+            if (healthPercentage > 0.5)
+            {
+                redValue = (int)(255 * (1 - healthPercentage) * 2);
+                greenValue = 255;
+            }
+            else
+            {
+                redValue = 255;
+                greenValue = (int)(255 * healthPercentage * 2);
+            }
+            GridFunctions.RedGreenBluePlayerVals[0] = redValue;
+            GridFunctions.RedGreenBluePlayerVals[1] = greenValue;
+            GridFunctions.RedGreenBluePlayerVals[2] = 0;
         }
         
         public static string DrawManaBar(object playerObj)
@@ -598,6 +645,7 @@ namespace UtilityFunctionsNamespace
 
             Console.Write("EXP: [");
             Console.Write("\x1b[94m" + filledPart + "\x1b[0m");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(emptyPart + "] " + currentExp + "/" + maxExp);
         }
 

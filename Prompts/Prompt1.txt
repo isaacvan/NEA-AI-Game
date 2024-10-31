@@ -2,6 +2,8 @@ As the game narrator, your next job is to generate a map for this game. The actu
 
 Each node represents a point of interest (POI). Nodes can connect to adjacent nodes, but connections are not mandatory. The graph has a defined 'length,' which is the longest path from the origin node to the furthest node. Each edge represents a path between connected nodes. A key feature of every graph is its “milestone.” the milestone of any generated graph within this game is the node with the greatest depth that every other path should lead to. This is so that no Node is a dead end: the path taken from the starting position to the milestone can have effects on the content experienced at the milestone. This is crucial to the game that each graph has 1 milestone at the end. Bear in mind, multiple graphs will be created; each milestone represents the start of the next graph.
 
+You are generating a Graph class structure that has a List<Node> and Id property. Id begins at 0 and counts up for every graph you generate. The Id for this graph will be clarified at the end of this message.
+
 The graph should start from a single origin node with a NodeDepth of 0. Ensure that some nodes have multiple connections to create diverse paths. The output should be in a format that can be read into a program, not in normal English. Use the following format for each node:
 
 {NodeID, NodeDepth, ConnectedNodes[NodeID1, NodeID2...], ConnectedNodesEdges[EdgeStatus1, EdgeStatus2...], NodePOI, Milestone}.
@@ -17,7 +19,7 @@ Milestone: a bool that dictates whether the Node is the milestone of the graph o
 Example:
 
 {
-  "Graph": {
+  "Id": 0
     "Nodes": [
       {
         "NodeID": 0,
@@ -30,7 +32,8 @@ Example:
         "Milestone": false
       },
       ...
-  }
+  
 }
 
 Please generate a similar graph with the specified format and structure. This must be in json format, external sentences are not accepted. This will break the code. Do not type anything else as to what I have asked.
+Id for this graph is: 

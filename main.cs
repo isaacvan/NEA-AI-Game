@@ -26,16 +26,19 @@ namespace MainNamespace
     class Program
     {
         public static Logger logger = LogManager.GetCurrentClassLogger();
+        public static bool testing = false;
         public static Game game;
 
         // one game costs £0.30 currently with GPT-4o. 3 minutes to generate.
 
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
-        // 
+        //
         // NEXT - MAP GENERATION
         // TODO: make empty maps you can walk around in
-        // 
+        // adjust nodeheight and nodewidth in graph generation prmopt to be preset values
+        // saving the actual tiles? how
+        // check for events triggered
         //
         // NEXT - UI CONSTRUCTOR
         //
@@ -69,9 +72,8 @@ namespace MainNamespace
         {
             //UtilityFunctions.mainDirectory = UtilityFunctions.getBaseDir();
             UtilityFunctions.mainDirectory = @"/Users/18vanenckevorti/RiderProjects/NEA-AI-Game/";
-            
-            
-            
+
+
             // testing NLog setup:
             // NLog.Common.InternalLogger.LogLevel = NLog.LogLevel.Debug;
             // NLog.Common.InternalLogger.LogToConsole = true;
@@ -92,29 +94,30 @@ namespace MainNamespace
             switch (mode)
             {
                 case "testing":
+                    testing = true;
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
                     Console.Clear();
-                    Console.WriteLine("Testing mode");
-                    
-                    
+                    logger.Info("Test Mode");
+
                     game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
-                    
+
                     GamePlayLoop(ref game);
-                    
+
 
                     Console.ReadLine();
                     break;
                 case "game":
                     await game.initialiseGame(new Narrator());
                     Console.Clear();
-                    Console.WriteLine("Game mode");
                     logger.Info("Game mode");
 
-                    
+
                     //GridFunctions.GenerateMap(game.map);
 
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
+
+                    GamePlayLoop(ref game);
 
                     Console.ReadLine();
                     break;
@@ -127,45 +130,105 @@ namespace MainNamespace
 
         public static void GamePlayLoop(ref Game game)
         {
-            GridFunctions.DrawWholeNode(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID], game.player.playerPos);
-            string input = Console.ReadLine();
+            UtilityFunctions.UpdateVars(ref game);
+            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(game.player.playerPos,
+                game.map.GetCurrentNode().tiles));
+            // game.map.CurrentNode.tiles = GridFunctions.PlacePlayer(game.player.playerPos, game.map.CurrentNode.tiles);
+            GridFunctions.DrawWholeNode(game);
+            int IdOfNextNode = -1;
+            string input = Console.ReadKey().Key.ToString();
             bool GameRunning = true;
             while (GameRunning) // while overall game running
             {
-                while (!GetAllowedInputs("Inp").Contains(input) && input.Length != 1 && GridFunctions.CheckIfOutOfBounds(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles, game.player.playerPos, input))
+                //UtilityFunctions.clearScreen(game.player);
+                UtilityFunctions.UpdateVars(ref game); // updates player rgb vars
+                if (testing)
                 {
-                    Console.WriteLine("Please enter a valid input");
-                    input = Console.ReadLine();
+                    while (!GetAllowedInputs("MoveTest").Contains(input[0].ToString()) ||
+                           !GridFunctions.CheckIfOutOfBounds(
+                               game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                               game.player.playerPos, input[0].ToString()))
+                    {
+                        UtilityFunctions.clearScreen(game.player);
+                        GridFunctions.DrawWholeNode(game);
+                        // Console.WriteLine("Please enter a valid input");
+                        input = Console.ReadKey(true).KeyChar.ToString();
+                    }
                 }
-                
-                
-                GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game);
-                if (GridFunctions.CheckIfNewNode(game.map.CurrentNode.tiles, game.player.playerPos)) GridFunctions.UpdateToNewNode(ref game);
-                GridFunctions.DrawWholeNode(game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID], game.player.playerPos);
-                input = Console.ReadLine();
+                else
+                {
+                    while (!GetAllowedInputs("Move").Contains(input[0].ToString()) ||
+                           !GridFunctions.CheckIfOutOfBounds(
+                               game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                               game.player.playerPos, input[0].ToString()))
+                    {
+                        UtilityFunctions.clearScreen(game.player);
+                        GridFunctions.DrawWholeNode(game);
+                        // Console.WriteLine("Please enter a valid input");
+                        input = Console.ReadKey(true).KeyChar.ToString();
+                    }
+                }
+
+                // move player, if it isnt a mmovement then do something else with the input
+                if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game))
+                    AssessOtherInputs(input, ref game);
+                // CHECK FOR EVENTS
+                CheckForEventsTriggered(ref game, ref IdOfNextNode);
+
+                if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
+                    GridFunctions.UpdateToNewNode(ref game, IdOfNextNode);
+                GridFunctions.DrawWholeNode(game);
+                // input = Console.ReadLine();
+                input = Console.ReadKey(true).KeyChar.ToString();
             }
-            
-            
+        }
+
+        public static void AssessOtherInputs(string input, ref Game game)
+        {
+            if (GetAllowedInputs("Test").Contains(input))
+            {
+                //game.map.
+            }
+        }
+
+        public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode)
+        {
+            if (false) // CHECK FOR IF ON A NODE BOUNDARY
+            {
+                IdOfNextNode = 1; // NEW ID
+            }
+            else
+            {
+                IdOfNextNode = -1;
+            }
         }
 
         public static string GetAllowedInputs(string condition)
         {
-            if (condition == "Inp")
+            string toReturn = "";
+
+            if (condition.Contains("Move"))
             {
-                return "WASDwasd";
-            } else if (condition == "Attack")
-            {
-                return "1234"; // etc etc
+                toReturn += "WASDwasd";
             }
-            else
+
+            if (condition.Contains("Attack"))
             {
-                return "";
+                toReturn += "1234"; // etc etc
             }
+
+            if (condition.Contains("Test"))
+            {
+                toReturn += "Pp";
+            }
+
+            return toReturn;
         }
 
 
         protected static void MyHandler(object sender, ConsoleCancelEventArgs args)
         {
+            Console.Clear();
             Console.WriteLine("Exiting system due to external process kill or shutdown");
 
             // prevent application from terminating immediately
@@ -374,7 +437,7 @@ namespace MainNamespace
             UtilityFunctions.logsSpecificDirectory = @$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}";
             UtilityFunctions.enemyTemplateSpecificDirectory =
                 UtilityFunctions.enemyTemplateDir + UtilityFunctions.saveName + ".json";
-            
+
             // initialise GPT logging
             UtilityFunctions.initialiseGPTLogging();
 
@@ -808,7 +871,6 @@ namespace MainNamespace
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
             }
-            
         } //\x1b[38;2;r;g;bm
     }
 }

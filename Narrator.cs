@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 using CombatNamespace;
@@ -32,9 +33,8 @@ namespace GPTControlNamespace
         Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
         Task GenerateUninitialisedStatuses(Conversation chat);
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
-        Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup);
+        Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id);
         Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
-
         Task<Graph> PopulateNodesWithTiles(Graph graph);
     }
 
@@ -46,15 +46,65 @@ namespace GPTControlNamespace
         
         public async Task<Graph> PopulateNodesWithTiles(Graph graph)
         {
-            return null;
+            Graph graphToReturn = new Graph(graph.Id, new List<Node>());
+            foreach (var node in graph.Nodes)
+            {
+                node.tiles = new List<List<Tile>>();
+                if (node.NodeWidth == 0 || node.NodeHeight == 0)
+                {
+                    node.NodeWidth = 100;
+                    node.NodeHeight = 100;
+                }
+                for (int i = 0; i < node.NodeWidth; i++)
+                {
+                    node.tiles.Add(new List<Tile>());
+                    for (int j = 0; j < node.NodeHeight; j++)
+                    {
+                        node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
+                    }
+                }
+                    
+                Point ExitPoint = new Point(node.NodeWidth / 2, node.NodeHeight / 2);
+                node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
+                    
+                graphToReturn.Nodes.Add(node);
+            }
+                
+            return graphToReturn;
         }
 
         public async Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup)
         {
-            return null; // placeholder
+            if (game.map == null)
+            {
+                game.map = new Map();
+                game.map.Graphs = new List<Graph>();
+                await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup, 0).GetAwaiter().GetResult().map.Graphs[game.map.Graphs.Count - 1]);
+                // game.map.CurrentNode = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[0];
+            }
+            return game.map;
+        }
+        
+        public async Task<Game> LoadGraphStructure(Game game, GameSetup gameSetup)
+        {
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "Loading graph structure...");
+            
+            UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
+            
+            string output = File.ReadAllText(UtilityFunctions.mapsSpecificDirectory);
+            if (game.map == null) game.map = new Map();
+            game.map.Graphs[game.map.Graphs.Count - 1] = JsonConvert.DeserializeObject<Graph>(output);
+            if (game.map.Graphs == null || game.map.Graphs.Count == 0)
+            {
+                game.map.Graphs = new List<Graph>();
+            }
+            game.map.Graphs.Add(game.map.Graphs[game.map.Graphs.Count - 1]);
+            return game;
+            
         }
 
-        public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup)
+        public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id)
         {
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Generating graph structure...");
@@ -68,12 +118,13 @@ namespace GPTControlNamespace
                 {
                     UtilityFunctions.maxNodeDepth = 5; // testing purposes
                 }
-                
+
+                prompt = $"{prompt}{Id}";
                 prompt = $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
                 // ADD EXTRA DETAILS DEPENDING ON WHAT NUMBER GRAPH WE ARE ONE SO IT KNOWS IT IS CONTINUING THE PREVIOUS GRAPHS
                 
                 chat.AppendUserInput(prompt);
-                output = await GetGPTOutput(chat, "GraphStructure");
+                output = await GetGPTOutput(chat, "GraphStructure"); // 26s
                 output = await UtilityFunctions.FixJson(output);
             }
             catch (Exception e)
@@ -82,15 +133,18 @@ namespace GPTControlNamespace
             }
             
             UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
-            File.Create(UtilityFunctions.mapsSpecificDirectory).Close();
-            File.WriteAllText(UtilityFunctions.mapsSpecificDirectory, output);
-            
-            game.map.CurrentGraph = JsonConvert.DeserializeObject<Graph>(output);
-            if (game.map.Graphs == null || game.map.Graphs.Count == 0)
+            if (game.map.Graphs == null || game.map.Graphs.Count == 0 || game.map == null)
             {
+                game.map = new Map();
                 game.map.Graphs = new List<Graph>();
             }
-            game.map.Graphs.Add(game.map.CurrentGraph);
+            Graph graph = JsonConvert.DeserializeObject<Graph>(output);
+            game.map.Graphs.Add(graph);
+            string mapInJson = JsonConvert.SerializeObject(game.map);
+            
+            File.Create(UtilityFunctions.mapsSpecificDirectory).Close();
+            File.WriteAllText(UtilityFunctions.mapsSpecificDirectory, mapInJson);
+            
             return game;
             
         }

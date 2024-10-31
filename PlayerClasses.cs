@@ -51,6 +51,8 @@ namespace PlayerClassesNamespace
         [XmlIgnore] public Equipment equipment { get; set; } = new Equipment();
 
         [XmlIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
+        
+        [XmlIgnore] public int sightRange { get; set; }
 
         public Player()
         {
@@ -58,6 +60,7 @@ namespace PlayerClassesNamespace
             Level = 1;
             currentExp = 0;
             playerPos = new Point(0, 0);
+            sightRange = 6;
             PlayerAttacks[AttackSlot.slot1] = null;
             PlayerAttacks[AttackSlot.slot2] = null;
             PlayerAttacks[AttackSlot.slot3] = null;

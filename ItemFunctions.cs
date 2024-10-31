@@ -188,9 +188,9 @@ namespace ItemFunctionsNamespace
             ItemContainer itemContainer = new ItemContainer();
             
             
-            var armourItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Armour.xml").Armours;
-            var weaponItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Weapon.xml").Weapons;
-            var consumableItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}\Consumable.xml").Consumables;
+            var armourItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Armour.xml").Armours;
+            var weaponItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Weapon.xml").Weapons;
+            var consumableItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Consumable.xml").Consumables;
             //itemContainer.Armours = new List<Armour>();
             // convert to itemTemplates
             

@@ -29,15 +29,26 @@ namespace TestNarratorNamespace
                 foreach (var node in graph.Nodes)
                 {
                     node.tiles = new List<List<Tile>>();
+                    if (node.NodeWidth == 0 || node.NodeHeight == 0)
+                    {
+                        node.NodeWidth = 100;
+                        node.NodeHeight = 100;
+                    }
                     for (int i = 0; i < node.NodeWidth; i++)
                     {
+                        node.tiles.Add(new List<Tile>());
                         for (int j = 0; j < node.NodeHeight; j++)
                         {
                             node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
                         }
                     }
+                    
+                    Point ExitPoint = new Point(node.NodeWidth / 2, node.NodeHeight / 2);
+                    node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
+                    
                     graphToReturn.Nodes.Add(node);
                 }
+                
                 return graphToReturn;
             }
             
@@ -47,18 +58,19 @@ namespace TestNarratorNamespace
                 {
                     game.map = new Map();
                     game.map.Graphs = new List<Graph>();
-                    await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup).GetAwaiter().GetResult().map.CurrentGraph);
+                    await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup).GetAwaiter().GetResult().map.Graphs[game.map.Graphs.Count - 1]);
+                    // game.map.CurrentNode = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[0];
                 }
                 return game.map;
             }
             
-            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup)
+            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id = 0)
             {
-                Graph graph;
+                Map map;
                 try
                 {
                     string txt = File.ReadAllText(UtilityFunctions.mapsDir + "saveExample.json");
-                    graph = JsonConvert.DeserializeObject<Graph>(txt);
+                    map = JsonConvert.DeserializeObject<Map>(txt);
                 }
                 catch (Exception e)
                 {
@@ -67,8 +79,8 @@ namespace TestNarratorNamespace
                 }
                 
                 // populate node tiles
-                graph = await gameSetup.PopulateNodesWithTiles(graph);
-                game.map.CurrentGraph = graph;
+                map.Graphs[0] = await gameSetup.PopulateNodesWithTiles(map.Graphs[0]);
+                game.map = map;
                 return game;
             }
 

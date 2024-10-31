@@ -1,22 +1,35 @@
 using System.Drawing;
+using System.Runtime.CompilerServices;
+using Emgu.CV.XImgproc;
 using GameClassNamespace;
 using GPTControlNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
 using OpenAI_API.Chat;
+using PlayerClassesNamespace;
+using UtilityFunctionsNamespace;
 
 namespace GridConfigurationNamespace
 {
     public class GridFunctions
     {
-        public Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
-            { { "NodeExit", "U+220F" }, { "Empty", "." } };
+        public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
+            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" } };
+        // U+220F
+
+        public static List<int> RedGreenBluePlayerVals = new List<int>() { 0, 0, 0 };
 
         public static async Task<Map> GenerateMap(Game game, GameSetup gameSetup, Conversation chat)
         {
-            Game newGame = await gameSetup.GenerateGraphStructure(chat, game, gameSetup);
-            game.map = newGame.map;
+            game.map = new Map();
             return game.map;
+        }
+
+        public static List<List<Tile>> PlacePlayer(Point point, List<List<Tile>> tiles)
+        {
+            tiles[point.X][point.Y].tileChar = CharsToMeanings["Player"][0];
+            tiles[point.X][point.Y].playerHere = true;
+            return tiles;
         }
 
         public static Node FillNode(Node node)
@@ -35,18 +48,23 @@ namespace GridConfigurationNamespace
             return node;
         }
 
+        public static void PlaceTile(ref Node node, int x, int y, Tile tile)
+        {
+            node.tiles[y][x] = tile;
+        }
+
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
         {
             switch (input.ToLower())
             {
                 case "w":
-                    PlayerPos.Y += 1;
+                    PlayerPos.Y -= 1;
                     break;
                 case "a":
                     PlayerPos.X -= 1;
                     break;
                 case "s":
-                    PlayerPos.Y -= 1;
+                    PlayerPos.Y += 1;
                     break;
                 case "d":
                     PlayerPos.X += 1;
@@ -56,18 +74,25 @@ namespace GridConfigurationNamespace
                     break;
             }
 
-            if (PlayerPos.X < 0 || PlayerPos.X >= tiles.Count || PlayerPos.Y < 0 ||
-                PlayerPos.Y >= tiles[PlayerPos.X].Count)
+            try
+            {
+                if (PlayerPos.X < 0 || PlayerPos.X > tiles[PlayerPos.Y].Count || PlayerPos.Y < 0 ||
+                    PlayerPos.Y > tiles[PlayerPos.X].Count)
+                {
+                    return false;
+                }
+                else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != CharsToMeanings["Empty"][0])
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
             {
                 return false;
-            }
-            else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != '.')
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
 
@@ -81,11 +106,11 @@ namespace GridConfigurationNamespace
             return false;
         }
 
-        public static void UpdateToNewNode(ref Game game)
+        public static void UpdateToNewNode(ref Game game, int Id)
         {
-            if (game.map.Graphs[game.map.GetNextID()].Nodes[0] != null)
+            if (game.map.Graphs[game.map.Graphs.Count - 1].Nodes[Id] != null)
             {
-                game.map.CurrentNode = game.map.Graphs[game.map.GetNextID()].Nodes[0];
+                game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer = Id;
             }
             else
             {
@@ -93,59 +118,132 @@ namespace GridConfigurationNamespace
             }
         }
 
-        public static void MovePlayer(string input, ref Point PlayerPos, ref Game game)
+        public static bool MovePlayer(string input, ref Point PlayerPos, ref Game game) // return false if doing something other than moving
         {
-            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y]
-                .tileChar = '.';
-            switch (input.ToLower())
+            if (Program.GetAllowedInputs("Move").Contains(input))
             {
-                // assuming input validated already
-                case "w":
-                    PlayerPos.Y += 1;
-                    break;
-                case "a":
-                    PlayerPos.X -= 1;
-                    break;
-                case "s":
-                    PlayerPos.Y -= 1;
-                    break;
-                case "d":
-                    PlayerPos.X += 1;
-                    break;
-                default:
-                    Console.WriteLine("Invalid input");
-                    break;
+                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                    .tileChar = Convert.ToChar(CharsToMeanings["Empty"]);
+                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                    .playerHere = false;
+                
+                switch (input.ToLower())
+                {
+                    // assuming input validated already
+                    case "w":
+                        PlayerPos.Y -= 1;
+                        break;
+                    case "a":
+                        PlayerPos.X -= 1;
+                        break;
+                    case "s":
+                        PlayerPos.Y += 1;
+                        break;
+                    case "d":
+                        PlayerPos.X += 1;
+                        break;
+                }
+                
+                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                    .tileChar = Convert.ToChar(CharsToMeanings["Player"]);
+
+                //game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.Y][PlayerPos.X]
+                //    .tileChar = CharsToMeanings["Player"][0];
+                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                    .playerHere = true;
+
+                return true;
             }
 
-            game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.X][PlayerPos.Y]
-                .tileChar = 'P';
+            return false;
         }
 
-        public static void DrawWholeNode(Node node, Point PlayerPos)
+        public static void DrawWholeNode(Game game)
         {
-            for (int i = 0; i < node.NodeWidth; i++) // for each x axis tile
+            Node node = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID];
+            Player player = game.player;
+            Point playerPos = player.playerPos;
+            int sightRange = player.sightRange;
+
+
+            Console.Clear();
+            UtilityFunctions.clearScreen(player);
+
+            // calculate drawing bounds, keeping player centered if within bounds
+            int startX = Math.Max(0, playerPos.X - sightRange);
+            int startY = Math.Max(0, playerPos.Y - sightRange);
+            int endX = Math.Min(node.NodeWidth, playerPos.X + sightRange + 1);
+            int endY = Math.Min(node.NodeHeight, playerPos.Y + sightRange + 1);
+
+            for (int j = startY; j < endY; j++) // for each y-axis tile within range
             {
-                for (int j = 0; j < node.NodeHeight; j++) // for each y axis tile
+                for (int i = startX; i < endX; i++) // for each x-axis tile within range
                 {
-                    Console.Write(node.tiles[i][j].tileChar);
+                    int deltaX = j - playerPos.Y;
+                    int deltaY = i - playerPos.X;
+                    double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY) * 1.1; // get diagonal dist
+
+                    // determine if the tile is within sight range
+                    if (distance <= sightRange)
+                    {
+                        if (node.tiles[i][j].playerHere)
+                        {
+                            Console.Write(
+                                $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} ");
+                        }
+                        else if (node.tiles[i][j].tileDesc == "Empty")
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write($"{node.tiles[i][j].tileChar} ");
+                        }
+                        else if (node.tiles[i][j].tileDesc == "ExitNode")
+                        {
+                            Console.Write($"{node.tiles[i][j].tileChar} ");
+                        }
+                    }
+                    // if outside sight range but still within the square frame
+                    else if (distance * 1.2 <= sightRange * 2)
+                    {
+                        int brightness = (int)(255 * (1.0 - (distance - sightRange) / (sightRange * 0.5)));
+                        brightness = Math.Clamp(brightness, 0, 255);
+
+                        if (brightness == 0)
+                        {
+                            Console.Write("  ");
+                        }
+                        else
+                        {
+                            Console.Write(
+                                $"\x1b[38;2;{brightness};{brightness};{brightness}m{node.tiles[i][j].tileChar} ");
+                        }
+                    }
                 }
 
                 Console.WriteLine();
             }
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 
     public class Map
     {
         public List<Graph> Graphs { get; set; }
-        public Node CurrentNode { get; set; }
-        public Graph CurrentGraph { get; set; }
+
+        public Node GetCurrentNode()
+        {
+            return Graphs[Graphs.Count - 1].Nodes[Graphs[Graphs.Count - 1].CurrentNodePointer];
+        }
+
+        public void SetCurrentNodeTilesContents(List<List<Tile>> tiles)
+        {
+            Graphs[Graphs.Count - 1].Nodes[Graphs[Graphs.Count - 1].CurrentNodePointer].tiles = tiles;
+        }
 
         public async Task<Graph> AppendGraph(Graph graphToAppend)
         {
             Graphs.Add(graphToAppend);
-            CurrentGraph = graphToAppend;
-            return CurrentGraph;
+            return Graphs[Graphs.Count - 1];
         }
 
         public int GetNextID()
@@ -178,6 +276,8 @@ namespace GridConfigurationNamespace
             this.Milestone = milestone;
             this.tiles = new List<List<Tile>>();
         }
+        
+        
 
         public void AddNeighbour(Node node)
         {
@@ -194,12 +294,14 @@ namespace GridConfigurationNamespace
         public char tileChar { get; set; }
         public Point tileXY { get; set; }
         public string tileDesc { get; set; }
+        public bool playerHere { get; set; }
 
         public Tile(char tileChar, Point tileXY, string tileDesc)
         {
             this.tileChar = tileChar;
             this.tileXY = tileXY;
             this.tileDesc = tileDesc;
+            this.playerHere = false;
         }
     }
 
@@ -207,6 +309,7 @@ namespace GridConfigurationNamespace
     {
         public List<Node> Nodes { get; set; }
         public int Id { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public int CurrentNodePointer { get; set; }
 
         public Graph(int id, List<Node> nodes)
         {
