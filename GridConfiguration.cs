@@ -198,6 +198,7 @@ namespace GridConfigurationNamespace
                         }
                         else if (node.tiles[i][j].tileDesc == "ExitNode")
                         {
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.Write($"{node.tiles[i][j].tileChar} ");
                         }
                     }
@@ -229,6 +230,11 @@ namespace GridConfigurationNamespace
     public class Map
     {
         public List<Graph> Graphs { get; set; }
+
+        public Map()
+        {
+            Graphs = new List<Graph>();
+        }
 
         public Node GetCurrentNode()
         {

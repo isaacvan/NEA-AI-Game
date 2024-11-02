@@ -64,7 +64,7 @@ namespace GPTControlNamespace
                     }
                 }
                     
-                Point ExitPoint = new Point(node.NodeWidth / 2, node.NodeHeight / 2);
+                Point ExitPoint = new Point(node.NodeWidth - 1, node.NodeHeight / 2);
                 node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
                     
                 graphToReturn.Nodes.Add(node);
@@ -94,12 +94,8 @@ namespace GPTControlNamespace
             
             string output = File.ReadAllText(UtilityFunctions.mapsSpecificDirectory);
             if (game.map == null) game.map = new Map();
-            game.map.Graphs[game.map.Graphs.Count - 1] = JsonConvert.DeserializeObject<Graph>(output);
-            if (game.map.Graphs == null || game.map.Graphs.Count == 0)
-            {
-                game.map.Graphs = new List<Graph>();
-            }
-            game.map.Graphs.Add(game.map.Graphs[game.map.Graphs.Count - 1]);
+            game.map = JsonConvert.DeserializeObject<Map>(output);
+            game.map.Graphs[game.map.Graphs.Count - 1] = await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1]);
             return game;
             
         }

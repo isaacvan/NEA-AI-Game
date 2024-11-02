@@ -436,9 +436,9 @@ namespace UtilityFunctionsNamespace
             }
             
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"CLASS: ");
+            if (player != null) Console.Write($"CLASS: ");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write($"{player.Class}\n");
+            if (player != null) Console.Write($"{player.Class}\n");
             Console.ResetColor();
             
             displayStats(player);
