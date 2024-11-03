@@ -31,8 +31,8 @@ namespace TestNarratorNamespace
                     node.tiles = new List<List<Tile>>();
                     if (node.NodeWidth == 0 || node.NodeHeight == 0)
                     {
-                        node.NodeWidth = 100;
-                        node.NodeHeight = 100;
+                        node.NodeWidth = 20;
+                        node.NodeHeight = 20;
                     }
                     for (int i = 0; i < node.NodeWidth; i++)
                     {
@@ -43,7 +43,7 @@ namespace TestNarratorNamespace
                         }
                     }
                     
-                    Point ExitPoint = new Point(node.NodeWidth / 2, node.NodeHeight / 2);
+                    Point ExitPoint = new Point(node.NodeWidth - 1, node.NodeHeight / 2);
                     node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
                     
                     graphToReturn.Nodes.Add(node);

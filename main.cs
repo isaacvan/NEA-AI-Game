@@ -28,6 +28,7 @@ namespace MainNamespace
         public static Logger logger = LogManager.GetCurrentClassLogger();
         public static bool testing = false;
         public static Game game;
+        public static bool gameStarted = false;
 
         // one game costs £0.30 currently with GPT-4o. 3 minutes to generate.
 
@@ -99,8 +100,9 @@ namespace MainNamespace
                     Console.Clear();
                     logger.Info("Test Mode");
 
-                    game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
+                    // game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
 
+                    gameStarted = true;
                     GamePlayLoop(ref game);
 
 
@@ -117,6 +119,7 @@ namespace MainNamespace
                     // start game
                     // UtilityFunctions.DisplayAllEnemyTemplatesWithDetails();
 
+                    gameStarted = true;
                     GamePlayLoop(ref game);
 
                     Console.ReadLine();
@@ -131,12 +134,14 @@ namespace MainNamespace
         public static void GamePlayLoop(ref Game game)
         {
             UtilityFunctions.UpdateVars(ref game);
-            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(game.player.playerPos,
+            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game),
                 game.map.GetCurrentNode().tiles));
             // game.map.CurrentNode.tiles = GridFunctions.PlacePlayer(game.player.playerPos, game.map.CurrentNode.tiles);
             GridFunctions.DrawWholeNode(game);
             int IdOfNextNode = -1;
             string input = Console.ReadKey().Key.ToString();
+            Tile oldTile = null;
+            
             bool GameRunning = true;
             while (GameRunning) // while overall game running
             {
@@ -170,7 +175,8 @@ namespace MainNamespace
                 }
 
                 // move player, if it isnt a mmovement then do something else with the input
-                if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game))
+                
+                if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game, ref oldTile))
                     AssessOtherInputs(input, ref game);
                 // CHECK FOR EVENTS
                 CheckForEventsTriggered(ref game, ref IdOfNextNode);
@@ -193,9 +199,18 @@ namespace MainNamespace
 
         public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode)
         {
-            if (false) // CHECK FOR IF ON A NODE BOUNDARY
+            Point pos = game.player.playerPos;
+            Tile tile = game.map.GetCurrentNode().tiles[pos.X][pos.Y];
+            if (tile.tileDesc == "NodeExit") // CHECK FOR IF ON A NODE BOUNDARY
             {
-                IdOfNextNode = 1; // NEW ID
+                if (tile.exitNodePointerId != null)
+                {
+                    IdOfNextNode = (int)tile.exitNodePointerId;
+                }
+                else
+                {
+                    throw new Exception("ExitNode was not found, no pointer id was found");
+                }
             }
             else
             {

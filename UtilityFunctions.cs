@@ -441,6 +441,9 @@ namespace UtilityFunctionsNamespace
             if (player != null) Console.Write($"{player.Class}\n");
             Console.ResetColor();
             
+            Console.ForegroundColor = ConsoleColor.White;
+            if (Program.gameStarted) Console.Write($"NODE ID: {GridFunctions.CurrentNodeId}\n");
+            
             displayStats(player);
 
             Console.Write("\n");

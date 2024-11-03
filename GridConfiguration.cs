@@ -1,5 +1,7 @@
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using Emgu.CV.Structure;
 using Emgu.CV.XImgproc;
 using GameClassNamespace;
 using GPTControlNamespace;
@@ -13,8 +15,16 @@ namespace GridConfigurationNamespace
 {
     public class GridFunctions
     {
+        public static int CurrentNodeId = 0;
+
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
             { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" } };
+
+        public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
+            { { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null } };
+
+        public static List<int>
+            PointedToNodeIds = new List<int>(); // list of Ids that have been pointed to already; resets every graph
         // U+220F
 
         public static List<int> RedGreenBluePlayerVals = new List<int>() { 0, 0, 0 };
@@ -55,6 +65,7 @@ namespace GridConfigurationNamespace
 
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
         {
+            // return false if out of bounds
             switch (input.ToLower())
             {
                 case "w":
@@ -81,7 +92,7 @@ namespace GridConfigurationNamespace
                 {
                     return false;
                 }
-                else if (tiles[PlayerPos.X][PlayerPos.Y].tileChar != CharsToMeanings["Empty"][0])
+                else if (!tiles[PlayerPos.X][PlayerPos.Y].walkable)
                 {
                     return false;
                 }
@@ -116,17 +127,37 @@ namespace GridConfigurationNamespace
             {
                 throw new Exception("No node found");
             }
+
+            CurrentNodeId = Id;
+            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game),
+                game.map.GetCurrentNode().tiles));
         }
 
-        public static bool MovePlayer(string input, ref Point PlayerPos, ref Game game) // return false if doing something other than moving
+        public static bool
+            MovePlayer(string input, ref Point PlayerPos, ref Game game,
+                ref Tile oldTile) // return false if doing something other than moving
         {
             if (Program.GetAllowedInputs("Move").Contains(input))
             {
-                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
-                    .tileChar = Convert.ToChar(CharsToMeanings["Empty"]);
-                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
+                Point oldPos = PlayerPos;
+
+                if (oldTile == null)
+                {
+                    oldTile = new Tile(CharsToMeanings["Empty"][0], oldPos, "Empty");
+                }
+
+                /*
+                game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles[oldPos.X][oldPos.Y]
                     .playerHere = false;
-                
+                game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles[oldPos.X][oldPos.Y]
+                    .tileChar = oldTile.tileChar;
+                    */
+
+                game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles[oldPos.X][oldPos.Y] = oldTile;
+
                 switch (input.ToLower())
                 {
                     // assuming input validated already
@@ -143,19 +174,35 @@ namespace GridConfigurationNamespace
                         PlayerPos.X += 1;
                         break;
                 }
+
+                // capture old tile
+                oldTile = game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
+                    .tiles[PlayerPos.X][PlayerPos.Y];
+                Tile temp = oldTile.clone();
+
+                // set player at new pos
+                game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
+                    .tiles[PlayerPos.X][PlayerPos.Y].playerHere = true;
+                game.map.Graphs[game.map.Graphs.Count - 1]
+                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
+                    .tiles[PlayerPos.X][PlayerPos.Y].tileChar = CharsToMeanings["Player"][0];
+
+                oldTile = temp.clone();
                 
-                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
-                    .tileChar = Convert.ToChar(CharsToMeanings["Player"]);
-
-                //game.map.Graphs[game.map.CurrentGraph.Id].Nodes[game.map.CurrentNode.NodeID].tiles[PlayerPos.Y][PlayerPos.X]
-                //    .tileChar = CharsToMeanings["Player"][0];
-                game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID].tiles[PlayerPos.X][PlayerPos.Y]
-                    .playerHere = true;
-
                 return true;
             }
 
             return false;
+        }
+
+        public static Point GetPlayerStartPos(ref Game game)
+        {
+            int h = game.map.GetCurrentNode().NodeHeight;
+            Point p = new Point(0, h / 2);
+            game.player.playerPos = p;
+            return p;
         }
 
         public static void DrawWholeNode(Game game)
@@ -183,30 +230,39 @@ namespace GridConfigurationNamespace
                     int deltaY = i - playerPos.X;
                     double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY) * 1.1; // get diagonal dist
 
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
+
+                    // rgb
+                    if (node.tiles[i][j].rgb != null) // player not here
+                    {
+                        r = (int)node.tiles[i][j].rgb.Value.Red;
+                        g = (int)node.tiles[i][j].rgb.Value.Green;
+                        b = (int)node.tiles[i][j].rgb.Value.Blue;
+                    }
+
                     // determine if the tile is within sight range
+                    // \x1b[38;2;{r};{g};{b}m
+                    // \x1b[38;2;255m
                     if (distance <= sightRange)
                     {
                         if (node.tiles[i][j].playerHere)
                         {
                             Console.Write(
-                                $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} ");
+                                $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} \x1b[0m");
                         }
-                        else if (node.tiles[i][j].tileDesc == "Empty")
+                        else
                         {
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write($"{node.tiles[i][j].tileChar} ");
-                        }
-                        else if (node.tiles[i][j].tileDesc == "ExitNode")
-                        {
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.Write($"{node.tiles[i][j].tileChar} ");
+                            Console.Write($"\x1b[38;2;{r};{g};{b}m{node.tiles[i][j].tileChar} \x1b[0m");
                         }
                     }
                     // if outside sight range but still within the square frame
                     else if (distance * 1.2 <= sightRange * 2)
                     {
-                        int brightness = (int)(255 * (1.0 - (distance - sightRange) / (sightRange * 0.5)));
-                        brightness = Math.Clamp(brightness, 0, 255);
+                        float brightness = (float)(1.0 - (distance - sightRange) / (sightRange * 0.5));
+                        brightness = Math.Min(brightness, 1);
+                        brightness = Math.Max(brightness, 0);
 
                         if (brightness == 0)
                         {
@@ -215,7 +271,7 @@ namespace GridConfigurationNamespace
                         else
                         {
                             Console.Write(
-                                $"\x1b[38;2;{brightness};{brightness};{brightness}m{node.tiles[i][j].tileChar} ");
+                                $"\x1b[38;2;{Math.Round(brightness * r, 0)};{Math.Round(brightness * g, 0)};{Math.Round(brightness * b, 0)}m{node.tiles[i][j].tileChar} \x1b[0m");
                         }
                     }
                 }
@@ -224,6 +280,12 @@ namespace GridConfigurationNamespace
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static int GetNextNodeId()
+        {
+            PointedToNodeIds.Add(PointedToNodeIds.Count + 1);
+            return PointedToNodeIds.Count;
         }
     }
 
@@ -282,8 +344,7 @@ namespace GridConfigurationNamespace
             this.Milestone = milestone;
             this.tiles = new List<List<Tile>>();
         }
-        
-        
+
 
         public void AddNeighbour(Node node)
         {
@@ -301,6 +362,9 @@ namespace GridConfigurationNamespace
         public Point tileXY { get; set; }
         public string tileDesc { get; set; }
         public bool playerHere { get; set; }
+        public Rgb? rgb { get; set; }
+        public bool walkable { get; set; }
+        public int? exitNodePointerId { get; set; }
 
         public Tile(char tileChar, Point tileXY, string tileDesc)
         {
@@ -308,6 +372,33 @@ namespace GridConfigurationNamespace
             this.tileXY = tileXY;
             this.tileDesc = tileDesc;
             this.playerHere = false;
+            if (tileDesc != null)
+            {
+                rgb = GridFunctions.CharsToRGB[tileDesc];
+            }
+            
+            if (tileDesc == "Empty")
+            {
+                walkable = true;
+                exitNodePointerId = null;
+            }
+            else if (tileDesc == "NodeExit")
+            {
+                walkable = true;
+                exitNodePointerId = GridFunctions.GetNextNodeId();
+            }
+        }
+
+        public Tile clone()
+        {
+            Tile newTile = new Tile('.', new Point(), null);
+            foreach (PropertyInfo property in typeof(Tile).GetProperties())
+            {
+                PropertyInfo info = property;
+                object value = info.GetValue(this, null);
+                typeof(Tile).GetProperty(property.Name).SetValue(newTile, value);
+            }
+            return newTile;
         }
     }
 

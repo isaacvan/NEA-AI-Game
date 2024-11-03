@@ -15,6 +15,7 @@ using CombatNamespace;
 using DynamicExpresso;
 using Emgu.CV.Dnn;
 using GameClassNamespace;
+using GridConfigurationNamespace;
 using ItemFunctionsNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
@@ -59,7 +60,6 @@ namespace PlayerClassesNamespace
             maxExp = 10;
             Level = 1;
             currentExp = 0;
-            playerPos = new Point(0, 0);
             sightRange = 6;
             PlayerAttacks[AttackSlot.slot1] = null;
             PlayerAttacks[AttackSlot.slot2] = null;

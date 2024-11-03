@@ -52,8 +52,8 @@ namespace GPTControlNamespace
                 node.tiles = new List<List<Tile>>();
                 if (node.NodeWidth == 0 || node.NodeHeight == 0)
                 {
-                    node.NodeWidth = 100;
-                    node.NodeHeight = 100;
+                    node.NodeWidth = 20;
+                    node.NodeHeight = 20;
                 }
                 for (int i = 0; i < node.NodeWidth; i++)
                 {

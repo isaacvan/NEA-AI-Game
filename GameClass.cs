@@ -84,7 +84,7 @@ namespace GameClassNamespace
                 
                 // initialise first map
                 // GridFunctions.GenerateMap(this, gameSetup, chat);
-                await gameSetup.GenerateMapStructure(chat, this, gameSetup); // SWITCH
+                map = await gameSetup.GenerateMapStructure(chat, this, gameSetup); // SWITCH
                 
                 Console.WriteLine("Started Game.");
             }
