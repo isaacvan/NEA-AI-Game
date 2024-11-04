@@ -63,10 +63,24 @@ namespace GPTControlNamespace
                         node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
                     }
                 }
-                    
-                Point ExitPoint = new Point(node.NodeWidth - 1, node.NodeHeight / 2);
-                node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
-                    
+                
+                
+                // exit and entry nodes
+                int exits = node.ConnectedNodes.Count - 1;
+                double h = node.NodeHeight - exits;
+                int gap = (int)Math.Round(h / (exits + 1), 0);
+                int ycounter = 0;
+                for (int i = 0; i < exits; i++)
+                {
+                    if (ycounter != 0)
+                    {
+                        ycounter++;
+                    }
+                    ycounter += gap;
+                    Point ExitPoint = new Point(node.NodeWidth - 1, ycounter);
+                    node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
+                }
+                
                 graphToReturn.Nodes.Add(node);
             }
                 

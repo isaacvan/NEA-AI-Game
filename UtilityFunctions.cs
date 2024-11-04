@@ -442,7 +442,7 @@ namespace UtilityFunctionsNamespace
             Console.ResetColor();
             
             Console.ForegroundColor = ConsoleColor.White;
-            if (Program.gameStarted) Console.Write($"NODE ID: {GridFunctions.CurrentNodeId}\n");
+            if (Program.gameStarted) Console.Write($"NODE: {GridFunctions.CurrentNodeName}, id - {GridFunctions.CurrentNodeId}\n");
             
             displayStats(player);
 
@@ -536,7 +536,7 @@ namespace UtilityFunctionsNamespace
         public static void UpdateVars(ref Game game)
         {
             int consoleHeight = Console.WindowHeight;
-            game.player.sightRange = (consoleHeight - 8) / 2;
+            game.player.sightRange = (consoleHeight - 9) / 2;
             Player player = (Player)game.player;
             int currentHealth = player.currentHealth;
             int maxHealth = player.Health;

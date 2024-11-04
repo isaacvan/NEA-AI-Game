@@ -16,12 +16,13 @@ namespace GridConfigurationNamespace
     public class GridFunctions
     {
         public static int CurrentNodeId = 0;
+        public static string CurrentNodeName = "";
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
-            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" } };
+            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E"} };
 
         public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
-            { { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null } };
+            { { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null }, { "Enemy", null} };
 
         public static List<int>
             PointedToNodeIds = new List<int>(); // list of Ids that have been pointed to already; resets every graph
@@ -117,8 +118,10 @@ namespace GridConfigurationNamespace
             return false;
         }
 
-        public static void UpdateToNewNode(ref Game game, int Id)
+        public static void UpdateToNewNode(ref Game game, int Id, ref Tile oldTile)
         {
+            oldTile = null;
+            
             if (game.map.Graphs[game.map.Graphs.Count - 1].Nodes[Id] != null)
             {
                 game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer = Id;
@@ -129,6 +132,7 @@ namespace GridConfigurationNamespace
             }
 
             CurrentNodeId = Id;
+            CurrentNodeName = game.map.GetCurrentNode().NodePOI;
             game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game),
                 game.map.GetCurrentNode().tiles));
         }
@@ -298,8 +302,12 @@ namespace GridConfigurationNamespace
             Graphs = new List<Graph>();
         }
 
-        public Node GetCurrentNode()
+        public Node GetCurrentNode(int? nodeID = null)
         {
+            if (nodeID.HasValue)
+            {
+                return Graphs[Graphs.Count - 1].Nodes[nodeID.Value];
+            }
             return Graphs[Graphs.Count - 1].Nodes[Graphs[Graphs.Count - 1].CurrentNodePointer];
         }
 
@@ -365,6 +373,7 @@ namespace GridConfigurationNamespace
         public Rgb? rgb { get; set; }
         public bool walkable { get; set; }
         public int? exitNodePointerId { get; set; }
+        public int? entryNodePointerId { get; set; }
 
         public Tile(char tileChar, Point tileXY, string tileDesc)
         {
@@ -377,7 +386,7 @@ namespace GridConfigurationNamespace
                 rgb = GridFunctions.CharsToRGB[tileDesc];
             }
             
-            if (tileDesc == "Empty")
+            if (tileDesc == "Empty" || tileDesc == "Enemy")
             {
                 walkable = true;
                 exitNodePointerId = null;
@@ -386,7 +395,7 @@ namespace GridConfigurationNamespace
             {
                 walkable = true;
                 exitNodePointerId = GridFunctions.GetNextNodeId();
-            }
+            } 
         }
 
         public Tile clone()

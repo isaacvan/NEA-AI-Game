@@ -182,7 +182,7 @@ namespace MainNamespace
                 CheckForEventsTriggered(ref game, ref IdOfNextNode);
 
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
-                    GridFunctions.UpdateToNewNode(ref game, IdOfNextNode);
+                    GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile);
                 GridFunctions.DrawWholeNode(game);
                 // input = Console.ReadLine();
                 input = Console.ReadKey(true).KeyChar.ToString();

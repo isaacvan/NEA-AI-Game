@@ -46,8 +46,9 @@ namespace GameClassNamespace
             // Also initialises logging and logging directory
             itemFactory = new ItemFactory();
             player = await Program.initializeSaveAndPlayer(gameSetup, api, chat, testing);
-            
 
+            if (testing) UtilityFunctions.loadedSave = true;
+            
             if (!UtilityFunctions.loadedSave)
             {
                 Console.WriteLine("Starting new game...");
@@ -114,6 +115,10 @@ namespace GameClassNamespace
                 this.map = new Map();
                 await narrator.LoadGraphStructure(this, gameSetup);
                 //GridFunctions.GenerateMap(map); // GENERATING MAP AT THE MOMENT
+                
+                // initialise HUD details
+                GridFunctions.CurrentNodeId = 0;
+                GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
                 
                 Console.WriteLine("Loaded save.");
             }
