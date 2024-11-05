@@ -19,10 +19,13 @@ namespace GridConfigurationNamespace
         public static string CurrentNodeName = "";
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
-            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E"} };
+            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E" } };
 
         public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
-            { { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null }, { "Enemy", null} };
+        {
+            { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null },
+            { "Enemy", null }
+        };
 
         public static List<int>
             PointedToNodeIds = new List<int>(); // list of Ids that have been pointed to already; resets every graph
@@ -120,8 +123,10 @@ namespace GridConfigurationNamespace
 
         public static void UpdateToNewNode(ref Game game, int Id, ref Tile oldTile)
         {
-            oldTile = null;
-            
+            oldTile = game.map.GetCurrentNode(Id).tiles[0][10];
+            oldTile.tileChar = GridFunctions.CharsToMeanings["NodeExit"][0];
+            oldTile.tileDesc = "NodeExit";
+
             if (game.map.Graphs[game.map.Graphs.Count - 1].Nodes[Id] != null)
             {
                 game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer = Id;
@@ -160,7 +165,9 @@ namespace GridConfigurationNamespace
                     */
 
                 game.map.Graphs[game.map.Graphs.Count - 1]
-                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles[oldPos.X][oldPos.Y] = oldTile;
+                        .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
+                        .tiles[oldPos.X][oldPos.Y] =
+                    oldTile;
 
                 switch (input.ToLower())
                 {
@@ -194,7 +201,7 @@ namespace GridConfigurationNamespace
                     .tiles[PlayerPos.X][PlayerPos.Y].tileChar = CharsToMeanings["Player"][0];
 
                 oldTile = temp.clone();
-                
+
                 return true;
             }
 
@@ -286,6 +293,97 @@ namespace GridConfigurationNamespace
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        public static Node PopulateNodeWithTiles(Node node, Graph graph)
+        {
+            node.tiles = new List<List<Tile>>();
+            if (node.NodeWidth == 0 || node.NodeHeight == 0)
+            {
+                node.NodeWidth = 20;
+                node.NodeHeight = 20;
+            }
+
+            for (int i = 0; i < node.NodeWidth; i++)
+            {
+                node.tiles.Add(new List<Tile>());
+                for (int j = 0; j < node.NodeHeight; j++)
+                {
+                    node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
+                }
+            }
+
+
+            // entry nodes
+            int ycounter = 0;
+            List<List<int>> listOfNodeConnections = new List<List<int>>();
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                Node tempNode = graph.Nodes[i];
+                List<int> ints = tempNode.ConnectedNodes;
+                listOfNodeConnections.Add(ints);
+            }
+
+            List<(Point, int)> entryPoints = new List<(Point, int)>();
+
+            int nodeid = node.NodeID;
+
+            try
+            {
+                for (int j = 0; j < listOfNodeConnections[nodeid].Count; j++)
+                {
+                    if (graph.Nodes[listOfNodeConnections[nodeid][j]].NodeDepth <
+                        nodeid) // then start node corresponding to listOfNodeConnections[nodeid][j]
+                    {
+                        entryPoints.Add(new(new Point(0, 0), listOfNodeConnections[nodeid][j]));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
+
+
+            ycounter = 0;
+            int entries = entryPoints.Count;
+            double h2 = node.NodeHeight - entries;
+            int gap2 = (int)Math.Round(h2 / (entries + 1), 0);
+            for (int j = 0; j < entryPoints.Count; j++)
+            {
+                if (ycounter != 0)
+                {
+                    //ycounter++;
+                }
+
+                ycounter += gap2;
+                Point ExitPoint = new Point(0, ycounter);
+                node.tiles[ExitPoint.X][ExitPoint.Y] =
+                    new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]),
+                        new Point(ExitPoint.X, ExitPoint.Y), "NodeExit", entryPoints[j].Item2);
+            }
+
+            // exit nodes
+            int exits = node.ConnectedNodes.Count - 1;
+            double h = node.NodeHeight - exits;
+            int gap = (int)Math.Round(h / (exits + 1), 0);
+            ycounter = 0;
+            for (int i = 0; i < exits; i++)
+            {
+                if (ycounter != 0)
+                {
+                    ycounter++;
+                }
+
+                ycounter += gap;
+                Point ExitPoint = new Point(node.NodeWidth - 1, ycounter);
+                node.tiles[ExitPoint.X][ExitPoint.Y] =
+                    new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]),
+                        new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
+            }
+
+            return node;
+        }
+
         public static int GetNextNodeId()
         {
             PointedToNodeIds.Add(PointedToNodeIds.Count + 1);
@@ -308,6 +406,7 @@ namespace GridConfigurationNamespace
             {
                 return Graphs[Graphs.Count - 1].Nodes[nodeID.Value];
             }
+
             return Graphs[Graphs.Count - 1].Nodes[Graphs[Graphs.Count - 1].CurrentNodePointer];
         }
 
@@ -375,7 +474,7 @@ namespace GridConfigurationNamespace
         public int? exitNodePointerId { get; set; }
         public int? entryNodePointerId { get; set; }
 
-        public Tile(char tileChar, Point tileXY, string tileDesc)
+        public Tile(char tileChar, Point tileXY, string tileDesc, int? nodeEntryPointer = null)
         {
             this.tileChar = tileChar;
             this.tileXY = tileXY;
@@ -385,17 +484,22 @@ namespace GridConfigurationNamespace
             {
                 rgb = GridFunctions.CharsToRGB[tileDesc];
             }
-            
+
             if (tileDesc == "Empty" || tileDesc == "Enemy")
             {
                 walkable = true;
                 exitNodePointerId = null;
             }
-            else if (tileDesc == "NodeExit")
+            else if (tileDesc == "NodeExit" && nodeEntryPointer == null)
             {
                 walkable = true;
                 exitNodePointerId = GridFunctions.GetNextNodeId();
-            } 
+            }
+            else if (tileDesc == "NodeExit" && nodeEntryPointer != null)
+            {
+                walkable = true;
+                exitNodePointerId = nodeEntryPointer;
+            }
         }
 
         public Tile clone()
@@ -407,6 +511,7 @@ namespace GridConfigurationNamespace
                 object value = info.GetValue(this, null);
                 typeof(Tile).GetProperty(property.Name).SetValue(newTile, value);
             }
+
             return newTile;
         }
     }

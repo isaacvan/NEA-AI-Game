@@ -49,39 +49,7 @@ namespace GPTControlNamespace
             Graph graphToReturn = new Graph(graph.Id, new List<Node>());
             foreach (var node in graph.Nodes)
             {
-                node.tiles = new List<List<Tile>>();
-                if (node.NodeWidth == 0 || node.NodeHeight == 0)
-                {
-                    node.NodeWidth = 20;
-                    node.NodeHeight = 20;
-                }
-                for (int i = 0; i < node.NodeWidth; i++)
-                {
-                    node.tiles.Add(new List<Tile>());
-                    for (int j = 0; j < node.NodeHeight; j++)
-                    {
-                        node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
-                    }
-                }
-                
-                
-                // exit and entry nodes
-                int exits = node.ConnectedNodes.Count - 1;
-                double h = node.NodeHeight - exits;
-                int gap = (int)Math.Round(h / (exits + 1), 0);
-                int ycounter = 0;
-                for (int i = 0; i < exits; i++)
-                {
-                    if (ycounter != 0)
-                    {
-                        ycounter++;
-                    }
-                    ycounter += gap;
-                    Point ExitPoint = new Point(node.NodeWidth - 1, ycounter);
-                    node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
-                }
-                
-                graphToReturn.Nodes.Add(node);
+                graphToReturn.Nodes.Add(GridFunctions.PopulateNodeWithTiles(node, graph));
             }
                 
             return graphToReturn;
