@@ -51,6 +51,8 @@ namespace GPTControlNamespace
             {
                 graphToReturn.Nodes.Add(GridFunctions.PopulateNodeWithTiles(node, graph));
             }
+            
+            graphToReturn.SetEntryAndExits();
                 
             return graphToReturn;
         }

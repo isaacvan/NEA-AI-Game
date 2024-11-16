@@ -36,10 +36,10 @@ namespace MainNamespace
         // NEXT STEPS
         //
         // NEXT - MAP GENERATION
-        // TODO: make empty maps you can walk around in
         // adjust nodeheight and nodewidth in graph generation prmopt to be preset values
         // saving the actual tiles? how
         // check for events triggered
+        // add variable to Node to make it easier to access start and end node points with corresponding Id's. new Connection class? or use edge
         //
         // NEXT - UI CONSTRUCTOR
         //
@@ -135,7 +135,7 @@ namespace MainNamespace
         {
             UtilityFunctions.UpdateVars(ref game);
             game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game),
-                game.map.GetCurrentNode().tiles));
+                game.map.GetCurrentNode().tiles, ref game));
             // game.map.CurrentNode.tiles = GridFunctions.PlacePlayer(game.player.playerPos, game.map.CurrentNode.tiles);
             GridFunctions.DrawWholeNode(game);
             int IdOfNextNode = -1;
@@ -174,15 +174,17 @@ namespace MainNamespace
                     }
                 }
 
-                // move player, if it isnt a mmovement then do something else with the input
+                // move player, if it isnt a movement then do something else with the input
                 
                 if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game, ref oldTile))
                     AssessOtherInputs(input, ref game);
+                
                 // CHECK FOR EVENTS
+                int oldId = game.map.GetCurrentNode().NodeID;
                 CheckForEventsTriggered(ref game, ref IdOfNextNode);
 
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
-                    GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile);
+                    GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
                 GridFunctions.DrawWholeNode(game);
                 // input = Console.ReadLine();
                 input = Console.ReadKey(true).KeyChar.ToString();
@@ -203,9 +205,13 @@ namespace MainNamespace
             Tile tile = game.map.GetCurrentNode().tiles[pos.X][pos.Y];
             if (tile.tileDesc == "NodeExit") // CHECK FOR IF ON A NODE BOUNDARY
             {
-                if (tile.exitNodePointerId != null)
+                if (tile.exitNodePointerId != null && tile.entryNodePointerId == null) 
                 {
                     IdOfNextNode = (int)tile.exitNodePointerId;
+                }
+                else if (tile.exitNodePointerId == null && tile.entryNodePointerId != null)
+                {
+                    IdOfNextNode = (int)tile.entryNodePointerId;
                 }
                 else
                 {

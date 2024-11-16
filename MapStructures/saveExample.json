@@ -103,7 +103,7 @@
         {
           "NodeID": 7,
           "ConnectedNodes": [
-            5
+            5, 9
           ],
           "ConnectedNodesEdges": [
             "undirected"
@@ -129,7 +129,7 @@
         {
           "NodeID": 9,
           "ConnectedNodes": [
-            8
+            7, 8
           ],
           "ConnectedNodesEdges": [
             "undirected"
