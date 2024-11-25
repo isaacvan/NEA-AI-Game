@@ -63,7 +63,7 @@ namespace ItemFunctionsNamespace
         public async Task updateInventoryJSON()
         {
             // puts this inventory into JSON file called saveName var in Inventories
-            string path = UtilityFunctions.mainDirectory + @"Inventories\" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
             using (StreamWriter file = File.CreateText(path))
             {
                 JsonSerializer serializer = new JsonSerializer
@@ -78,7 +78,7 @@ namespace ItemFunctionsNamespace
         public void updateInventoryJSONSync()
         {
             // puts this inventory into JSON file called saveName var in Inventories
-            string path = UtilityFunctions.mainDirectory + @"Inventories\" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
             using (StreamWriter file = File.CreateText(path))
             {
                 JsonSerializer serializer = new JsonSerializer
@@ -141,14 +141,14 @@ namespace ItemFunctionsNamespace
         public async Task updateEquipmentJSON()
         {
             // puts this equipment into XML file called saveName var in Equipment
-            string path = UtilityFunctions.mainDirectory + @"Equipments\" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
             await UtilityFunctions.writeToJSONFile<Equipment>(path, this);
         }
         
         public void updateEquipmentJSONSync()
         {
             // puts this equipment into XML file called saveName var in Equipment
-            string path = UtilityFunctions.mainDirectory + @"Equipments\" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
             UtilityFunctions.writeToJSONFileSync<Equipment>(path, this);
         }
     }
@@ -342,9 +342,9 @@ namespace ItemFunctionsNamespace
                 {
                     try
                     {
-                        File.Create($@"{UtilityFunctions.itemTemplateSpecificDirectory}\{inheritableTrait}.xml")
+                        File.Create($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml")
                             .Close();
-                        File.WriteAllText($@"{UtilityFunctions.itemTemplateSpecificDirectory}\{inheritableTrait}.xml",
+                        File.WriteAllText($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml",
                             listOfFinalXMLs[traitIndex]);
                         traitIndex++;
                     }

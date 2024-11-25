@@ -23,9 +23,9 @@ namespace TestNarratorNamespace
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
             
-            public async Task<Graph> PopulateNodesWithTiles(Graph graph)
+            public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
             {
-                Graph graphToReturn = new Graph(graph.Id, new List<Node>());
+                Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
                 foreach (var node in graph.Nodes)
                 {
                     node.tiles = new List<List<Tile>>();
@@ -89,7 +89,7 @@ namespace TestNarratorNamespace
                 }
                 
                 // populate node tiles
-                map.Graphs[0] = await gameSetup.PopulateNodesWithTiles(map.Graphs[0]);
+                map.Graphs[0] = await gameSetup.PopulateNodesWithTiles(map.Graphs[0], game);
                 game.map = map;
                 return game;
             }

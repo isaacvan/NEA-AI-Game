@@ -1,91 +1,90 @@
 {
   "PlayerBasicAttack": {
-    "Key": "PlayerBasicAttack",
+    "Name": "PlayerBasicAttack",
     "Expression": "target.ReceiveAttack(5, 20)",
     "Manacost": 0,
     "Statuses": [],
-    "Narrative": "delivers a basic strike."
+    "Narrative": "launches a basic attack."
   },
-  "ShadowLash": {
-    "Key": "ShadowLash",
-    "Expression": "target.ReceiveAttack(12, 25)",
-    "Manacost": 4,
+  "ShadowPierce": {
+    "Name": "ShadowPierce",
+    "Expression": "target.ReceiveAttack(20, 40)",
+    "Manacost": 8,
     "Statuses": [
-      "Weakened"
+      "Silenced"
     ],
-    "Narrative": "unleashes a whip of dark energy."
+    "Narrative": "unleashes a dark energy spear, piercing through the air."
   },
-  "SearingBlast": {
-    "Key": "SearingBlast",
-    "Expression": "target.ReceiveAttack(18, 30)",
+  "InfernoBlast": {
+    "Name": "InfernoBlast",
+    "Expression": "target.ReceiveAttack(25, 25)",
+    "Manacost": 12,
+    "Statuses": [
+      "Burned"
+    ],
+    "Narrative": "conjures a massive fireball, engulfing the target in flames."
+  },
+  "ArcaneSurge": {
+    "Name": "ArcaneSurge",
+    "Expression": "target.ReceiveAttack(15, 50)",
+    "Manacost": 10,
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "summons a surge of arcane energy, shocking the enemy."
+  },
+  "ToxicSpit": {
+    "Name": "ToxicSpit",
+    "Expression": "target.ReceiveAttack(10, 30)",
     "Manacost": 6,
     "Statuses": [
-      "Burn"
+      "Poisoned"
     ],
-    "Narrative": "casts a powerful ball of fire."
+    "Narrative": "spews a noxious toxin at the opponent."
   },
-  "IceShard": {
-    "Key": "IceShard",
-    "Expression": "target.ReceiveAttack(15, 20)",
+  "RendingClaw": {
+    "Name": "RendingClaw",
+    "Expression": "target.ReceiveAttack(18, 35)",
+    "Manacost": 4,
+    "Statuses": [
+      "Bleeding"
+    ],
+    "Narrative": "slashes fiercely with razor-sharp claws."
+  },
+  "EtherealChain": {
+    "Name": "EtherealChain",
+    "Expression": "target.ReceiveAttack(22, 15)",
+    "Manacost": 14,
+    "Statuses": [
+      "Rooted"
+    ],
+    "Narrative": "casts phantom chains to ensnare the target."
+  },
+  "CrystalShard": {
+    "Name": "CrystalShard",
+    "Expression": "target.ReceiveAttack(12, 60)",
     "Manacost": 5,
     "Statuses": [
       "Frozen"
     ],
-    "Narrative": "hurls a piercing shard of ice."
+    "Narrative": "hurls a shard of ice, freezing the target upon impact."
   },
-  "ElectroPulse": {
-    "Key": "ElectroPulse",
-    "Expression": "target.ReceiveAttack(20, 40)",
-    "Manacost": 8,
+  "SearingRay": {
+    "Name": "SearingRay",
+    "Expression": "target.ReceiveAttack(30, 20)",
+    "Manacost": 15,
     "Statuses": [
-      "Stunned"
+      "Blinded"
     ],
-    "Narrative": "emits a sudden surge of electric energy."
+    "Narrative": "emits a blinding ray of light, searing everything in its path."
   },
-  "VenomousSting": {
-    "Key": "VenomousSting",
-    "Expression": "target.ReceiveAttack(10, 50)",
-    "Manacost": 3,
-    "Statuses": [
-      "Poisoned"
-    ],
-    "Narrative": "strikes with a toxin-laden barb."
-  },
-  "MysticBind": {
-    "Key": "MysticBind",
-    "Expression": "target.ReceiveAttack(0, 0)",
-    "Manacost": 12,
-    "Statuses": [
-      "Rooted",
-      "Silenced"
-    ],
-    "Narrative": "casts ancient runes to immobilize and silence."
-  },
-  "ArcaneFury": {
-    "Key": "ArcaneFury",
-    "Expression": "target.ReceiveAttack(25, 10)",
-    "Manacost": 10,
-    "Statuses": [
-      "MagicBoost"
-    ],
-    "Narrative": "unleashes a torrent of raw magical energy."
-  },
-  "GaleForceSlash": {
-    "Key": "GaleForceSlash",
-    "Expression": "target.ReceiveAttack(17, 30)",
-    "Manacost": 7,
+  "GaleForce": {
+    "Name": "GaleForce",
+    "Expression": "target.ReceiveAttack(16, 45)",
+    "Manacost": 9,
     "Statuses": [
       "Disarmed"
     ],
-    "Narrative": "executes a sword attack with the force of a tempest."
-  },
-  "DarkMending": {
-    "Key": "DarkMending",
-    "Expression": "target.ReceiveAttack(-15, 0)",
-    "Manacost": 8,
-    "Statuses": [
-      "Healing"
-    ],
-    "Narrative": "summons dark energies to mend wounds."
+    "Narrative": "summons a violent gust of wind, disarming the enemy."
   }
 }

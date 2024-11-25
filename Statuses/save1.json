@@ -1,21 +1,21 @@
 {
   "statusList": [
     {
-      "Name": "Weakened",
+      "Name": "Silenced",
       "Duration": "3",
-      "Type": "Enemy_Strength",
+      "Type": "Enemy_currentManaPoints",
       "Increase": false,
       "PercentBool": false,
-      "IntensityNumber": 2,
+      "IntensityNumber": 0,
       "IntensityPercent": null,
-      "Stackable": true,
+      "Stackable": false,
       "Refreshable": true,
       "ChanceToApplyPercent": 60,
-      "Description": "Weakens the enemy's strength for a short period."
+      "Description": "Prevents the enemy from using mana for a short period."
     },
     {
-      "Name": "Burn",
-      "Duration": "4",
+      "Name": "Burned",
+      "Duration": "5",
       "Type": "Enemy_currentHealth",
       "Increase": false,
       "PercentBool": true,
@@ -23,21 +23,8 @@
       "IntensityPercent": 5,
       "Stackable": true,
       "Refreshable": false,
-      "ChanceToApplyPercent": 50,
-      "Description": "Burns the enemy, causing damage over time."
-    },
-    {
-      "Name": "Frozen",
-      "Duration": "2",
-      "Type": "Enemy_Dexterity",
-      "Increase": false,
-      "PercentBool": false,
-      "IntensityNumber": 3,
-      "IntensityPercent": null,
-      "Stackable": false,
-      "Refreshable": true,
       "ChanceToApplyPercent": 70,
-      "October": "Reduces the enemy's dexterity, slowing their movements."
+      "Description": "Inflicts fire damage over time, reducing enemy health."
     },
     {
       "Name": "Stunned",
@@ -49,86 +36,86 @@
       "IntensityPercent": null,
       "Stackable": false,
       "Refreshable": false,
-      "ChanceToApplyPercent": 40,
-      "Description": "Stuns the enemy, preventing any actions for a short time."
+      "ChanceToApplyPercent": 50,
+      "Description": "Temporarily incapacitates the enemy, making them unable to act."
     },
     {
       "Name": "Poisoned",
-      "Duration": "5",
+      "Duration": "4",
       "Type": "Enemy_currentHealth",
       "Increase": false,
       "PercentBool": true,
       "IntensityNumber": null,
-      "IntensityPercent": 2,
+      "IntensityPercent": 10,
       "Stackable": true,
       "Refreshable": true,
       "ChanceToApplyPercent": 65,
-      "Description": "Poisons the enemy, draining health over time."
+      "Description": "Gradually saps the enemy's health with toxin."
+    },
+    {
+      "Name": "Bleeding",
+      "Duration": "3",
+      "Type": "Enemy_currentHealth",
+      "Increase": false,
+      "PercentBool": true,
+      "IntensityNumber": null,
+      "IntensityPercent": 7,
+      "Stackable": true,
+      "Refreshable": true,
+      "ChanceToApplyPercent": 60,
+      "Description": "Causes the enemy to lose health over time due to open wounds."
     },
     {
       "Name": "Rooted",
-      "Duration": "3",
+      "Duration": "2",
       "Type": "Enemy_Dexterity",
       "Increase": false,
       "PercentBool": false,
-      "IntensityNumber": -1,
+      "IntensityNumber": -2,
       "IntensityPercent": null,
       "Stackable": false,
       "Refreshable": false,
       "ChanceToApplyPercent": 55,
-      "Description": "Roots the enemy in place, preventing movement."
+      "Description": "Reduces the enemy's ability to move quickly."
     },
     {
-      "Name": "Silenced",
-      "Duration": "3",
-      "Type": "Enemy_currentManaPoints",
+      "Name": "Frozen",
+      "Duration": "2",
+      "Type": "Enemy_Dexterity",
       "Increase": false,
       "PercentBool": false,
-      "IntensityNumber": -5,
+      "IntensityNumber": -3,
       "IntensityPercent": null,
       "Stackable": false,
       "Refreshable": true,
       "ChanceToApplyPercent": 50,
-      "Description": "Prevents the enemy from using mana for a short period."
+      "Description": "Temporarily immobilizes the enemy by freezing them."
     },
     {
-      "Name": "MagicBoost",
+      "Name": "Blinded",
       "Duration": "3",
-      "Type": "Player_Intelligence",
-      "Increase": true,
-      "PercentBool": true,
-      "IntensityNumber": null,
-      "IntensityPercent": 10,
+      "Type": "Enemy_Charisma",
+      "Increase": false,
+      "PercentBool": false,
+      "IntensityNumber": -1,
+      "IntensityPercent": null,
       "Stackable": true,
       "Refreshable": true,
-      "ChanceToApplyPercent": 80,
-      "Description": "Temporarily boosts the player's intelligence, increasing magic damage."
-    },
-    {
-      "Name": "Healing",
-      "Duration": "2",
-      "Type": "Player_Health",
-      "Increase": true,
-      "PercentBool": true,
-      "IntensityNumber": null,
-      "IntensityPercent": 10,
-      "Stackable": false,
-      "Refreshable": false,
-      "ChanceToApplyPercent": 100,
-      "Description": "Gradually heals the player over a short period."
+      "ChanceToApplyPercent": 55,
+      "Description": "Impairs the enemy's vision, making it harder for them to hit the player."
     },
     {
       "Name": "Disarmed",
-      "Duration": "2",
+      "Duration": "3",
       "Type": "Enemy_Strength",
       "Increase": false,
       "PercentBool": false,
-      "IntensityNumber": 4,
+      "IntensityNumber": -2,
       "IntensityPercent": null,
       "Stackable": false,
-      "Refreshable": true,
-      "ChanceToApplyPercent": 45,
-      "Description": "Temporarily reduces the enemy's strength significantly."
+      "Refreshable": false,
+      "ChanceToApplyPercent": 50,
+      "Description": "Temporarily prevents the enemy from using their primary attack method."
     }
   ]
 }

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using CombatNamespace;
+using Emgu.CV.Structure;
 using ItemFunctionsNamespace;
 using OpenAI_API;
 using OpenAI_API.Chat;
@@ -35,16 +36,12 @@ namespace MainNamespace
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
         //
-        // NEXT - MAP GENERATION
-        // adjust nodeheight and nodewidth in graph generation prmopt to be preset values
-        // saving the actual tiles? how
-        // check for events triggered
-        // add variable to Node to make it easier to access start and end node points with corresponding Id's. new Connection class? or use edge
-        //
-        // NEXT - UI CONSTRUCTOR
         //
         // NEXT - ENEMY MOVEMENT AI
+        // make enemies move
         //
+        //
+        // - Make way for player to get more attacks
         //
         //
         // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
@@ -102,6 +99,8 @@ namespace MainNamespace
 
                     // game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
 
+                    game.player.PlayerAttacks[AttackSlot.slot1] = game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
+                    
                     gameStarted = true;
                     GamePlayLoop(ref game);
 
@@ -141,47 +140,35 @@ namespace MainNamespace
             int IdOfNextNode = -1;
             string input = Console.ReadKey().Key.ToString();
             Tile oldTile = null;
-            
+
             bool GameRunning = true;
             while (GameRunning) // while overall game running
             {
                 //UtilityFunctions.clearScreen(game.player);
                 UtilityFunctions.UpdateVars(ref game); // updates player rgb vars
-                if (testing)
+
+                while (!GetAllowedInputs("MoveCharacterMenu").Contains(input[0].ToString()) ||
+                       !GridFunctions.CheckIfOutOfBounds(
+                           game.map.Graphs[game.map.Graphs.Count - 1]
+                               .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                           game.player.playerPos, input[0].ToString()))
                 {
-                    while (!GetAllowedInputs("MoveTest").Contains(input[0].ToString()) ||
-                           !GridFunctions.CheckIfOutOfBounds(
-                               game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
-                               game.player.playerPos, input[0].ToString()))
-                    {
-                        UtilityFunctions.clearScreen(game.player);
-                        GridFunctions.DrawWholeNode(game);
-                        // Console.WriteLine("Please enter a valid input");
-                        input = Console.ReadKey(true).KeyChar.ToString();
-                    }
-                }
-                else
-                {
-                    while (!GetAllowedInputs("Move").Contains(input[0].ToString()) ||
-                           !GridFunctions.CheckIfOutOfBounds(
-                               game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
-                               game.player.playerPos, input[0].ToString()))
-                    {
-                        UtilityFunctions.clearScreen(game.player);
-                        GridFunctions.DrawWholeNode(game);
-                        // Console.WriteLine("Please enter a valid input");
-                        input = Console.ReadKey(true).KeyChar.ToString();
-                    }
+                    UtilityFunctions.clearScreen(game.player);
+                    GridFunctions.DrawWholeNode(game);
+                    // Console.WriteLine("Please enter a valid input");
+                    input = Console.ReadKey(true).KeyChar.ToString();
                 }
 
+
                 // move player, if it isnt a movement then do something else with the input
-                
+
                 if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game, ref oldTile))
                     AssessOtherInputs(input, ref game);
-                
+
                 // CHECK FOR EVENTS
                 int oldId = game.map.GetCurrentNode().NodeID;
-                CheckForEventsTriggered(ref game, ref IdOfNextNode);
+                CheckForEventsTriggered(ref game, ref IdOfNextNode, ref oldTile);
+                MoveEnemies(ref game);
 
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
                     GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
@@ -191,21 +178,28 @@ namespace MainNamespace
             }
         }
 
+        public static void MoveEnemies(ref Game game)
+        {
+            
+        }
+
         public static void AssessOtherInputs(string input, ref Game game)
         {
-            if (GetAllowedInputs("Test").Contains(input))
+            if (GetAllowedInputs("CharacterMenu").Contains(input))
             {
-                //game.map.
+                game.uiConstructer.drawCharacterMenu(game);
+                UtilityFunctions.TypeText(new TypeText(), "Press any key to continue");
+                Console.ReadKey(true);
             }
         }
 
-        public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode)
+        public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode, ref Tile oldTile)
         {
             Point pos = game.player.playerPos;
             Tile tile = game.map.GetCurrentNode().tiles[pos.X][pos.Y];
             if (tile.tileDesc == "NodeExit") // CHECK FOR IF ON A NODE BOUNDARY
             {
-                if (tile.exitNodePointerId != null && tile.entryNodePointerId == null) 
+                if (tile.exitNodePointerId != null && tile.entryNodePointerId == null)
                 {
                     IdOfNextNode = (int)tile.exitNodePointerId;
                 }
@@ -222,6 +216,35 @@ namespace MainNamespace
             {
                 IdOfNextNode = -1;
             }
+
+            if (tile.enemyOnTile != null)
+            {
+                // START COMBAT
+                UtilityFunctions.clearScreen(game.player);
+                bool outcome = game.startCombat(new List<Enemy>() { tile.enemyOnTile });
+                if (outcome)
+                {
+                    tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
+                    oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                    oldTile.rgb = new Rgb(255, 255, 255);
+
+                    game.player.currentExp += (tile.enemyOnTile.Level + 1) * 10 *
+                                              (game.map.Graphs[game.map.CurrentGraphPointer].GraphDepth + 1);
+                    game.player.checkForLevelUp();
+                    
+                    tile.enemyOnTile = null;
+                    oldTile.enemyOnTile = null;
+                }
+                else
+                {
+                    // END GAME
+                    game.loseGame();
+                }
+            }
+            
+            // IF NEW GRAPH
+            // GridFunctions.LastestGraphDepth++;
+            // game.map.CurrentGraphPointer++;
         }
 
         public static string GetAllowedInputs(string condition)
@@ -236,6 +259,11 @@ namespace MainNamespace
             if (condition.Contains("Attack"))
             {
                 toReturn += "1234"; // etc etc
+            }
+
+            if (condition.Contains("CharacterMenu"))
+            {
+                toReturn += "Cc";
             }
 
             if (condition.Contains("Test"))
@@ -371,9 +399,9 @@ namespace MainNamespace
                         case 1:
                             UtilityFunctions.clearScreen(null);
                             List<string> saves = Directory
-                                .GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml")
+                                .GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml")
                                 .ToList();
-                            saves.Remove($@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml");
+                            saves.Remove($@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
                             bool started = false;
                             for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                             {
@@ -385,7 +413,7 @@ namespace MainNamespace
                                     string load = Console.ReadLine();
                                     if (load == "y")
                                     {
-                                        string save = UtilityFunctions.mainDirectory + @$"Characters\save{i + 1}.xml";
+                                        string save = UtilityFunctions.mainDirectory + @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
                                         UtilityFunctions.saveSlot = Path.GetFileName(save);
                                         UtilityFunctions.saveFile = save;
                                         UtilityFunctions.saveName = $"save{i + 1}";
@@ -520,7 +548,7 @@ namespace MainNamespace
 
                         if (!UtilityFunctions.showExampleInSaves)
                         {
-                            saveNameList.Remove($@"{UtilityFunctions.mainDirectory}Characters\saveExample.xml");
+                            saveNameList.Remove($@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
                         }
 
                         List<string> saveNameListWithoutExt = new List<string>();
@@ -545,7 +573,7 @@ namespace MainNamespace
                     }
 
                     UtilityFunctions.saveSlot = saveSlot + ".xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + @"Characters\" + (saveSlot) + ".xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}" + (saveSlot) + ".xml";
                     UtilityFunctions.saveName = saveSlot;
                 }
 
@@ -671,12 +699,12 @@ namespace MainNamespace
             // this function will overwrite every saveExample.(ext) to a save(int), as inputted.
             List<string> directories = new List<string>();
             string main = UtilityFunctions.mainDirectory;
-            directories.Add(@$"{main}AttackBehaviours\");
-            directories.Add(@$"{main}Characters\");
-            directories.Add(@$"{main}EnemyTemplates\");
-            directories.Add(@$"{main}Equipments\");
-            directories.Add(@$"{main}Inventories\");
-            directories.Add(@$"{main}Statuses\");
+            directories.Add(@$"{main}AttackBehaviours{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}Characters{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}EnemyTemplates{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}Equipments{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}Inventories{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}Statuses{Path.DirectorySeparatorChar}");
 
             Console.Clear();
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -730,11 +758,11 @@ namespace MainNamespace
             try
             {
                 List<string> itemTemplatePaths =
-                    Directory.GetFiles(UtilityFunctions.mainDirectory + @"ItemTemplates\" + saveName).ToList();
+                    Directory.GetFiles(UtilityFunctions.mainDirectory + $@"ItemTemplates{Path.DirectorySeparatorChar}" + saveName).ToList();
                 foreach (string path in itemTemplatePaths)
                 {
                     List<string> newPaths = Directory
-                        .GetFiles(UtilityFunctions.mainDirectory + @"ItemTemplates\saveExamples").ToList();
+                        .GetFiles(UtilityFunctions.mainDirectory + $@"ItemTemplates{Path.DirectorySeparatorChar}saveExamples").ToList();
                     foreach (string newPath in newPaths)
                     {
                         if (Path.GetFileNameWithoutExtension(path) == Path.GetFileNameWithoutExtension(newPath))
@@ -760,7 +788,7 @@ namespace MainNamespace
             UtilityFunctions.clearScreen(null);
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Clearing all Characters...\n");
-            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
+            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml");
             foreach (string save in saves)
             {
                 if (Path.GetFileNameWithoutExtension(save) != "saveExample")

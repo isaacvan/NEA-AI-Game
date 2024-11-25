@@ -1,89 +1,93 @@
 {
   "PlayerBasicAttack": {
-    "Key": "PlayerBasicAttack",
+    "Name": "PlayerBasicAttack",
     "Expression": "target.ReceiveAttack(5, 20)",
     "Manacost": 0,
     "Statuses": [],
-    "Narrative": "throws a basic punch."
+    "Narrative": "throws a punch"
   },
-  "ShadowStrike": {
-    "Key": "ShadowStrike",
-    "Expression": "target.ReceiveAttack(20, 40)",
-    "Manacost": 8,
-    "Statuses": [
-      "Weakened"
-    ],
-    "Narrative": "launches a dark, unseen strike from the shadows."
-  },
-  "TimeRipple": {
-    "Key": "TimeRipple",
+  "FireArrow": {
+    "Name": "FireArrow",
     "Expression": "target.ReceiveAttack(15, 25)",
-    "Manacost": 12,
-    "Statuses": [
-      "Slowed",
-      "Disoriented"
-    ],
-    "Narrative": "creates a ripple in the fabric of time, slowing and confusing the enemy."
-  },
-  "AetherBlast": {
-    "Key": "AetherBlast",
-    "Expression": "target.ReceiveAttack(25, 30)",
-    "Manacost": 15,
-    "Statuses": [
-      "Stunned"
-    ],
-    "Narrative": "unleashes a powerful blast of pure aether energy."
-  },
-  "VoidPulse": {
-    "Key": "VoidPulse",
-    "Expression": "target.ReceiveAttack(10, 50)",
-    "Manacost": 5,
-    "Statuses": [
-      "Feared"
-    ],
-    "Narrative": "emits a pulse of void energy, instilling fear into its target."
-  },
-  "ArcaneMissile": {
-    "Key": "ArcaneMissile",
-    "Expression": "target.ReceiveAttack(18, 20)",
-    "Manacost": 7,
-    "Statuses": [],
-    "Narrative": "conjures and releases a missile of arcane energy at the target."
-  },
-  "InfernoWrath": {
-    "Key": "InfernoWrath",
-    "Expression": "target.ReceiveAttack(30, 15)",
-    "Manacost": 20,
+    "Manacost": 4,
     "Statuses": [
       "Burning"
     ],
-    "Narrative": "summons a searing inferno to engulf its foes."
+    "Narrative": "shoots a fiery arrow, igniting the target"
   },
-  "EtherealChains": {
-    "Key": "EtherealChains",
-    "Expression": "target.ReceiveAttack(12, 35)",
-    "Manacost": 10,
-    "Statuses": [
-      "Rooted"
-    ],
-    "Narrative": "binds the target with chains made from ethereal energy, rendering them immobile."
-  },
-  "GlacialSpike": {
-    "Key": "GlacialSpike",
-    "Expression": "target.ReceiveAttack(20, 60)",
-    "Manacost": 14,
+  "IceSpike": {
+    "Name": "IceSpike",
+    "Expression": "target.ReceiveAttack(12, 20)",
+    "Manacost": 6,
     "Statuses": [
       "Frozen"
     ],
-    "Narrative": "hurls a spike of ice, freezing the enemy upon impact."
+    "Narrative": "launches a spike of ice, freezing the target briefly"
   },
-  "PoisonDart": {
-    "Key": "PoisonDart",
-    "Expression": "target.ReceiveAttack(8, 80)",
-    "Manacost": 4,
+  "ShadowStrike": {
+    "Name": "ShadowStrike",
+    "Expression": "target.ReceiveAttack(20, 50)",
+    "Manacost": 8,
     "Statuses": [
-      "Poisoned"
+      "Poisoned",
+      "Blinded"
     ],
-    "Narrative": "shoots a dart laced with lethal poison."
+    "Narrative": "utilizes the shadows to strike unseen, poisoning and blinding the target"
+  },
+  "ThunderClap": {
+    "Name": "ThunderClap",
+    "Expression": "target.ReceiveAttack(18, 30)",
+    "Manacost": 7,
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "claps with the force of thunder, stunning the target"
+  },
+  "HealingWave": {
+    "Name": "HealingWave",
+    "Expression": "target.ReceiveAttack(-20, 0)",
+    "Manacost": 10,
+    "Statuses": [
+      "Healed"
+    ],
+    "Narrative": "casts a soothing wave, healing wounds"
+  },
+  "VengefulSpear": {
+    "Name": "VengefulSpear",
+    "Expression": "target.ReceiveAttack(25, 40)",
+    "Manacost": 9,
+    "Statuses": [
+      "Bleed",
+      "Weakened"
+    ],
+    "Narrative": "thrusts a spear with vengeful might, causing deep wounds"
+  },
+  "DarkWhisper": {
+    "Name": "DarkWhisper",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 5,
+    "Statuses": [
+      "Feared",
+      "Silenced"
+    ],
+    "Narrative": "whispers dark secrets, instilling fear and silence"
+  },
+  "MysticBarrier": {
+    "Name": "MysticBarrier",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 12,
+    "Statuses": [
+      "Shielded"
+    ],
+    "Narrative": "conjures a barrier of mystic energy, protecting from harm"
+  },
+  "EarthenGrasp": {
+    "Name": "EarthenGrasp",
+    "Expression": "target.ReceiveAttack(10, 20)",
+    "Manacost": 3,
+    "Statuses": [
+      "Rooted"
+    ],
+    "Narrative": "causes the earth to rise and grasp, immobilizing the target"
   }
 }

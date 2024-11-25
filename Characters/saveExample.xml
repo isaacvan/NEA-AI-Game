@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>0</X>
-    <Y>0</Y>
+    <X>15</X>
+    <Y>13</Y>
   </playerPos>
   <Class>Rogue Automaton</Class>
   <Race>Robot</Race>

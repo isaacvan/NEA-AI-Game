@@ -138,6 +138,14 @@ namespace CombatNamespace
 
         public bool checkForEndOfCombat()
         {
+            foreach (Enemy enemy in enemiesAlive.Keys)
+            {
+                if (enemy.currentHealth <= 0)
+                {
+                    enemiesAlive[enemy] = false;
+                }
+            }
+            
             if (player.currentHealth <= 0)
             {
                 // player is dead
@@ -175,18 +183,19 @@ namespace CombatNamespace
             {
                 // UI
                 int i = 1;
-                Console.WriteLine("These are your attacks:");
+                // UtilityFunctions.TypeText(new TypeText(), )
+                UtilityFunctions.TypeText(new TypeText(), "These are your attacks:");
                 foreach (AttackInfo attack in player.PlayerAttacks.Values)
                 {
                     if (attack != null)
                     {
-                        Console.WriteLine($"{i}. {attack.Name}");
+                        UtilityFunctions.TypeText(new TypeText(newLine: false), $"Slot #{i} ---> {attack.Name}");
                         i++;
                     }
                 }
-
-                Console.WriteLine($"\nPlease enter an attack");
-                Console.WriteLine(UtilityFunctions.universalSeperator);
+                
+                UtilityFunctions.TypeText(new TypeText(), "\n" + UtilityFunctions.universalSeperator);
+                UtilityFunctions.TypeText(new TypeText(), "Please enter an attack");
                 
                 try
                 {
@@ -205,7 +214,7 @@ namespace CombatNamespace
                             if (player.currentMana - Convert.ToInt16(parameters.Last().Value) < 0)
                             {
                                 // player doesnt have enough mana
-                                Console.WriteLine($"You do not have enough mana to cast this skill.");
+                                UtilityFunctions.TypeText(new TypeText(), $"You do not have enough mana to cast this skill.");
                             }
                             else
                             {
@@ -223,8 +232,8 @@ namespace CombatNamespace
                 catch
                 {
                     Console.Clear();
-                    Console.WriteLine(UtilityFunctions.universalSeperator);
-                    Console.WriteLine(
+                    UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
+                    UtilityFunctions.TypeText(new TypeText(), 
                         $"Invalid input. Input should range from 1 - {player.PlayerAttacks.Values.Count}.");
                 }
             }
@@ -240,11 +249,11 @@ namespace CombatNamespace
             if (enemies.Count > 1) // AND ISNT AOE TARGETTING
             {
                 Console.Clear();
-                Console.WriteLine($"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                 int i = 1;
                 foreach (Enemy en in enemies.Values)
                 {
-                    Console.WriteLine($"{i}: {en.Name} - {en.currentHealth}/{en.Health}");
+                    UtilityFunctions.TypeText(new TypeText(), $"{i}: {en.Name} - {en.currentHealth}/{en.Health}");
                     i++;
                 }
 
@@ -273,14 +282,14 @@ namespace CombatNamespace
                     }
                     catch
                     {
-                        Console.WriteLine("Invalid input.");
+                        UtilityFunctions.TypeText(new TypeText(), "Invalid input.");
                         Thread.Sleep(500);
                         Console.Clear();
-                        Console.WriteLine($"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                        UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                         int i1 = 1;
                         foreach (Enemy en in enemies.Values)
                         {
-                            Console.WriteLine($"{i1}: {en.Name} - {en.currentHealth}/{en.Health}");
+                            UtilityFunctions.TypeText(new TypeText(), $"{i1}: {en.Name} - {en.currentHealth}/{en.Health}");
                             i1++;
                         }
                     }
@@ -292,9 +301,9 @@ namespace CombatNamespace
                 target = (Enemy)enemy;
             }
             
-            Console.Clear();
+            UtilityFunctions.clearScreen(this.player);
 
-            Console.WriteLine($"You used {attackInfo.Name}!");
+            UtilityFunctions.TypeText(new TypeText(), $"You used {attackInfo.Name}!");
             player.ExecuteAttack(attackInfo.Name, target);
         }
 

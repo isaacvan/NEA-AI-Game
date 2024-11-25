@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Shadow's Whisper</Name>
-        <Description>A dagger that murmurs with the voices of the past, as silent as the shadows it was born from.</Description>
-        <Damage>18</Damage>
-        <WeaponType>Dagger</WeaponType>
-        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <Name>Crescent Blade</Name>
+        <Description>A rare blade that curves like the moon, its edge gleams with a light unseen.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+5 Strength</UniqueProperties>
         <StatusNames>
-            <StatusName>Silence</StatusName>
             <StatusName>Bleed</StatusName>
         </StatusNames>
-        <AttackBehaviour>StealthStrike</AttackBehaviour>
-        <NarrativeLine>As you strike from the shadows, your enemy's voice fades into silence.</NarrativeLine>
+        <AttackBehaviour>MoonSlash</AttackBehaviour>
+        <NarrativeLine>With a swift arc, the blade carves the air, leaving a trail of blood.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Echoes of the Void</Name>
-        <Description>A longbow imbued with the essence of the void, its arrows whisper death as they fly.</Description>
-        <Damage>22</Damage>
-        <WeaponType>Bow</WeaponType>
-        <UniqueProperties>+2 Intelligence; +1 Dexterity</UniqueProperties>
+        <Name>Starlit Staff</Name>
+        <Description>Embedded with a crystal that pulses with starlight, this staff enhances magical affinity.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+3 Intelligence</UniqueProperties>
         <StatusNames>
             <StatusName>Slow</StatusName>
-            <StatusName>Confuse</StatusName>
         </StatusNames>
-        <AttackBehaviour>VoidArrow</AttackBehaviour>
-        <NarrativeLine>An arrow, silent but deadly, sows chaos among your foes.</NarrativeLine>
+        <AttackBehaviour>Starfall</AttackBehaviour>
+        <NarrativeLine>Stars descend upon the foe, hindering their advance.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Twilight's Edge</Name>
-        <Description>A sword that was forged in the dying light of the twilight, harnessing the day's last shadows.</Description>
-        <Damage>27</Damage>
-        <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+3 Strength; +1 Constitution</UniqueProperties>
+        <Name>Whisperwind Daggers</Name>
+        <Description>Forged from the essence of the wind, these daggers strike with silence and precision.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Daggers</WeaponType>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
         <StatusNames>
-            <StatusName>Stun</StatusName>
+            <StatusName>Invisibility</StatusName>
         </StatusNames>
-        <AttackBehaviour>NightfallSlash</AttackBehaviour>
-        <NarrativeLine>With a swing, darkness envelops your enemies, leaving them paralyzed by fear.</NarrativeLine>
+        <AttackBehaviour>ShadowStrike</AttackBehaviour>
+        <NarrativeLine>The enemy is caught off-guard, unaware of the impending strike.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

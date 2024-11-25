@@ -87,6 +87,10 @@ namespace GameClassNamespace
                 // GridFunctions.GenerateMap(this, gameSetup, chat);
                 map = await gameSetup.GenerateMapStructure(chat, this, gameSetup); // SWITCH
                 
+                // initialise HUD details
+                GridFunctions.CurrentNodeId = 0;
+                GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
+                
                 Console.WriteLine("Started Game.");
             }
             else
@@ -140,16 +144,13 @@ namespace GameClassNamespace
             return currentCombat.beginCombat();
         }
 
-        public static void saveGame()
+        public void loseGame()
         {
-        }
-
-        public static void loadGame()
-        {
-        }
-
-        public static void startGame()
-        {
+            Console.Clear();
+            UtilityFunctions.TypeText(new TypeText(), "You lost the game!");
+            UtilityFunctions.TypeText(new TypeText(), "Thanks for playing!");
+            UtilityFunctions.TypeText(new TypeText(), "Your save is now empty! \n(I won't actually delete it yet)");
+            Environment.Exit(0);
         }
     }
 }

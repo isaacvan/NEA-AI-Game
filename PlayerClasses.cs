@@ -294,10 +294,21 @@ namespace PlayerClassesNamespace
 
         public void checkForLevelUp()
         {
-            /*while (currentExp >= maxExp)
+            while (currentExp >= maxExp)
             {
                 levelUp();
-            }*/
+            }
+        }
+
+        public void levelUp()
+        {
+            Level++;
+            currentExp -= maxExp;
+            maxExp = (maxExp * 2);
+            UtilityFunctions.clearScreen(this);
+            UtilityFunctions.TypeText(new TypeText(), "You leveled up!");
+            UtilityFunctions.TypeText(new TypeText(), $"Level: {Level - 1} ---> {Level}");
+            Thread.Sleep(1000);
         }
     }
 }

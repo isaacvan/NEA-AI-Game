@@ -26,7 +26,7 @@ namespace UtilityFunctionsNamespace
         public int _typingSpeed;
         public bool _inst;
 
-        public TypeText(bool inst, int typingSpeed, bool newLine = true)
+        public TypeText(bool inst = false, int typingSpeed = 3, bool newLine = true)
         {
             _inst = inst;
             _typingSpeed = typingSpeed;
@@ -464,6 +464,7 @@ namespace UtilityFunctionsNamespace
             Console.ForegroundColor = ConsoleColor.White;
             if (player != null)
             {
+                Console.WriteLine($"LEVEL: {player.Level}");
                 DisplayExpBar(player.currentExp, player.maxExp, 80);
                 Console.WriteLine(DrawHealthBar(player));
                 //DisplayHealthBar(player.currentHealth, player.maxHealth, Console.WindowWidth);
@@ -617,22 +618,25 @@ namespace UtilityFunctionsNamespace
         {
             if (typeText._inst)
             {
-                Console.WriteLine($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
+                Console.WriteLine($"{text}");
             }
             else if (!typeText._newLine)
             {
                 Thread.Sleep(20);
-                Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
+                Console.Write($"{text}");
             }
             else
             {
-                Thread.Sleep(20);
-                Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
-                // foreach (char c in text)
-                // {
-                //     Console.Write(c);
-                //     Thread.Sleep(typingSpeed);
-                // }
+                //Thread.Sleep(20);
+                //Console.Write($"{colourScheme.generalTextCode}{text}{colourScheme.generalTextCode}");
+                foreach (char c in text)
+                {
+                    Console.Write(c);
+                    if (c != '\n' || c != ' ')
+                    {
+                        Thread.Sleep(typeText._typingSpeed);
+                    }
+                }
                 Console.Write("\n");
             }
         }

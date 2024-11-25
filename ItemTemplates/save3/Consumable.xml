@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
-        <Name>Phantom Brew</Name>
-        <Description>A mystical potion that blurs the line between visibility and invisibility.</Description>
-        <Effects>Grants temporary invisibility</Effects>
-        <UniqueProperties>+5 to stealth activities</UniqueProperties>
-        <StorylineRelevance>A necessity for sneaking past the guards of the Dark Fortress.</StorylineRelevance>
-    </Consumable>
-    <Consumable>
         <Name>Elixir of Shadows</Name>
-        <Description>A dark, shimmering liquid that enhances one's affinity with the darkness.</Description>
-        <Effects>Increases Dexterity and Stealth</Effects>
-        <UniqueProperties>+3 Dexterity for 10 minutes</UniqueProperties>
-        <StorylineRelevance>Used to navigate through the Shadow Realm unscathed.</StorylineRelevance>
+        <Description>A brew that dims the drinker's presence, making them nearly invisible to the naked eye.</Description>
+        <Effects>Grants temporary stealth</Effects>
+        <UniqueProperties>+5 to stealth rolls</UniqueProperties>
+        <StorylineRelevance>A necessary tool for sneaking past the Night Sentinels.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Ancient Whisper</Name>
-        <Description>A rare artifact that allows direct communication with the ancestral spirits of the Shadow Elf race.</Description>
-        <Effects>Reveals hidden paths and secrets in the environment</Effects>
+        <Name>Phoenix Feather</Name>
+        <Description>An incredibly rare item that can revive the fallen, enveloped in flames that heal.</Description>
+        <Effects>Revives and fully restores health</Effects>
         <UniqueProperties>One-time use</UniqueProperties>
-        <StorylineRelevance>Key to uncovering the lost history of the Shadow Elves and advancing the plot.</StorylineRelevance>
+        <StorylineRelevance>Key to surviving the Trial of the Phoenix.</StorylineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Mystic Bond</Name>
+        <Description>A potion that links the fates of those who drink it, dividing harm and healing between them.</Description>
+        <Effects>Links two allies together, sharing damage and healing</Effects>
+        <UniqueProperties>Duration of 5 turns</UniqueProperties>
+        <StorylineRelevance>Symbolizes the unity of the protagonists.</StorylineRelevance>
     </Consumable>
 </Item>

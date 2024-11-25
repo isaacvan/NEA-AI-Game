@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Emgu.CV.Structure;
 using Emgu.CV.XImgproc;
+using EnemyClassesNamespace;
 using GameClassNamespace;
 using GPTControlNamespace;
 using MainNamespace;
@@ -19,6 +20,7 @@ namespace GridConfigurationNamespace
     {
         public static int CurrentNodeId = 0;
         public static string CurrentNodeName = "";
+        public static int LastestGraphDepth = 0;
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
             { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E" } };
@@ -29,8 +31,13 @@ namespace GridConfigurationNamespace
             { "Enemy", null }
         };
 
-        public static List<int>
-            PointedToNodeIds = new List<int>(); // list of Ids that have been pointed to already; resets every graph
+        public static Dictionary<Nature, Rgb> NatureToRGB = new Dictionary<Nature, Rgb>()
+        {
+            { Nature.aggressive, new Rgb(255, 87, 51) }, // aggressive red
+            { Nature.neutral, new Rgb(255, 250, 160) }, // neutral yelloiw
+            { Nature.timid, new Rgb(167, 199, 231) } // timid blue
+        };
+
         // U+220F
 
         public static List<int> RedGreenBluePlayerVals = new List<int>() { 0, 0, 0 };
@@ -43,7 +50,6 @@ namespace GridConfigurationNamespace
 
         public static List<List<Tile>> PlacePlayer(Point point, List<List<Tile>> tiles, ref Game game)
         {
-            
             tiles[point.X][point.Y].tileChar = CharsToMeanings["Player"][0];
             tiles[point.X][point.Y].playerHere = true;
             game.player.playerPos = point;
@@ -128,14 +134,14 @@ namespace GridConfigurationNamespace
         public static void UpdateToNewNode(ref Game game, int newId, ref Tile oldTile, int oldId)
         {
             Point oldPos = game.player.playerPos;
-            
+
             List<List<Tile>> newTiles = cloneTiles(game.map.GetCurrentNode(oldId).tiles);
             newTiles[oldPos.X][oldPos.Y].tileChar = GridFunctions.CharsToMeanings["NodeExit"][0];
             newTiles[oldPos.X][oldPos.Y].tileDesc = "NodeExit";
             newTiles[oldPos.X][oldPos.Y].playerHere = false;
             // newTiles;
             game.map.SetCurrentNodeTilesContents(newTiles, oldId);
-            
+
 
             if (game.map.Graphs[game.map.Graphs.Count - 1].Nodes[newId] != null)
             {
@@ -148,7 +154,8 @@ namespace GridConfigurationNamespace
 
             CurrentNodeId = newId;
             CurrentNodeName = game.map.GetCurrentNode().NodePOI;
-            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game, oldId, newId),
+            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(
+                GridFunctions.GetPlayerStartPos(ref game, oldId, newId),
                 game.map.GetCurrentNode(newId).tiles, ref game));
         }
 
@@ -168,7 +175,8 @@ namespace GridConfigurationNamespace
                     oldTile.tileChar = GridFunctions.CharsToMeanings["NodeExit"][0];
                     oldTile.tileDesc = "NodeExit";
                     oldTile.playerHere = false;
-                } else if (oldTile == null)
+                }
+                else if (oldTile == null)
                 {
                     oldTile = new Tile(CharsToMeanings["Empty"][0], oldPos, "Empty");
                 }
@@ -181,7 +189,7 @@ namespace GridConfigurationNamespace
                     .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles[oldPos.X][oldPos.Y]
                     .tileChar = oldTile.tileChar;
                     */
-                
+
                 game.map.Graphs[game.map.Graphs.Count - 1]
                         .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
                         .tiles[oldPos.X][oldPos.Y] =
@@ -206,12 +214,12 @@ namespace GridConfigurationNamespace
 
                 // capture old tile if it isnt a node exit
                 if (game.map.Graphs[game.map.Graphs.Count - 1]
-                    .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
-                    .tiles[PlayerPos.X][PlayerPos.Y].tileDesc == "NodeExit")
+                        .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
+                        .tiles[PlayerPos.X][PlayerPos.Y].tileDesc == "NodeExit")
                 {
                     // dont pick up the new tile and instead set it to null
                     oldTile = null;
-                    
+
                     // move the player onto the exit point
                     game.map.Graphs[game.map.Graphs.Count - 1]
                         .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer]
@@ -237,7 +245,7 @@ namespace GridConfigurationNamespace
 
                     oldTile = temp.clone();
                 }
-                
+
 
                 return true;
             }
@@ -260,7 +268,8 @@ namespace GridConfigurationNamespace
                             p = exitPoint;
                         }
                     }
-                } else if (oldId < newId) // going forwards through an exit node
+                }
+                else if (oldId < newId) // going forwards through an exit node
                 {
                     List<(Point, int)> entryPointsOfNewNode = game.map.GetCurrentNode(newId).ConnectedEntryNodes;
                     foreach (var (entryPoint, entryId) in entryPointsOfNewNode)
@@ -329,15 +338,7 @@ namespace GridConfigurationNamespace
                     // \x1b[38;2;255m
                     if (distance <= sightRange)
                     {
-                        if (node.tiles[i][j].playerHere)
-                        {
-                            Console.Write(
-                                $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} \x1b[0m");
-                        }
-                        else
-                        {
-                            Console.Write($"\x1b[38;2;{r};{g};{b}m{node.tiles[i][j].tileChar} \x1b[0m");
-                        }
+                        WriteTileChar(node, i, j, r, g, b);
                     }
                     // if outside sight range but still within the square frame
                     else if (distance * 1.2 <= sightRange * 2)
@@ -352,8 +353,7 @@ namespace GridConfigurationNamespace
                         }
                         else
                         {
-                            Console.Write(
-                                $"\x1b[38;2;{Math.Round(brightness * r, 0)};{Math.Round(brightness * g, 0)};{Math.Round(brightness * b, 0)}m{node.tiles[i][j].tileChar} \x1b[0m");
+                            WriteTileChar(node, i, j, Math.Round(brightness * r, 0), Math.Round(brightness * g, 0), Math.Round(brightness * b, 0), brightness);
                         }
                     }
                 }
@@ -362,6 +362,23 @@ namespace GridConfigurationNamespace
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void WriteTileChar(Node node, int i, int j, double r, double g, double b, float brightness = 1)
+        {
+            if (node.tiles[i][j].playerHere)
+            {
+                Console.Write(
+                    $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} \x1b[0m");
+            } else if (node.tiles[i][j].enemyOnTile != null)
+            {
+                Nature nature = node.tiles[i][j].enemyOnTile.nature;
+                Console.Write($"\x1b[38;2;{Math.Round(NatureToRGB[nature].Red*brightness, 0)};{Math.Round(NatureToRGB[nature].Green*brightness, 0)};{Math.Round(NatureToRGB[nature].Blue*brightness, 0)}m{node.tiles[i][j].tileChar} \x1b[0m");
+            }
+            else
+            {
+                Console.Write($"\x1b[38;2;{r};{g};{b}m{node.tiles[i][j].tileChar} \x1b[0m");
+            }
         }
 
         public static Node PopulateNodeWithTiles(Node node, Graph graph)
@@ -385,15 +402,6 @@ namespace GridConfigurationNamespace
             return node;
         }
 
-        public static int GetNextNodeId(Node node)
-        {
-            PointedToNodeIds.Add(PointedToNodeIds.Count + 1);
-            if (PointedToNodeIds.Count > 9)
-            {
-                throw null;
-            }
-            return PointedToNodeIds.Count;
-        }
 
         public static List<List<Tile>> cloneTiles(List<List<Tile>> tiles)
         {
@@ -406,7 +414,7 @@ namespace GridConfigurationNamespace
                     newTiles[i].Add(tiles[i][j].clone());
                 }
             }
-            
+
             return newTiles;
         }
     }
@@ -414,10 +422,12 @@ namespace GridConfigurationNamespace
     public class Map
     {
         public List<Graph> Graphs { get; set; }
+        public int CurrentGraphPointer { get; set; }
 
         public Map()
         {
             Graphs = new List<Graph>();
+            CurrentGraphPointer = 0;
         }
 
         public Node GetCurrentNode(int? nodeID = null)
@@ -454,6 +464,14 @@ namespace GridConfigurationNamespace
         }
     }
 
+    public class EnemySpawn
+    {
+        public Point spawnPoint { get; set; }
+        public Nature nature { get; set; }
+        public string name { get; set; }
+        public bool boss { get; set; }
+    }
+
     public class Node
     {
         public int NodeID { get; set; }
@@ -467,6 +485,7 @@ namespace GridConfigurationNamespace
         [Newtonsoft.Json.JsonIgnore] public int NodeHeight { get; set; }
         public bool Milestone { get; set; }
         [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public List<EnemySpawn> enemies { get; set; }
 
         public Node(int id, int width, int height, string nodePOI, bool milestone)
         {
@@ -488,6 +507,77 @@ namespace GridConfigurationNamespace
         {
             this.ConnectedNodes.Add(node.NodeID);
         }
+
+        public void InitialiseEnemies(Game game)
+        {
+            /*
+             public Point spawnPoint { get; set; }
+               public Nature nature { get; set; }
+               public string name { get; set; }
+               public bool boss { get; set; }
+             */
+
+            if (enemies != null)
+                if (enemies.Count > 0)
+                    return;
+
+            Random random = new Random();
+            List<EnemySpawn> spawns = new List<EnemySpawn>();
+            int enemyCount = random.Next(1, 4);
+            if (Milestone) enemyCount = 1;
+            for (var i = 0; i < enemyCount; i++)
+            {
+                spawns.Add(new EnemySpawn());
+                Point enemyPoint = new Point();
+                bool validPoint = false;
+                while (!validPoint)
+                {
+                    enemyPoint.X = random.Next(1, this.NodeWidth - 2);
+                    enemyPoint.Y = random.Next(1, this.NodeHeight - 2);
+                    if (tiles[enemyPoint.X][enemyPoint.Y].tileDesc == "Empty" && tiles[enemyPoint.X][enemyPoint.Y].enemyOnTile == null)
+                    {
+                        validPoint = true;
+                    }
+                }
+
+                if (Milestone)
+                {
+                    spawns[i].boss = true;
+                    spawns[i].spawnPoint = enemyPoint;
+                    spawns[i].nature = Nature.aggressive;
+                    spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
+                }
+                else
+                {
+                    spawns[i].boss = false;
+                    spawns[i].spawnPoint = enemyPoint;
+                    List<Nature> natures = new List<Nature>();
+                    foreach (Nature nature in Enum.GetValues(typeof(Nature)))
+                    {
+                        natures.Add((Nature)nature);
+                    }
+
+                    spawns[i].nature = natures[random.Next(0, natures.Count)];
+                    spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
+                }
+            }
+
+            enemies = spawns;
+
+            PlaceEnemiesOnNode(game);
+        }
+
+        public void PlaceEnemiesOnNode(Game game)
+        {
+            if (enemies.Count == 0) throw new Exception("No enemies placed");
+            foreach (EnemySpawn spawn in enemies)
+            {
+                EnemyTemplate template = game.enemyFactory.enemyTemplates[spawn.name];
+                tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
+                tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile =
+                    game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint);
+            }
+        }
     }
 
     public class Tile
@@ -504,13 +594,16 @@ namespace GridConfigurationNamespace
         public bool walkable { get; set; }
         public int? exitNodePointerId { get; set; }
         public int? entryNodePointerId { get; set; }
+        public Enemy? enemyOnTile { get; set; }
 
-        public Tile(char tileChar, Point tileXY, string tileDesc, int? nodeEntryPointer = null, int? nodeExitPointer = null)
+        public Tile(char tileChar, Point tileXY, string tileDesc, int? nodeEntryPointer = null,
+            int? nodeExitPointer = null)
         {
             this.tileChar = tileChar;
             this.tileXY = tileXY;
             this.tileDesc = tileDesc;
             this.playerHere = false;
+            enemyOnTile = null;
             if (tileDesc != null)
             {
                 rgb = GridFunctions.CharsToRGB[tileDesc];
@@ -555,11 +648,13 @@ namespace GridConfigurationNamespace
         public List<Node> Nodes { get; set; }
         public int Id { get; set; }
         [Newtonsoft.Json.JsonIgnore] public int CurrentNodePointer { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public int GraphDepth { get; set; }
 
-        public Graph(int id, List<Node> nodes)
+        public Graph(int id, List<Node> nodes, int depth)
         {
             Nodes = nodes;
             Id = id;
+            GraphDepth = depth;
         }
 
         public Node? GetNode(int id)
@@ -578,7 +673,7 @@ namespace GridConfigurationNamespace
         public void SetEntryAndExits()
         {
             List<Node> nodes = new List<Node>();
-            
+
             foreach (Node node in Nodes)
             {
                 // entry nodes
@@ -594,17 +689,19 @@ namespace GridConfigurationNamespace
                 List<(Point, int)> entryPoints = new List<(Point, int)>();
                 int nodeid = node.NodeID;
                 List<int> NodeIdsToPointTo = new List<int>();
-                
+
                 try
                 {
                     for (int j = 0; j < listOfNodeConnections[nodeid].Count; j++)
                     {
                         if (Nodes[listOfNodeConnections[nodeid][j]].NodeDepth <
-                            Nodes[nodeid].NodeDepth) // then start node corresponding to listOfNodeConnections[nodeid][j]
+                            Nodes[nodeid]
+                                .NodeDepth) // then start node corresponding to listOfNodeConnections[nodeid][j]
                         {
                             entryPoints.Add(new(new Point(0, 0), listOfNodeConnections[nodeid][j]));
-                        } else if (Nodes[listOfNodeConnections[nodeid][j]].NodeDepth >
-                                   Nodes[nodeid].NodeDepth)
+                        }
+                        else if (Nodes[listOfNodeConnections[nodeid][j]].NodeDepth >
+                                 Nodes[nodeid].NodeDepth)
                         {
                             NodeIdsToPointTo.Add(listOfNodeConnections[nodeid][j]);
                         }
@@ -635,8 +732,7 @@ namespace GridConfigurationNamespace
                             new Point(ExitPoint.X, ExitPoint.Y), "NodeExit", entryPoints[j].Item2);
                     node.ConnectedEntryNodes.Add((new Point(ExitPoint.X, ExitPoint.Y), entryPoints[j].Item2));
                 }
-                
-                
+
 
                 // exit nodes
                 int exits = node.ConnectedNodes.Count - entries;
@@ -663,15 +759,15 @@ namespace GridConfigurationNamespace
                     {
                         throw e;
                     }
-                    
+
                     index++;
                     node.tiles[ExitPoint.X][ExitPoint.Y] =
                         new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]),
                             new Point(ExitPoint.X, ExitPoint.Y), "NodeExit", newNodeId);
-                    (Point, int) exitTuple = new (new Point(ExitPoint.X, ExitPoint.Y), newNodeId);
+                    (Point, int) exitTuple = new(new Point(ExitPoint.X, ExitPoint.Y), newNodeId);
                     node.ConnectedExitNodes.Add(exitTuple);
                 }
-                
+
                 nodes.Add(node);
             }
 

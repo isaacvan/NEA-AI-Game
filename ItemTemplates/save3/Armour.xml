@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Veil of the Shadow Dancer</Name>
-        <Description>A lightweight hood that makes its wearer as elusive as the waning moon.</Description>
+        <Name>Guardian's Helm</Name>
+        <Description>A helmet that was once worn by the legendary Guardian of the Realms. It is said to protect the wearer from dark magic.</Description>
         <Defence>15</Defence>
-        <UniqueProperties>+3 Dexterity; +2 Stealth</UniqueProperties>
-        <DefensiveCapabilities>Greatly reduces visibility to enemies</DefensiveCapabilities>
+        <UniqueProperties>+2 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Resistance to dark magic</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Twilight Mantle</Name>
-        <Description>A cloak woven from the essence of twilight, offering protection against the elements.</Description>
-        <Defence>20</Defence>
-        <UniqueProperties>+2 Constitution; +1 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Resistant to elemental magic</DefensiveCapabilities>
+        <Name>Chestplate of Valor</Name>
+        <Description>This chestplate shines with an inner light, inspiring courage in the face of overwhelming darkness.</Description>
+        <Defence>30</Defence>
+        <UniqueProperties>+3 Strength; +2 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Boosts morale, reducing fear effects</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Shadowsilk Leggings</Name>
-        <Description>Leggings crafted from a material as dark as the void, offering unmatched freedom of movement.</Description>
-        <Defence>12</Defence>
+        <Name>Boots of the Windwalker</Name>
+        <Description>These boots were crafted with feathers from the mystical Windbird, granting unmatched swiftness.</Description>
+        <Defence>10</Defence>
         <UniqueProperties>+4 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Increases evasion rate</DefensiveCapabilities>
+        <DefensiveCapabilities>Increases movement speed</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
 </Item>

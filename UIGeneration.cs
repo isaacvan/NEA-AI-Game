@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using CombatNamespace;
 using EnemyClassesNamespace;
+using GameClassNamespace;
+using GPTControlNamespace;
 using GridConfigurationNamespace;
 using MainNamespace;
 using PlayerClassesNamespace;
@@ -19,6 +21,23 @@ namespace UIGenerationNamespace
             player = plyr;
         }
 
+        public void drawCharacterMenu(Game game)
+        {
+            UtilityFunctions.clearScreen(game.player);
+            UtilityFunctions.TypeText(new TypeText(), "ATTACKS:");
+            foreach (var attack in game.player.PlayerAttacks)
+            {
+                if (attack.Value != null)
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> {attack.Value.Name}");
+                }
+                else
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
+                }
+            }
+        }
+
         public async Task fillNearbyEnemies() // needs filling
         {
             foreach (List<Tile> row in map)
@@ -33,6 +52,11 @@ namespace UIGenerationNamespace
             }
         }
 
+        public static void Func()
+        {
+            
+        }
+
         public async Task drawUI()
         {
             // main UI fnction
@@ -41,13 +65,14 @@ namespace UIGenerationNamespace
         public void displayCombatUI(Dictionary<int, Enemy> enemiesDict)
         {
             // combat ui
+            // UtilityFunctions.TypeText(new TypeText(), )
             
-            Console.WriteLine(UtilityFunctions.universalSeperator);
+            UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
             List<Enemy> enemies = enemiesDict.Values.ToList();
             
             int columnWidth = 12; // Adjust as necessary for layout
-            string separator = " | ";
-            string ResetANSI = "\x1b[0m";
+            string separator = "     |      ";
+            string ResetANSI = $"\x1b[0m";
 
             string FormatString(string str, int width)
             {
@@ -106,14 +131,15 @@ namespace UIGenerationNamespace
             // Print all lines side by side
             for (int i = 0; i < playerLines.Count; i++)
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 string line = playerLines[i];
                 foreach (var enemy in enemyLines)
                 {
                     line += separator + enemy[i];
                 }
-                Console.WriteLine(line);
+                UtilityFunctions.TypeText(new TypeText(), line);
             }
-            Console.WriteLine(UtilityFunctions.universalSeperator);
+            UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
         }
     }
 }

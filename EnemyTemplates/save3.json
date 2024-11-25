@@ -1,94 +1,94 @@
 {
   "enemyTypes": [
-    "Shadow Stalker",
-    "Void Sentinel",
-    "Ethereal Phantom",
-    "Nightmare Wraith",
-    "Dusk Raider"
+    "Shadow Wisp",
+    "Ancient Sentinel",
+    "Rogue Elementalist",
+    "Dreadnaught",
+    "Forest Guardian"
   ],
   "enemyTemplates": {
-    "Shadow Stalker": {
-      "Name": "Shadow Stalker",
-      "Health": 60,
-      "ManaPoints": 50,
-      "Strength": 6,
-      "Intelligence": 8,
-      "Dexterity": 15,
+    "Shadow Wisp": {
+      "Name": "Shadow Wisp",
+      "Health": 50,
+      "ManaPoints": 80,
+      "Strength": 3,
+      "Intelligence": 15,
+      "Dexterity": 20,
       "Constitution": 5,
       "Charisma": 2,
       "AttackBehaviourKeys": [
         "ShadowPierce",
-        "SilentStrike",
-        "DarkRejuvenation",
-        "NightfallSlash"
-      ],
-      "nature": "aggressive"
-    },
-    "Void Sentinel": {
-      "Name": "Void Sentinel",
-      "Health": 75,
-      "ManaPoints": 70,
-      "Strength": 10,
-      "Intelligence": 12,
-      "Dexterity": 10,
-      "Constitution": 8,
-      "Charisma": 3,
-      "AttackBehaviourKeys": [
-        "VoidArrow",
-        "ElectroPulse",
-        "InfernoSwipe",
-        "IceShard"
-      ],
-      "nature": "neutral"
-    },
-    "Ethereal Phantom": {
-      "Name": "Ethereal Phantom",
-      "Health": 50,
-      "ManaPoints": 80,
-      "Strength": 4,
-      "Intelligence": 15,
-      "Dexterity": 18,
-      "Constitution": 3,
-      "Charisma": 4,
-      "AttackBehaviourKeys": [
-        "PhaseShift",
-        "HauntingWail",
-        "SpectralArrow",
-        "EtherBlast"
+        "VenomSpit",
+        "InfernoBlast",
+        "TerrorScreech"
       ],
       "nature": "timid"
     },
-    "Nightmare Wraith": {
-      "Name": "Nightmare Wraith",
-      "Health": 85,
-      "ManaPoints": 60,
-      "Strength": 12,
+    "Ancient Sentinel": {
+      "Name": "Ancient Sentinel",
+      "Health": 90,
+      "ManaPoints": 50,
+      "Strength": 18,
       "Intelligence": 10,
-      "Dexterity": 12,
-      "Constitution": 15,
-      "Charisma": 1,
+      "Dexterity": 5,
+      "Constitution": 20,
+      "Charisma": 5,
       "AttackBehaviourKeys": [
-        "Terrorize",
-        "DarkSwipe",
-        "NightfallSlash",
+        "EarthquakeStomp",
+        "MysticBind",
+        "Crystalize",
+        "WhirlwindSlash"
+      ],
+      "nature": "neutral"
+    },
+    "Rogue Elementalist": {
+      "Name": "Rogue Elementalist",
+      "Health": 70,
+      "ManaPoints": 100,
+      "Strength": 4,
+      "Intelligence": 20,
+      "Dexterity": 15,
+      "Constitution": 8,
+      "Charisma": 10,
+      "AttackBehaviourKeys": [
+        "IceSpear",
+        "InfernoBlast",
+        "VenomSpit",
         "ShadowPierce"
       ],
       "nature": "aggressive"
     },
-    "Dusk Raider": {
-      "Name": "Dusk Raider",
-      "Health": 70,
-      "ManaPoints": 55,
-      "Strength": 8,
-      "Intelligence": 7,
-      "Dexterity": 13,
-      "Constitution": 10,
-      "Charisma": 5,
+    "Dreadnaught": {
+      "Name": "Dreadnaught",
+      "Health": 100,
+      "ManaPoints": 60,
+      "Strength": 20,
+      "Intelligence": 5,
+      "Dexterity": 4,
+      "Constitution": 20,
+      "Charisma": 3,
       "AttackBehaviourKeys": [
-        "BlindsideBlow",
-        "SilentStrike",
-        "VenomBlast",
-        "WindSlicer"
+        "WhirlwindSlash",
+        "EarthquakeStomp",
+        "Crystalize",
+        "TerrorScreech"
+      ],
+      "nature": "aggressive"
+    },
+    "Forest Guardian": {
+      "Name": "Forest Guardian",
+      "Health": 80,
+      "ManaPoints": 70,
+      "Strength": 15,
+      "Intelligence": 12,
+      "Dexterity": 10,
+      "Constitution": 15,
+      "Charisma": 8,
+      "AttackBehaviourKeys": [
+        "MysticBind",
+        "IceSpear",
+        "VenomSpit",
+        "InfernoBlast"
       ],
       "nature": "neutral"
     }

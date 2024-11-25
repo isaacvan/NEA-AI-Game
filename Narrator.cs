@@ -35,7 +35,7 @@ namespace GPTControlNamespace
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
         Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id);
         Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
-        Task<Graph> PopulateNodesWithTiles(Graph graph);
+        Task<Graph> PopulateNodesWithTiles(Graph graph, Game game);
     }
 
 
@@ -44,12 +44,14 @@ namespace GPTControlNamespace
         private OpenAIAPI api;
         private Conversation chat;
         
-        public async Task<Graph> PopulateNodesWithTiles(Graph graph)
+        public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
         {
-            Graph graphToReturn = new Graph(graph.Id, new List<Node>());
+            Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
             foreach (var node in graph.Nodes)
             {
-                graphToReturn.Nodes.Add(GridFunctions.PopulateNodeWithTiles(node, graph));
+                Node newNode = GridFunctions.PopulateNodeWithTiles(node, graph);
+                newNode.InitialiseEnemies(game);
+                graphToReturn.Nodes.Add(newNode);
             }
             
             graphToReturn.SetEntryAndExits();
@@ -79,7 +81,7 @@ namespace GPTControlNamespace
             string output = File.ReadAllText(UtilityFunctions.mapsSpecificDirectory);
             if (game.map == null) game.map = new Map();
             game.map = JsonConvert.DeserializeObject<Map>(output);
-            game.map.Graphs[game.map.Graphs.Count - 1] = await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1]);
+            game.map.Graphs[game.map.Graphs.Count - 1] = await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game);
             return game;
             
         }
@@ -119,6 +121,10 @@ namespace GPTControlNamespace
                 game.map.Graphs = new List<Graph>();
             }
             Graph graph = JsonConvert.DeserializeObject<Graph>(output);
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                graph.Nodes[i].InitialiseEnemies(game);
+            }
             game.map.Graphs.Add(graph);
             string mapInJson = JsonConvert.SerializeObject(game.map);
             
@@ -175,8 +181,8 @@ namespace GPTControlNamespace
             
             try
             {
-                File.Create(UtilityFunctions.logsSpecificDirectory + $@"\{title}" + ".txt").Close();
-                File.WriteAllText(UtilityFunctions.logsSpecificDirectory + $@"\{title}" + ".txt", logContents);
+                File.Create(UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" + ".txt").Close();
+                File.WriteAllText(UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" + ".txt", logContents);
             }
             catch (Exception e)
             {
@@ -273,7 +279,7 @@ namespace GPTControlNamespace
             if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
             {
                 // get all save file
-                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + @"Characters\", "*.xml");
+                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml");
                 bool started = false;
                 for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                 {
@@ -284,7 +290,7 @@ namespace GPTControlNamespace
                         string load = Console.ReadLine();
                         if (load == "y")
                         {
-                            string save = UtilityFunctions.mainDirectory + @$"Characters\save{i + 1}.xml";
+                            string save = UtilityFunctions.mainDirectory + @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
                             UtilityFunctions.saveSlot = Path.GetFileName(save);
                             UtilityFunctions.saveFile = save;
                             started = true;
@@ -688,7 +694,7 @@ namespace GPTControlNamespace
             try
             {
                 string prompt9 = File.ReadAllText(
-                    @$"{UtilityFunctions.promptPath}\Prompt9.txt");
+                    @$"{UtilityFunctions.promptPath}Prompt9.txt");
                 foreach (string uninitialisedStatus in uninitialisedStatuses)
                 {
                     prompt9 += uninitialisedStatus + "\n";
@@ -787,7 +793,7 @@ namespace GPTControlNamespace
             try
             {
                 string prompt10 = File.ReadAllText(
-                    @$"{UtilityFunctions.promptPath}\Prompt10.txt");
+                    @$"{UtilityFunctions.promptPath}Prompt10.txt");
                 foreach (string uninitialisedAttack in uninitialisedAttackBehaviours)
                 {
                     prompt10 += uninitialisedAttack + "\n";
