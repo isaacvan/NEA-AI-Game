@@ -1,0 +1,45 @@
+INPUT: You are a narrator for a game. As the game narrator, you have full control over every aspect of the game's universe. This includes characters, items, enemy types, settings, and the timeframe in which the game takes place. You are empowered to use all your creative freedom to craft the most engaging and compelling storyline and gameplay. Design intricate plots, develop deep characters, and invent unique items and enemies that enrich the game world. Your goal is to use your limitless creative abilities to create the best game experience possible. Let your imagination guide the development of this game, making every decision from minor details to major plot points. As the game narrator, you are responsible for generating the details of the player’s character. As you have full creative freedom over the game, the classes and races can be completely made up; it's your choice. Remember, other narrators will be generating stories; if your story is the same, you have failed as a narrator. No two stories should ever be the same. This includes race, class, etc; they should all be special. The story can begin in any setting; on earth, a boat, another planet: anything. It's your world. The character should have the following properties:
+
+Class: The character’s class (e.g., Warrior, Rogue, Assassin, Wizard, etc.).
+Race: The character’s race (e.g., human, werewolf, alien, made-up race, etc.).
+Base Stats: The character’s base stats, which include:
+Health: A value between 50 and 100.
+Mana Points: A value between 50 and 100.
+Strength: A value between 5 and 10.
+Intelligence: A value between 5 and 10.
+Dexterity: A value between 5 and 10.
+Constitution: A value between 5 and 10.
+Charisma: A value between 5 and 10.
+Ensure that the sum of Strength, Intelligence, Dexterity, Constitution and Charisma equals 35 for the selected character class. Ensure the stats are reflective of the class and race selected. E.g, a human having high intelligence, or a rogue having high dexterity. Try to keep health and mana points as simplistic numbers (60, 70, 80 etc).
+
+All responses should be generated machine parseable in XML format. The top level tag is Player.
+
+{Class: "string", Race: "string", Health: int, ManaPoints: int, Strength: int, Intelligence: int, Dexterity: int, Constitution: int, Charisma: int}
+
+As the game narrator, you will have one player playing the game. To help give you an idea for your generation, they have been given some input. This is what the user has requested for the context of your story:
+
+start as a peasant in a torn land
+
+OUTPUT: ```xml
+<Player>
+    <Class>PeasantHero</Class>
+    <Race>Human</Race>
+    <Health>80</Health>
+    <ManaPoints>60</ManaPoints>
+    <Strength>7</Strength>
+    <Intelligence>6</Intelligence>
+    <Dexterity>8</Dexterity>
+    <Constitution>7</Constitution>
+    <Charisma>7</Charisma>
+</Player>
+```
+
+In a land torn asunder by a relentless war between the celestial beings and the underworld's demons, you begin your journey not as a majestic warrior or a revered mage, but as a simple peasant. Born into hardship, your life has been nothing but toil under the shadow of a conflict that seemed as distant as the stars above, until fate decreed otherwise. Your village, nestled at the edge of the Kingdom of Eldoria, survived through the ages by steering clear of the world's greater struggles. But war knows no bounds, and devastation does not discriminate between soldier and civilian.
+
+One evening, under the blood-red sky, a stray artifact from the celestial battleground crashes into your field, imbued with energies unknown to the mortal realm. The artifact, a crystalline sword pulsing with a faint blue glow, chooses you as its bearer, granting you powers that blur the line between mortal and deity.
+
+As the newly anointed PeasantHero, a class unheard of until this very moment, your strength lies not in noble birthright or arcane schooling, but in the resilience and cunning forged through a lifetime of survival. Your race, human, signifies your origin and connection to the land and its people. With health as sturdy as your spirit and mana points hinting at your nascent celestial connection, your journey is one of growth, challenge, and discovery.
+
+Your strength, though not legendary, is ample; your intelligence, forged in the fires of survival, is keen; your dexterity, honed by years of labor, is unmatched; your constitution, testament to your resilience; and your charisma, the spark that may unite a fractured land under your banner.
+
+This is your tale, a tale of ascension from the humblest of origins to a destiny grand and unfathomable. The torn land cries out for a hero, and you have been chosen to mend its fissures and lead it into an era of peace. Will you rise to the challenge?

@@ -1,0 +1,96 @@
+{
+  "enemyTypes": [
+    "Shadow Wraith",
+    "Crystal Golem",
+    "Astral Serpent",
+    "Rune Sentinel",
+    "Plague Harbinger"
+  ],
+  "enemyTemplates": {
+    "Shadow Wraith": {
+      "Name": "Shadow Wraith",
+      "Health": 70,
+      "ManaPoints": 80,
+      "Strength": 5,
+      "Intelligence": 15,
+      "Dexterity": 10,
+      "Constitution": 5,
+      "Charisma": 2,
+      "AttackBehaviourKeys": [
+        "DarkWhisper",
+        "ShadowStrike",
+        "IceSpike",
+        "SilentSlash"
+      ],
+      "nature": "aggressive"
+    },
+    "Crystal Golem": {
+      "Name": "Crystal Golem",
+      "Health": 90,
+      "ManaPoints": 50,
+      "Strength": 18,
+      "Intelligence": 3,
+      "Dexterity": 2,
+      "Constitution": 20,
+      "Charisma": 1,
+      "AttackBehaviourKeys": [
+        "ThunderClap",
+        "EarthenGrasp",
+        "MysticBarrier",
+        "Backstab"
+      ],
+      "nature": "neutral"
+    },
+    "Astral Serpent": {
+      "Name": "Astral Serpent",
+      "Health": 80,
+      "ManaPoints": 90,
+      "Strength": 10,
+      "Intelligence": 20,
+      "Dexterity": 15,
+      "Constitution": 10,
+      "Charisma": 5,
+      "AttackBehaviourKeys": [
+        "FireArrow",
+        "HealingWave",
+        "VengefulSpear",
+        "FlameBurst"
+      ],
+      "nature": "timid"
+    },
+    "Rune Sentinel": {
+      "Name": "Rune Sentinel",
+      "Health": 100,
+      "ManaPoints": 70,
+      "Strength": 15,
+      "Intelligence": 10,
+      "Dexterity": 5,
+      "Constitution": 15,
+      "Charisma": 3,
+      "AttackBehaviourKeys": [
+        "Taunt",
+        "Bloody Slice",
+        "DarkWhisper",
+        "ThunderClap"
+      ],
+      "nature": "neutral"
+    },
+    "Plague Harbinger": {
+      "Name": "Plague Harbinger",
+      "Health": 85,
+      "ManaPoints": 60,
+      "Strength": 8,
+      "Intelligence": 12,
+      "Dexterity": 12,
+      "Constitution": 8,
+      "Charisma": 4,
+      "AttackBehaviourKeys": [
+        "Poisoned",
+        "Silenced",
+        "IceSpike",
+        "ShadowStrike"
+      ],
+      "nature": "aggressive"
+    }
+  }
+}

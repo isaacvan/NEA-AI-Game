@@ -1,0 +1,117 @@
+INPUT: Hello, Narrator! As part of your role in shaping our game's challenging environment, you are tasked with populating each node of the game map with enemies. Your creative input is needed to design enemy types that fit within the game’s thematic element and storyline, corresponding to your selected choices.
+
+Please provide the following details:
+
+enemyTypes: Enumerate the types of enemies you will create for this game. Each enemy type should embody aspects of the game’s overarching themes and challenges. As these will be used throughout the whole course of the game, generate at least 5 enemy types.
+enemyTemplates: A dictionary structure. For each type of enemy, provide a template that includes:
+Name: The type of the enemy as a string.
+Health: An integer value for health, ranging from 50 to 100, appropriately scaled based on the enemy's toughness.
+ManaPoints: An integer value for Max mana points, ranging from 50 to 100
+Strength: An integer value representing the enemy's strength, adjusted according to the enemy type. Make this number anywhere from 1 to 20.
+Include Intelligence, Dexterity, Constitution and Charisma, all following the same guideline.
+AttackBehaviourKeys: Within an earlier request, you generated a variety of attacks. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain. They must correspond with the already generated behaviours.
+nature: This is an enum value, either "aggressive", "neutral" or "timid". Aggressive enemies will actively seek the player, and have a more powerful combat ai, whereas timid enemies run away from the player, using a weaker combat ai. Neutral enemies have a balance of both.
+
+The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
+{
+  "enemyTypes": ["Goblin", "Orc", "Dragon"],
+  "enemyTemplates": {
+  "Goblin":
+    {
+      "Name": "Goblin",
+      "Health": 50,
+      "Strength": 3,
+…
+      "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
+      "nature": "timid"
+    },
+    "Orc":
+    {
+      "Name": "Orc",
+      "Health": 80,
+      "Strength": 11,
+…
+      "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
+      "nature": "neutral"
+    },
+    "Dragon":
+    {
+      "Name": "Dragon",
+      "Health": 100,
+      "Strength": 20,
+…
+      "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
+      "nature": "aggressive"
+    }
+  }
+}
+
+Your input is crucial to the generation of your world. Ensure that all the output is parsable, as any external sentences may break the system.
+
+OUTPUT: ```json
+{
+  "enemyTypes": ["Shadow Wisp", "Ancient Sentinel", "Rogue Elementalist", "Dreadnaught", "Forest Guardian"],
+  "enemyTemplates": {
+    "Shadow Wisp": {
+      "Name": "Shadow Wisp",
+      "Health": 50,
+      "ManaPoints": 80,
+      "Strength": 3,
+      "Intelligence": 15,
+      "Dexterity": 20,
+      "Constitution": 5,
+      "Charisma": 2,
+      "AttackBehaviourKeys": ["ShadowPierce", "VenomSpit", "InfernoBlast", "TerrorScreech"],
+      "nature": "timid"
+    },
+    "Ancient Sentinel": {
+      "Name": "Ancient Sentinel",
+      "Health": 90,
+      "ManaPoints": 50,
+      "Strength": 18,
+      "Intelligence": 10,
+      "Dexterity": 5,
+      "Constitution": 20,
+      "Charisma": 5,
+      "AttackBehaviourKeys": ["EarthquakeStomp", "MysticBind", "Crystalize", "WhirlwindSlash"],
+      "nature": "neutral"
+    },
+    "Rogue Elementalist": {
+      "Name": "Rogue Elementalist",
+      "Health": 70,
+      "ManaPoints": 100,
+      "Strength": 4,
+      "Intelligence": 20,
+      "Dexterity": 15,
+      "Constitution": 8,
+      "Charisma": 10,
+      "AttackBehaviourKeys": ["IceSpear", "InfernoBlast", "VenomSpit", "ShadowPierce"],
+      "nature": "aggressive"
+    },
+    "Dreadnaught": {
+      "Name": "Dreadnaught",
+      "Health": 100,
+      "ManaPoints": 60,
+      "Strength": 20,
+      "Intelligence": 5,
+      "Dexterity": 4,
+      "Constitution": 20,
+      "Charisma": 3,
+      "AttackBehaviourKeys": ["WhirlwindSlash", "EarthquakeStomp", "Crystalize", "TerrorScreech"],
+      "nature": "aggressive"
+    },
+    "Forest Guardian": {
+      "Name": "Forest Guardian",
+      "Health": 80,
+      "ManaPoints": 70,
+      "Strength": 15,
+      "Intelligence": 12,
+      "Dexterity": 10,
+      "Constitution": 15,
+      "Charisma": 8,
+      "AttackBehaviourKeys": ["MysticBind", "IceSpear", "VenomSpit", "InfernoBlast"],
+      "nature": "neutral"
+    }
+  }
+}
+```

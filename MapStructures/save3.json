@@ -1,0 +1,139 @@
+{
+  "Graphs": [
+    {
+      "Nodes": [
+        {
+          "NodeID": 0,
+          "ConnectedNodes": [
+            1,
+            2
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Starting Point",
+          "NodeDepth": 0,
+          "Milestone": false
+        },
+        {
+          "NodeID": 1,
+          "ConnectedNodes": [
+            0,
+            3,
+            4
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Forest",
+          "NodeDepth": 1,
+          "Milestone": false
+        },
+        {
+          "NodeID": 2,
+          "ConnectedNodes": [
+            0,
+            4
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Abandoned Tower",
+          "NodeDepth": 1,
+          "Milestone": false
+        },
+        {
+          "NodeID": 3,
+          "ConnectedNodes": [
+            1,
+            5
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Cave",
+          "NodeDepth": 2,
+          "Milestone": false
+        },
+        {
+          "NodeID": 4,
+          "ConnectedNodes": [
+            1,
+            2,
+            6
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Old Temple",
+          "NodeDepth": 2,
+          "Milestone": false
+        },
+        {
+          "NodeID": 5,
+          "ConnectedNodes": [
+            3,
+            7
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Mountain Pass",
+          "NodeDepth": 3,
+          "Milestone": false
+        },
+        {
+          "NodeID": 6,
+          "ConnectedNodes": [
+            4,
+            7
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Riverside",
+          "NodeDepth": 3,
+          "Milestone": false
+        },
+        {
+          "NodeID": 7,
+          "ConnectedNodes": [
+            5,
+            6,
+            8
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
+            "undirected"
+          ],
+          "NodePOI": "Dragon's Lair",
+          "NodeDepth": 4,
+          "Milestone": false
+        },
+        {
+          "NodeID": 8,
+          "ConnectedNodes": [
+            7
+          ],
+          "ConnectedNodesEdges": [
+            "undirected"
+          ],
+          "NodePOI": "Ancient City",
+          "NodeDepth": 5,
+          "Milestone": true
+        }
+      ],
+      "Id": 0
+    }
+  ]
+}
