@@ -30,7 +30,7 @@ namespace GameClassNamespace
         public Combat currentCombat { get; set; }
         public UIConstructer uiConstructer { get; set; }
         public Map map { get; set; }
-
+        
         public async Task initialiseGame(GameSetup gameSetup, bool testing = false)
         {
             // initialise api & chat

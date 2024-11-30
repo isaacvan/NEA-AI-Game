@@ -45,6 +45,8 @@ namespace UtilityFunctionsNamespace
         public static int stdNodeDepth = 5; // PRESET
         public static int stdGraphDepth = 10; // PRESET
 
+        public static int nextEnemyId = 0;
+
         public static string universalSeperator = "------------------------------------------";
         public static string playerANSIUI = $"\x1b[38;2;80;200;120m";
         public static string aggressiveANSIUI = $"\x1b[38;2;210;43;43m";
@@ -93,6 +95,20 @@ namespace UtilityFunctionsNamespace
         public static int colourSchemeIndex = 0;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
         public static string promptPath = @$"{mainDirectory}Prompts{Path.DirectorySeparatorChar}";
+
+        public static Point ClonePoint(Point point)
+        {
+            Point newPoint = new Point();
+            newPoint.X = point.X;
+            newPoint.Y = point.Y;
+            return newPoint;
+        }
+
+        public static int GiveNewEnemyId()
+        {
+            nextEnemyId++;
+            return nextEnemyId - 1;
+        }
 
         public static void overrideSave(string slot)
         {

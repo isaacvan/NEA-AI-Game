@@ -13,6 +13,7 @@ using CombatNamespace;
 using DynamicExpresso;
 using GameClassNamespace;
 using GPTControlNamespace;
+using GridConfigurationNamespace;
 using MainNamespace;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -41,6 +42,7 @@ namespace EnemyClassesNamespace
         public int currentMana { get; set; }
         public int Level { get; set; }
         public Point Position { get; set; }
+        public int Id { get; set; }
         
         public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
@@ -106,6 +108,107 @@ namespace EnemyClassesNamespace
             }
         }
     }
+    
+    public class EnemySpawn
+    {
+        public Point spawnPoint { get; set; } // null once spawned
+        public Nature nature { get; set; }
+        public string name { get; set; }
+        public bool boss { get; set; }
+        public int id { get; set; }
+        public Point currentLocation { get; set; } // null when not spawned yet
+    }
+
+    public interface EnemyConfig // used to store functions that each nature needs that is different
+    {
+        Point GetEnemyMovement(Point oldPoint, ref Game game);
+    }
+
+    public class TimidContainer : EnemyConfig
+    {
+        public Point GetEnemyMovement(Point oldPoint, ref Game game)
+        {
+            return new Point();
+        }
+    }
+    
+    public class NeutralContainer : EnemyConfig
+    {
+        public Point GetEnemyMovement(Point oldPoint, ref Game game)
+        {
+            // 50% CHANCE THEY DONT MOVE
+            Random random = new Random();
+            if (random.NextDouble() > 0.5)
+            {
+                return oldPoint;
+            }
+            
+            bool valid = false;
+            Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
+            List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
+            // up is 1, right is 2, down is 3, left is 4
+            while (!valid)
+            {
+                int nextMove = random.Next(1, 5);
+                string input = "";
+                switch (nextMove)
+                {
+                    case 1:
+                        newPoint.Y -= 1;
+                        input = "w";
+                        break;
+                    case 2:
+                        newPoint.X += 1;
+                        input = "d";
+                        break;
+                    case 3:
+                        newPoint.Y += 1;
+                        input = "s";
+                        break;
+                    case 4:
+                        newPoint.X -= 1;
+                        input = "a";
+                        break;
+                }
+
+                if (GridFunctions.CheckIfOutOfBounds(
+                        game.map.Graphs[game.map.Graphs.Count - 1]
+                            .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                        oldPoint, input[0].ToString()))
+                {
+                    Tile possibleTile;
+                    try
+                    {
+                        possibleTile = tiles[newPoint.X][newPoint.Y];
+                        if (possibleTile.walkable == true && possibleTile.enemyOnTile == null &&
+                            possibleTile.tileDesc == "Empty")
+                        {
+                            valid = true;
+                        }
+                        else
+                        {
+                            valid = false;
+                            newPoint = oldPoint;
+                        }
+                    }
+                    catch
+                    {
+                        valid = false;
+                    }
+                }
+            }
+            
+            return newPoint;
+        }
+    }
+    
+    public class AggressiveContainer : EnemyConfig
+    {
+        public Point GetEnemyMovement(Point oldPoint, ref Game game)
+        {
+            return new Point();
+        }
+    }
 
     // ENEMY FACTORY USAGE
     // Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
@@ -119,7 +222,7 @@ namespace EnemyClassesNamespace
         public Dictionary<string, EnemyTemplate> enemyTemplates { get; set; }
     
 
-        public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos)
+        public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos, int ID)
         {
             Enemy enemy = new Enemy
             {
@@ -136,7 +239,8 @@ namespace EnemyClassesNamespace
                 Level = level,
                 Position = pos,
                 AttackBehaviours = enemyTemplate.AttackBehaviours,
-                nature = enemyTemplate.nature
+                nature = enemyTemplate.nature,
+                Id = ID
             };
 
             return enemy;

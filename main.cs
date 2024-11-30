@@ -180,7 +180,54 @@ namespace MainNamespace
 
         public static void MoveEnemies(ref Game game)
         {
-            
+            var enemies = game.map.GetCurrentNode().enemies;
+            foreach (EnemySpawn enemy in enemies)
+            {
+                Point oldPoint = new Point();
+                Point newPoint = new Point();
+                if (enemy.spawnPoint != Point.Empty && enemy.currentLocation == Point.Empty)
+                {
+                    oldPoint = (Point)enemy.spawnPoint;
+                } else if (enemy.currentLocation != Point.Empty && enemy.spawnPoint == Point.Empty)
+                {
+                    oldPoint = (Point)enemy.currentLocation;
+                }
+                else
+                {
+                    throw new Exception("SpawnPoint and currentLocation both shouldnt be empty");
+                }
+
+                EnemyConfig container = null;
+                if (enemy.nature == Nature.timid)
+                {
+                    container = new TimidContainer();
+                    container.GetEnemyMovement(oldPoint, ref game);
+                } else if (enemy.nature == Nature.neutral)
+                {
+                    container = new NeutralContainer();
+                } else if (enemy.nature == Nature.aggressive)
+                {
+                    container = new AggressiveContainer();
+                }
+
+                if (container != null)
+                {
+                    newPoint = container.GetEnemyMovement(oldPoint, ref game); // SETS NEW POINT
+                    if (newPoint == Point.Empty)
+                    {
+                        newPoint = oldPoint;
+                    }
+                }
+                else
+                {
+                    throw new Exception("container shouldnt be null. no nature found?");
+                }
+                
+                enemy.currentLocation = newPoint;
+                enemy.spawnPoint = Point.Empty;
+                
+                GridFunctions.MoveEnemy(oldPoint, newPoint, ref game);
+            }
         }
 
         public static void AssessOtherInputs(string input, ref Game game)
@@ -231,6 +278,15 @@ namespace MainNamespace
                     game.player.currentExp += (tile.enemyOnTile.Level + 1) * 10 *
                                               (game.map.Graphs[game.map.CurrentGraphPointer].GraphDepth + 1);
                     game.player.checkForLevelUp();
+
+                    int EnemyId = tile.enemyOnTile.Id;
+                    for (var i = 0; i < game.map.GetCurrentNode().enemies.Count; i++)
+                    {
+                        if (game.map.GetCurrentNode().enemies[i].id == EnemyId)
+                        {
+                            game.map.GetCurrentNode().enemies.RemoveAt(i);
+                        }
+                    }
                     
                     tile.enemyOnTile = null;
                     oldTile.enemyOnTile = null;

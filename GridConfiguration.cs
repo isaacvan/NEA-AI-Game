@@ -159,6 +159,18 @@ namespace GridConfigurationNamespace
                 game.map.GetCurrentNode(newId).tiles, ref game));
         }
 
+        public static void MoveEnemy(Point oldPos, Point newPos, ref Game game)
+        {
+            List<List<Tile>> oldTiles = cloneTiles(game.map.GetCurrentNode().tiles);
+            Tile oldTile = oldTiles[oldPos.X][oldPos.Y];
+            Enemy enemyToMove = oldTile.enemyOnTile;
+            oldTiles[oldPos.X][oldPos.Y].enemyOnTile = null;
+            oldTiles[oldPos.X][oldPos.Y].tileChar = CharsToMeanings[oldTiles[oldPos.X][oldPos.Y].tileDesc][0];
+            oldTiles[newPos.X][newPos.Y].enemyOnTile = enemyToMove;
+            oldTiles[newPos.X][newPos.Y].tileChar = CharsToMeanings["Enemy"][0];
+            game.map.GetCurrentNode().tiles = oldTiles;
+        }
+
         public static bool
             MovePlayer(string input, ref Point PlayerPos, ref Game game,
                 ref Tile oldTile) // return false if doing something other than moving
@@ -464,14 +476,6 @@ namespace GridConfigurationNamespace
         }
     }
 
-    public class EnemySpawn
-    {
-        public Point spawnPoint { get; set; }
-        public Nature nature { get; set; }
-        public string name { get; set; }
-        public bool boss { get; set; }
-    }
-
     public class Node
     {
         public int NodeID { get; set; }
@@ -544,22 +548,16 @@ namespace GridConfigurationNamespace
                 {
                     spawns[i].boss = true;
                     spawns[i].spawnPoint = enemyPoint;
-                    spawns[i].nature = Nature.aggressive;
                     spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
                 }
                 else
                 {
                     spawns[i].boss = false;
                     spawns[i].spawnPoint = enemyPoint;
-                    List<Nature> natures = new List<Nature>();
-                    foreach (Nature nature in Enum.GetValues(typeof(Nature)))
-                    {
-                        natures.Add((Nature)nature);
-                    }
-
-                    spawns[i].nature = natures[random.Next(0, natures.Count)];
                     spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
                 }
+
+                spawns[i].id = UtilityFunctions.nextEnemyId;
             }
 
             enemies = spawns;
@@ -573,9 +571,20 @@ namespace GridConfigurationNamespace
             foreach (EnemySpawn spawn in enemies)
             {
                 EnemyTemplate template = game.enemyFactory.enemyTemplates[spawn.name];
-                tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
-                tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile =
-                    game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint);
+
+                if (spawn.spawnPoint != Point.Empty && spawn.currentLocation == Point.Empty)
+                {
+                    tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
+                    tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile =
+                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint, spawn.id);
+                    enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
+                } else if (spawn.currentLocation != Point.Empty && spawn.spawnPoint == Point.Empty)
+                {
+                    tiles[spawn.currentLocation.X][spawn.currentLocation.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
+                    tiles[spawn.currentLocation.X][spawn.currentLocation.Y].enemyOnTile =
+                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.currentLocation, spawn.id);
+                    enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
+                }
             }
         }
     }
