@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.JavaScript;
 using Emgu.CV.Structure;
 using Emgu.CV.XImgproc;
 using EnemyClassesNamespace;
@@ -344,6 +345,16 @@ namespace GridConfigurationNamespace
                         g = (int)node.tiles[i][j].rgb.Value.Green;
                         b = (int)node.tiles[i][j].rgb.Value.Blue;
                     }
+                    
+                    // check for dead enemies
+                    if (node.tiles[i][j].enemyOnTile == null && node.tiles[i][j].playerHere == false) 
+                    {
+                        if (node.tiles[i][j].tileChar == CharsToMeanings["Enemy"][0])
+                        {
+                            string str = "" + node.tiles[i][j].tileDesc;
+                            node.tiles[i][j].tileChar = CharsToMeanings[$"{str}"][0];
+                        }
+                    }
 
                     // determine if the tile is within sight range
                     // \x1b[38;2;{r};{g};{b}m
@@ -557,7 +568,7 @@ namespace GridConfigurationNamespace
                     spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
                 }
 
-                spawns[i].id = UtilityFunctions.nextEnemyId;
+                spawns[i].id = UtilityFunctions.GiveNewEnemyId();
             }
 
             enemies = spawns;

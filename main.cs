@@ -216,6 +216,9 @@ namespace MainNamespace
                     if (newPoint == Point.Empty)
                     {
                         newPoint = oldPoint;
+                    } else if (newPoint == oldPoint)
+                    {
+                        newPoint = oldPoint;
                     }
                 }
                 else

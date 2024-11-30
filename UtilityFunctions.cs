@@ -26,7 +26,7 @@ namespace UtilityFunctionsNamespace
         public int _typingSpeed;
         public bool _inst;
 
-        public TypeText(bool inst = false, int typingSpeed = 3, bool newLine = true)
+        public TypeText(bool inst = false, int typingSpeed = 2, bool newLine = true)
         {
             _inst = inst;
             _typingSpeed = typingSpeed;
