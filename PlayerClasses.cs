@@ -282,7 +282,7 @@ namespace PlayerClassesNamespace
             currentMana = ManaPoints;
             // this.
             Program.logger.Info("Character Created");
-            Console.ForegroundColor = ConsoleColor.Black;
+            //Console.ForegroundColor = ConsoleColor.Black;
         }
 
 

@@ -35,7 +35,7 @@ namespace EnemyClassesNamespace
         neutral,
         timid
     }
-    
+
     public class Enemy : EnemyTemplate
     {
         public int currentHealth { get; set; }
@@ -43,7 +43,7 @@ namespace EnemyClassesNamespace
         public int Level { get; set; }
         public Point Position { get; set; }
         public int Id { get; set; }
-        
+
         public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
@@ -53,6 +53,7 @@ namespace EnemyClassesNamespace
                 {
                     damage *= 2;
                 }
+
                 Console.WriteLine($"{Name} took {damage} damage.");
                 currentHealth -= damage;
                 Thread.Sleep(1000);
@@ -63,7 +64,7 @@ namespace EnemyClassesNamespace
                 Program.logger.Error("No current combat. Attempt to receive attack failed.");
             }
         }
-        
+
         public void ExecuteAttack(string key, Player target)
         {
             if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
@@ -86,7 +87,8 @@ namespace EnemyClassesNamespace
                     currentMana -= attackInfo.Manacost;
                     if (currentMana < 0)
                     {
-                        throw new Exception("Not enough mana to cast. error check didnt work. at executeattack in enemy");
+                        throw new Exception(
+                            "Not enough mana to cast. error check didnt work. at executeattack in enemy");
                     }
 
                     // Optionally handle modifiers here or within the script itself
@@ -108,7 +110,7 @@ namespace EnemyClassesNamespace
             }
         }
     }
-    
+
     public class EnemySpawn
     {
         public Point spawnPoint { get; set; } // null once spawned
@@ -122,16 +124,114 @@ namespace EnemyClassesNamespace
     public interface EnemyConfig // used to store functions that each nature needs that is different
     {
         Point GetEnemyMovement(Point oldPoint, ref Game game);
+        int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos);
     }
 
     public class TimidContainer : EnemyConfig
     {
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
-            return new Point();
+            Random random = new Random();
+            bool valid = false;
+            Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
+            List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
+            // up is 1, right is 2, down is 3, left is 4
+            while (!valid)
+            {
+                int nextMove = this.EnemyMovementLogic(game.player.playerPos, game, oldPoint);
+                string input = "";
+                switch (nextMove)
+                {
+                    case 1:
+                        newPoint.Y -= 1;
+                        input = "w";
+                        break;
+                    case 2:
+                        newPoint.X += 1;
+                        input = "d";
+                        break;
+                    case 3:
+                        newPoint.Y += 1;
+                        input = "s";
+                        break;
+                    case 4:
+                        newPoint.X -= 1;
+                        input = "a";
+                        break;
+                    case -1:
+                        return oldPoint; // dont move
+                }
+
+                if (GridFunctions.CheckIfOutOfBounds(
+                        game.map.Graphs[game.map.Graphs.Count - 1]
+                            .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                        oldPoint, input[0].ToString()))
+                {
+                    Tile possibleTile;
+                    try
+                    {
+                        possibleTile = tiles[newPoint.X][newPoint.Y];
+                        if (possibleTile.walkable == true && possibleTile.enemyOnTile == null &&
+                            possibleTile.tileDesc == "Empty")
+                        {
+                            valid = true;
+                        }
+                        else
+                        {
+                            valid = false;
+                            newPoint = oldPoint;
+                        }
+                    }
+                    catch
+                    {
+                        valid = false;
+                    }
+                }
+            }
+
+            return newPoint;
+        }
+
+        public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
+        {
+            var tiles = game.map.GetCurrentNode().tiles;
+            Random random = new Random();
+
+            int sightRadius = 5;
+            int distanceToPlayer = Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
+
+            if (distanceToPlayer > sightRadius)
+            {
+                return random.Next(1, 5);
+            }
+            
+            // now that enemy is within radius where they are running
+            // 20% CHANCE THEY DONT MOV (so can be caught)
+            if (random.NextDouble() > 0.8)
+            {
+                return -1;
+            }
+
+            int horizontalDistance = playerPos.X - currentEnemyPos.X;
+            int verticalDistance = playerPos.Y - currentEnemyPos.Y;
+
+            if (Math.Abs(horizontalDistance) > Math.Abs(verticalDistance))
+            {
+                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count && tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
+                    return 4;
+                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 && tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
+                    return 2;
+            }
+
+            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count && tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
+                return 1;
+            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 && tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
+                return 3;
+
+            return -1;
         }
     }
-    
+
     public class NeutralContainer : EnemyConfig
     {
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
@@ -142,14 +242,14 @@ namespace EnemyClassesNamespace
             {
                 return oldPoint;
             }
-            
+
             bool valid = false;
             Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
             List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
             // up is 1, right is 2, down is 3, left is 4
             while (!valid)
             {
-                int nextMove = random.Next(1, 5);
+                int nextMove = EnemyMovementLogic(game.player.playerPos, game, oldPoint);
                 string input = "";
                 switch (nextMove)
                 {
@@ -197,16 +297,118 @@ namespace EnemyClassesNamespace
                     }
                 }
             }
-            
+
             return newPoint;
         }
+
+        public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
+        {
+            Random random = new Random();
+            return random.Next(1, 5);
+        }
     }
-    
+
     public class AggressiveContainer : EnemyConfig
     {
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
-            return new Point();
+            bool valid = false;
+            Random random = new Random();
+            Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
+            List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
+            // up is 1, right is 2, down is 3, left is 4
+            while (!valid)
+            {
+                int nextMove = EnemyMovementLogic(game.player.playerPos, game, oldPoint);
+                string input = "";
+                switch (nextMove)
+                {
+                    case 1:
+                        newPoint.Y -= 1;
+                        input = "w";
+                        break;
+                    case 2:
+                        newPoint.X += 1;
+                        input = "d";
+                        break;
+                    case 3:
+                        newPoint.Y += 1;
+                        input = "s";
+                        break;
+                    case 4:
+                        newPoint.X -= 1;
+                        input = "a";
+                        break;
+                    case -1:
+                        return oldPoint; // dpont move
+                }
+
+                if (GridFunctions.CheckIfOutOfBounds(
+                        game.map.Graphs[game.map.Graphs.Count - 1]
+                            .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
+                        oldPoint, input[0].ToString()))
+                {
+                    Tile possibleTile;
+                    try
+                    {
+                        possibleTile = tiles[newPoint.X][newPoint.Y];
+                        if (possibleTile.walkable == true && possibleTile.enemyOnTile == null &&
+                            possibleTile.tileDesc == "Empty")
+                        {
+                            valid = true;
+                        }
+                        else
+                        {
+                            valid = false;
+                            newPoint = oldPoint;
+                        }
+                    }
+                    catch
+                    {
+                        valid = false;
+                    }
+                }
+            }
+
+            return newPoint;
+        }
+
+        public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
+        {
+            var tiles = game.map.GetCurrentNode().tiles;
+            Random random = new Random();
+
+            int sightRadius = 10;
+            int distanceToPlayer = Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
+
+            if (distanceToPlayer > sightRadius)
+            {
+                return random.Next(1, 5);
+            }
+            
+            // 20% CHANCE THEY DONT MOVE (so player can escape sometimes)
+            if (random.NextDouble() > 0.8)
+            {
+                return -1;
+            }
+
+            int horizontalDistance = playerPos.X - currentEnemyPos.X;
+            int verticalDistance = playerPos.Y - currentEnemyPos.Y;
+
+            if (Math.Abs(horizontalDistance) > Math.Abs(verticalDistance))
+            {
+                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count && tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
+                    return 2;
+                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 && tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
+                    return 4;
+            }
+
+            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count && tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
+                return 3;
+            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 && tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
+                return 1;
+
+            return -1;
         }
     }
 
@@ -214,13 +416,14 @@ namespace EnemyClassesNamespace
     // Enemy enemy = game.enemyFactory.CreateEnemy(game.enemyFactory.enemyTemplates[0], 1, new Point(0, 0));
     // ^ - To create an enemy of template[0], level 1 at (0, 0)
     // enemy.AttackBehaviours[AttackSlot.slot1] gives the Name, Expression and Statuses of the attack at a given slot
-    
+
     public class EnemyFactory
     {
         public List<string> enemyTypes { get; set; }
+
         //[JsonPropertyName("enemy")]
         public Dictionary<string, EnemyTemplate> enemyTemplates { get; set; }
-    
+
 
         public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos, int ID)
         {
@@ -257,11 +460,16 @@ namespace EnemyClassesNamespace
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Charisma { get; set; }
-        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } = new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
+
+        public Dictionary<AttackSlot, AttackInfo> AttackBehaviours { get; set; } =
+            new Dictionary<AttackSlot, AttackInfo>(); // Dictionary to store attack behaviours for each slotAttackBehaviours { get; set; }
+
         public List<string> attackBehaviourKeys { get; set; } = new List<string>();
         public Nature nature { get; set; }
-        [Newtonsoft.Json.JsonIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
-        
+
+        [Newtonsoft.Json.JsonIgnore]
+        public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
+
         public EnemyTemplate()
         {
             AttackBehaviours[AttackSlot.slot1] = null;
@@ -300,14 +508,16 @@ namespace EnemyClassesNamespace
     public class AttackBehaviourFactory
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
-        
-        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative, Type targetType, int manacost)
+
+        public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative,
+            Type targetType, int manacost)
         {
             Parameter[] parameters = null;
             if (targetType == typeof(Player))
             {
                 parameters = new[] { new Parameter("target", typeof(Player)) };
-            } else if (targetType == typeof(Enemy))
+            }
+            else if (targetType == typeof(Enemy))
             {
                 parameters = new[] { new Parameter("target", typeof(Enemy)) };
             }
@@ -315,12 +525,14 @@ namespace EnemyClassesNamespace
             {
                 throw new Exception("Invalid target type in attackbehaviourfactory");
             }
+
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
-        
-            AttackInfo attackInfo = new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative,  manacost);
+
+            AttackInfo attackInfo =
+                new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative, manacost);
             attackBehaviours[key] = attackInfo;
         }
-        
+
         public AttackInfo GetAttackInfo(string key)
         {
             if (attackBehaviours.TryGetValue(key, out AttackInfo attackInfo))
@@ -330,35 +542,38 @@ namespace EnemyClassesNamespace
             else
             {
                 Console.WriteLine($"No attack behavior found for key: {key}");
-                return null; // Or handle this case as needed, perhaps throwing an exception or returning a default value
+                return
+                    null; // Or handle this case as needed, perhaps throwing an exception or returning a default value
             }
         }
-        
+
         public void InitializeFromSerializedBehaviors(List<SerializableAttackBehaviour> behaviours)
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(), behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player), behaviour.AttackInfo.Manacost);
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(),
+                    behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player),
+                    behaviour.AttackInfo.Manacost);
             }
         }
     }
-    
+
     public class AttackInfo
     {
         public string Name { get; set; }
-        
-        [Newtonsoft.Json.JsonIgnore]
-        public Lambda Expression { get; set; }
-       
+
+        [Newtonsoft.Json.JsonIgnore] public Lambda Expression { get; set; }
+
         //[Newtonsoft.Json.JsonConverter(typeof(ExpressionConverter))] 
         public string ExpressionString { get; set; }
-        
+
         public int Manacost { get; set; }
-        
+
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
 
-        public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name, string narrative, int manacost)
+        public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name,
+            string narrative, int manacost)
         {
             Expression = expression;
             ExpressionString = expressionString;
@@ -366,25 +581,26 @@ namespace EnemyClassesNamespace
             {
                 Program.logger.Info("ExpressionString is null");
             }
+
             Statuses = statuses;
             Name = name;
             Narrative = narrative;
             Manacost = manacost;
         }
     }
-    
+
     public class SerializableAttackBehaviour // helper class to help serialisation in json
     {
         public string Key { get; set; }
         public AttackInfo AttackInfo { get; set; }
 
-        public SerializableAttackBehaviour(string Key, AttackInfo  AttackInfo)
+        public SerializableAttackBehaviour(string Key, AttackInfo AttackInfo)
         {
             this.Key = Key;
             this.AttackInfo = AttackInfo;
         }
     }
-    
+
     public class ExpressionConverter : Newtonsoft.Json.JsonConverter
     {
         public override bool CanConvert(Type objectType)
@@ -405,7 +621,8 @@ namespace EnemyClassesNamespace
             }
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             throw new NotImplementedException("Deserialization of Expression is not supported.");
         }

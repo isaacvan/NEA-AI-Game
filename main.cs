@@ -37,8 +37,12 @@ namespace MainNamespace
         // NEXT STEPS
         //
         //
-        // NEXT - ENEMY MOVEMENT AI
-        // make enemies move
+        // 
+        // 
+        //
+        // DUNGEON MASTER ADDITIONS
+        // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
+        // - CHECKS: when a narration is ready to print the draw node function needs to be told and it should be written to the end. or in new func?
         //
         //
         // - Make way for player to get more attacks
@@ -86,6 +90,7 @@ namespace MainNamespace
 
             EnableColors();
             game = new Game();
+            NarrationTypeWriter.Start();
             Console.CancelKeyPress += MyHandler; // triggers save on forced exit
             string mode = args.Length > 0 ? args[0] : "game";
             logger.Info($"Running mode={mode}");
@@ -161,22 +166,28 @@ namespace MainNamespace
 
 
                 // move player, if it isnt a movement then do something else with the input
-
                 if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game, ref oldTile))
                     AssessOtherInputs(input, ref game);
+                
+                // then move enemies
+                MoveEnemies(ref game);
 
                 // CHECK FOR EVENTS
                 int oldId = game.map.GetCurrentNode().NodeID;
                 CheckForEventsTriggered(ref game, ref IdOfNextNode, ref oldTile);
-                MoveEnemies(ref game);
 
+                // check for a new node
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
                     GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
+                
+                // draw the updated grid
                 GridFunctions.DrawWholeNode(game);
-                // input = Console.ReadLine();
+                
+                // get next input
                 input = Console.ReadKey(true).KeyChar.ToString();
             }
         }
+        
 
         public static void MoveEnemies(ref Game game)
         {

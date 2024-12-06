@@ -355,6 +355,15 @@ namespace GridConfigurationNamespace
                             node.tiles[i][j].tileChar = CharsToMeanings[$"{str}"][0];
                         }
                     }
+                    
+                    // double check for player tile
+                    if (node.tiles[i][j].playerHere)
+                    {
+                        if (node.tiles[i][j].tileChar != CharsToMeanings["Player"][0])
+                        {
+                            node.tiles[i][j].tileChar = CharsToMeanings[$"Player"][0];
+                        }
+                    }
 
                     // determine if the tile is within sight range
                     // \x1b[38;2;{r};{g};{b}m
@@ -385,6 +394,17 @@ namespace GridConfigurationNamespace
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n\n");
+
+            if (game.uiConstructer.narrationPending)
+            {
+                UtilityFunctions.TypeText(new TypeText(), game.uiConstructer.currentNarration);
+                game.uiConstructer.narrationPending = false;
+            }
+            else
+            {
+                Console.WriteLine(game.uiConstructer.currentNarration);
+            }
         }
 
         public static void WriteTileChar(Node node, int i, int j, double r, double g, double b, float brightness = 1)

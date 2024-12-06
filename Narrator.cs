@@ -20,6 +20,106 @@ using Exception = System.Exception;
 
 namespace GPTControlNamespace
 {
+    public static class NarrationTypeWriter
+    {
+        private static Task BackgroundTask;
+        private static readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+
+        public static Game game { get; set; }
+
+        static NarrationTypeWriter()
+        {
+            BackgroundTask = Task.Run(async () => await BackgroundWorkAsync(CancellationTokenSource.Token));
+        }
+
+        public static void Start() // just in case not already started
+        {
+            if (BackgroundTask == null)
+            {
+                BackgroundTask = Task.Run(async () => await BackgroundWorkAsync(CancellationTokenSource.Token));
+            }
+        }
+
+        public static void Stop()
+        {
+            CancellationTokenSource.Cancel();
+        }
+
+        private static async Task BackgroundWorkAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    Game localGame;
+                    lock (Program.game)
+                    {
+                        while (!Program.gameStarted) Thread.Sleep(1000);
+                        localGame = Program.game; // Thread-safe copy of the game
+                    }
+
+                    var Narration = await RequestNarrative(localGame).ConfigureAwait(false);
+                    if (Narration.Item1)
+                    {
+                        await localGame.uiConstructer.TypeNarration(Narration.Item2).ConfigureAwait(false);
+                    }
+
+                    lock (Program.game)
+                    {
+                        Program.game = localGame;
+                    }
+
+                    await Task.Delay(20000, cancellationToken).ConfigureAwait(false);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine("Background task was canceled.");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static async Task<(bool, string)> RequestNarrative(Game localGame)
+        {
+            List<EnemySpawn> enemies = localGame.map.GetCurrentNode().enemies;
+            int enemyCount = enemies.Count(e => e != null);
+
+            string prompt2 = "Narrate:";
+            List<string> linesToAdd = new List<string>()
+            {
+                $"Location: {localGame.map.GetCurrentNode().NodePOI}",
+                $"Progression: Map segment {localGame.map.CurrentGraphPointer} / {UtilityFunctions.maxGraphDepth}",
+                $"Player Health: {localGame.player.currentHealth}",
+                $"Player Inventory: {localGame.player.inventory.Items}",
+                $"Enemies in Room: {enemyCount}",
+                $"Recent Events: Narrator's choice",
+                $"Objective: Narrator's choice",
+                $"Tension Level: Narrator's choice",
+                $"Narrative Arc: Narrator's choice"
+            };
+            foreach (string line in linesToAdd)
+            {
+                prompt2 += $"\n{line}";
+            }
+
+            localGame.chat.AppendUserInput(prompt2);
+            string output = await localGame.narrator.GetGPTOutput(localGame.chat, "Narrative", 10).ConfigureAwait(false);
+
+            if (output.ToLower() == "false" || (output.ToLower().Contains("false") && output.Length < 10))
+            {
+                return (false, output);
+            }
+            else
+            {
+                return (true, output);
+            }
+        }
+    }
+
+
     public interface GameSetup
     {
         public void chooseSave();
@@ -43,7 +143,7 @@ namespace GPTControlNamespace
     {
         private OpenAIAPI api;
         private Conversation chat;
-        
+
         public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
         {
             Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
@@ -53,9 +153,9 @@ namespace GPTControlNamespace
                 newNode.InitialiseEnemies(game);
                 graphToReturn.Nodes.Add(newNode);
             }
-            
+
             graphToReturn.SetEntryAndExits();
-                
+
             return graphToReturn;
         }
 
@@ -65,25 +165,27 @@ namespace GPTControlNamespace
             {
                 game.map = new Map();
                 game.map.Graphs = new List<Graph>();
-                await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup, 0).GetAwaiter().GetResult().map.Graphs[game.map.Graphs.Count - 1]);
+                await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup, 0).GetAwaiter().GetResult()
+                    .map.Graphs[game.map.Graphs.Count - 1]);
                 // game.map.CurrentNode = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[0];
             }
+
             return game.map;
         }
-        
+
         public async Task<Game> LoadGraphStructure(Game game, GameSetup gameSetup)
         {
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Loading graph structure...");
-            
+
             UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
-            
+
             string output = File.ReadAllText(UtilityFunctions.mapsSpecificDirectory);
             if (game.map == null) game.map = new Map();
             game.map = JsonConvert.DeserializeObject<Map>(output);
-            game.map.Graphs[game.map.Graphs.Count - 1] = await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game);
+            game.map.Graphs[game.map.Graphs.Count - 1] =
+                await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game);
             return game;
-            
         }
 
         public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id)
@@ -95,16 +197,17 @@ namespace GPTControlNamespace
             try
             {
                 prompt = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt1.txt");
-                    
+
                 if (UtilityFunctions.maxNodeDepth == 0)
                 {
                     UtilityFunctions.maxNodeDepth = 5; // testing purposes
                 }
 
                 prompt = $"{prompt}{Id}";
-                prompt = $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
+                prompt =
+                    $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
                 // ADD EXTRA DETAILS DEPENDING ON WHAT NUMBER GRAPH WE ARE ONE SO IT KNOWS IT IS CONTINUING THE PREVIOUS GRAPHS
-                
+
                 chat.AppendUserInput(prompt);
                 output = await GetGPTOutput(chat, "GraphStructure"); // 26s
                 output = await UtilityFunctions.FixJson(output);
@@ -113,26 +216,27 @@ namespace GPTControlNamespace
             {
                 throw e;
             }
-            
+
             UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
             if (game.map.Graphs == null || game.map.Graphs.Count == 0 || game.map == null)
             {
                 game.map = new Map();
                 game.map.Graphs = new List<Graph>();
             }
+
             Graph graph = JsonConvert.DeserializeObject<Graph>(output);
             for (int i = 0; i < graph.Nodes.Count; i++)
             {
                 graph.Nodes[i].InitialiseEnemies(game);
             }
+
             game.map.Graphs.Add(graph);
             string mapInJson = JsonConvert.SerializeObject(game.map);
-            
+
             File.Create(UtilityFunctions.mapsSpecificDirectory).Close();
             File.WriteAllText(UtilityFunctions.mapsSpecificDirectory, mapInJson);
-            
+
             return game;
-            
         }
 
         // Testing
@@ -173,22 +277,28 @@ namespace GPTControlNamespace
             return api;
         }
 
-        public async Task<string> GetGPTOutput(Conversation chat, string title)
+        public async Task<string> GetGPTOutput(Conversation chat, string title, int? maxTokens = null)
         {
+            if (maxTokens != null) chat.RequestParameters.MaxTokens = maxTokens;
+            else chat.RequestParameters.MaxTokens = null;
             string output = await chat.GetResponseFromChatbotAsync();
             string logContents = "";
-            logContents += $"INPUT: {chat.Messages[chat.Messages.Count - 2].Content}\n\nOUTPUT: {chat.Messages[chat.Messages.Count - 1].Content}";
-            
+            logContents +=
+                $"INPUT: {chat.Messages[chat.Messages.Count - 2].Content}\n\nOUTPUT: {chat.Messages[chat.Messages.Count - 1].Content}";
+
             try
             {
-                File.Create(UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" + ".txt").Close();
-                File.WriteAllText(UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" + ".txt", logContents);
+                File.Create(UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" +
+                            ".txt").Close();
+                File.WriteAllText(
+                    UtilityFunctions.logsSpecificDirectory + $@"{Path.DirectorySeparatorChar}{title}" + ".txt",
+                    logContents);
             }
             catch (Exception e)
             {
                 throw new Exception("Error creating log file: " + e.Message);
             }
-            
+
             return output;
         }
 
@@ -226,9 +336,10 @@ namespace GPTControlNamespace
             prompt5 += "\n" + UtilityFunctions.playerContextInput;
 
             // get GPT response
-            
+
             // get the user desired length of the game
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed), "You can also choose how long you wish the game to be. You can enter 2 numbers in the format of 'X,Y': the first indicating the 'length' of each segment to the game, and the next deciding how many segments there are. If you enter the word 'standard', this will be set to 5 and 10");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "You can also choose how long you wish the game to be. You can enter 2 numbers in the format of 'X,Y': the first indicating the 'length' of each segment to the game, and the next deciding how many segments there are. If you enter the word 'standard', this will be set to 5 and 10");
             string lengthInp = Console.ReadLine();
 
             try
@@ -251,7 +362,7 @@ namespace GPTControlNamespace
                 UtilityFunctions.maxNodeDepth = UtilityFunctions.stdNodeDepth;
                 UtilityFunctions.maxGraphDepth = UtilityFunctions.stdGraphDepth;
             }
-            
+
             string output;
             try
             {
@@ -279,18 +390,22 @@ namespace GPTControlNamespace
             if (string.IsNullOrEmpty(UtilityFunctions.saveSlot)) // if testing / error
             {
                 // get all save file
-                string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml");
+                string[] saves =
+                    Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}",
+                        "*.xml");
                 bool started = false;
                 for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                 {
                     if (saves.Length == i)
                     {
-                        UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                        UtilityFunctions.TypeText(
+                            new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                             $"Save Slot save{i + 1}.xml is empty. Do you want to begin a new game? y/n");
                         string load = Console.ReadLine();
                         if (load == "y")
                         {
-                            string save = UtilityFunctions.mainDirectory + @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
+                            string save = UtilityFunctions.mainDirectory +
+                                          @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
                             UtilityFunctions.saveSlot = Path.GetFileName(save);
                             UtilityFunctions.saveFile = save;
                             started = true;
@@ -366,7 +481,8 @@ namespace GPTControlNamespace
             return player;
         }
 
-        public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory,
+        public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat,
+            EnemyFactory enemyFactory,
             AttackBehaviourFactory attackBehaviourFactory)
         {
             // function to generate a json file representing the enemies and initialise an enemyFactory
@@ -444,7 +560,8 @@ namespace GPTControlNamespace
             foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
             {
                 // load attack behaviours into enemy templates
-                foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned
+                             .enemyTemplates)
                 {
                     if (enemyTemplate.Value.attackBehaviourKeys
                         .Contains(attackBehaviour
@@ -775,7 +892,8 @@ namespace GPTControlNamespace
                                 if (initialisedAttackBehaviours.Contains(
                                         enemyTemplate.Value.AttackBehaviours[slot].Name) == false)
                                 {
-                                    uninitialisedAttackBehaviours.Add(enemyTemplate.Value.AttackBehaviours[slot].Name);
+                                    uninitialisedAttackBehaviours.Add(enemyTemplate.Value.AttackBehaviours[slot]
+                                        .Name);
                                 }
                             }
                         }

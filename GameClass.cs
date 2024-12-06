@@ -127,8 +127,9 @@ namespace GameClassNamespace
                 Console.WriteLine("Loaded save.");
             }
             
-            // initialise uiConstructor
+            // initialise uiConstructor & narration
             uiConstructer = new UIConstructer(player);
+            this.chat = uiConstructer.InitialiseNarration(this);
 
             //normalNarrator.GenerateGraphStructure(chat);
         }

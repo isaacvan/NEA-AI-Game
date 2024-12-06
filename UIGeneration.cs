@@ -5,6 +5,9 @@ using GameClassNamespace;
 using GPTControlNamespace;
 using GridConfigurationNamespace;
 using MainNamespace;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using OpenAI_API.Chat;
 using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;
 
@@ -15,10 +18,26 @@ namespace UIGenerationNamespace
         public Player player { get; set; }
         public List<Enemy> nearbyEnemies { get; set; }
         public List<List<Tile>> map { get; set; }
+        public string currentNarration { get; set; }
+        public bool narrationPending { get; set; }
 
         public UIConstructer(Player plyr)
         {
             player = plyr;
+        }
+
+        public Conversation InitialiseNarration(Game game)
+        {
+            string prompt2 = File.ReadAllText(UtilityFunctions.promptPath + "Prompt2.txt");
+            game.chat.AppendUserInput(prompt2);
+            // game.narrator.GetGPTOutput(game.chat, "Narration initialisation");
+            return game.chat;
+        }
+
+        public async Task TypeNarration(string narrative)
+        {
+            currentNarration = narrative;
+            narrationPending = true;
         }
 
         public void drawCharacterMenu(Game game)
@@ -72,7 +91,7 @@ namespace UIGenerationNamespace
             
             int columnWidth = 12; // Adjust as necessary for layout
             string separator = "     |      ";
-            string ResetANSI = $"\x1b[0m";
+            string ResetANSI = $"\x1b[38;2;255;255;255m";
 
             string FormatString(string str, int width)
             {
@@ -109,9 +128,9 @@ namespace UIGenerationNamespace
             List<string> playerLines = new List<string>
             {
                 FormatString($"[{UtilityFunctions.playerANSIUI}Player{ResetANSI}]", columnWidth),
-                FormatString($"Level: {player.Level}", columnWidth),
-                FormatString($"{UtilityFunctions.DrawHealthBar(player)}", columnWidth),
-                FormatString($"{UtilityFunctions.DrawManaBar(player)}", columnWidth),
+                FormatString($"Level: {player.Level}{ResetANSI}", columnWidth),
+                FormatString($"{UtilityFunctions.DrawHealthBar(player)}{ResetANSI}", columnWidth),
+                FormatString($"{UtilityFunctions.DrawManaBar(player)}{ResetANSI}", columnWidth),
                 FormatString(DrawStatus(player.statusMap.Values.ToList()), columnWidth)
             };
 
@@ -121,9 +140,9 @@ namespace UIGenerationNamespace
                 return new List<string>
                 {
                     FormatString($"[{colour}{e.Name}{ResetANSI}]", columnWidth),
-                    FormatString($"Level: {e.Level}", columnWidth),
-                    FormatString($"{UtilityFunctions.DrawHealthBar(e)}", columnWidth),
-                    FormatString($"{UtilityFunctions.DrawManaBar(e)}", columnWidth),
+                    FormatString($"Level: {e.Level}{ResetANSI}", columnWidth),
+                    FormatString($"{UtilityFunctions.DrawHealthBar(e)}{ResetANSI}", columnWidth),
+                    FormatString($"{UtilityFunctions.DrawManaBar(e)}{ResetANSI}", columnWidth),
                     FormatString(DrawStatus(e.statusMap.Values.ToList()), columnWidth)
                 };
             }).ToList();
