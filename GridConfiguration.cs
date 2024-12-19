@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
@@ -10,6 +11,7 @@ using EnemyClassesNamespace;
 using GameClassNamespace;
 using GPTControlNamespace;
 using MainNamespace;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using OpenAI_API.Chat;
 using PlayerClassesNamespace;
@@ -78,6 +80,8 @@ namespace GridConfigurationNamespace
             node.tiles[y][x] = tile;
         }
 
+        [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
+            MessageId = "type: System.ArgumentOutOfRangeException; size: 108MB")]
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
         {
             // return false if out of bounds
@@ -96,7 +100,7 @@ namespace GridConfigurationNamespace
                     PlayerPos.X += 1;
                     break;
                 default:
-                    Console.WriteLine("Invalid input");
+                    return true;
                     break;
             }
 
@@ -158,6 +162,8 @@ namespace GridConfigurationNamespace
             game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(
                 GridFunctions.GetPlayerStartPos(ref game, oldId, newId),
                 game.map.GetCurrentNode(newId).tiles, ref game));
+            
+            game.gameState.currentNodeId = newId;
         }
 
         public static void MoveEnemy(Point oldPos, Point newPos, ref Game game)
@@ -345,9 +351,9 @@ namespace GridConfigurationNamespace
                         g = (int)node.tiles[i][j].rgb.Value.Green;
                         b = (int)node.tiles[i][j].rgb.Value.Blue;
                     }
-                    
+
                     // check for dead enemies
-                    if (node.tiles[i][j].enemyOnTile == null && node.tiles[i][j].playerHere == false) 
+                    if (node.tiles[i][j].enemyOnTile == null && node.tiles[i][j].playerHere == false)
                     {
                         if (node.tiles[i][j].tileChar == CharsToMeanings["Enemy"][0])
                         {
@@ -355,7 +361,7 @@ namespace GridConfigurationNamespace
                             node.tiles[i][j].tileChar = CharsToMeanings[$"{str}"][0];
                         }
                     }
-                    
+
                     // double check for player tile
                     if (node.tiles[i][j].playerHere)
                     {
@@ -385,7 +391,8 @@ namespace GridConfigurationNamespace
                         }
                         else
                         {
-                            WriteTileChar(node, i, j, Math.Round(brightness * r, 0), Math.Round(brightness * g, 0), Math.Round(brightness * b, 0), brightness);
+                            WriteTileChar(node, i, j, Math.Round(brightness * r, 0), Math.Round(brightness * g, 0),
+                                Math.Round(brightness * b, 0), brightness);
                         }
                     }
                 }
@@ -413,10 +420,12 @@ namespace GridConfigurationNamespace
             {
                 Console.Write(
                     $"\x1b[38;2;{RedGreenBluePlayerVals[0]};{RedGreenBluePlayerVals[1]};{RedGreenBluePlayerVals[2]}m{node.tiles[i][j].tileChar} \x1b[0m");
-            } else if (node.tiles[i][j].enemyOnTile != null)
+            }
+            else if (node.tiles[i][j].enemyOnTile != null)
             {
                 Nature nature = node.tiles[i][j].enemyOnTile.nature;
-                Console.Write($"\x1b[38;2;{Math.Round(NatureToRGB[nature].Red*brightness, 0)};{Math.Round(NatureToRGB[nature].Green*brightness, 0)};{Math.Round(NatureToRGB[nature].Blue*brightness, 0)}m{node.tiles[i][j].tileChar} \x1b[0m");
+                Console.Write(
+                    $"\x1b[38;2;{Math.Round(NatureToRGB[nature].Red * brightness, 0)};{Math.Round(NatureToRGB[nature].Green * brightness, 0)};{Math.Round(NatureToRGB[nature].Blue * brightness, 0)}m{node.tiles[i][j].tileChar} \x1b[0m");
             }
             else
             {
@@ -442,7 +451,89 @@ namespace GridConfigurationNamespace
                 }
             }
 
+            List<string> structureNames = new List<string>()
+            {
+                "Bush3x2", "Tree3x3", "Bush3x3", "House4x4"
+            };
+            Random rnd = new Random();
+            int structureCount = rnd.Next(structureNames.Count);
+            for (int i = 0; i < structureCount; i++)
+            {
+                Structure s = new Structure(structureNames[i]);
+                bool valid = false;
+                Point rndPoint = Point.Empty;
+                while (!valid)
+                {
+                    rndPoint = new Point(rnd.Next(0, node.NodeWidth), rnd.Next(0, node.NodeHeight));
+                    if (node.tiles[rndPoint.X][rndPoint.Y].tileDesc == "Empty" &&
+                        rndPoint.X + s.Width < node.NodeWidth && rndPoint.Y + s.Height < node.NodeHeight)
+                    {
+                        valid = true;
+                        node.tiles = ImplementStructure(rndPoint, node.tiles, s, valid);
+                    }
+                }
+            }
+
             return node;
+        }
+
+        public static List<List<Tile>> ImplementStructure(Point p, List<List<Tile>> tiles, Structure s, bool valid)
+        {
+            List<List<Tile>> clonedTiles = new List<List<Tile>>();
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                clonedTiles.Add(new List<Tile>());
+                for (int j = 0; j < tiles[i].Count; j++)
+                {
+                    clonedTiles[i].Add(tiles[i][j].clone());
+                }
+            }
+
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                List<Tile> tileRow = tiles[i];
+                for (int j = 0; j < tileRow.Count; j++)
+                {
+                    Tile tile = tileRow[j];
+                    if (tile.tileXY.X == p.X && tile.tileXY.Y == p.Y)
+                    {
+                        for (int structurei = 0; structurei < s.Width; structurei++)
+                        {
+                            for (int structurej = 0; structurej < s.Height; structurej++)
+                            {
+                                if (tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc == "Empty")
+                                {
+                                    tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar =
+                                        s.ASCII[structurej][structurei];
+                                    tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc =
+                                        "Structure";
+                                    if (s.ASCII[structurej][structurei] == '.')
+                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc =
+                                            "Empty";
+
+                                    if ((tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '|' ||
+                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '/' ||
+                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '\\') && s.Name == "House4x4")
+                                    {
+                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].walkable = false;
+                                    }
+
+                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].rgb =
+                                            s.RGBDict[
+                                                tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar];
+                                }
+                                else
+                                {
+                                    valid = false;
+                                    return clonedTiles;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return tiles;
         }
 
 
@@ -516,8 +607,8 @@ namespace GridConfigurationNamespace
         public List<string> ConnectedNodesEdges { get; set; }
         public string NodePOI { get; set; }
         public int NodeDepth { get; set; }
-        [Newtonsoft.Json.JsonIgnore] public int NodeWidth { get; set; }
-        [Newtonsoft.Json.JsonIgnore] public int NodeHeight { get; set; }
+        public int NodeWidth { get; set; }
+        public int NodeHeight { get; set; }
         public bool Milestone { get; set; }
         [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
         [Newtonsoft.Json.JsonIgnore] public List<EnemySpawn> enemies { get; set; }
@@ -565,11 +656,17 @@ namespace GridConfigurationNamespace
                 spawns.Add(new EnemySpawn());
                 Point enemyPoint = new Point();
                 bool validPoint = false;
+                if (NodeHeight == 0 || NodeWidth == 0)
+                {
+                    NodeHeight = 20;
+                    NodeWidth = 20;
+                }
                 while (!validPoint)
                 {
                     enemyPoint.X = random.Next(1, this.NodeWidth - 2);
                     enemyPoint.Y = random.Next(1, this.NodeHeight - 2);
-                    if (tiles[enemyPoint.X][enemyPoint.Y].tileDesc == "Empty" && tiles[enemyPoint.X][enemyPoint.Y].enemyOnTile == null)
+                    if (tiles[enemyPoint.X][enemyPoint.Y].tileDesc == "Empty" &&
+                        tiles[enemyPoint.X][enemyPoint.Y].enemyOnTile == null)
                     {
                         validPoint = true;
                     }
@@ -608,13 +705,17 @@ namespace GridConfigurationNamespace
                     tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
                     tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile =
                         game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint, spawn.id);
-                    enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
-                } else if (spawn.currentLocation != Point.Empty && spawn.spawnPoint == Point.Empty)
+                    enemies[enemies.IndexOf(spawn)].nature =
+                        tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
+                }
+                else if (spawn.currentLocation != Point.Empty && spawn.spawnPoint == Point.Empty)
                 {
-                    tiles[spawn.currentLocation.X][spawn.currentLocation.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
+                    tiles[spawn.currentLocation.X][spawn.currentLocation.Y].tileChar =
+                        GridFunctions.CharsToMeanings["Enemy"][0];
                     tiles[spawn.currentLocation.X][spawn.currentLocation.Y].enemyOnTile =
                         game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.currentLocation, spawn.id);
-                    enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
+                    enemies[enemies.IndexOf(spawn)].nature =
+                        tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
                 }
             }
         }
@@ -683,6 +784,97 @@ namespace GridConfigurationNamespace
         }
     }
 
+
+    public class Structure
+    {
+        public string Name { get; set; }
+        public List<List<char>> ASCII { get; set; }
+        public Dictionary<char, Rgb> RGBDict { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public Structure(string type)
+        {
+            Name = type;
+            // many structures generated by AI
+            RGBDict = new Dictionary<char, Rgb>() { { '.', (Rgb)GridFunctions.CharsToRGB["Empty"] } };
+            switch (type)
+            {
+                case "Tree3x2":
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '.', '*', '.' },
+                        new List<char>() { '*', '*', '*' }
+                    };
+                    RGBDict.Add('*', new Rgb(34, 139, 34)); // forest green
+                    Width = 3;
+                    Height = 2;
+                    break;
+
+                case "Tree3x3":
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '.', '*', '.' },
+                        new List<char>() { '*', '*', '*' },
+                        new List<char>() { '.', '|', '.' }
+                    };
+                    RGBDict.Add('*', new Rgb(34, 139, 34)); // green
+                    RGBDict.Add('|', new Rgb(76, 34, 10)); // brown
+                    Width = 3;
+                    Height = 3;
+                    break;
+
+                case "Bush3x2":
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '*', '*', '*' },
+                        new List<char>() { '*', '*', '*' }
+                    };
+                    RGBDict.Add('*', new Rgb(34, 139, 34)); // green
+                    Width = 3;
+                    Height = 2;
+                    break;
+
+                case "Bush3x3":
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '.', '*', '.' },
+                        new List<char>() { '*', '*', '*' },
+                        new List<char>() { '*', '*', '*' }
+                    };
+                    RGBDict.Add('*', new Rgb(34, 139, 34)); // green
+                    Width = 3;
+                    Height = 3;
+                    break;
+
+                case "House4x4":
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '.', '/', '\\', '.' },
+                        new List<char>() { '/', '_', '_', '\\' },
+                        new List<char>() { '|', '.', '.', '|' },
+                        new List<char>() { '|', '_', '_', '|' }
+                    };
+                    RGBDict.Add('/', new Rgb(101, 67, 33)); // Medium brown (roof edges)
+                    RGBDict.Add('\\', new Rgb(101, 67, 33)); // Medium brown (roof edges)
+                    RGBDict.Add('_', new Rgb(169, 169, 169)); // Gray (roof base and foundation)
+                    RGBDict.Add('|', new Rgb(139, 69, 19)); // Dark brown (walls and vertical supports)
+                    Width = 4;
+                    Height = 4;
+                    break;
+
+                default:
+                    ASCII = new List<List<char>>()
+                    {
+                        new List<char>() { '.' }
+                    };
+                    Width = 1;
+                    Height = 1;
+                    break;
+            }
+        }
+    }
+
     public class Graph
     {
         public List<Node> Nodes { get; set; }
@@ -695,6 +887,16 @@ namespace GridConfigurationNamespace
             Nodes = nodes;
             Id = id;
             GraphDepth = depth;
+        }
+
+        public int GetHighestDepth()
+        {
+            int depth = 0;
+            foreach (Node n in Nodes)
+            {
+               if (n.NodeDepth > depth) depth = n.NodeDepth; 
+            }
+            return depth;
         }
 
         public Node? GetNode(int id)

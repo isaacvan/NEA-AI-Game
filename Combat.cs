@@ -37,6 +37,7 @@ namespace CombatNamespace
         public bool playerTurnBool { get; set; } = true;
         public bool enemyTurnBool { get; set; } = false;
         public bool playerAlive { get; set; } = true;
+        public AttackSlot lastSlotUsed { get; set; }
 
 
         public enum CombatMenuState
@@ -199,15 +200,16 @@ namespace CombatNamespace
                 
                 try
                 {
-                    int input = Convert.ToInt16(Console.ReadLine());
+                    int input = Convert.ToInt16(Console.ReadKey(true).KeyChar.ToString());
                     if (input < 1 || input > player.PlayerAttacks.Values.Count)
                     {
                         throw null;
                     }
                     else
                     {
-                        AttackSlot attackSlot;
-                        attackInfo = player.PlayerAttacks[(AttackSlot)Enum.Parse(typeof(AttackSlot), $"slot{input}")];
+                        AttackSlot attackSlot = (AttackSlot)Enum.Parse(typeof(AttackSlot), $"slot{input}");
+                        this.lastSlotUsed = attackSlot;
+                        attackInfo = player.PlayerAttacks[attackSlot];
                         IEnumerable<Parameter> parameters = attackInfo.Expression.DeclaredParameters;
                         try
                         {
@@ -231,7 +233,7 @@ namespace CombatNamespace
                 }
                 catch
                 {
-                    Console.Clear();
+                    UtilityFunctions.clearScreen(player);
                     UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
                     UtilityFunctions.TypeText(new TypeText(), 
                         $"Invalid input. Input should range from 1 - {player.PlayerAttacks.Values.Count}.");
@@ -248,7 +250,7 @@ namespace CombatNamespace
 
             if (enemies.Count > 1) // AND ISNT AOE TARGETTING
             {
-                Console.Clear();
+                UtilityFunctions.clearScreen(player);
                 UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                 int i = 1;
                 foreach (Enemy en in enemies.Values)
@@ -263,7 +265,7 @@ namespace CombatNamespace
                     try
                     {
                         int inp = Convert.ToInt16(Console.ReadLine());
-                        Console.Clear();
+                        UtilityFunctions.clearScreen(player);
                         if (inp > enemies.Count || inp < 1)
                         {
                             throw null;
@@ -284,7 +286,7 @@ namespace CombatNamespace
                     {
                         UtilityFunctions.TypeText(new TypeText(), "Invalid input.");
                         Thread.Sleep(500);
-                        Console.Clear();
+                        UtilityFunctions.clearScreen(player);
                         UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                         int i1 = 1;
                         foreach (Enemy en in enemies.Values)
@@ -334,7 +336,7 @@ namespace CombatNamespace
             Console.WriteLine($"Enemy used {chosenAttack}!");
             thisEnemy.ExecuteAttack(chosenAttack, player);
             Thread.Sleep(1500);
-            Console.Clear();
+            UtilityFunctions.clearScreen(player);
         }
 
 

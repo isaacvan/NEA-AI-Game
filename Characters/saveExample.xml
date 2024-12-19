@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>15</X>
-    <Y>13</Y>
+    <X>5</X>
+    <Y>14</Y>
   </playerPos>
-  <Class>Rogue Automaton</Class>
-  <Race>Robot</Race>
+  <Class>PeasantHero</Class>
+  <Race>Human</Race>
   <Health>80</Health>
   <currentHealth>80</currentHealth>
-  <ManaPoints>70</ManaPoints>
-  <currentMana>70</currentMana>
-  <Strength>8</Strength>
-  <Intelligence>9</Intelligence>
-  <Dexterity>10</Dexterity>
-  <Constitution>6</Constitution>
-  <Charisma>2</Charisma>
+  <ManaPoints>60</ManaPoints>
+  <currentMana>60</currentMana>
+  <Strength>7</Strength>
+  <Intelligence>6</Intelligence>
+  <Dexterity>8</Dexterity>
+  <Constitution>7</Constitution>
+  <Charisma>7</Charisma>
   <Level>1</Level>
   <currentExp>0</currentExp>
   <maxExp>10</maxExp>

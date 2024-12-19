@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using UtilityFunctionsNamespace;
 using EnemyClassesNamespace;
 using PlayerClassesNamespace;
@@ -9,6 +10,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using CombatNamespace;
+using Emgu.CV.Aruco;
 using Emgu.CV.Structure;
 using ItemFunctionsNamespace;
 using OpenAI_API;
@@ -29,24 +31,17 @@ namespace MainNamespace
         public static Logger logger = LogManager.GetCurrentClassLogger();
         public static bool testing = false;
         public static Game game;
-        public static bool gameStarted = false;
+        public static volatile bool gameStarted = false;
 
         // one game costs £0.30 currently with GPT-4o. 3 minutes to generate.
 
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
         //
-        //
-        // 
-        // 
-        //
         // DUNGEON MASTER ADDITIONS
         // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
-        // - CHECKS: when a narration is ready to print the draw node function needs to be told and it should be written to the end. or in new func?
-        //
-        //
         // - Make way for player to get more attacks
-        //
+        // - how will player collect items?
         //
         // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
         // Player needs to have multiple moves: use enemy attack behaviours?
@@ -57,8 +52,12 @@ namespace MainNamespace
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
         // design each ai system in combat
+        // basic enemy attack back
+        // 
         //
-        // NEXT - DATABASES ?!
+        // FINAL TWEAKS
+        // make game fully playable so that they can complete 1 "storyline"
+        // QOL - menu in game, rgb personalisation etc
         //----------------------------------------------------------------------------------------------------------
         */
 
@@ -90,7 +89,6 @@ namespace MainNamespace
 
             EnableColors();
             game = new Game();
-            NarrationTypeWriter.Start();
             Console.CancelKeyPress += MyHandler; // triggers save on forced exit
             string mode = args.Length > 0 ? args[0] : "game";
             logger.Info($"Running mode={mode}");
@@ -99,13 +97,15 @@ namespace MainNamespace
                 case "testing":
                     testing = true;
                     await game.initialiseGame(new TestNarrator.GameTest1(), true);
+                    // new Narrator().GenerateGraphStructure(Narrator.initialiseChat(Narrator.initialiseGPT()), new Game(), new TestNarrator.GameTest1(), 0);
                     Console.Clear();
                     logger.Info("Test Mode");
 
                     // game.map.Graphs[0].Nodes[0] = GridFunctions.FillNode(game.map.Graphs[0].Nodes[0]);
 
-                    game.player.PlayerAttacks[AttackSlot.slot1] = game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
-                    
+                    game.player.PlayerAttacks[AttackSlot.slot1] =
+                        game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
+
                     gameStarted = true;
                     GamePlayLoop(ref game);
 
@@ -135,16 +135,29 @@ namespace MainNamespace
         }
 
 
+        // [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH", MessageId = "type: System.SByte[]; size: 598MB")]
         public static void GamePlayLoop(ref Game game)
         {
             UtilityFunctions.UpdateVars(ref game);
-            game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(GridFunctions.GetPlayerStartPos(ref game),
-                game.map.GetCurrentNode().tiles, ref game));
-            // game.map.CurrentNode.tiles = GridFunctions.PlacePlayer(game.player.playerPos, game.map.CurrentNode.tiles);
+            if (UtilityFunctions.loadedSave)
+            {
+                game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(
+                    game.player.playerPos,
+                    game.map.GetCurrentNode().tiles, ref game));
+            }
+            else
+            {
+                game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(
+                    GridFunctions.GetPlayerStartPos(ref game),
+                    game.map.GetCurrentNode().tiles, ref game));
+            }
             GridFunctions.DrawWholeNode(game);
             int IdOfNextNode = -1;
             string input = Console.ReadKey().Key.ToString();
             Tile oldTile = null;
+
+            // start narrator
+            NarrationTypeWriter.Start();
 
             bool GameRunning = true;
             while (GameRunning) // while overall game running
@@ -152,7 +165,7 @@ namespace MainNamespace
                 //UtilityFunctions.clearScreen(game.player);
                 UtilityFunctions.UpdateVars(ref game); // updates player rgb vars
 
-                while (!GetAllowedInputs("MoveCharacterMenu").Contains(input[0].ToString()) ||
+                while (!GetAllowedInputs("MoveCharacterMenuMap").Contains(input[0].ToString()) ||
                        !GridFunctions.CheckIfOutOfBounds(
                            game.map.Graphs[game.map.Graphs.Count - 1]
                                .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
@@ -164,11 +177,13 @@ namespace MainNamespace
                     input = Console.ReadKey(true).KeyChar.ToString();
                 }
 
-
                 // move player, if it isnt a movement then do something else with the input
                 if (!GridFunctions.MovePlayer(input, ref game.player.playerPos, ref game, ref oldTile))
                     AssessOtherInputs(input, ref game);
-                
+
+                // register player movement
+                UpdateMoveCounter(ref game);
+
                 // then move enemies
                 MoveEnemies(ref game);
 
@@ -179,15 +194,24 @@ namespace MainNamespace
                 // check for a new node
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
                     GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
-                
+
                 // draw the updated grid
                 GridFunctions.DrawWholeNode(game);
-                
+
+                // save final gameState
+                game.gameState.saveStateToFile();
+
                 // get next input
                 input = Console.ReadKey(true).KeyChar.ToString();
             }
         }
-        
+
+        public static void UpdateMoveCounter(ref Game game)
+        {
+            NarrationTypeWriter.IncrementMovesSinceLastNarration();
+            game.gameState.location = game.player.playerPos;
+        }
+
 
         public static void MoveEnemies(ref Game game)
         {
@@ -199,7 +223,8 @@ namespace MainNamespace
                 if (enemy.spawnPoint != Point.Empty && enemy.currentLocation == Point.Empty)
                 {
                     oldPoint = (Point)enemy.spawnPoint;
-                } else if (enemy.currentLocation != Point.Empty && enemy.spawnPoint == Point.Empty)
+                }
+                else if (enemy.currentLocation != Point.Empty && enemy.spawnPoint == Point.Empty)
                 {
                     oldPoint = (Point)enemy.currentLocation;
                 }
@@ -213,10 +238,12 @@ namespace MainNamespace
                 {
                     container = new TimidContainer();
                     container.GetEnemyMovement(oldPoint, ref game);
-                } else if (enemy.nature == Nature.neutral)
+                }
+                else if (enemy.nature == Nature.neutral)
                 {
                     container = new NeutralContainer();
-                } else if (enemy.nature == Nature.aggressive)
+                }
+                else if (enemy.nature == Nature.aggressive)
                 {
                     container = new AggressiveContainer();
                 }
@@ -227,7 +254,8 @@ namespace MainNamespace
                     if (newPoint == Point.Empty)
                     {
                         newPoint = oldPoint;
-                    } else if (newPoint == oldPoint)
+                    }
+                    else if (newPoint == oldPoint)
                     {
                         newPoint = oldPoint;
                     }
@@ -236,10 +264,10 @@ namespace MainNamespace
                 {
                     throw new Exception("container shouldnt be null. no nature found?");
                 }
-                
+
                 enemy.currentLocation = newPoint;
                 enemy.spawnPoint = Point.Empty;
-                
+
                 GridFunctions.MoveEnemy(oldPoint, newPoint, ref game);
             }
         }
@@ -251,6 +279,11 @@ namespace MainNamespace
                 game.uiConstructer.drawCharacterMenu(game);
                 UtilityFunctions.TypeText(new TypeText(), "Press any key to continue");
                 Console.ReadKey(true);
+            }
+
+            if (GetAllowedInputs("Map").Contains(input))
+            {
+                game.uiConstructer.DrawMap(game.map.Graphs[game.map.CurrentGraphPointer]);
             }
         }
 
@@ -301,7 +334,7 @@ namespace MainNamespace
                             game.map.GetCurrentNode().enemies.RemoveAt(i);
                         }
                     }
-                    
+
                     tile.enemyOnTile = null;
                     oldTile.enemyOnTile = null;
                 }
@@ -311,7 +344,7 @@ namespace MainNamespace
                     game.loseGame();
                 }
             }
-            
+
             // IF NEW GRAPH
             // GridFunctions.LastestGraphDepth++;
             // game.map.CurrentGraphPointer++;
@@ -341,6 +374,11 @@ namespace MainNamespace
                 toReturn += "Pp";
             }
 
+            if (condition.Contains("Map"))
+            {
+                toReturn += "Mm";
+            }
+
             return toReturn;
         }
 
@@ -368,6 +406,10 @@ namespace MainNamespace
         {
             try
             {
+                if (game.gameState != null)
+                {
+                    await game.gameState.saveStateToFile();
+                }
                 // checks before saving
 
                 if (game.player != null)
@@ -442,36 +484,39 @@ namespace MainNamespace
                 UtilityFunctions.clearScreen(null);
                 Console.SetWindowSize(80, 15); // Adjust the window size to fit your preference
                 Console.Title = "Dungeon Crawler Menu";
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                int speed = 0;
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}╔═══════════════════════════════════════════════════════════════════════╗");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                               {UtilityFunctions.colourScheme.menuAccentCode}Torment{UtilityFunctions.colourScheme.menuMainCode}                                 ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                 [1] Start Game          [2] Load Save                 ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                 [3] Options             [4] Quit                      ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}║                                                                       ║");
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.menuMainCode}╚═══════════════════════════════════════════════════════════════════════╝{UtilityFunctions.colourScheme.generalTextCode}");
                 Console.WriteLine();
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typingSpeed: speed),
                     $"{UtilityFunctions.colourScheme.generalTextCode}Choose an option: ");
                 int choice;
-                if (int.TryParse(Console.ReadLine(), out choice))
+                if (int.TryParse(Convert.ToString(Console.ReadKey(true).KeyChar), out choice))
                 {
                     switch (choice)
                     {
                         case 1:
                             UtilityFunctions.clearScreen(null);
                             List<string> saves = Directory
-                                .GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml")
+                                .GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}",
+                                    "*.xml")
                                 .ToList();
-                            saves.Remove($@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
+                            saves.Remove(
+                                $@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
                             bool started = false;
                             for (int i = 0; i < UtilityFunctions.maxSaves; i++)
                             {
@@ -483,7 +528,8 @@ namespace MainNamespace
                                     string load = Console.ReadLine();
                                     if (load == "y")
                                     {
-                                        string save = UtilityFunctions.mainDirectory + @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
+                                        string save = UtilityFunctions.mainDirectory +
+                                                      @$"Characters{Path.DirectorySeparatorChar}save{i + 1}.xml";
                                         UtilityFunctions.saveSlot = Path.GetFileName(save);
                                         UtilityFunctions.saveFile = save;
                                         UtilityFunctions.saveName = $"save{i + 1}";
@@ -618,7 +664,8 @@ namespace MainNamespace
 
                         if (!UtilityFunctions.showExampleInSaves)
                         {
-                            saveNameList.Remove($@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
+                            saveNameList.Remove(
+                                $@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml");
                         }
 
                         List<string> saveNameListWithoutExt = new List<string>();
@@ -643,7 +690,8 @@ namespace MainNamespace
                     }
 
                     UtilityFunctions.saveSlot = saveSlot + ".xml";
-                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}" + (saveSlot) + ".xml";
+                    UtilityFunctions.saveFile = UtilityFunctions.mainDirectory +
+                                                $@"Characters{Path.DirectorySeparatorChar}" + (saveSlot) + ".xml";
                     UtilityFunctions.saveName = saveSlot;
                 }
 
@@ -657,9 +705,6 @@ namespace MainNamespace
         // already in, instead of generating a new one.
 
         // I think I'm doing it wrong, but I'm not sure how to fix it.
-        // code whisperer, do you have any ideas how?
-        // could you write me a // message explaining how?
-        //       
 
         public static bool options(bool gameStarted, bool saveChosen)
         {
@@ -771,10 +816,12 @@ namespace MainNamespace
             string main = UtilityFunctions.mainDirectory;
             directories.Add(@$"{main}AttackBehaviours{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}Characters{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}CharacterAttacks{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}EnemyTemplates{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}Equipments{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}Inventories{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}Statuses{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}MapStructures{Path.DirectorySeparatorChar}");
 
             Console.Clear();
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -828,11 +875,13 @@ namespace MainNamespace
             try
             {
                 List<string> itemTemplatePaths =
-                    Directory.GetFiles(UtilityFunctions.mainDirectory + $@"ItemTemplates{Path.DirectorySeparatorChar}" + saveName).ToList();
+                    Directory.GetFiles(UtilityFunctions.mainDirectory + $@"ItemTemplates{Path.DirectorySeparatorChar}" +
+                                       saveName).ToList();
                 foreach (string path in itemTemplatePaths)
                 {
                     List<string> newPaths = Directory
-                        .GetFiles(UtilityFunctions.mainDirectory + $@"ItemTemplates{Path.DirectorySeparatorChar}saveExamples").ToList();
+                        .GetFiles(UtilityFunctions.mainDirectory +
+                                  $@"ItemTemplates{Path.DirectorySeparatorChar}saveExamples").ToList();
                     foreach (string newPath in newPaths)
                     {
                         if (Path.GetFileNameWithoutExtension(path) == Path.GetFileNameWithoutExtension(newPath))
@@ -858,7 +907,9 @@ namespace MainNamespace
             UtilityFunctions.clearScreen(null);
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Clearing all Characters...\n");
-            string[] saves = Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}", "*.xml");
+            string[] saves =
+                Directory.GetFiles(UtilityFunctions.mainDirectory + $@"Characters{Path.DirectorySeparatorChar}",
+                    "*.xml");
             foreach (string save in saves)
             {
                 if (Path.GetFileNameWithoutExtension(save) != "saveExample")
@@ -957,6 +1008,38 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(characterAttack) != "saveExample")
                 {
                     File.Delete(characterAttack);
+                }
+            }
+
+            // delete logs
+            string[] logDirs = Directory.GetDirectories($@"{UtilityFunctions.mainDirectory}Logs");
+            foreach (string logDir in logDirs)
+            {
+                if (Path.GetFileNameWithoutExtension(logDir) != "saveExample")
+                {
+                    Directory.Delete(logDir, true);
+                }
+            }
+
+            // delete map structures
+            string[] maps = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}MapStructures",
+                searchPattern: "*.json");
+            foreach (string map in maps)
+            {
+                if (Path.GetFileNameWithoutExtension(map) != "saveExample")
+                {
+                    File.Delete(map);
+                }
+            }
+
+            // delete storyLines
+            string[] storylines =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}Storylines", searchPattern: "*.txt");
+            foreach (string storyline in storylines)
+            {
+                if (Path.GetFileNameWithoutExtension(storyline) != "saveExample")
+                {
+                    File.Delete(storyline);
                 }
             }
         }

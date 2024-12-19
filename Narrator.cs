@@ -24,12 +24,14 @@ namespace GPTControlNamespace
     {
         private static Task BackgroundTask;
         private static readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
-
-        public static Game game { get; set; }
+        private static List<string> Narrations { get; set; }
+        private static int MovesSinceLastNarration { get; set; }
 
         static NarrationTypeWriter()
         {
             BackgroundTask = Task.Run(async () => await BackgroundWorkAsync(CancellationTokenSource.Token));
+            Narrations = new List<string>();
+            MovesSinceLastNarration = 0;
         }
 
         public static void Start() // just in case not already started
@@ -38,11 +40,23 @@ namespace GPTControlNamespace
             {
                 BackgroundTask = Task.Run(async () => await BackgroundWorkAsync(CancellationTokenSource.Token));
             }
+
+            if (Narrations == null)
+            {
+                Narrations = new List<string>();
+            }
+
+            MovesSinceLastNarration = 0;
         }
 
         public static void Stop()
         {
             CancellationTokenSource.Cancel();
+        }
+
+        public static void IncrementMovesSinceLastNarration()
+        {
+            MovesSinceLastNarration++;
         }
 
         private static async Task BackgroundWorkAsync(CancellationToken cancellationToken)
@@ -58,7 +72,8 @@ namespace GPTControlNamespace
                         localGame = Program.game; // Thread-safe copy of the game
                     }
 
-                    var Narration = await RequestNarrative(localGame).ConfigureAwait(false);
+                    var Narration = await RequestNarrative(localGame, 25, Narrations).ConfigureAwait(false);
+                    Narrations.Add(Narration.Item2);
                     if (Narration.Item1)
                     {
                         await localGame.uiConstructer.TypeNarration(Narration.Item2).ConfigureAwait(false);
@@ -69,7 +84,13 @@ namespace GPTControlNamespace
                         Program.game = localGame;
                     }
 
-                    await Task.Delay(20000, cancellationToken).ConfigureAwait(false);
+                    // wait till moves since last narration reaches 20
+                    // then reset the moves
+                    await Task.Run(async () =>
+                    {
+                        while (MovesSinceLastNarration < 20) await Task.Delay(10);
+                        MovesSinceLastNarration = 0;
+                    }).ConfigureAwait(false);
                 }
             }
             catch (TaskCanceledException)
@@ -82,20 +103,49 @@ namespace GPTControlNamespace
             }
         }
 
-        public static async Task<(bool, string)> RequestNarrative(Game localGame)
+        public static async Task<(bool, string)> RequestNarrative(Game localGame, int maxTok, List<string> Narrations)
         {
             List<EnemySpawn> enemies = localGame.map.GetCurrentNode().enemies;
-            int enemyCount = enemies.Count(e => e != null);
+            List<string> enemyTypes = localGame.enemyFactory.enemyTypes;
+            string enemyCount = "";
+            foreach (string t in enemyTypes)
+            {
+                enemyCount += $"{t}: {enemies.Count(e => e.name == t)} ";
+            }
+
+            List<Node> nodes = localGame.map.Graphs[localGame.map.CurrentGraphPointer].Nodes;
+            List<string> NodeNames = new List<string>();
+            List<int> NodeIds = new List<int>();
+            List<int> ConnectedNodes = localGame.map.GetCurrentNode().ConnectedNodes;
+            foreach (Node node in nodes)
+            {
+                NodeNames.Add(node.NodePOI);
+                NodeIds.Add(node.NodeID);
+            }
+
+            List<string> FinalUpcomingNodes = new List<string>();
+
+            foreach (int id in ConnectedNodes)
+            {
+                if (nodes.Find(n => n.NodeID == id) != null)
+                {
+                    if (nodes.Find(n => n.NodeID == id).NodeDepth > localGame.map.GetCurrentNode().NodeDepth)
+                    {
+                        FinalUpcomingNodes.Add(nodes.Find(n => n.NodeID == id).NodePOI);
+                    }
+                }
+            }
+
 
             string prompt2 = "Narrate:";
             List<string> linesToAdd = new List<string>()
             {
                 $"Location: {localGame.map.GetCurrentNode().NodePOI}",
+                $"Upcoming Locations: {string.Join(", ", FinalUpcomingNodes)}",
                 $"Progression: Map segment {localGame.map.CurrentGraphPointer} / {UtilityFunctions.maxGraphDepth}",
-                $"Player Health: {localGame.player.currentHealth}",
-                $"Player Inventory: {localGame.player.inventory.Items}",
+                $"Player Health: {localGame.player.currentHealth} / {localGame.player.Health}",
+                $"Player Inventory: {string.Join(", ", localGame.player.inventory.Items)}",
                 $"Enemies in Room: {enemyCount}",
-                $"Recent Events: Narrator's choice",
                 $"Objective: Narrator's choice",
                 $"Tension Level: Narrator's choice",
                 $"Narrative Arc: Narrator's choice"
@@ -105,8 +155,18 @@ namespace GPTControlNamespace
                 prompt2 += $"\n{line}";
             }
 
+            if (Narrations.Count > 0)
+            {
+                prompt2 += "\n\nHere is a list of your previous narrations in order:";
+                foreach (string n in Narrations)
+                {
+                    prompt2 += $"\n{n}";
+                }
+            }
+
             localGame.chat.AppendUserInput(prompt2);
-            string output = await localGame.narrator.GetGPTOutput(localGame.chat, "Narrative", 10).ConfigureAwait(false);
+            string output = await localGame.narrator.GetGPTOutput(localGame.chat, "Narrative", maxTok)
+                .ConfigureAwait(false);
 
             if (output.ToLower() == "false" || (output.ToLower().Contains("false") && output.Length < 10))
             {
@@ -123,7 +183,7 @@ namespace GPTControlNamespace
     public interface GameSetup
     {
         public void chooseSave();
-
+        public void IntroduceGPT(ref Conversation chat, Game game);
         Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
 
         Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory,
@@ -136,6 +196,7 @@ namespace GPTControlNamespace
         Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id);
         Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
         Task<Graph> PopulateNodesWithTiles(Graph graph, Game game);
+        Task GenerateStoryLineForFuture(Conversation chat, Game game);
     }
 
 
@@ -143,6 +204,34 @@ namespace GPTControlNamespace
     {
         private OpenAIAPI api;
         private Conversation chat;
+
+        public async Task GenerateStoryLineForFuture(Conversation chat, Game game)
+        {
+            chat.AppendUserInput(
+                "As the narrator, your storyline might need to be continued from a different version of yourwelf, where you don't have the memory of the storyline you will make the user follow. To fix this, please output a summary of the whole storyline, so that when fed to another narrator, they can continue the story just as you would.");
+            string outp = await game.narrator.GetGPTOutput(chat, "Story Line");
+            File.WriteAllText(
+                $"{UtilityFunctions.mainDirectory}StoryLines{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.txt",
+                outp);
+        }
+
+        public void IntroduceGPT(ref Conversation chat, Game game)
+        {
+            string enemyNamesToSelectFrom = string.Join(", ", game.enemyFactory.enemyTemplates.Keys);
+            List<ItemTemplate> templates = new List<ItemTemplate>();
+            templates.AddRange(game.itemFactory.weaponTemplates);
+            //string itemNamesToSelectFrom = string.Join(", ", )
+            chat.AppendUserInput(File.ReadAllText($"{UtilityFunctions.promptPath}Prompt3.txt"));
+            chat.AppendUserInput(
+                $"In this story, these are the names of the enemies that can feature: {enemyNamesToSelectFrom}");
+            chat.AppendUserInput(
+                "Remember that you are trying to tell a story. As such, try to follow a story arc / narrative, bearing in mind how far through the game the user is.");
+            if (File.Exists(
+                    $"{UtilityFunctions.mainDirectory}{Path.DirectorySeparatorChar}StoryLines{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.txt"))
+                chat.AppendUserInput(
+                    $"This is the storyline that you are following: {File.ReadAllText($"{UtilityFunctions.mainDirectory}{Path.DirectorySeparatorChar}StoryLines{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.txt")}");
+            // chat.AppendUserInput($"Finally, also consider that you could be telling a story from halfway through due to them loading an old savefile.");
+        }
 
         public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
         {
@@ -192,44 +281,52 @@ namespace GPTControlNamespace
         {
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Generating graph structure...");
+
             string prompt = "";
             string output = "";
-            try
-            {
-                prompt = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt1.txt");
 
-                if (UtilityFunctions.maxNodeDepth == 0)
+            // TESTING
+            bool test = false;
+            if (test)
+            {
+                output =
+                    "{\n  \"Id\": 0,\n  \"Nodes\": [\n    {\n      \"NodeID\": 0,\n      \"NodeDepth\": 0,\n      \"NodeHeight\": 30,\n      \"NodeWidth\": 30,\n      \"ConnectedNodes\": [1, 2],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Starting Point\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 1,\n      \"NodeDepth\": 1,\n      \"NodeHeight\": 25,\n      \"NodeWidth\": 25,\n      \"ConnectedNodes\": [0, 3, 4],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Abandoned Outpost\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 2,\n      \"NodeDepth\": 1,\n      \"NodeHeight\": 20,\n      \"NodeWidth\": 20,\n      \"ConnectedNodes\": [0, 4],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Ancient Ruins\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 3,\n      \"NodeDepth\": 2,\n      \"NodeHeight\": 40,\n      \"NodeWidth\": 35,\n      \"ConnectedNodes\": [1, 5],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Mystical Forest\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 4,\n      \"NodeDepth\": 2,\n      \"NodeHeight\": 20,\n      \"NodeWidth\": 25,\n      \"ConnectedNodes\": [1, 2, 5],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Raging River\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 5,\n      \"NodeDepth\": 3,\n      \"NodeHeight\": 45,\n      \"NodeWidth\": 40,\n      \"ConnectedNodes\": [3, 4, 6, 7],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Crossroads\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 6,\n      \"NodeDepth\": 4,\n      \"NodeHeight\": 50,\n      \"NodeWidth\": 50,\n      \"ConnectedNodes\": [5, 8],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Lost City\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 7,\n      \"NodeDepth\": 4,\n      \"NodeHeight\": 30,\n      \"NodeWidth\": 30,\n      \"ConnectedNodes\": [5],\n      \"ConnectedNodesEdges\": [\"undirected\"],\n      \"NodePOI\": \"Desolate Camp\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 8,\n      \"NodeDepth\": 5,\n      \"NodeHeight\": 60,\n      \"NodeWidth\": 60,\n      \"ConnectedNodes\": [6],\n      \"ConnectedNodesEdges\": [\"undirected\"],\n      \"NodePOI\": \"Timeless Dungeon\",\n      \"Milestone\": true\n    }\n  ]\n}";
+            }
+            else
+            {
+                try
                 {
-                    UtilityFunctions.maxNodeDepth = 5; // testing purposes
+                    prompt = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt1.txt");
+
+                    if (UtilityFunctions.maxNodeDepth == 0)
+                    {
+                        UtilityFunctions.maxNodeDepth = 5; // testing purposes
+                    }
+
+                    prompt = $"{prompt}{Id}";
+                    prompt =
+                        $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
+                    // ADD EXTRA DETAILS DEPENDING ON WHAT NUMBER GRAPH WE ARE ONE SO IT KNOWS IT IS CONTINUING THE PREVIOUS GRAPHS
+
+                    chat.AppendUserInput(prompt);
+                    output = await GetGPTOutput(chat, "GraphStructure"); // 26s
+                    output = await UtilityFunctions.FixJson(output);
                 }
-
-                prompt = $"{prompt}{Id}";
-                prompt =
-                    $"{prompt}\nThe maximum nodeDepth you should go up to (and the milestone should have) is {UtilityFunctions.maxNodeDepth}.";
-                // ADD EXTRA DETAILS DEPENDING ON WHAT NUMBER GRAPH WE ARE ONE SO IT KNOWS IT IS CONTINUING THE PREVIOUS GRAPHS
-
-                chat.AppendUserInput(prompt);
-                output = await GetGPTOutput(chat, "GraphStructure"); // 26s
-                output = await UtilityFunctions.FixJson(output);
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                
+                UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
+                if (game.map.Graphs == null || game.map.Graphs.Count == 0 || game.map == null)
+                {
+                    game.map = new Map();
+                    game.map.Graphs = new List<Graph>();
+                }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
-            if (game.map.Graphs == null || game.map.Graphs.Count == 0 || game.map == null)
-            {
-                game.map = new Map();
-                game.map.Graphs = new List<Graph>();
-            }
-
+            
             Graph graph = JsonConvert.DeserializeObject<Graph>(output);
-            for (int i = 0; i < graph.Nodes.Count; i++)
-            {
-                graph.Nodes[i].InitialiseEnemies(game);
-            }
-
+            graph = await PopulateNodesWithTiles(graph, game);
             game.map.Graphs.Add(graph);
             string mapInJson = JsonConvert.SerializeObject(game.map);
 
@@ -279,9 +376,25 @@ namespace GPTControlNamespace
 
         public async Task<string> GetGPTOutput(Conversation chat, string title, int? maxTokens = null)
         {
-            if (maxTokens != null) chat.RequestParameters.MaxTokens = maxTokens;
+            if (maxTokens != null)
+            {
+                chat.RequestParameters.MaxTokens = maxTokens;
+                chat.AppendUserInput(
+                    $"The max tokens for the next output is {maxTokens}. Ensure that your output makes sense within {maxTokens} tokens.");
+            }
             else chat.RequestParameters.MaxTokens = null;
-            string output = await chat.GetResponseFromChatbotAsync();
+
+            // chat.RequestParameters.Temperature = 0.9;
+            string output = "";
+            try
+            {
+                output = await chat.GetResponseFromChatbotAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
             string logContents = "";
             logContents +=
                 $"INPUT: {chat.Messages[chat.Messages.Count - 2].Content}\n\nOUTPUT: {chat.Messages[chat.Messages.Count - 1].Content}";
@@ -307,7 +420,7 @@ namespace GPTControlNamespace
             Conversation chat = api.Chat.CreateConversation();
             Model model = Model.GPT4_Turbo;
             chat.Model = model;
-            chat.RequestParameters.Temperature = 0.9;
+            // chat.RequestParameters.Temperature = 0.9;
             return chat;
         }
 
@@ -325,6 +438,7 @@ namespace GPTControlNamespace
         {
             // get user input
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "As the player, you get to add a level of context for your generated story.\nThis can be any request, such as 'Begin as a knight in a medieval setting'.\nIf you would like a completely random story, just type 'Random':\n");
             UtilityFunctions.playerContextInput = Console.ReadLine();

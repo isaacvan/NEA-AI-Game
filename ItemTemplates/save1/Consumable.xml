@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Elixir of Vitality</Name>
+        <Description>A rare potion that restores health and enhances the drinker's physical endurance.</Description>
+        <Effects>Heals 40 health points; +5 to Constitution for 5 minutes</Effects>
+        <UniqueProperties>StorylineRelevance: Discovered in the ruins of an ancient temple, this elixir is said to be a gift from the gods.</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Shadowmist Brew</Name>
+        <Description>A dark, swirling potion that grants the drinker the ability to become as elusive as a shadow.</Description>
+        <Effects>Invisibility for 15 seconds; +2 Dexterity for 10 minutes</Effects>
+        <UniqueProperties>StorylineRelevance: Brewed by the Nightwalkers, a secretive clan of assassins, to aid in their covert operations.</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Arcane Dust</Name>
+        <Description>Fine dust that, when thrown into the air, significantly amplifies magical energy.</Description>
+        <Effects>Increases Mana regeneration rate by 50% for 3 minutes</Effects>
+        <UniqueProperties>StorylineRelevance: Said to be the remnants of a fallen star, imbued with pure arcane power.</UniqueProperties>
+    </Consumable>
+</Item>

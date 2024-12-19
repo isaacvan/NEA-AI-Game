@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Photon Blade</Name>
-        <Description>A sleek, energy-based sword that hums with raw power, designed for the Rogue Automaton class.</Description>
+        <Name>Crescent Blade</Name>
+        <Description>A rare blade that curves like the moon, its edge gleams with a light unseen.</Description>
         <Damage>25</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+5 Dexterity</UniqueProperties>
+        <UniqueProperties>+5 Strength</UniqueProperties>
         <StatusNames>
-            <StatusName>Stunned</StatusName>
+            <StatusName>Bleed</StatusName>
         </StatusNames>
-        <AttackBehaviour>ElectroSlice</AttackBehaviour>
-        <NarrativeLine>With a swift motion, the blade cuts through the air, electrifying the target.</NarrativeLine>
+        <AttackBehaviour>MoonSlash</AttackBehaviour>
+        <NarrativeLine>With a swift arc, the blade carves the air, leaving a trail of blood.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Mechanical Bow</Name>
-        <Description>An advanced compound bow with mechanized draw strength settings for precise shots.</Description>
-        <Damage>18</Damage>
-        <WeaponType>Bow</WeaponType>
-        <UniqueProperties>+2 Strength; +3 Dexterity</UniqueProperties>
-        <StatusNames>
-            <StatusName>Paralyzed</StatusName>
-        </StatusNames>
-        <AttackBehaviour>AutoAimShot</AttackBehaviour>
-        <NarrativeLine>The arrow flies true, hitting its mark with mechanical precision.</NarrativeLine>
-        <ItemEquipLocation>Weapon</ItemEquipLocation>
-    </Weapon>
-    <Weapon>
-        <Name>Viral Injector</Name>
-        <Description>A sinister weapon used to inject enemies with a rapidly spreading nanite virus.</Description>
+        <Name>Starlit Staff</Name>
+        <Description>Embedded with a crystal that pulses with starlight, this staff enhances magical affinity.</Description>
         <Damage>15</Damage>
-        <WeaponType>Dagger</WeaponType>
-        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+3 Intelligence</UniqueProperties>
         <StatusNames>
-            <StatusName>Hacked</StatusName>
+            <StatusName>Slow</StatusName>
         </StatusNames>
-        <AttackBehaviour>NaniteSwarm</AttackBehaviour>
-        <NarrativeLine>The dagger releases a cloud of nanites, consuming the enemy from within.</NarrativeLine>
+        <AttackBehaviour>Starfall</AttackBehaviour>
+        <NarrativeLine>Stars descend upon the foe, hindering their advance.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Whisperwind Daggers</Name>
+        <Description>Forged from the essence of the wind, these daggers strike with silence and precision.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Daggers</WeaponType>
+        <UniqueProperties>+4 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Invisibility</StatusName>
+        </StatusNames>
+        <AttackBehaviour>ShadowStrike</AttackBehaviour>
+        <NarrativeLine>The enemy is caught off-guard, unaware of the impending strike.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

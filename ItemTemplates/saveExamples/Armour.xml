@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Alloyed Exoskeleton</Name>
-        <Description>A durable body armor enhancing physical protections and electronic warfare capabilities.</Description>
-        <Defence>35</Defence>
-        <UniqueProperties>+3 Strength; +2 Constitution</UniqueProperties>
-        <DefensiveCapabilities>Increases resistance to physical and energy attacks</DefensiveCapabilities>
+        <Name>Guardian's Helm</Name>
+        <Description>A helmet that was once worn by the legendary Guardian of the Realms. It is said to protect the wearer from dark magic.</Description>
+        <Defence>15</Defence>
+        <UniqueProperties>+2 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Resistance to dark magic</DefensiveCapabilities>
+        <ItemEquipLocation>Head</ItemEquipLocation>
+    </Armour>
+    <Armour>
+        <Name>Chestplate of Valor</Name>
+        <Description>This chestplate shines with an inner light, inspiring courage in the face of overwhelming darkness.</Description>
+        <Defence>30</Defence>
+        <UniqueProperties>+3 Strength; +2 Charisma</UniqueProperties>
+        <DefensiveCapabilities>Boosts morale, reducing fear effects</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Circuitry Boots</Name>
-        <Description>Footwear embedded with advanced circuitry to enhance movement speed and agility.</Description>
-        <Defence>15</Defence>
+        <Name>Boots of the Windwalker</Name>
+        <Description>These boots were crafted with feathers from the mystical Windbird, granting unmatched swiftness.</Description>
+        <Defence>10</Defence>
         <UniqueProperties>+4 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Improves evasion rate</DefensiveCapabilities>
+        <DefensiveCapabilities>Increases movement speed</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
-    </Armour>
-    <Armour>
-        <Name>Signal Jamming Helm</Name>
-        <Description>An armored headpiece capable of jamming enemy communications and scans.</Description>
-        <Defence>20</Defence>
-        <UniqueProperties>+2 Intelligence; +1 Charisma</UniqueProperties>
-        <DefensiveCapabilities>Reduces chance of detection by enemies</DefensiveCapabilities>
-        <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
 </Item>

@@ -1,91 +1,90 @@
 {
-    "PlayerBasicAttack": {
-      "Name": "PlayerBasicAttack",
-      "ExpressionString": "target.ReceiveAttack(500, 20, 1)",
-      "Manacost": 1,
-      "Statuses": [],
-      "Narrative": "launches a basic combat maneuver."
-    },
-    "IonicPulse": {
-      "Name": "IonicPulse",
-      "ExpressionString": "target.ReceiveAttack(20, 25, 10)",
-      "Manacost": 10,
-      "Statuses": [
-        "Disoriented"
-      ],
-      "Narrative": "emits a powerful ionic pulse."
-    },
-    "LaserBlast": {
-      "Name": "LaserBlast",
-      "ExpressionString": "target.ReceiveAttack(25, 40, 15)",
-      "Manacost": 15,
-      "Statuses": [
-        "Burned"
-      ],
-      "Narrative": "fires a concentrated laser blast."
-    },
-    "ElectroShock": {
-      "Name": "ElectroShock",
-      "ExpressionString": "target.ReceiveAttack(15, 50, 10)",
-      "Manacost": 10,
-      "Statuses": [
-        "Paralyzed"
-      ],
-      "Narrative": "unleashes an electroshock wave."
-    },
-    "StealthHack": {
-      "Name": "StealthHack",
-      "ExpressionString": "target.ReceiveAttack(10, 80, 14)",
-      "Manacost": 14,
-      "Statuses": [
-        "Cloaked"
-      ],
-      "Narrative": "initiates a stealth hack, becoming temporarily invisible."
-    },
-    "PlasmaGrenade": {
-      "Name": "PlasmaGrenade",
-      "ExpressionString": "target.ReceiveAttack(30, 30, 12)",
-      "Manacost": 12,
-      "Statuses": [
-        "Burned",
-        "Disoriented"
-      ],
-      "Narrative": "throws a plasma grenade, causing an explosion."
-    },
-    "MagneticField": {
-      "Name": "MagneticField",
-      "ExpressionString": "target.ReceiveAttack(0, 0, 20)",
-      "Manacost": 20,
-      "Statuses": [
-        "DefenceBoost"
-      ],
-      "Narrative": "activates a magnetic field, enhancing defense mechanisms."
-    },
-    "NanoRepair": {
-      "Name": "NanoRepair",
-      "ExpressionString": "target.ReceiveAttack(-20, 0, 10)",
-      "Manacost": 10,
-      "Statuses": [
-        "Healing"
-      ],
-      "Narrative": "deploys nanobots for self-repair."
-    },
-    "SystemOverride": {
-      "Name": "SystemOverride",
-      "ExpressionString": "target.ReceiveAttack(35, 20, 15)",
-      "Manacost": 15,
-      "Statuses": [
-        "Hacked"
-      ],
-      "Narrative": "executes a system override on the target."
-    },
-    "EnergyDischarge": {
-      "Name": "EnergyDischarge",
-      "ExpressionString": "target.ReceiveAttack(40, 10, 9)",
-      "Manacost": 9,
-      "Statuses": [
-        "Stunned"
-      ],
-      "Narrative": "releases a massive energy discharge."
-    }
+  "PlayerBasicAttack": {
+    "Name": "PlayerBasicAttack",
+    "ExpressionString": "target.ReceiveAttack(50, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "swings their weapon with basic skill."
+  },
+  "ShadowPierce": {
+    "Name": "ShadowPierce",
+    "ExpressionString": "target.ReceiveAttack(15, 25)",
+    "Manacost": 4,
+    "Statuses": [
+      "Darkened"
+    ],
+    "Narrative": "unleashes a piercing strike from the shadows."
+  },
+  "VenomSpit": {
+    "Name": "VenomSpit",
+    "ExpressionString": "target.ReceiveAttack(8, 15)",
+    "Manacost": 6,
+    "Statuses": [
+      "Poisoned"
+    ],
+    "Narrative": "spits a corrosive venom."
+  },
+  "InfernoBlast": {
+    "Name": "InfernoBlast",
+    "ExpressionString": "target.ReceiveAttack(20, 35)",
+    "Manacost": 8,
+    "Statuses": [
+      "Burned"
+    ],
+    "Narrative": "conjures a massive ball of fire."
+  },
+  "TerrorScreech": {
+    "Name": "TerrorScreech",
+    "ExpressionString": "target.ReceiveAttack(5, 10)",
+    "Manacost": 12,
+    "Statuses": [
+      "Feared"
+    ],
+    "Narrative": "lets out an ear-piercing screech."
+  },
+  "Crystalize": {
+    "Name": "Crystalize",
+    "ExpressionString": "target.ReceiveAttack(12, 50)",
+    "Manacost": 5,
+    "Statuses": [
+      "Stunned"
+    ],
+    "Narrative": "encases the foe in crystalline bonds."
+  },
+  "WhirlwindSlash": {
+    "Name": "WhirlwindSlash",
+    "ExpressionString": "target.ReceiveAttack(18, 40)",
+    "Manacost": 7,
+    "Statuses": [
+      "Disoriented"
+    ],
+    "Narrative": "executes a spinning attack, hitting all nearby."
+  },
+  "EarthquakeStomp": {
+    "Name": "EarthquakeStomp",
+    "ExpressionString": "target.ReceiveAttack(25, 30)",
+    "Manacost": 10,
+    "Statuses": [
+      "Knocked Down"
+    ],
+    "Narrative": "slams the ground, causing a violent quake."
+  },
+  "MysticBind": {
+    "Name": "MysticBind",
+    "ExpressionString": "target.ReceiveAttack(10, 20)",
+    "Manacost": 15,
+    "Statuses": [
+      "Rooted"
+    ],
+    "Narrative": "casts ancient runes to immobilize the target."
+  },
+  "IceSpear": {
+    "Name": "IceSpear",
+    "ExpressionString": "target.ReceiveAttack(13, 25)",
+    "Manacost": 4,
+    "Statuses": [
+      "Frozen"
+    ],
+    "Narrative": "hurls a spear of ice, chilling to the bone."
+  }
 }

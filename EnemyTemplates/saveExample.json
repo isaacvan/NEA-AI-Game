@@ -1,94 +1,94 @@
 {
   "enemyTypes": [
-    "Rogue AI",
-    "Nanite Swarm",
-    "Corrupted Sentinel",
-    "Hacker Drone",
-    "Plasma Spectre"
+    "Shadow Wisp",
+    "Ancient Sentinel",
+    "Rogue Elementalist",
+    "Dreadnaught",
+    "Forest Guardian"
   ],
   "enemyTemplates": {
-    "Rogue AI": {
-      "Name": "Rogue AI",
-      "Health": 70,
+    "Shadow Wisp": {
+      "Name": "Shadow Wisp",
+      "Health": 50,
       "ManaPoints": 80,
-      "Strength": 5,
+      "Strength": 3,
       "Intelligence": 15,
-      "Dexterity": 7,
-      "Constitution": 8,
+      "Dexterity": 20,
+      "Constitution": 5,
       "Charisma": 2,
       "AttackBehaviourKeys": [
-        "IonicPulse",
-        "LaserBlast",
-        "ElectroShock",
-        "SystemOverride"
+        "ShadowPierce",
+        "VenomSpit",
+        "InfernoBlast",
+        "TerrorScreech"
       ],
       "nature": "timid"
     },
-    "Nanite Swarm": {
-      "Name": "Nanite Swarm",
-      "Health": 60,
+    "Ancient Sentinel": {
+      "Name": "Ancient Sentinel",
+      "Health": 90,
       "ManaPoints": 50,
-      "Strength": 4,
-      "Intelligence": 12,
-      "Dexterity": 15,
-      "Constitution": 6,
-      "Charisma": 1,
+      "Strength": 18,
+      "Intelligence": 10,
+      "Dexterity": 5,
+      "Constitution": 20,
+      "Charisma": 5,
       "AttackBehaviourKeys": [
-        "StealthHack",
-        "NanoRepair",
-        "ElectroShock",
-        "PlasmaGrenade"
+        "EarthquakeStomp",
+        "MysticBind",
+        "Crystalize",
+        "WhirlwindSlash"
       ],
       "nature": "neutral"
     },
-    "Corrupted Sentinel": {
-      "Name": "Corrupted Sentinel",
-      "Health": 85,
-      "ManaPoints": 75,
-      "Strength": 10,
-      "Intelligence": 8,
-      "Dexterity": 5,
-      "Constitution": 15,
-      "Charisma": 4,
+    "Rogue Elementalist": {
+      "Name": "Rogue Elementalist",
+      "Health": 70,
+      "ManaPoints": 100,
+      "Strength": 4,
+      "Intelligence": 20,
+      "Dexterity": 15,
+      "Constitution": 8,
+      "Charisma": 10,
       "AttackBehaviourKeys": [
-        "LaserBlast",
-        "MagneticField",
-        "PlasmaGrenade",
-        "EnergyDischarge"
+        "IceSpear",
+        "InfernoBlast",
+        "VenomSpit",
+        "ShadowPierce"
       ],
       "nature": "aggressive"
     },
-    "Hacker Drone": {
-      "Name": "Hacker Drone",
-      "Health": 55,
-      "ManaPoints": 95,
-      "Strength": 3,
-      "Intelligence": 18,
-      "Dexterity": 10,
-      "Constitution": 7,
-      "Charisma": 2,
-      "AttackBehaviourKeys": [
-        "StealthHack",
-        "SystemOverride",
-        "ElectroShock",
-        "NanoRepair"
-      ],
-      "nature": "aggressive"
-    },
-    "Plasma Spectre": {
-      "Name": "Plasma Spectre",
-      "Health": 90,
+    "Dreadnaught": {
+      "Name": "Dreadnaught",
+      "Health": 100,
       "ManaPoints": 60,
-      "Strength": 12,
-      "Intelligence": 7,
-      "Dexterity": 11,
-      "Constitution": 12,
-      "Charisma": 5,
+      "Strength": 20,
+      "Intelligence": 5,
+      "Dexterity": 4,
+      "Constitution": 20,
+      "Charisma": 3,
       "AttackBehaviourKeys": [
-        "PlasmaGrenade",
-        "EnergyDischarge",
-        "IonicPulse",
-        "MagneticField"
+        "WhirlwindSlash",
+        "EarthquakeStomp",
+        "Crystalize",
+        "TerrorScreech"
+      ],
+      "nature": "aggressive"
+    },
+    "Forest Guardian": {
+      "Name": "Forest Guardian",
+      "Health": 80,
+      "ManaPoints": 70,
+      "Strength": 15,
+      "Intelligence": 12,
+      "Dexterity": 10,
+      "Constitution": 15,
+      "Charisma": 8,
+      "AttackBehaviourKeys": [
+        "MysticBind",
+        "IceSpear",
+        "VenomSpit",
+        "InfernoBlast"
       ],
       "nature": "neutral"
     }

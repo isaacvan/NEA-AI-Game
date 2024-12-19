@@ -11,7 +11,7 @@ The graph should start from a single origin node with a NodeDepth of 0. Ensure t
 NodeID: an integer representing the node identifier.
 NodeDepth: an integer representing the depth of the node in the graph, starting from 0 for the origin node.
 NodeHeight and NodeWidth: both integers representing the width in tiles of the map. Minimum value of 20, maximum of 100. Don't have to be the same but shouldn't be too far apart.
-ConnectedNodes: a list of integers representing the IDs of connected nodes.
+ConnectedNodes: a list of integers representing the IDs of connected nodes. This must include every node that is connected, behind and in front.
 ConnectedNodesEdges: a list of strings such as "undirected", "directed", etc., corresponding to the connections listed in ConnectedNodes.
 NodePOI: a string describing the point of interest, such as "empty", "Town", "Dungeon", etc.
 Milestone: a bool that dictates whether the Node is the milestone of the graph or not
@@ -19,7 +19,7 @@ Milestone: a bool that dictates whether the Node is the milestone of the graph o
 Example:
 
 {
-  "Id": 0
+    "Id": 0
     "Nodes": [
       {
         "NodeID": 0,
@@ -32,7 +32,7 @@ Example:
         "Milestone": false
       },
       ...
-  
+    ]
 }
 
 Please generate a similar graph with the specified format and structure. This must be in json format, external sentences are not accepted. This will break the code. Do not type anything else as to what I have asked.
@@ -41,98 +41,108 @@ The maximum nodeDepth you should go up to (and the milestone should have) is 5.
 
 OUTPUT: ```json
 {
-  "Id": 0,
-  "Nodes": [
-    {
-      "NodeID": 0,
-      "NodeDepth": 0,
-      "NodeHeight": 20,
-      "NodeWidth": 30,
-      "ConnectedNodes": [1, 2],
-      "ConnectedNodesEdges": ["undirected", "undirected"],
-      "NodePOI": "Starting Point",
-      "Milestone": false
-    },
-    {
-      "NodeID": 1,
-      "NodeDepth": 1,
-      "NodeHeight": 25,
-      "NodeWidth": 35,
-      "ConnectedNodes": [0, 3, 4],
-      "ConnectedNodesEdges": ["undirected", "undirected", "undirected"],
-      "NodePOI": "Forest",
-      "Milestone": false
-    },
-    {
-      "NodeID": 2,
-      "NodeDepth": 1,
-      "NodeHeight": 30,
-      "NodeWidth": 40,
-      "ConnectedNodes": [0, 4],
-      "ConnectedNodesEdges": ["undirected", "undirected"],
-      "NodePOI": "Abandoned Tower",
-      "Milestone": false
-    },
-    {
-      "NodeID": 3,
-      "NodeDepth": 2,
-      "NodeHeight": 35,
-      "NodeWidth": 40,
-      "ConnectedNodes": [1, 5],
-      "ConnectedNodesEdges": ["undirected", "undirected"],
-      "NodePOI": "Cave",
-      "Milestone": false
-    },
-    {
-      "NodeID": 4,
-      "NodeDepth": 2,
-      "NodeHeight": 40,
-      "NodeWidth": 45,
-      "ConnectedNodes": [1, 2, 6],
-      "ConnectedNodesEdges": ["undirected", "undirected", "undirected"],
-      "NodePOI": "Old Temple",
-      "Milestone": false
-    },
-    {
-      "NodeID": 5,
-      "NodeDepth": 3,
-      "NodeHeight": 45,
-      "NodeWidth": 50,
-      "ConnectedNodes": [3, 7],
-      "ConnectedNodesEdges": ["undirected", "undirected"],
-      "NodePOI": "Mountain Pass",
-      "Milestone": false
-    },
-    {
-      "NodeID": 6,
-      "NodeDepth": 3,
-      "NodeHeight": 50,
-      "NodeWidth": 55,
-      "ConnectedNodes": [4, 7],
-      "ConnectedNodesEdges": ["undirected", "undirected"],
-      "NodePOI": "Riverside",
-      "Milestone": false
-    },
-    {
-      "NodeID": 7,
-      "NodeDepth": 4,
-      "NodeHeight": 55,
-      "NodeWidth": 60,
-      "ConnectedNodes": [5, 6, 8],
-      "ConnectedNodesEdges": ["undirected", "undirected", "undirected"],
-      "NodePOI": "Dragon's Lair",
-      "Milestone": false
-    },
-    {
-      "NodeID": 8,
-      "NodeDepth": 5,
-      "NodeHeight": 60,
-      "NodeWidth": 60,
-      "ConnectedNodes": [7],
-      "ConnectedNodesEdges": ["undirected"],
-      "NodePOI": "Ancient City",
-      "Milestone": true
-    }
-  ]
+    "Id": 0,
+    "Nodes": [
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "NodeHeight": 30,
+        "NodeWidth": 30,
+        "ConnectedNodes": [1, 2],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Village of Beginnings",
+        "Milestone": false
+      },
+      {
+        "NodeID": 1,
+        "NodeDepth": 1,
+        "NodeHeight": 40,
+        "NodeWidth": 35,
+        "ConnectedNodes": [0, 3, 4],
+        "ConnectedNodesEdges": ["undirected", "undirected", "undirected"],
+        "NodePOI": "Enchanted Forest",
+        "Milestone": false
+      },
+      {
+        "NodeID": 2,
+        "NodeDepth": 1,
+        "NodeHeight": 20,
+        "NodeWidth": 25,
+        "ConnectedNodes": [0, 5],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Ancient Ruins",
+        "Milestone": false
+      },
+      {
+        "NodeID": 3,
+        "NodeDepth": 2,
+        "NodeHeight": 45,
+        "NodeWidth": 40,
+        "ConnectedNodes": [1, 6],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Mystic Lake",
+        "Milestone": false
+      },
+      {
+        "NodeID": 4,
+        "NodeDepth": 2,
+        "NodeHeight": 30,
+        "NodeWidth": 30,
+        "ConnectedNodes": [1],
+        "ConnectedNodesEdges": ["undirected"],
+        "NodePOI": "Abandoned Tower",
+        "Milestone": false
+      },
+      {
+        "NodeID": 5,
+        "NodeDepth": 2,
+        "NodeHeight": 35,
+        "NodeWidth": 30,
+        "ConnectedNodes": [2, 7],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Goblin Camp",
+        "Milestone": false
+      },
+      {
+        "NodeID": 6,
+        "NodeDepth": 3,
+        "NodeHeight": 50,
+        "NodeWidth": 45,
+        "ConnectedNodes": [3, 8],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Dwarven Mines",
+        "Milestone": false
+      },
+      {
+        "NodeID": 7,
+        "NodeDepth": 3,
+        "NodeHeight": 40,
+        "NodeWidth": 40,
+        "ConnectedNodes": [5],
+        "ConnectedNodesEdges": ["undirected"],
+        "NodePOI": "Dark Forest",
+        "Milestone": false
+      },
+      {
+        "NodeID": 8,
+        "NodeDepth": 4,
+        "NodeHeight": 60,
+        "NodeWidth": 60,
+        "ConnectedNodes": [6, 9],
+        "ConnectedNodesEdges": ["undirected", "undirected"],
+        "NodePOI": "Mountaintop",
+        "Milestone": false
+      },
+      {
+        "NodeID": 9,
+        "NodeDepth": 5,
+        "NodeHeight": 70,
+        "NodeWidth": 70,
+        "ConnectedNodes": [8],
+        "ConnectedNodesEdges": ["undirected"],
+        "NodePOI": "Dragon's Lair",
+        "Milestone": true
+      }
+    ]
 }
 ```

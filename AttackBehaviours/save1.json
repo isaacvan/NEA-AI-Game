@@ -1,90 +1,90 @@
 {
   "PlayerBasicAttack": {
     "Name": "PlayerBasicAttack",
-    "Expression": "target.ReceiveAttack(5, 20)",
+    "ExpressionString": "target.ReceiveAttack(8, 20)",
     "Manacost": 0,
     "Statuses": [],
-    "Narrative": "launches a basic attack."
+    "Narrative": "executes a basic sword slash."
   },
-  "ShadowPierce": {
-    "Name": "ShadowPierce",
-    "Expression": "target.ReceiveAttack(20, 40)",
-    "Manacost": 8,
-    "Statuses": [
-      "Silenced"
-    ],
-    "Narrative": "unleashes a dark energy spear, piercing through the air."
-  },
-  "InfernoBlast": {
-    "Name": "InfernoBlast",
-    "Expression": "target.ReceiveAttack(25, 25)",
-    "Manacost": 12,
-    "Statuses": [
-      "Burned"
-    ],
-    "Narrative": "conjures a massive fireball, engulfing the target in flames."
-  },
-  "ArcaneSurge": {
-    "Name": "ArcaneSurge",
-    "Expression": "target.ReceiveAttack(15, 50)",
-    "Manacost": 10,
-    "Statuses": [
-      "Stunned"
-    ],
-    "Narrative": "summons a surge of arcane energy, shocking the enemy."
-  },
-  "ToxicSpit": {
-    "Name": "ToxicSpit",
-    "Expression": "target.ReceiveAttack(10, 30)",
-    "Manacost": 6,
-    "Statuses": [
-      "Poisoned"
-    ],
-    "Narrative": "spews a noxious toxin at the opponent."
-  },
-  "RendingClaw": {
-    "Name": "RendingClaw",
-    "Expression": "target.ReceiveAttack(18, 35)",
+  "FireWhip": {
+    "Name": "FireWhip",
+    "ExpressionString": "target.ReceiveAttack(12, 25)",
     "Manacost": 4,
     "Statuses": [
-      "Bleeding"
+      "Burn"
     ],
-    "Narrative": "slashes fiercely with razor-sharp claws."
+    "Narrative": "unleashes a fiery lash, burning the target."
   },
-  "EtherealChain": {
-    "Name": "EtherealChain",
-    "Expression": "target.ReceiveAttack(22, 15)",
-    "Manacost": 14,
+  "ShadowStrike": {
+    "Name": "ShadowStrike",
+    "ExpressionString": "target.ReceiveAttack(14, 40)",
+    "Manacost": 6,
     "Statuses": [
-      "Rooted"
+      "Blind"
     ],
-    "Narrative": "casts phantom chains to ensnare the target."
+    "Narrative": "emerges from the shadows to deliver a devastating blow."
   },
-  "CrystalShard": {
-    "Name": "CrystalShard",
-    "Expression": "target.ReceiveAttack(12, 60)",
+  "PoisonDart": {
+    "Name": "PoisonDart",
+    "ExpressionString": "target.ReceiveAttack(7, 30)",
+    "Manacost": 3,
+    "Statuses": [
+      "Poison"
+    ],
+    "Narrative": "shoots a toxic dart, poisoning the target."
+  },
+  "EarthquakePunch": {
+    "Name": "EarthquakePunch",
+    "ExpressionString": "target.ReceiveAttack(15, 50)",
+    "Manacost": 8,
+    "Statuses": [
+      "Stun"
+    ],
+    "Narrative": "strikes the ground with titanic force, shaking the very earth."
+  },
+  "HealingLight": {
+    "Name": "HealingLight",
+    "ExpressionString": "target.ReceiveAttack(-10, 0)",
+    "Manacost": 10,
+    "Statuses": [
+      "Heal"
+    ],
+    "Narrative": "summons a radiant light, healing wounds."
+  },
+  "IceSpear": {
+    "Name": "IceSpear",
+    "ExpressionString": "target.ReceiveAttack(10, 20)",
     "Manacost": 5,
     "Statuses": [
-      "Frozen"
+      "Freeze"
     ],
-    "Narrative": "hurls a shard of ice, freezing the target upon impact."
+    "Narrative": "conjures a spear of ice, impaling the target with chilling cold."
   },
-  "SearingRay": {
-    "Name": "SearingRay",
-    "Expression": "target.ReceiveAttack(30, 20)",
-    "Manacost": 15,
+  "ThunderClap": {
+    "Name": "ThunderClap",
+    "ExpressionString": "target.ReceiveAttack(13, 35)",
+    "Manacost": 7,
     "Statuses": [
-      "Blinded"
+      "Daze"
     ],
-    "Narrative": "emits a blinding ray of light, searing everything in its path."
+    "Narrative": "claps hands together, releasing a deafening thunderbolt."
   },
-  "GaleForce": {
-    "Name": "GaleForce",
-    "Expression": "target.ReceiveAttack(16, 45)",
-    "Manacost": 9,
+  "WindSlash": {
+    "Name": "WindSlash",
+    "ExpressionString": "target.ReceiveAttack(9, 25)",
+    "Manacost": 4,
     "Statuses": [
-      "Disarmed"
+      "Knockback"
     ],
-    "Narrative": "summons a violent gust of wind, disarming the enemy."
+    "Narrative": "sends a razor-sharp gust of wind slicing through the air."
+  },
+  "MysticBind": {
+    "Name": "MysticBind",
+    "ExpressionString": "target.ReceiveAttack(0, 0)",
+    "Manacost": 12,
+    "Statuses": [
+      "Root"
+    ],
+    "Narrative": "casts ancient runes, binding the target in place."
   }
 }

@@ -18,28 +18,18 @@ All responses should be generated machine parseable in XML format. The top level
 
 As the game narrator, you will have one player playing the game. To help give you an idea for your generation, they have been given some input. This is what the user has requested for the context of your story:
 
-start as a peasant in a torn land
+begin as a knight in a medeival setting
 
 OUTPUT: ```xml
 <Player>
-    <Class>PeasantHero</Class>
+    <Class>Knight</Class>
     <Race>Human</Race>
-    <Health>80</Health>
-    <ManaPoints>60</ManaPoints>
-    <Strength>7</Strength>
-    <Intelligence>6</Intelligence>
-    <Dexterity>8</Dexterity>
-    <Constitution>7</Constitution>
-    <Charisma>7</Charisma>
+    <Health>90</Health>
+    <ManaPoints>50</ManaPoints>
+    <Strength>10</Strength>
+    <Intelligence>7</Intelligence>
+    <Dexterity>6</Dexterity>
+    <Constitution>9</Constitution>
+    <Charisma>3</Charisma>
 </Player>
 ```
-
-In a land torn asunder by a relentless war between the celestial beings and the underworld's demons, you begin your journey not as a majestic warrior or a revered mage, but as a simple peasant. Born into hardship, your life has been nothing but toil under the shadow of a conflict that seemed as distant as the stars above, until fate decreed otherwise. Your village, nestled at the edge of the Kingdom of Eldoria, survived through the ages by steering clear of the world's greater struggles. But war knows no bounds, and devastation does not discriminate between soldier and civilian.
-
-One evening, under the blood-red sky, a stray artifact from the celestial battleground crashes into your field, imbued with energies unknown to the mortal realm. The artifact, a crystalline sword pulsing with a faint blue glow, chooses you as its bearer, granting you powers that blur the line between mortal and deity.
-
-As the newly anointed PeasantHero, a class unheard of until this very moment, your strength lies not in noble birthright or arcane schooling, but in the resilience and cunning forged through a lifetime of survival. Your race, human, signifies your origin and connection to the land and its people. With health as sturdy as your spirit and mana points hinting at your nascent celestial connection, your journey is one of growth, challenge, and discovery.
-
-Your strength, though not legendary, is ample; your intelligence, forged in the fires of survival, is keen; your dexterity, honed by years of labor, is unmatched; your constitution, testament to your resilience; and your charisma, the spark that may unite a fractured land under your banner.
-
-This is your tale, a tale of ascension from the humblest of origins to a destiny grand and unfathomable. The torn land cries out for a hero, and you have been chosen to mend its fissures and lead it into an era of peace. Will you rise to the challenge?

@@ -553,7 +553,7 @@ namespace UtilityFunctionsNamespace
         public static void UpdateVars(ref Game game)
         {
             int consoleHeight = Console.WindowHeight;
-            game.player.sightRange = (consoleHeight - 15) / 2;
+            // game.player.sightRange = (consoleHeight - 15) / 2;
             Player player = (Player)game.player;
             int currentHealth = player.currentHealth;
             int maxHealth = player.Health;

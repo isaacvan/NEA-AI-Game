@@ -54,10 +54,11 @@ namespace EnemyClassesNamespace
                     damage *= 2;
                 }
 
+                Console.WriteLine($"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
                 Console.WriteLine($"{Name} took {damage} damage.");
                 currentHealth -= damage;
                 Thread.Sleep(1000);
-                Console.Clear();
+                UtilityFunctions.clearScreen(Program.game.player);
             }
             else
             {
@@ -198,13 +199,14 @@ namespace EnemyClassesNamespace
             Random random = new Random();
 
             int sightRadius = 5;
-            int distanceToPlayer = Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
+            int distanceToPlayer =
+                Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
 
             if (distanceToPlayer > sightRadius)
             {
                 return random.Next(1, 5);
             }
-            
+
             // now that enemy is within radius where they are running
             // 20% CHANCE THEY DONT MOV (so can be caught)
             if (random.NextDouble() > 0.8)
@@ -217,15 +219,19 @@ namespace EnemyClassesNamespace
 
             if (Math.Abs(horizontalDistance) > Math.Abs(verticalDistance))
             {
-                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count && tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
+                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count &&
+                    tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
                     return 4;
-                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 && tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
+                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 &&
+                         tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
                     return 2;
             }
 
-            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count && tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
+            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count &&
+                tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
                 return 1;
-            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 && tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
+            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 &&
+                     tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
                 return 3;
 
             return -1;
@@ -236,51 +242,56 @@ namespace EnemyClassesNamespace
     {
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
-            // 50% CHANCE THEY DONT MOVE
+            // Static Random to prevent reinitialization
             Random random = new Random();
+
+            // 50% chance the enemy doesn't move
             if (random.NextDouble() > 0.5)
             {
                 return oldPoint;
             }
 
             bool valid = false;
-            Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
-            List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
-            // up is 1, right is 2, down is 3, left is 4
-            while (!valid)
+            Point newPoint = new Point(oldPoint.X, oldPoint.Y); // Avoid unnecessary cloning
+            var currentNode = game.map.GetCurrentNode(); // Cache frequently used structure
+            List<List<Tile>> tiles = currentNode.tiles;
+
+            int maxAttempts = 100; // Prevent infinite loops
+            int attempts = 0;
+
+            while (!valid && attempts < maxAttempts)
             {
+                attempts++;
+
                 int nextMove = EnemyMovementLogic(game.player.playerPos, game, oldPoint);
                 string input = "";
                 switch (nextMove)
                 {
-                    case 1:
+                    case 1: // Up
                         newPoint.Y -= 1;
                         input = "w";
                         break;
-                    case 2:
+                    case 2: // Right
                         newPoint.X += 1;
                         input = "d";
                         break;
-                    case 3:
+                    case 3: // Down
                         newPoint.Y += 1;
                         input = "s";
                         break;
-                    case 4:
+                    case 4: // Left
                         newPoint.X -= 1;
                         input = "a";
                         break;
                 }
 
-                if (GridFunctions.CheckIfOutOfBounds(
-                        game.map.Graphs[game.map.Graphs.Count - 1]
-                            .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
-                        oldPoint, input[0].ToString()))
+                // Validate move
+                if (GridFunctions.CheckIfOutOfBounds(tiles, oldPoint, input))
                 {
-                    Tile possibleTile;
                     try
                     {
-                        possibleTile = tiles[newPoint.X][newPoint.Y];
-                        if (possibleTile.walkable == true && possibleTile.enemyOnTile == null &&
+                        Tile possibleTile = tiles[newPoint.X][newPoint.Y];
+                        if (possibleTile.walkable && possibleTile.enemyOnTile == null &&
                             possibleTile.tileDesc == "Empty")
                         {
                             valid = true;
@@ -288,18 +299,26 @@ namespace EnemyClassesNamespace
                         else
                         {
                             valid = false;
-                            newPoint = oldPoint;
+                            newPoint = new Point(oldPoint.X, oldPoint.Y); // Reset to original
                         }
                     }
                     catch
                     {
                         valid = false;
+                        newPoint = new Point(oldPoint.X, oldPoint.Y); // Reset to original
                     }
                 }
             }
 
+            // Fallback if no valid move found
+            if (!valid)
+            {
+                return oldPoint;
+            }
+
             return newPoint;
         }
+
 
         public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
         {
@@ -379,13 +398,14 @@ namespace EnemyClassesNamespace
             Random random = new Random();
 
             int sightRadius = 10;
-            int distanceToPlayer = Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
+            int distanceToPlayer =
+                Math.Abs(playerPos.X - currentEnemyPos.X) + Math.Abs(playerPos.Y - currentEnemyPos.Y);
 
             if (distanceToPlayer > sightRadius)
             {
                 return random.Next(1, 5);
             }
-            
+
             // 20% CHANCE THEY DONT MOVE (so player can escape sometimes)
             if (random.NextDouble() > 0.8)
             {
@@ -397,15 +417,19 @@ namespace EnemyClassesNamespace
 
             if (Math.Abs(horizontalDistance) > Math.Abs(verticalDistance))
             {
-                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count && tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
+                if (horizontalDistance > 0 && currentEnemyPos.X + 1 < tiles.Count &&
+                    tiles[currentEnemyPos.X + 1][currentEnemyPos.Y].walkable)
                     return 2;
-                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 && tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
+                else if (horizontalDistance < 0 && currentEnemyPos.X - 1 >= 0 &&
+                         tiles[currentEnemyPos.X - 1][currentEnemyPos.Y].walkable)
                     return 4;
             }
 
-            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count && tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
+            if (verticalDistance > 0 && currentEnemyPos.Y + 1 < tiles[0].Count &&
+                tiles[currentEnemyPos.X][currentEnemyPos.Y + 1].walkable)
                 return 3;
-            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 && tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
+            else if (verticalDistance < 0 && currentEnemyPos.Y - 1 >= 0 &&
+                     tiles[currentEnemyPos.X][currentEnemyPos.Y - 1].walkable)
                 return 1;
 
             return -1;

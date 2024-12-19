@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Flameheart Sword</Name>
+        <Description>This sword was forged in the heart of a volcano, its blade always glowing with a fierce inner fire.</Description>
+        <Damage>25</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+2 Strength</UniqueProperties>
+        <StatusNames>
+            <StatusName>Burn</StatusName>
+        </StatusNames>
+        <AttackBehaviour>InfernoSlash</AttackBehaviour>
+        <NarrativeLine>As the sword swings, flames envelop the battlefield, igniting the enemy.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Thunderstrike Lance</Name>
+        <Description>A lance charged with the storm's might, crackling with electricity at its tip.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Lance</WeaponType>
+        <UniqueProperties>+3 Dexterity</UniqueProperties>
+        <StatusNames>
+            <StatusName>Daze</StatusName>
+        </StatusNames>
+        <AttackBehaviour>LightningThrust</AttackBehaviour>
+        <NarrativeLine>The lance releases a bolt of lightning, stunning all foes in its path.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Mystic Staff</Name>
+        <Description>A staff imbued with ancient magics, glowing with an ethereal light.</Description>
+        <Damage>15</Damage>
+        <WeaponType>Staff</WeaponType>
+        <UniqueProperties>+4 Intelligence</UniqueProperties>
+        <StatusNames>
+            <StatusName>Freeze</StatusName>
+        </StatusNames>
+        <AttackBehaviour>FrostWave</AttackBehaviour>
+        <NarrativeLine>A chilling wave emanates from the staff, freezing everything in sight.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

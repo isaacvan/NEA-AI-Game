@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Net.Mime;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using CombatNamespace;
 using Emgu.CV.Aruco;
@@ -22,7 +23,15 @@ namespace TestNarratorNamespace
         public class GameTest1 : GameSetup
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
-            
+
+            public void IntroduceGPT(ref Conversation chat, Game game)
+            {
+            }
+
+            public async Task GenerateStoryLineForFuture(Conversation chat, Game game)
+            {
+            }
+
             public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
             {
                 Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
@@ -34,6 +43,7 @@ namespace TestNarratorNamespace
                         node.NodeWidth = 20;
                         node.NodeHeight = 20;
                     }
+
                     for (int i = 0; i < node.NodeWidth; i++)
                     {
                         node.tiles.Add(new List<Tile>());
@@ -42,7 +52,7 @@ namespace TestNarratorNamespace
                             node.tiles[i].Add(new Tile('.', new Point(i, j), "Empty"));
                         }
                     }
-                    
+
 
                     int exits = node.ConnectedNodes.Count - 1;
                     double h = node.NodeHeight - exits;
@@ -52,45 +62,49 @@ namespace TestNarratorNamespace
                     {
                         ycounter += gap;
                         Point ExitPoint = new Point(node.NodeWidth - 1, ycounter);
-                        node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]), new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
+                        node.tiles[ExitPoint.X][ExitPoint.Y] = new Tile(
+                            Convert.ToChar(GridFunctions.CharsToMeanings["NodeExit"]),
+                            new Point(ExitPoint.X, ExitPoint.Y), "NodeExit");
                     }
-                    
-                    
+
+
                     graphToReturn.Nodes.Add(node);
                 }
-                
+
                 return graphToReturn;
             }
-            
+
             public async Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup)
             {
                 if (game.map == null)
                 {
                     game.map = new Map();
                     game.map.Graphs = new List<Graph>();
-                    await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup).GetAwaiter().GetResult().map.Graphs[game.map.Graphs.Count - 1]);
+                    await game.map.AppendGraph(GenerateGraphStructure(chat, game, gameSetup).GetAwaiter().GetResult()
+                        .map.Graphs[game.map.Graphs.Count - 1]);
                     // game.map.CurrentNode = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[0];
                 }
+
                 return game.map;
             }
-            
-            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id = 0)
+
+            public async Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup,
+                int Id = 0)
             {
-                Map map;
+                Graph graph;
                 try
                 {
                     string txt = File.ReadAllText(UtilityFunctions.mapsDir + "saveExample.json");
-                    map = JsonConvert.DeserializeObject<Map>(txt);
+                    graph = JsonConvert.DeserializeObject<Graph>(txt);
                 }
                 catch (Exception e)
                 {
                     logger.Error(e);
                     throw e;
                 }
-                
+
                 // populate node tiles
-                map.Graphs[0] = await gameSetup.PopulateNodesWithTiles(map.Graphs[0], game);
-                game.map = map;
+                game.map.Graphs.Add(await gameSetup.PopulateNodesWithTiles(graph, game));
                 return game;
             }
 
@@ -103,7 +117,8 @@ namespace TestNarratorNamespace
 
             public async Task<Player> generateMainXml(Conversation chat, string prompt5, Player player)
             {
-                string filePath = $@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml";
+                string filePath =
+                    $@"{UtilityFunctions.mainDirectory}Characters{Path.DirectorySeparatorChar}saveExample.xml";
 
                 // Player player with attributes
                 if (string.IsNullOrEmpty(filePath))
@@ -177,9 +192,12 @@ namespace TestNarratorNamespace
                 foreach (KeyValuePair<string, AttackInfo> attackBehaviour in attackBehaviourFactory.attackBehaviours)
                 {
                     // load attack behaviours into enemy templates
-                    foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned.enemyTemplates)
+                    foreach (KeyValuePair<string, EnemyTemplate> enemyTemplate in enemyFactoryToBeReturned
+                                 .enemyTemplates)
                     {
-                        if (enemyTemplate.Value.attackBehaviourKeys.Contains(attackBehaviour.Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
+                        if (enemyTemplate.Value.attackBehaviourKeys
+                            .Contains(attackBehaviour
+                                .Key)) // if the attack labels attached to this template contain the given label for this attackbehaviour
                         {
                             // load in the attack behaviour
                             AttackSlot? attackSlotNullable = enemyTemplate.Value.getNextAvailableAttackSlot();
@@ -229,7 +247,9 @@ namespace TestNarratorNamespace
 
                     foreach (var behaviour in items)
                     {
-                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Enemy), behaviour.AttackInfo.Manacost);
+                        attackBehaviourFactoryToBeReturned.RegisterAttackBehaviour(behaviour.Key,
+                            behaviour.AttackInfo.ExpressionString, behaviour.AttackInfo.Statuses,
+                            behaviour.AttackInfo.Narrative, typeof(Enemy), behaviour.AttackInfo.Manacost);
                     }
                 }
                 catch (Exception e)
@@ -273,12 +293,14 @@ namespace TestNarratorNamespace
 
             public async Task GenerateUninitialisedStatuses(Conversation chat)
             {
-                Program.logger.Info("Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
+                Program.logger.Info(
+                    "Example file may have uninitialsed statuses. Leaving uninitialised statuses as null. Prone for error.");
             }
-            
+
             public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
             {
-                Program.logger.Info("Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
+                Program.logger.Info(
+                    "Example file may have uninitialsed behaviours. Leaving uninitialised statuses as null. Prone for error.");
             }
         }
     }

@@ -66,6 +66,19 @@ namespace PlayerClassesNamespace
             PlayerAttacks[AttackSlot.slot3] = null;
             PlayerAttacks[AttackSlot.slot4] = null;
         }
+
+        public async Task InitialiseAttacks(Game game)
+        {
+            PlayerAttacks = JsonConvert.DeserializeObject<Dictionary<AttackSlot, AttackInfo>>(File.ReadAllText($"{UtilityFunctions.playerAttacksDir}{UtilityFunctions.saveName}.json"));
+            
+            foreach (AttackInfo attackInfo in PlayerAttacks.Values)
+            {
+                if (attackInfo != null)
+                {
+                    attackInfo.Expression = game.attackBehaviourFactory.GetAttackInfo(attackInfo.Name).Expression;
+                }
+            }
+        }
         
         public void EquipItem(EquippableItem.EquipLocation slot, Item item)
         {
@@ -97,6 +110,7 @@ namespace PlayerClassesNamespace
                 {
                     damage *= 2;
                 }
+                UtilityFunctions.clearScreen(Program.game.player);
                 Console.WriteLine($"You have taken {damage} damage.");
                 currentHealth -= damage;
                 if (currentHealth < 0)
@@ -309,6 +323,61 @@ namespace PlayerClassesNamespace
             UtilityFunctions.TypeText(new TypeText(), "You leveled up!");
             UtilityFunctions.TypeText(new TypeText(), $"Level: {Level - 1} ---> {Level}");
             Thread.Sleep(1000);
+        }
+    }
+
+    public class GameState
+    {
+        public string saveName { get; set; }
+        public Point location { get; set; }
+        public int currentNodeId { get; set; }
+        public int currentGraphId { get; set; }
+
+        public GameState(string SaveName = null, Point Location = new Point(), int CurrentNodeId = 0, int CurrentGraphId = 0)
+        {
+            saveName = SaveName;
+            location = Location;
+            currentNodeId = CurrentNodeId;
+            currentGraphId = CurrentGraphId;
+        }
+        
+        public async Task saveStateToFile()
+        {
+            string path = $"{UtilityFunctions.mainDirectory}GameStates{Path.DirectorySeparatorChar}{saveName}.json";
+            using (StreamWriter file = File.CreateText(path))
+            {
+                JsonSerializer serializer = new JsonSerializer
+                {
+                    Formatting = Formatting.Indented // Pretty print
+                };
+                serializer.Serialize(file, this);
+                await file.FlushAsync();
+            }
+        }
+
+        public async Task<(Player, Map)> unloadStateFromFile(Player player, Map map)
+        {
+            string path = $"{UtilityFunctions.mainDirectory}GameStates{Path.DirectorySeparatorChar}{saveName}.json";
+            try
+            {
+                GameState thisState = JsonConvert.DeserializeObject<GameState>(File.ReadAllText(path));
+                player.playerPos = thisState.location;
+                map.CurrentGraphPointer = thisState.currentGraphId;
+                map.Graphs[map.CurrentGraphPointer].CurrentNodePointer = thisState.currentNodeId;
+                
+                saveName = thisState.saveName;
+                location = thisState.location;
+                currentNodeId = thisState.currentNodeId;
+                currentGraphId = thisState.currentGraphId;
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException)
+                {
+                    saveStateToFile();
+                }
+            }
+            return (player, map);
         }
     }
 }

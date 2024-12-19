@@ -12,7 +12,7 @@
             "undirected",
             "undirected"
           ],
-          "NodePOI": "Abandoned Outpost",
+          "NodePOI": "Starting Point",
           "NodeDepth": 0,
           "Milestone": false
         },
@@ -25,10 +25,10 @@
           ],
           "ConnectedNodesEdges": [
             "undirected",
-            "directed",
-            "directed"
+            "undirected",
+            "undirected"
           ],
-          "NodePOI": "Forsaken Woods",
+          "NodePOI": "Forest",
           "NodeDepth": 1,
           "Milestone": false
         },
@@ -36,13 +36,13 @@
           "NodeID": 2,
           "ConnectedNodes": [
             0,
-            5
+            4
           ],
           "ConnectedNodesEdges": [
             "undirected",
-            "directed"
+            "undirected"
           ],
-          "NodePOI": "Crossroads",
+          "NodePOI": "Abandoned Tower",
           "NodeDepth": 1,
           "Milestone": false
         },
@@ -50,91 +50,85 @@
           "NodeID": 3,
           "ConnectedNodes": [
             1,
-            6
+            5
           ],
           "ConnectedNodesEdges": [
             "undirected",
-            "directed"
+            "undirected"
           ],
-          "NodePOI": "Lost Village",
+          "NodePOI": "Cave",
           "NodeDepth": 2,
           "Milestone": false
         },
         {
           "NodeID": 4,
           "ConnectedNodes": [
-            1
+            1,
+            2,
+            6
           ],
           "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
             "undirected"
           ],
-          "NodePOI": "Hidden Cave",
+          "NodePOI": "Old Temple",
           "NodeDepth": 2,
           "Milestone": false
         },
         {
           "NodeID": 5,
           "ConnectedNodes": [
-            2,
+            3,
             7
           ],
           "ConnectedNodesEdges": [
             "undirected",
-            "directed"
+            "undirected"
           ],
-          "NodePOI": "Ancient Ruins",
-          "NodeDepth": 2,
+          "NodePOI": "Mountain Pass",
+          "NodeDepth": 3,
           "Milestone": false
         },
         {
           "NodeID": 6,
           "ConnectedNodes": [
-            3,
-            8
+            4,
+            7
           ],
           "ConnectedNodesEdges": [
             "undirected",
-            "directed"
+            "undirected"
           ],
-          "NodePOI": "Enchanted Forest",
+          "NodePOI": "Riverside",
           "NodeDepth": 3,
           "Milestone": false
         },
         {
           "NodeID": 7,
           "ConnectedNodes": [
-            5, 9
+            5,
+            6,
+            8
           ],
           "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
             "undirected"
           ],
-          "NodePOI": "Derelict Watchtower",
-          "NodeDepth": 3,
+          "NodePOI": "Dragon's Lair",
+          "NodeDepth": 4,
           "Milestone": false
         },
         {
           "NodeID": 8,
           "ConnectedNodes": [
-            6,
-            9
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Mystic Lake",
-          "NodeDepth": 4,
-          "Milestone": false
-        },
-        {
-          "NodeID": 9,
-          "ConnectedNodes": [
-            7, 8
+            7
           ],
           "ConnectedNodesEdges": [
             "undirected"
           ],
-          "NodePOI": "Crumbling Castle",
+          "NodePOI": "Ancient City",
           "NodeDepth": 5,
           "Milestone": true
         }
