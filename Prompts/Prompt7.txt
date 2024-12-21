@@ -1,4 +1,4 @@
-﻿Your next job as the narrator is to generate a JSON file that represents a collection of attack behaviors that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
+﻿Your next job as the narrator is to generate a JSON file that represents a dictionary of the attack name to an AttackInfo that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
 
 Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys will be used later. Bear in mind you will generate at least 5 enemies, so you will need 4 keys per enemy (minimum 20).
 Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage, crit). Ensure the damage corresponds to the attack magnitude and the context of the game, and crit is an int between 0 - 100. If no crit is entered, it will be defaulted to 20.

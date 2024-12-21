@@ -14,6 +14,7 @@ using ItemFunctionsNamespace;
 using Newtonsoft.Json;
 using DynamicExpresso;
 using GameClassNamespace;
+using GPTControlNamespace;
 using GridConfigurationNamespace;
 using MainNamespace;
 using OpenAI_API.Chat;
@@ -53,8 +54,9 @@ namespace UtilityFunctionsNamespace
         public static string neutralANSIUI = $"\x1b[38;2;204;85;0m";
         public static string timidANSIUI = $"\x1b[38;2;255;191;0m";
 
-        public static Interpreter interpreter = new Interpreter().Reference(typeof(Player)).Reference(typeof(Enemy)); // gets set up 
-        
+        public static Interpreter
+            interpreter = new Interpreter().Reference(typeof(Player)).Reference(typeof(Enemy)); // gets set up 
+
         public static int typeSpeed = 1;
         public static string saveSlot = ""; // will be written to in main menu. NAME + EXT OF SAVE
 
@@ -72,18 +74,20 @@ namespace UtilityFunctionsNamespace
         public static string enemyTemplateDir = @$"{mainDirectory}EnemyTemplates{Path.DirectorySeparatorChar}";
         public static string enemyTemplateSpecificDirectory = "";
 
-        public static string attackBehaviourTemplateDir = @$"{mainDirectory}AttackBehaviours{Path.DirectorySeparatorChar}";
+        public static string attackBehaviourTemplateDir =
+            @$"{mainDirectory}AttackBehaviours{Path.DirectorySeparatorChar}";
+
         public static string attackBehaviourTemplateSpecificDirectory = "";
 
         public static string statusesDir = $@"{mainDirectory}Statuses{Path.DirectorySeparatorChar}";
         public static string statusesSpecificDirectory = "";
-        
+
         public static string logsDir = $@"{mainDirectory}Logs{Path.DirectorySeparatorChar}";
         public static string logsSpecificDirectory = "";
-        
+
         public static string playerAttacksDir = @$"{mainDirectory}CharacterAttacks{Path.DirectorySeparatorChar}";
         public static string playerAttacksSpecificDirectory = "";
-        
+
         public static string mapsDir = @$"{mainDirectory}MapStructures{Path.DirectorySeparatorChar}";
         public static string mapsSpecificDirectory = ""; // TO BE DONE
 
@@ -95,6 +99,8 @@ namespace UtilityFunctionsNamespace
         public static int colourSchemeIndex = 0;
         public static ColourScheme colourScheme = new ColourScheme(UtilityFunctions.colourSchemeIndex);
         public static string promptPath = @$"{mainDirectory}Prompts{Path.DirectorySeparatorChar}";
+
+        
 
         public static Point ClonePoint(Point point)
         {
@@ -110,28 +116,6 @@ namespace UtilityFunctionsNamespace
             return nextEnemyId - 1;
         }
 
-        public static void overrideSave(string slot)
-        {
-            // override the current save with a blank
-
-            try
-            {
-                // Open the file in write mode and truncate its content
-                using (FileStream fileStream = new FileStream(slot, FileMode.Truncate))
-                {
-                    // The file will now be empty, and you can start writing new data to it
-                }
-
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
-                    "Save file cleared successfully.");
-            }
-            catch (Exception ex)
-            {
-                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, typeSpeed),
-                    $"An error occurred: {ex.Message}");
-            }
-        }
-
         public static string getBaseDir()
         {
             string fullDir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory)); // bin debug net
@@ -139,45 +123,46 @@ namespace UtilityFunctionsNamespace
             string finalPath = "";
             foreach (string dir in directories)
             {
-                if (dir == "bin" && directories.IndexOf(dir) + 4 == directories.Count )
+                if (dir == "bin" && directories.IndexOf(dir) + 4 == directories.Count)
                 {
-                     finalPath.Remove(finalPath.LastIndexOf(Path.DirectorySeparatorChar));
-                     return finalPath;
-                     // /Users/18vanenckevorti/RiderProjects/NEA-AI-Game
+                    finalPath.Remove(finalPath.LastIndexOf(Path.DirectorySeparatorChar));
+                    return finalPath;
+                    // /Users/18vanenckevorti/RiderProjects/NEA-AI-Game
                 }
                 else if (dir != "")
                 {
-
                     finalPath += dir + Path.DirectorySeparatorChar;
-                    
                 }
             }
+
             // error
             throw new DirectoryNotFoundException($"Could not find the directory {finalPath}.");
         }
 
         public static void initialiseGPTLogging()
         {
-            if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false && UtilityFunctions.saveName != "saveExample")
+            if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false &&
+                UtilityFunctions.saveName != "saveExample")
             {
                 Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
             }
-            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false && UtilityFunctions.saveName == "saveExample")
+            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == false &&
+                     UtilityFunctions.saveName == "saveExample")
             {
                 Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
             }
-            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true && UtilityFunctions.saveName == "saveExample")
+            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true &&
+                     UtilityFunctions.saveName == "saveExample")
             {
                 // check to see what user wants, for now just replace
                 Directory.Delete(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}", true);
                 Directory.CreateDirectory(UtilityFunctions.logsSpecificDirectory);
-            } else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true &&
-                       UtilityFunctions.saveName != "saveExample")
+            }
+            else if (Directory.Exists(@$"{UtilityFunctions.logsDir}{UtilityFunctions.saveName}") == true &&
+                     UtilityFunctions.saveName != "saveExample")
             {
                 // the directory should be archived down the line; for now just leaving
-                
             }
-            
         }
 
         public static async Task writeToJSONFile<T>(string path, T objectToWrite) where T : class
@@ -450,16 +435,17 @@ namespace UtilityFunctionsNamespace
                 Console.WriteLine("MODE: Game");
                 Console.ResetColor();
             }
-            
+
             Console.ForegroundColor = ConsoleColor.White;
             if (player != null) Console.Write($"CLASS: ");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             if (player != null) Console.Write($"{player.Class}\n");
             Console.ResetColor();
-            
+
             Console.ForegroundColor = ConsoleColor.White;
-            if (Program.gameStarted) Console.Write($"NODE: {GridFunctions.CurrentNodeName}, id - {GridFunctions.CurrentNodeId}\n");
-            
+            if (Program.gameStarted)
+                Console.Write($"NODE: {GridFunctions.CurrentNodeName}, id - {GridFunctions.CurrentNodeId}\n");
+
             displayStats(player);
 
             Console.Write("\n");
@@ -553,7 +539,21 @@ namespace UtilityFunctionsNamespace
         public static void UpdateVars(ref Game game)
         {
             int consoleHeight = Console.WindowHeight;
-            // game.player.sightRange = (consoleHeight - 15) / 2;
+            if (game.player.sightRangeModified)
+            {
+                game.player.sightRange -= game.player.sightRangeModifiedBy;
+                game.player.sightRangeModified = false;
+            }
+            else
+            {
+                game.player.sightRange = (consoleHeight - 14) / 2;
+            }
+
+            if (game.player.sightRange == 0)
+            {
+                game.player.sightRange = 6;
+            }
+
             Player player = (Player)game.player;
             int currentHealth = player.currentHealth;
             int maxHealth = player.Health;
@@ -570,11 +570,12 @@ namespace UtilityFunctionsNamespace
                 redValue = 255;
                 greenValue = (int)(255 * healthPercentage * 2);
             }
+
             GridFunctions.RedGreenBluePlayerVals[0] = redValue;
             GridFunctions.RedGreenBluePlayerVals[1] = greenValue;
             GridFunctions.RedGreenBluePlayerVals[2] = 0;
         }
-        
+
         public static string DrawManaBar(object playerObj)
         {
             if (playerObj.GetType() == typeof(Player))
@@ -583,7 +584,7 @@ namespace UtilityFunctionsNamespace
                 int currentMana = player.currentMana;
                 int maxMana = player.ManaPoints;
                 double manaPercentage = (double)currentMana / maxMana;
-            
+
 
                 int redValue, greenValue, blueValue;
                 if (manaPercentage > 0.5)
@@ -609,7 +610,7 @@ namespace UtilityFunctionsNamespace
                 int currentMana = player.currentMana;
                 int maxMana = player.ManaPoints;
                 double manaPercentage = (double)currentMana / maxMana;
-            
+
 
                 int redValue, greenValue, blueValue;
                 if (manaPercentage > 0.5)
@@ -653,6 +654,7 @@ namespace UtilityFunctionsNamespace
                         Thread.Sleep(typeText._typingSpeed);
                     }
                 }
+
                 Console.Write("\n");
             }
         }

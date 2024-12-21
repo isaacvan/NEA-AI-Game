@@ -22,6 +22,7 @@ namespace GameClassNamespace
         public GameSetup gameSetup { get; set; }
         public Narrator narrator { get; set; }
         public Conversation chat { get; set; }
+        public OpenAIAPI api { get; set; }
         public Player player { get; set; }
         public ItemFactory itemFactory { get; set; }
         public EnemyFactory enemyFactory { get; set; }
@@ -38,7 +39,7 @@ namespace GameClassNamespace
             if (testing) UtilityFunctions.loadedSave = true;
 
             // initialise api & chat
-            OpenAIAPI api = Narrator.initialiseGPT();
+            api = Narrator.initialiseGPT();
             Conversation chat = Narrator.initialiseChat(api);
             GameSetup normalNarrator = new Narrator();
             this.gameSetup = gameSetup;
@@ -94,10 +95,10 @@ namespace GameClassNamespace
                 // initialise HUD details
                 GridFunctions.CurrentNodeId = 0;
                 GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
-                
+
                 // generate storyline summary for loaded games
                 await gameSetup.GenerateStoryLineForFuture(chat, this);
-                
+
                 // save empty game state for future
                 gameState = new GameState(SaveName: UtilityFunctions.saveName);
                 gameState.saveStateToFile();
@@ -108,6 +109,9 @@ namespace GameClassNamespace
             {
                 Console.WriteLine("Loading save...");
                 GameSetup loadGame = new TestNarrator.GameTest1();
+
+                // check for files unwritten
+                // await checkAllFilesForMissing(gameSetup, chat, api, testing);
 
                 // load attack behaviours
                 attackBehaviourFactory = await loadGame.initialiseAttackBehaviourFactoryFromNarrator(chat);
@@ -134,18 +138,21 @@ namespace GameClassNamespace
                 // introduce the gpt to its role. This will read in any story line prewritten
                 normalNarrator.IntroduceGPT(ref chat, this);
 
-                // initialise HUD details
-                GridFunctions.CurrentNodeId = 0;
-                GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
-                
                 // get game state
                 gameState = new GameState(SaveName: UtilityFunctions.saveName);
                 var holder = await gameState.unloadStateFromFile(player, map);
                 player = holder.Item1;
                 map = holder.Item2;
                 
+                // initialise HUD details
+                GridFunctions.CurrentNodeId = map.GetCurrentNode().NodeID;
+                GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
+
                 Console.WriteLine("Loaded save.");
             }
+
+            // save current map to save
+            map.saveMapStructure();
 
             // initialise uiConstructor & narration
             uiConstructer = new UIConstructer(player);
@@ -155,6 +162,64 @@ namespace GameClassNamespace
             bool testingBoolForNarrator = false;
             if (testingBoolForNarrator || !UtilityFunctions.loadedSave)
                 await uiConstructer.IntroduceStoryline(this);
+        }
+
+        public async Task checkAllFilesForMissing(GameSetup gameSetup, Conversation chat, OpenAIAPI api,
+            bool testing = false)
+        {
+            List<string> allowedDirNames = new List<string>()
+            {
+                "AttackBehaviours", "ItemTemplates", "EnemyTemplates", "MapStructures", "StoryLines"
+            };
+            string[] directoriestemp = Directory.GetDirectories(UtilityFunctions.mainDirectory);
+            string[] directoryNames = directoriestemp.Select(x => new DirectoryInfo(x).Name).ToArray();
+            List<string> newDirectories = new List<string>();
+
+
+            List<string> fillerList = new List<string>();
+
+            foreach (string directory in allowedDirNames)
+            {
+                switch (directory)
+                {
+                    case "AttackBehaviours":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName + ".json"))
+                            attackBehaviourFactory = await gameSetup.initialiseAttackBehaviourFactoryFromNarrator(chat);
+                        break;
+                    case "MapStructures":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName + ".json"))
+                        {
+                            map = await gameSetup.GenerateMapStructure(chat, this, gameSetup);
+                        }
+                        break;
+                    case "Statuses":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName + ".json"))
+                            statusFactory = await gameSetup.initialiseStatusFactoryFromNarrator(chat);
+                        break;
+                    case "EnemyTemplates":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName + ".json"))
+                            enemyFactory =
+                                await gameSetup.initialiseEnemyFactoryFromNarrator(chat, enemyFactory,
+                                    attackBehaviourFactory);
+                        break;
+                    case "ItemTemplates":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName))
+                            await itemFactory.initialiseItemFactoryFromNarrator(api, chat, testing);
+                        break;
+                    case "StoryLines":
+                        if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
+                                         UtilityFunctions.saveName + ".json"))
+                            await gameSetup.GenerateStoryLineForFuture(chat, this);
+                        break;
+                    default:
+                        throw (new Exception("Unknown path: " + directory));
+                }
+            }
         }
 
         public bool startCombat(List<Enemy> enemies)

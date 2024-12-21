@@ -10,6 +10,7 @@ using Emgu.CV.XImgproc;
 using EnemyClassesNamespace;
 using GameClassNamespace;
 using GPTControlNamespace;
+using ItemFunctionsNamespace;
 using MainNamespace;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
@@ -26,12 +27,12 @@ namespace GridConfigurationNamespace
         public static int LastestGraphDepth = 0;
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
-            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E" } };
+            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E" }, { "Objective", "?" }, { "Structure", " " } };
 
         public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
         {
             { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null },
-            { "Enemy", null }
+            { "Enemy", null }, { "Objective", new Rgb(251, 198, 207) }
         };
 
         public static Dictionary<Nature, Rgb> NatureToRGB = new Dictionary<Nature, Rgb>()
@@ -162,8 +163,14 @@ namespace GridConfigurationNamespace
             game.map.SetCurrentNodeTilesContents(GridFunctions.PlacePlayer(
                 GridFunctions.GetPlayerStartPos(ref game, oldId, newId),
                 game.map.GetCurrentNode(newId).tiles, ref game));
-            
+
             game.gameState.currentNodeId = newId;
+
+            if (Program.game.map.GetCurrentNode().Obj == null)
+            {
+                Task.Run(() => { Program.game.map.GetCurrentNode().AddObjectiveToNode(false); }).GetAwaiter()
+                    .GetResult();
+            }
         }
 
         public static void MoveEnemy(Point oldPos, Point newPos, ref Game game)
@@ -451,9 +458,14 @@ namespace GridConfigurationNamespace
                 }
             }
 
+            return node;
+        }
+
+        public static Node AddStructures(Node node)
+        {
             List<string> structureNames = new List<string>()
             {
-                "Bush3x2", "Tree3x3", "Bush3x3", "House4x4"
+                "Bush3x2", "Bush3x2", "Bush3x2", "Bush3x2", "Tree3x3", "Bush3x3", "House4x4"
             };
             Random rnd = new Random();
             int structureCount = rnd.Next(structureNames.Count);
@@ -469,7 +481,7 @@ namespace GridConfigurationNamespace
                         rndPoint.X + s.Width < node.NodeWidth && rndPoint.Y + s.Height < node.NodeHeight)
                     {
                         valid = true;
-                        node.tiles = ImplementStructure(rndPoint, node.tiles, s, valid);
+                        node.tiles = ImplementStructure(rndPoint, node.tiles, s, ref valid);
                     }
                 }
             }
@@ -477,7 +489,7 @@ namespace GridConfigurationNamespace
             return node;
         }
 
-        public static List<List<Tile>> ImplementStructure(Point p, List<List<Tile>> tiles, Structure s, bool valid)
+        public static List<List<Tile>> ImplementStructure(Point p, List<List<Tile>> tiles, Structure s, ref bool valid)
         {
             List<List<Tile>> clonedTiles = new List<List<Tile>>();
             for (int i = 0; i < tiles.Count; i++)
@@ -501,7 +513,7 @@ namespace GridConfigurationNamespace
                         {
                             for (int structurej = 0; structurej < s.Height; structurej++)
                             {
-                                if (tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc == "Empty")
+                                if (tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc == "Empty" && tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].enemyOnTile == null)
                                 {
                                     tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar =
                                         s.ASCII[structurej][structurei];
@@ -511,16 +523,19 @@ namespace GridConfigurationNamespace
                                         tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileDesc =
                                             "Empty";
 
-                                    if ((tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '|' ||
-                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '/' ||
-                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar == '\\') && s.Name == "House4x4")
+                                    if ((tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar ==
+                                         '|' ||
+                                         tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar ==
+                                         '/' ||
+                                         tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar ==
+                                         '\\') && s.Name == "House4x4")
                                     {
                                         tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].walkable = false;
                                     }
 
-                                        tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].rgb =
-                                            s.RGBDict[
-                                                tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar];
+                                    tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].rgb =
+                                        s.RGBDict[
+                                            tiles[tile.tileXY.X + structurei][tile.tileXY.Y + structurej].tileChar];
                                 }
                                 else
                                 {
@@ -564,6 +579,13 @@ namespace GridConfigurationNamespace
             CurrentGraphPointer = 0;
         }
 
+        public void saveMapStructure()
+        {
+            string path = $"{UtilityFunctions.mapsSpecificDirectory}";
+            File.WriteAllText(path,
+                JsonConvert.SerializeObject(this, new JsonSerializerSettings() { Formatting = Formatting.Indented }));
+        }
+
         public Node GetCurrentNode(int? nodeID = null)
         {
             if (nodeID.HasValue)
@@ -598,6 +620,50 @@ namespace GridConfigurationNamespace
         }
     }
 
+    public class Objective
+    {
+        public string ObjectiveName { get; set; }
+        public string Description { get; set; }
+        public List<string> NarrativePrompts { get; set; }
+        [JsonIgnore] public Func<Player, Game, string, bool> OnInteraction { get; set; }
+        public bool IsCompleted { get; set; }
+
+        public Objective(string name, string description, List<string> prompts,
+            Func<Player, Game, string, bool> interaction)
+        {
+            ObjectiveName = name;
+            Description = description;
+            NarrativePrompts = prompts;
+            OnInteraction = interaction;
+            IsCompleted = false;
+        }
+
+        public void BeginObjective()
+        {
+            Console.Clear();
+            Console.CursorVisible = true;
+            Console.WriteLine(Description + "\n");
+            while (!IsCompleted)
+            {
+                foreach (var prompt in NarrativePrompts)
+                {
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), prompt);
+                }
+
+                Console.Write("> ");
+                string input = Console.ReadLine();
+            }
+
+            Console.CursorVisible = false;
+        }
+
+        public void CompleteObjective()
+        {
+            IsCompleted = true;
+        }
+    }
+
+
     public class Node
     {
         public int NodeID { get; set; }
@@ -611,7 +677,8 @@ namespace GridConfigurationNamespace
         public int NodeHeight { get; set; }
         public bool Milestone { get; set; }
         [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
-        [Newtonsoft.Json.JsonIgnore] public List<EnemySpawn> enemies { get; set; }
+        public List<EnemySpawn> enemies { get; set; }
+        public Objective? Obj { get; set; }
 
         public Node(int id, int width, int height, string nodePOI, bool milestone)
         {
@@ -634,6 +701,21 @@ namespace GridConfigurationNamespace
             this.ConnectedNodes.Add(node.NodeID);
         }
 
+        public async Task AddObjectiveToNode(bool loaded)
+        {
+            bool valid = false;
+            while (!valid)
+            {
+                Random rnd = new Random();
+                Tile tile = tiles[rnd.Next(0, tiles.Count)][rnd.Next(0, tiles[rnd.Next(0, tiles.Count)].Count)];
+                if (tile.enemyOnTile == null && tile.tileDesc == "Empty" && tile.walkable && !tile.playerHere)
+                {
+                    await tile.AddObjectiveToTile(this, Program.game, loaded);
+                    valid = true;
+                }
+            }
+        }
+
         public void InitialiseEnemies(Game game)
         {
             /*
@@ -644,8 +726,13 @@ namespace GridConfigurationNamespace
              */
 
             if (enemies != null)
+            {
                 if (enemies.Count > 0)
+                {
+                    PlaceEnemiesOnNode(game);
                     return;
+                }
+            }
 
             Random random = new Random();
             List<EnemySpawn> spawns = new List<EnemySpawn>();
@@ -661,6 +748,7 @@ namespace GridConfigurationNamespace
                     NodeHeight = 20;
                     NodeWidth = 20;
                 }
+
                 while (!validPoint)
                 {
                     enemyPoint.X = random.Next(1, this.NodeWidth - 2);
@@ -672,17 +760,25 @@ namespace GridConfigurationNamespace
                     }
                 }
 
+                // checks
+                if (game.enemyFactory == null)
+                {
+                    game.itemFactory.initialiseItemFactoryFromNarrator(game.api, game.chat, false).ConfigureAwait(true);
+                }
+
                 if (Milestone)
                 {
                     spawns[i].boss = true;
                     spawns[i].spawnPoint = enemyPoint;
                     spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
+                    spawns[i].alive = true;
                 }
                 else
                 {
                     spawns[i].boss = false;
                     spawns[i].spawnPoint = enemyPoint;
                     spawns[i].name = game.enemyFactory.enemyTypes[random.Next(0, game.enemyFactory.enemyTypes.Count)];
+                    spawns[i].alive = true;
                 }
 
                 spawns[i].id = UtilityFunctions.GiveNewEnemyId();
@@ -698,6 +794,8 @@ namespace GridConfigurationNamespace
             if (enemies.Count == 0) throw new Exception("No enemies placed");
             foreach (EnemySpawn spawn in enemies)
             {
+                if (!spawn.alive)
+                    continue;
                 EnemyTemplate template = game.enemyFactory.enemyTemplates[spawn.name];
 
                 if (spawn.spawnPoint != Point.Empty && spawn.currentLocation == Point.Empty)
@@ -714,8 +812,7 @@ namespace GridConfigurationNamespace
                         GridFunctions.CharsToMeanings["Enemy"][0];
                     tiles[spawn.currentLocation.X][spawn.currentLocation.Y].enemyOnTile =
                         game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.currentLocation, spawn.id);
-                    enemies[enemies.IndexOf(spawn)].nature =
-                        tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
+                    // enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
                 }
             }
         }
@@ -736,6 +833,7 @@ namespace GridConfigurationNamespace
         public int? exitNodePointerId { get; set; }
         public int? entryNodePointerId { get; set; }
         public Enemy? enemyOnTile { get; set; }
+        public Objective? objective { get; set; }
 
         public Tile(char tileChar, Point tileXY, string tileDesc, int? nodeEntryPointer = null,
             int? nodeExitPointer = null)
@@ -745,6 +843,8 @@ namespace GridConfigurationNamespace
             this.tileDesc = tileDesc;
             this.playerHere = false;
             enemyOnTile = null;
+            objective = null;
+
             if (tileDesc != null)
             {
                 rgb = GridFunctions.CharsToRGB[tileDesc];
@@ -768,6 +868,23 @@ namespace GridConfigurationNamespace
                 exitNodePointerId = null;
                 entryNodePointerId = nodeEntryPointer;
             }
+        }
+
+        public async Task<Tile> AddObjectiveToTile(Node node, Game game, bool loaded)
+        {
+            tileDesc = "Objective";
+            tileChar = GridFunctions.CharsToMeanings[tileDesc][0];
+            rgb = GridFunctions.CharsToRGB[tileDesc];
+            if (loaded)
+            {
+                objective = node.Obj;
+            }
+            else
+            {
+                objective = await game.narrator.GenerateInitialObjective(game, node);
+            }
+
+            return this;
         }
 
         public Tile clone()
@@ -889,13 +1006,37 @@ namespace GridConfigurationNamespace
             GraphDepth = depth;
         }
 
+        public async Task AddObjectivesToNodes(bool loaded)
+        {
+            string prompt12 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt12.txt");
+            prompt12 += $"\n{string.Join(", ", Nodes.FindAll(n => n.Obj == null).Select(n => n.NodePOI))}";
+            if (Nodes.FindAll(n => n.Obj == null).Count == 0)
+                return;
+            Program.game.chat.AppendUserInput(prompt12);
+            string output = await Program.game.narrator.GetGPTOutput(Program.game.chat, "Dictionary of Objectives");
+            try
+            {
+                Dictionary<string, Objective> objectives =
+                    JsonConvert.DeserializeObject<Dictionary<string, Objective>>(output);
+                for (int i = 0; i < objectives.Count; i++)
+                {
+                    Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key).Obj = objectives.ElementAt(i).Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to parse Objectives: {ex.Message}");
+            }
+        }
+
         public int GetHighestDepth()
         {
             int depth = 0;
             foreach (Node n in Nodes)
             {
-               if (n.NodeDepth > depth) depth = n.NodeDepth; 
+                if (n.NodeDepth > depth) depth = n.NodeDepth;
             }
+
             return depth;
         }
 

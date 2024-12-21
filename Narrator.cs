@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using CombatNamespace;
 using EnemyClassesNamespace;
@@ -146,7 +148,7 @@ namespace GPTControlNamespace
                 $"Player Health: {localGame.player.currentHealth} / {localGame.player.Health}",
                 $"Player Inventory: {string.Join(", ", localGame.player.inventory.Items)}",
                 $"Enemies in Room: {enemyCount}",
-                $"Objective: Narrator's choice",
+                $"Objective: {localGame.map.GetCurrentNode().Obj.ObjectiveName}",
                 $"Tension Level: Narrator's choice",
                 $"Narrative Arc: Narrator's choice"
             };
@@ -177,6 +179,33 @@ namespace GPTControlNamespace
                 return (true, output);
             }
         }
+
+        public static async Task<bool> HandleObjectiveTextAdventure(Objective objective, Game game)
+        {
+            Console.Clear();
+            int promptIndex = 0;
+
+            while (!objective.IsCompleted && promptIndex < objective.NarrativePrompts.Count)
+            {
+                Console.WriteLine(objective.NarrativePrompts[promptIndex]);
+
+                // wait for the players input.
+                string playerInput = Console.ReadLine();
+
+                // process the input.
+                bool continueAdventure = objective.OnInteraction(game.player, game, playerInput);
+
+                if (!continueAdventure)
+                {
+                    Console.WriteLine("The adventure ends here.");
+                    break;
+                }
+
+                promptIndex++;
+            }
+
+            return objective.IsCompleted;
+        }
     }
 
 
@@ -195,8 +224,9 @@ namespace GPTControlNamespace
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
         Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id);
         Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
-        Task<Graph> PopulateNodesWithTiles(Graph graph, Game game);
+        Task<Graph> PopulateNodesWithTiles(Graph graph, Game game, bool loaded = false);
         Task GenerateStoryLineForFuture(Conversation chat, Game game);
+        Task<Objective> GenerateInitialObjective(Game game, Node node);
     }
 
 
@@ -204,6 +234,35 @@ namespace GPTControlNamespace
     {
         private OpenAIAPI api;
         private Conversation chat;
+        
+        
+
+        public async Task<Objective> GenerateInitialObjective(Game game, Node node)
+        {
+            string prompt = File.ReadAllText(UtilityFunctions.promptPath + "Prompt11.txt");
+            prompt = Regex.Replace(prompt, @"{node.NodePOI}", node.NodePOI);
+            prompt = Regex.Replace(prompt, @"{node.NodeID}", node.NodeID.ToString());
+
+            game.chat.AppendUserInput(prompt);
+
+            string aiResponse = await game.narrator.GetGPTOutput(game.chat, $"GenerateInitialObjective:{Regex.Replace(node.NodePOI, " ", "")}");
+            aiResponse = await UtilityFunctions.FixJson(aiResponse);
+
+            // ensure JSON is valid and parse it into an Objective object
+            try
+            {
+                // deserialize 
+                Objective generatedObjective = JsonConvert.DeserializeObject<Objective>(aiResponse);
+
+                // add the generated objective to the node
+                node.Obj = generatedObjective;
+                return generatedObjective;
+            }
+            catch (JsonException ex)
+            {
+                throw new Exception("Failed to parse the AI response into an Objective: " + ex.Message);
+            }
+        }
 
         public async Task GenerateStoryLineForFuture(Conversation chat, Game game)
         {
@@ -233,17 +292,19 @@ namespace GPTControlNamespace
             // chat.AppendUserInput($"Finally, also consider that you could be telling a story from halfway through due to them loading an old savefile.");
         }
 
-        public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
+        public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game, bool loaded = false)
         {
             Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
             foreach (var node in graph.Nodes)
             {
                 Node newNode = GridFunctions.PopulateNodeWithTiles(node, graph);
                 newNode.InitialiseEnemies(game);
+                newNode = GridFunctions.AddStructures(newNode);
                 graphToReturn.Nodes.Add(newNode);
             }
 
             graphToReturn.SetEntryAndExits();
+            await graphToReturn.AddObjectivesToNodes(loaded);
 
             return graphToReturn;
         }
@@ -273,7 +334,11 @@ namespace GPTControlNamespace
             if (game.map == null) game.map = new Map();
             game.map = JsonConvert.DeserializeObject<Map>(output);
             game.map.Graphs[game.map.Graphs.Count - 1] =
-                await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game);
+                await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game, true);
+            if (game.map.GetCurrentNode().Obj == null)
+            {
+                await game.map.GetCurrentNode().AddObjectiveToNode(false);
+            }
             return game;
         }
 
@@ -289,6 +354,7 @@ namespace GPTControlNamespace
             bool test = false;
             if (test)
             {
+                // testing
                 output =
                     "{\n  \"Id\": 0,\n  \"Nodes\": [\n    {\n      \"NodeID\": 0,\n      \"NodeDepth\": 0,\n      \"NodeHeight\": 30,\n      \"NodeWidth\": 30,\n      \"ConnectedNodes\": [1, 2],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Starting Point\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 1,\n      \"NodeDepth\": 1,\n      \"NodeHeight\": 25,\n      \"NodeWidth\": 25,\n      \"ConnectedNodes\": [0, 3, 4],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Abandoned Outpost\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 2,\n      \"NodeDepth\": 1,\n      \"NodeHeight\": 20,\n      \"NodeWidth\": 20,\n      \"ConnectedNodes\": [0, 4],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Ancient Ruins\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 3,\n      \"NodeDepth\": 2,\n      \"NodeHeight\": 40,\n      \"NodeWidth\": 35,\n      \"ConnectedNodes\": [1, 5],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Mystical Forest\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 4,\n      \"NodeDepth\": 2,\n      \"NodeHeight\": 20,\n      \"NodeWidth\": 25,\n      \"ConnectedNodes\": [1, 2, 5],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Raging River\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 5,\n      \"NodeDepth\": 3,\n      \"NodeHeight\": 45,\n      \"NodeWidth\": 40,\n      \"ConnectedNodes\": [3, 4, 6, 7],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\", \"undirected\", \"undirected\"],\n      \"NodePOI\": \"Crossroads\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 6,\n      \"NodeDepth\": 4,\n      \"NodeHeight\": 50,\n      \"NodeWidth\": 50,\n      \"ConnectedNodes\": [5, 8],\n      \"ConnectedNodesEdges\": [\"undirected\", \"undirected\"],\n      \"NodePOI\": \"Lost City\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 7,\n      \"NodeDepth\": 4,\n      \"NodeHeight\": 30,\n      \"NodeWidth\": 30,\n      \"ConnectedNodes\": [5],\n      \"ConnectedNodesEdges\": [\"undirected\"],\n      \"NodePOI\": \"Desolate Camp\",\n      \"Milestone\": false\n    },\n    {\n      \"NodeID\": 8,\n      \"NodeDepth\": 5,\n      \"NodeHeight\": 60,\n      \"NodeWidth\": 60,\n      \"ConnectedNodes\": [6],\n      \"ConnectedNodesEdges\": [\"undirected\"],\n      \"NodePOI\": \"Timeless Dungeon\",\n      \"Milestone\": true\n    }\n  ]\n}";
             }
@@ -316,7 +382,7 @@ namespace GPTControlNamespace
                 {
                     throw e;
                 }
-                
+
                 UtilityFunctions.mapsSpecificDirectory = UtilityFunctions.mapsDir + UtilityFunctions.saveName + ".json";
                 if (game.map.Graphs == null || game.map.Graphs.Count == 0 || game.map == null)
                 {
@@ -324,7 +390,7 @@ namespace GPTControlNamespace
                     game.map.Graphs = new List<Graph>();
                 }
             }
-            
+
             Graph graph = JsonConvert.DeserializeObject<Graph>(output);
             graph = await PopulateNodesWithTiles(graph, game);
             game.map.Graphs.Add(graph);
@@ -386,13 +452,23 @@ namespace GPTControlNamespace
 
             // chat.RequestParameters.Temperature = 0.9;
             string output = "";
-            try
+            bool completed = false;
+            while (!completed)
             {
-                output = await chat.GetResponseFromChatbotAsync();
-            }
-            catch (Exception e)
-            {
-                throw e;
+                try
+                {
+                    output = await chat.GetResponseFromChatbotAsync();
+                    completed = true;
+                }
+                catch (HttpRequestException e)
+                {
+                    // Console.WriteLine(e);
+                    Thread.Sleep(1000);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
 
             string logContents = "";
@@ -418,7 +494,7 @@ namespace GPTControlNamespace
         public static Conversation initialiseChat(OpenAIAPI api)
         {
             Conversation chat = api.Chat.CreateConversation();
-            Model model = Model.GPT4_Turbo;
+            Model model = Model.GPT4;
             chat.Model = model;
             // chat.RequestParameters.Temperature = 0.9;
             return chat;

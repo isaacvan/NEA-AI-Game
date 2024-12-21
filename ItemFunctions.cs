@@ -609,6 +609,7 @@ namespace ItemFunctionsNamespace
 
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
                 {
+                    
                     return (ItemContainer)serializer.Deserialize(fileStream);
                     // Now you can work with the data in itemContainer.Armours
                 }

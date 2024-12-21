@@ -54,6 +54,8 @@ namespace PlayerClassesNamespace
         [XmlIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
         
         [XmlIgnore] public int sightRange { get; set; }
+        [XmlIgnore] public bool sightRangeModified { get; set; }
+        [XmlIgnore] public int sightRangeModifiedBy { get; set; }
 
         public Player()
         {
@@ -65,6 +67,7 @@ namespace PlayerClassesNamespace
             PlayerAttacks[AttackSlot.slot2] = null;
             PlayerAttacks[AttackSlot.slot3] = null;
             PlayerAttacks[AttackSlot.slot4] = null;
+            sightRangeModified = false;
         }
 
         public async Task InitialiseAttacks(Game game)
@@ -341,7 +344,7 @@ namespace PlayerClassesNamespace
             currentGraphId = CurrentGraphId;
         }
         
-        public async Task saveStateToFile()
+        public async Task saveStateToFile(Map map = null)
         {
             string path = $"{UtilityFunctions.mainDirectory}GameStates{Path.DirectorySeparatorChar}{saveName}.json";
             using (StreamWriter file = File.CreateText(path))
@@ -351,6 +354,20 @@ namespace PlayerClassesNamespace
                     Formatting = Formatting.Indented // Pretty print
                 };
                 serializer.Serialize(file, this);
+                await file.FlushAsync();
+            }
+
+            if (map == null)
+                return;
+            
+            string pathMap = $"{UtilityFunctions.mainDirectory}MapStructures{Path.DirectorySeparatorChar}{saveName}.json";
+            using (StreamWriter file = File.CreateText(pathMap))
+            {
+                JsonSerializer serializer = new JsonSerializer
+                {
+                    Formatting = Formatting.Indented
+                };
+                serializer.Serialize(file, map);
                 await file.FlushAsync();
             }
         }

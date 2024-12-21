@@ -120,6 +120,7 @@ namespace EnemyClassesNamespace
         public bool boss { get; set; }
         public int id { get; set; }
         public Point currentLocation { get; set; } // null when not spawned yet
+        public bool alive { get; set; }
     }
 
     public interface EnemyConfig // used to store functions that each nature needs that is different

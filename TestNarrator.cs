@@ -24,6 +24,11 @@ namespace TestNarratorNamespace
         {
             private static Logger logger = LogManager.GetCurrentClassLogger();
 
+            public async Task<Objective> GenerateInitialObjective(Game game, Node node)
+            {
+                return null;
+            }
+
             public void IntroduceGPT(ref Conversation chat, Game game)
             {
             }
@@ -32,7 +37,7 @@ namespace TestNarratorNamespace
             {
             }
 
-            public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game)
+            public async Task<Graph> PopulateNodesWithTiles(Graph graph, Game game, bool loaded = false)
             {
                 Graph graphToReturn = new Graph(graph.Id, new List<Node>(), GridFunctions.LastestGraphDepth);
                 foreach (var node in graph.Nodes)

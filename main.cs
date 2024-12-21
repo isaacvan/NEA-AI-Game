@@ -38,6 +38,10 @@ namespace MainNamespace
         /* ---------------------------------------------------------------------------------------------------------
         // NEXT STEPS
         //
+        //
+        // OBJECTIVES
+        //
+        //
         // DUNGEON MASTER ADDITIONS
         // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
         // - Make way for player to get more attacks
@@ -58,6 +62,7 @@ namespace MainNamespace
         // FINAL TWEAKS
         // make game fully playable so that they can complete 1 "storyline"
         // QOL - menu in game, rgb personalisation etc
+        // ramp up difficulty to make game actually challenging
         //----------------------------------------------------------------------------------------------------------
         */
 
@@ -199,7 +204,7 @@ namespace MainNamespace
                 GridFunctions.DrawWholeNode(game);
 
                 // save final gameState
-                game.gameState.saveStateToFile();
+                game.gameState.saveStateToFile(game.map);
 
                 // get next input
                 input = Console.ReadKey(true).KeyChar.ToString();
@@ -331,9 +336,11 @@ namespace MainNamespace
                     {
                         if (game.map.GetCurrentNode().enemies[i].id == EnemyId)
                         {
-                            game.map.GetCurrentNode().enemies.RemoveAt(i);
+                            game.map.GetCurrentNode().enemies.ElementAt(i).alive = false;
                         }
                     }
+                    
+                    // game.map.GetCurrentNode().enemies.Find(e => e.id == tile.enemyOnTile.Id).alive = false;
 
                     tile.enemyOnTile = null;
                     oldTile.enemyOnTile = null;
@@ -343,6 +350,11 @@ namespace MainNamespace
                     // END GAME
                     game.loseGame();
                 }
+            }
+
+            if (tile.objective != null)
+            {
+                tile.objective.BeginObjective();
             }
 
             // IF NEW GRAPH
@@ -1040,6 +1052,16 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(storyline) != "saveExample")
                 {
                     File.Delete(storyline);
+                }
+            }
+            
+            // delete gameStates
+            string[] states = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}GameStates", searchPattern: "*.json");
+            foreach (var state in states)
+            {
+                if (Path.GetFileNameWithoutExtension(state) != "saveExample")
+                {
+                    File.Delete(state);
                 }
             }
         }

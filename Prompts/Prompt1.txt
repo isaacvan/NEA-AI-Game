@@ -10,7 +10,7 @@ The graph should start from a single origin node with a NodeDepth of 0. Ensure t
 
 NodeID: an integer representing the node identifier.
 NodeDepth: an integer representing the depth of the node in the graph, starting from 0 for the origin node.
-NodeHeight and NodeWidth: both integers representing the width in tiles of the map. Minimum value of 20, maximum of 100. Don't have to be the same but shouldn't be too far apart.
+NodeHeight and NodeWidth: both integers representing the width in tiles of the map. Minimum value of 20, maximum of 30. Don't have to be the same but shouldn't be too far apart.
 ConnectedNodes: a list of integers representing the IDs of connected nodes. This must include every node that is connected, behind and in front.
 ConnectedNodesEdges: a list of strings such as "undirected", "directed", etc., corresponding to the connections listed in ConnectedNodes.
 NodePOI: a string describing the point of interest, such as "empty", "Town", "Dungeon", etc.
@@ -24,8 +24,8 @@ Example:
       {
         "NodeID": 0,
         "NodeDepth": 0,
-        "NodeHeight": 50,
-        "NodeWidth": 50,
+        "NodeHeight": 20,
+        "NodeWidth": 20,
         "ConnectedNodes": [1, 2],
         "ConnectedNodesEdges": ["directed", "directed"],
         "NodePOI": "Starting Point",

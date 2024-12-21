@@ -14,7 +14,41 @@
           ],
           "NodePOI": "Starting Point",
           "NodeDepth": 0,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 0,
+              "currentLocation": "18, 13",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 1,
+              "currentLocation": "17, 13",
+              "alive": false
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Embark on the Journey",
+            "Description": "Welcome to the starting point of your epic adventure. Identify your surroundings and decide on the next course of action.",
+            "NarrativePrompts": [
+              "A cloak of darkness unravels around you as you open your eyes, suddenly realizing...this is the very beginning of your odyssey. NodeID 0, also known as Starting Point, is where your narrative unfolds.",
+              "Before you lies a vast and open wilderness, threaded with hints of mysterious, unexplored paths each holding an untold adventure. The wind whistles around you, carrying whispers of legends yet to be made.",
+              "Choices, like branching paths, stretch out before you. Where will you go? What will you become in these untold stories lying in wait for you?",
+              "Will you journey through dark and forbidden forests, full of strange creatures and hidden treasures or will you scale towering mountains, filled with dangerous ledges and breath-taking vistas? Or perhaps you will cross deep and treacherous seas, rich with lost cities and sunken ships?",
+              "The journey is yours. The story is yours to write. Adventures are there, waiting. Where will it start?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 1,
@@ -30,7 +64,38 @@
           ],
           "NodePOI": "Forest",
           "NodeDepth": 1,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 2,
+              "currentLocation": "1, 13",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 3,
+              "currentLocation": "2, 16",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Emerald Enigma",
+            "Description": "Investigate the mysterious glow deep within the forest.",
+            "NarrativePrompts": [
+              "You find yourself at the edge of an expansive Forest. The trees stretch out as far as the eye can see. Somewhere from the heart of the forest, a peculiar, emerald glow sparkles.",
+              "Do you want to examine the source of the glowing emerald light, or continue onward without looking back?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 2,
@@ -44,7 +109,47 @@
           ],
           "NodePOI": "Abandoned Tower",
           "NodeDepth": 1,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 4,
+              "currentLocation": "17, 12",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 5,
+              "currentLocation": "18, 10",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 6,
+              "currentLocation": "15, 13",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Crumbling Spire",
+            "Description": "Search an ancient, abandoned tower for lost artifacts.",
+            "NarrativePrompts": [
+              "In the middle of a desolate field, stands a gnarled, old tower. Its stone structure is crumbling, but it still holds a melancholy charm heavy with vanished vibrance.",
+              "Do you dare venture within these timeworn walls and discover its forgotten secrets, or choose to avoid the risks and move along?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 3,
@@ -58,7 +163,47 @@
           ],
           "NodePOI": "Cave",
           "NodeDepth": 2,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Forest Guardian",
+              "boss": false,
+              "id": 7,
+              "currentLocation": "4, 13",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 8,
+              "currentLocation": "17, 10",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 9,
+              "currentLocation": "9, 1",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Whispering Shadows",
+            "Description": "Navigate through a dark cave rumored to hide an invaluable treasure.",
+            "NarrativePrompts": [
+              "You suddenly stand before the mouth of a dark cave, where cold wind whispers ominous tales. Stories of a priceless artifact lost in its abysmal hollow speak to your curious instinct.",
+              "Would you step into the darkness to unearth the treasure, or respect the cave's enigma and march ahead?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 4,
@@ -74,7 +219,47 @@
           ],
           "NodePOI": "Old Temple",
           "NodeDepth": 2,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 10,
+              "currentLocation": "9, 5",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 2,
+              "name": "Shadow Wisp",
+              "boss": false,
+              "id": 11,
+              "currentLocation": "12, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 12,
+              "currentLocation": "1, 7",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Echoes of History",
+            "Description": "Unlock the mysteries behind an ancient temple's past.",
+            "NarrativePrompts": [
+              "The Old Temple, a relic from a time past, captivates your senses. Its ancient architecture and faded murals hold a history waiting to be revealed.",
+              "Would you like to spend your time here unraveling the mysteries of the Temple, or continue on your quest without a second thought?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 5,
@@ -88,7 +273,38 @@
           ],
           "NodePOI": "Mountain Pass",
           "NodeDepth": 3,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 13,
+              "currentLocation": "7, 3",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Forest Guardian",
+              "boss": false,
+              "id": 14,
+              "currentLocation": "1, 17",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Heights of Solitude",
+            "Description": "Ensure safe traversal while battling harsh, unpredictable weather.",
+            "NarrativePrompts": [
+              "You find yourself amidst towering, daunting mountains. The path ahead is marked by a treacherous pass, accompanied by an unwelcoming chill.",
+              "Would you brave the looming heights and unpredictable weather, or find a less dangerous route?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 6,
@@ -102,7 +318,47 @@
           ],
           "NodePOI": "Riverside",
           "NodeDepth": 3,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "10, 13",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 15,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "13, 5",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 16,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "5, 10",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 17,
+              "currentLocation": "0, 0",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Flow of Serenity",
+            "Description": "Catch rare fish species at the riverside for local fishermen.",
+            "NarrativePrompts": [
+              "You approach the tranquil Riverside, where the water carries whispers of a rare fish species elusive to the local fishermen.",
+              "Do you rest by the Riverside and attempt to catch the elusive fish, or do you continue on your journey without halting for the pursuit?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 7,
@@ -118,7 +374,47 @@
           ],
           "NodePOI": "Dragon's Lair",
           "NodeDepth": 4,
-          "Milestone": false
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 18,
+              "currentLocation": "18, 9",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 19,
+              "currentLocation": "18, 9",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Ancient Sentinel",
+              "boss": false,
+              "id": 20,
+              "currentLocation": "12, 7",
+              "alive": false
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Breath of Fire",
+            "Description": "Venture into a fearsome dragon's lair and recover the stolen emerald gem.",
+            "NarrativePrompts": [
+              "The path leads you to a smoking mountainside, rumored to house a fearsome Dragon. Its cavernous Lair supposedly holds a stolen, precious emerald gem.",
+              "Do you dare to confront the Beast in the search for the emerald gem, or take up a safer path steering clear of potential danger?"
+            ],
+            "IsCompleted": false
+          }
         },
         {
           "NodeID": 8,
@@ -130,10 +426,33 @@
           ],
           "NodePOI": "Ancient City",
           "NodeDepth": 5,
-          "Milestone": true
+          "NodeWidth": 20,
+          "NodeHeight": 20,
+          "Milestone": true,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Forest Guardian",
+              "boss": true,
+              "id": 21,
+              "currentLocation": "17, 3",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Ruins of Time",
+            "Description": "Explore the remnants of an ancient city believed to hold hidden power.",
+            "NarrativePrompts": [
+              "An Ancient City lies in ruins before your eyes, its empty streets echoing tales of lost civilization believed to harbour a hidden power.",
+              "Do you chart a course and delve into the ancient ruins, or take back your steps to avoid any dormant danger?"
+            ],
+            "IsCompleted": false
+          }
         }
       ],
       "Id": 0
     }
-  ]
+  ],
+  "CurrentGraphPointer": 0
 }
