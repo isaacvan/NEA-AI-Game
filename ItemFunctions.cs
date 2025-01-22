@@ -165,6 +165,20 @@ namespace ItemFunctionsNamespace
         public List<WeaponTemplate> weaponTemplates { get; set; } = new List<WeaponTemplate>();
         public List<ConsumableTemplate> consumableTemplates { get; set; } = new List<ConsumableTemplate>();
         public List<ArmourTemplate> armourTemplates { get; set; } = new List<ArmourTemplate>();
+        public List<ItemTemplate> itemTemplates { get; set; } = new List<ItemTemplate>();
+
+        public List<ItemTemplate> GetAllTemplates()
+        {
+            if (itemTemplates.Count == 0)
+            {
+                List<ItemTemplate> newList = new List<ItemTemplate>();
+                newList.AddRange(weaponTemplates);
+                newList.AddRange(consumableTemplates);
+                newList.AddRange(armourTemplates);
+                itemTemplates = newList;
+            }
+            return itemTemplates;
+        }
 
         public async Task initialiseItemFactoryFromFile()
         {

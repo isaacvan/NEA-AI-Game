@@ -4,6 +4,7 @@ using EnemyClassesNamespace;
 using GameClassNamespace;
 using GPTControlNamespace;
 using GridConfigurationNamespace;
+using ItemFunctionsNamespace;
 using MainNamespace;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -246,6 +247,31 @@ namespace UIGenerationNamespace
                 else
                 {
                     UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
+                }
+            }
+            UtilityFunctions.TypeText(new TypeText(), "\nITEMS:");
+            int index = 1;
+            foreach (var item in game.player.inventory.Items)
+            {
+                UtilityFunctions.TypeText(new TypeText(), $"Item #{index}{item.Name} ---> {item.ItemType}");
+                index++;
+            }
+            
+            UtilityFunctions.TypeText(new TypeText(), "\nWould you like to equip / use an item? [y/n]");
+            if (Console.ReadLine() == "y")
+            {
+                string inp = Console.ReadLine();
+                while (!game.player.inventory.Items.ConvertAll(x => x.Name).Contains(inp) && inp != "n")
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"{inp} is not in the inventory. Enter a valid item or 'n' to exit");
+                }
+
+                if (inp != "n")
+                {
+                    Item item = game.player.inventory.Items.Find(x => x.Name == inp);
+                    game.player.inventory.RemoveItem(item);
+                   // game.player.equipment.EquipItem();
+                   // GET ITEM SLOT
                 }
             }
         }

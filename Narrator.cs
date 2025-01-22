@@ -462,7 +462,7 @@ namespace GPTControlNamespace
                 }
                 catch (HttpRequestException e)
                 {
-                    // Console.WriteLine(e);
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 10, newLine: false), ".");
                     Thread.Sleep(1000);
                 }
                 catch (Exception e)

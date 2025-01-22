@@ -27,7 +27,7 @@ namespace GridConfigurationNamespace
         public static int LastestGraphDepth = 0;
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
-            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "P" }, { "Enemy", "E" }, { "Objective", "?" }, { "Structure", " " } };
+            { { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "@" }, { "Enemy", "E" }, { "Objective", "?" }, { "Structure", " " } };
 
         public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
         {
@@ -80,9 +80,7 @@ namespace GridConfigurationNamespace
         {
             node.tiles[y][x] = tile;
         }
-
-        [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
-            MessageId = "type: System.ArgumentOutOfRangeException; size: 108MB")]
+        
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
         {
             // return false if out of bounds
@@ -107,8 +105,8 @@ namespace GridConfigurationNamespace
 
             try
             {
-                if (PlayerPos.X < 0 || PlayerPos.X > tiles[PlayerPos.Y].Count || PlayerPos.Y < 0 ||
-                    PlayerPos.Y > tiles[PlayerPos.X].Count)
+                if (PlayerPos.X < 0 || PlayerPos.X > tiles[PlayerPos.Y].Count + 1 || PlayerPos.Y < 0 ||
+                    PlayerPos.Y > tiles[PlayerPos.X].Count + 1)
                 {
                     return false;
                 }
@@ -377,6 +375,19 @@ namespace GridConfigurationNamespace
                             node.tiles[i][j].tileChar = CharsToMeanings[$"Player"][0];
                         }
                     }
+                    
+                    // check for complete objective
+                    if (node.tiles[i][j].objective != null)
+                    {
+                        if (node.tiles[i][j].objective.IsCompleted)
+                        {
+                            if (node.tiles[i][j].tileChar != CharsToMeanings["Empty"][0])
+                            {
+                                node.tiles[i][j].tileChar = CharsToMeanings[$"Empty"][0];
+                                node.tiles[i][j].rgb = CharsToRGB[$"Empty"];
+                            }
+                        }
+                    }
 
                     // determine if the tile is within sight range
                     // \x1b[38;2;{r};{g};{b}m
@@ -579,6 +590,55 @@ namespace GridConfigurationNamespace
             CurrentGraphPointer = 0;
         }
 
+        public void fixMapStructure()
+        {
+            // NEXT JOB
+            // goes through eahc of the connected nodes and finds if there is any discrepancies then fixes it
+            Graph g = Graphs[CurrentGraphPointer];
+            bool neededFix = false;
+            
+            /*
+            for (int i = 0; i < g.Nodes.Count; i++)
+            {
+                for (int j = 0; j < g.Nodes[i].ConnectedNodes.Count; j++)
+                {
+                    // if node with the id of g.Nodes[i].ConnectedNodes[j] doesnt have the id g.Nodes[i].Id in its connected nodes, add it
+                    if (g.Nodes.Find(n => n.NodeID == g.Nodes[i].ConnectedNodes[j]).ConnectedNodes
+                        .Contains(g.Nodes[i].NodeID))
+                    {
+                        g.Nodes[i].ConnectedNodes.Add(g.Nodes[i].NodeID);
+                        neededFix = true;
+                    }
+                }
+            }
+            */
+            
+            for (int i = 0; i < g.Nodes.Count; i++)
+            {
+                for (int j = 0; j < g.Nodes[i].ConnectedNodes.Count; j++)
+                {
+                    // Get the connected node
+                    var connectedNode = g.Nodes.Find(n => n.NodeID == g.Nodes[i].ConnectedNodes[j]);
+
+                    // Ensure the connected node exists
+                    if (connectedNode != null)
+                    {
+                        // Check if the connection is mutual; if not, add it
+                        if (!connectedNode.ConnectedNodes.Contains(g.Nodes[i].NodeID))
+                        {
+                            connectedNode.ConnectedNodes.Add(g.Nodes[i].NodeID);
+                            neededFix = true;
+                        }
+                    }
+                }
+            }
+
+            if (neededFix)
+            {
+                g.SetEntryAndExits();
+            }
+        }
+
         public void saveMapStructure()
         {
             string path = $"{UtilityFunctions.mapsSpecificDirectory}";
@@ -627,6 +687,7 @@ namespace GridConfigurationNamespace
         public List<string> NarrativePrompts { get; set; }
         [JsonIgnore] public Func<Player, Game, string, bool> OnInteraction { get; set; }
         public bool IsCompleted { get; set; }
+        public Point Location { get; set; }
 
         public Objective(string name, string description, List<string> prompts,
             Func<Player, Game, string, bool> interaction)
@@ -638,23 +699,107 @@ namespace GridConfigurationNamespace
             IsCompleted = false;
         }
 
-        public void BeginObjective()
+        public void BeginObjective(ref Game game) // MAIN OBJECTIVEV FUNCTION
         {
             Console.Clear();
             Console.CursorVisible = true;
             Console.WriteLine(Description + "\n");
+            List<string> completedPrompts = new List<string>();
+            List<string> items = game.itemFactory.weaponTemplates.Select(t => t.Name).Concat(game.itemFactory.armourTemplates.Select(t => t.Name).Concat(game.itemFactory.consumableTemplates.Select(t => t.Name))).ToList();
             while (!IsCompleted)
             {
                 foreach (var prompt in NarrativePrompts)
                 {
+                    if (completedPrompts.Contains(prompt))
+                        continue;
+                    completedPrompts.Add(prompt);
                     UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), prompt);
                 }
 
                 Console.Write("> ");
                 string input = Console.ReadLine();
+                (bool, List<string>) output = GetContinuation(game, input).GetAwaiter().GetResult();
+
+                // send input to narrator, get a response that involves 2 thingss. One can indicate the fact it is doing anohter narrative line, and the other is an outcome.
+                // This can be giving the player an item, damaging them, starting a combat, etc.
+                // New prompt needed?!!
+
+                if (output.Item1)
+                {
+                    NarrativePrompts = NarrativePrompts.Concat(output.Item2).ToList();
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), NarrativePrompts.Last());
+                    Thread.Sleep(1000);
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), "This objective is completed.");
+                    foreach (string item in items)
+                    {
+                        if (output.Item2[0].Contains(item))
+                        {
+                            UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), $"\nYou received the item: '{item}'.");
+                            var bluntTemplate = game.itemFactory.GetAllTemplates().Find(t => t.Name == item);
+                            Type itemType = bluntTemplate.GetType();
+                            ItemTemplate itemTemplate;
+                            if (itemType == typeof(ArmourTemplate))
+                            {
+                                itemTemplate = (ArmourTemplate)game.itemFactory.armourTemplates.Find(t => t.Name == item);
+                            } else if (itemType == typeof(ConsumableTemplate))
+                            {
+                                itemTemplate = (ConsumableTemplate)game.itemFactory.consumableTemplates.Find(t => t.Name == item);
+                            } else 
+                            {
+                                itemTemplate = (WeaponTemplate)game.itemFactory.weaponTemplates.Find(t => t.Name == item);
+                            }
+                            game.player.AddItem(game.itemFactory.createItem(itemTemplate));
+                            game.player.initialiseInventory();
+                        }
+                    }
+                    CompleteObjective();
+                    Thread.Sleep(1000);
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), "\n\nPress any button to leave.");
+                }
+                else
+                {
+                    NarrativePrompts = NarrativePrompts.Concat(output.Item2).ToList();
+                }
             }
 
+            Console.ReadKey(true);
+
             Console.CursorVisible = false;
+            GridFunctions.DrawWholeNode(game);
+        }
+
+        public async Task<(bool, List<string>)> GetContinuation(Game game, string input)
+        {
+            string prompt = $"The player inputted this in response to your narrative: {input}";
+            prompt += $"\n\nAs a reminder, your last narrative lines were {string.Join("", NarrativePrompts)}";
+            prompt += $"\n\nPlease now output the narrators response to this input to continue the objective. Ensure that your response provides a scenario where the player can do something interesting: give them at least 2 options of things for the user to do. it must be INTERESTING.";
+            prompt +=
+                "\nIt is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.";
+            prompt +=
+                "You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the user";
+            prompt += $"However if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).";
+            prompt +=
+                $"The items you can give to the player are: {string.Join(", ", game.itemFactory.weaponTemplates.Select(t => t.Name).Concat(game.itemFactory.armourTemplates.Select(t => t.Name).Concat(game.itemFactory.consumableTemplates.Select(t => t.Name))))}";
+            prompt += "For example, to end the objective and give the user an item write END (item name)";
+            prompt += "Or, write CONTINUE (next narrative lines)";
+            
+            game.chat.AppendUserInput(prompt);
+            string outp = await game.narrator.GetGPTOutput(game.chat, $"GetContinuation{ObjectiveName}-{NarrativePrompts.Count}");
+            List<string> output = outp.Split('\n').ToList();
+            if (output[0].Substring(0, 6).ToLower().Contains("end"))
+            {
+                output[0] = output[0].Remove(0, 3);
+                return (true, output);
+            }
+            else if (output[0].Substring(0, 12).ToLower().Contains("continue"))
+            {
+                output[0] = output[0].Remove(0, 8);
+                return (false, output);
+            }
+            else
+            {
+                throw new Exception("Output was in incorrect format.");
+            }
         }
 
         public void CompleteObjective()
@@ -1011,7 +1156,11 @@ namespace GridConfigurationNamespace
             string prompt12 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt12.txt");
             prompt12 += $"\n{string.Join(", ", Nodes.FindAll(n => n.Obj == null).Select(n => n.NodePOI))}";
             if (Nodes.FindAll(n => n.Obj == null).Count == 0)
+            {
+                PlaceExistingObjectivesToNodes();
                 return;
+            }
+                
             Program.game.chat.AppendUserInput(prompt12);
             string output = await Program.game.narrator.GetGPTOutput(Program.game.chat, "Dictionary of Objectives");
             try
@@ -1026,6 +1175,41 @@ namespace GridConfigurationNamespace
             catch (Exception ex)
             {
                 throw new Exception($"Failed to parse Objectives: {ex.Message}");
+            }
+        }
+
+        public async Task PlaceExistingObjectivesToNodes()
+        {
+            for (int i = 0; i < Nodes.Count; i++)
+            {
+                Point point = new Point();
+                if (Nodes[i].Obj == null)
+                {
+                    throw new Exception("Objective is null.");
+                } else if (Nodes[i].Obj.Location == Point.Empty)
+                {
+                    bool valid = false;
+                    Random rnd = new Random();
+                    while (!valid)
+                    {
+                        Point newPoint = new Point(rnd.Next(0, Nodes[i].tiles.Count - 1), rnd.Next(0, Nodes[i].tiles[rnd.Next(0, Nodes[i].tiles.Count - 1)].Count - 1));
+                        Tile tile = Nodes[i].tiles[newPoint.X][newPoint.Y];
+                        if (tile.enemyOnTile == null && tile.playerHere == false && tile.tileDesc == "Empty")
+                        {
+                            point = newPoint;
+                            valid = true;
+                        }
+                    }
+                }
+                else
+                {
+                    point = Nodes[i].Obj.Location;
+                }
+
+                Nodes[i].tiles[point.X][point.Y].tileChar = GridFunctions.CharsToMeanings["Objective"][0];
+                Nodes[i].tiles[point.X][point.Y].tileDesc = "Objective";
+                Nodes[i].tiles[point.X][point.Y].objective = Nodes[i].Obj;
+                Nodes[i].tiles[point.X][point.Y].rgb = GridFunctions.CharsToRGB["Objective"];
             }
         }
 

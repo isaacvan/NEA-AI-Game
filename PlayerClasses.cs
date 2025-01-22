@@ -79,6 +79,16 @@ namespace PlayerClassesNamespace
                 if (attackInfo != null)
                 {
                     attackInfo.Expression = game.attackBehaviourFactory.GetAttackInfo(attackInfo.Name).Expression;
+                    Type t = attackInfo.Expression.DeclaredParameters.First().Type;
+                    Parameter[] parameters = null;
+                    if (t == typeof(Player))
+                    {
+                        parameters = new[] { new Parameter("target", typeof(Enemy)) };
+                        Lambda parsedScript = UtilityFunctions.interpreter.Parse(attackInfo.ExpressionString, parameters);
+                        var newExpression =
+                            new AttackInfo(parsedScript, parsedScript.ToString(), attackInfo.Statuses, attackInfo.Name, attackInfo.Narrative, attackInfo.Manacost).Expression;
+                        attackInfo.Expression = newExpression;
+                    } 
                 }
             }
         }
@@ -128,9 +138,9 @@ namespace PlayerClassesNamespace
             }
         }
         
-        public void ExecuteAttack(string key, Enemy target)
+        public void ExecuteAttack(AttackSlot key, Enemy target)
         {
-            if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
+            if (Program.game.player.PlayerAttacks.TryGetValue(key, out var attackInfo))
             {
                 attackInfo.Expression.Invoke(target); // Execute the script
                 currentMana -= attackInfo.Manacost;
@@ -370,6 +380,8 @@ namespace PlayerClassesNamespace
                 serializer.Serialize(file, map);
                 await file.FlushAsync();
             }
+
+            await Program.saveGameToAllStoragesAsync();
         }
 
         public async Task<(Player, Map)> unloadStateFromFile(Player player, Map map)

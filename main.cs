@@ -40,6 +40,7 @@ namespace MainNamespace
         //
         //
         // OBJECTIVES
+        // add item - save to inv
         //
         //
         // DUNGEON MASTER ADDITIONS
@@ -352,9 +353,9 @@ namespace MainNamespace
                 }
             }
 
-            if (tile.objective != null)
+            if (tile.objective is { IsCompleted: false })
             {
-                tile.objective.BeginObjective();
+                tile.objective.BeginObjective(ref game);
             }
 
             // IF NEW GRAPH
@@ -429,20 +430,20 @@ namespace MainNamespace
                     if (game.player.inventory != null)
                     {
                         await game.player.inventory.updateInventoryJSON();
-                        Console.WriteLine("Inventory saved successfully.");
+                        // Console.WriteLine("Inventory saved successfully.");
                     }
 
                     if (game.player.equipment != null)
                     {
                         await game.player.equipment.updateEquipmentJSON();
-                        Console.WriteLine("Equipment saved successfully.");
+                        //Console.WriteLine("Equipment saved successfully.");
                     }
 
                     await game.player.updatePlayerStatsXML();
-                    Console.WriteLine("Player stats saved successfully.");
+                    //Console.WriteLine("Player stats saved successfully.");
                 }
 
-                Console.WriteLine("All game data saved successfully.");
+                //Console.WriteLine("All game data saved successfully.");
             }
             catch (Exception ex)
             {

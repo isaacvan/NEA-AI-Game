@@ -576,7 +576,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.Expression.ToString(),
+                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString ?? behaviour.AttackInfo.Expression.ToString(),
                     behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player),
                     behaviour.AttackInfo.Manacost);
             }

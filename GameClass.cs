@@ -110,9 +110,6 @@ namespace GameClassNamespace
                 Console.WriteLine("Loading save...");
                 GameSetup loadGame = new TestNarrator.GameTest1();
 
-                // check for files unwritten
-                // await checkAllFilesForMissing(gameSetup, chat, api, testing);
-
                 // load attack behaviours
                 attackBehaviourFactory = await loadGame.initialiseAttackBehaviourFactoryFromNarrator(chat);
 
@@ -130,6 +127,9 @@ namespace GameClassNamespace
                 // load enemyFactory
                 enemyFactory =
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
+                
+                // check for files unwritten
+                // await checkAllFilesForMissing(gameSetup, chat, api, testing);
 
                 // load map
                 this.map = new Map();
@@ -150,6 +150,9 @@ namespace GameClassNamespace
 
                 Console.WriteLine("Loaded save.");
             }
+            
+            // fix map structure (links between connected nodes)
+            map.fixMapStructure();
 
             // save current map to save
             map.saveMapStructure();
@@ -164,19 +167,14 @@ namespace GameClassNamespace
                 await uiConstructer.IntroduceStoryline(this);
         }
 
-        public async Task checkAllFilesForMissing(GameSetup gameSetup, Conversation chat, OpenAIAPI api,
+        public async Task CheckAllFilesForMissing(GameSetup gameSetup, Conversation chat, OpenAIAPI api,
             bool testing = false)
         {
             List<string> allowedDirNames = new List<string>()
             {
-                "AttackBehaviours", "ItemTemplates", "EnemyTemplates", "MapStructures", "StoryLines"
+                "MapStructures", "StoryLines"
             };
             string[] directoriestemp = Directory.GetDirectories(UtilityFunctions.mainDirectory);
-            string[] directoryNames = directoriestemp.Select(x => new DirectoryInfo(x).Name).ToArray();
-            List<string> newDirectories = new List<string>();
-
-
-            List<string> fillerList = new List<string>();
 
             foreach (string directory in allowedDirNames)
             {
@@ -216,8 +214,6 @@ namespace GameClassNamespace
                                          UtilityFunctions.saveName + ".json"))
                             await gameSetup.GenerateStoryLineForFuture(chat, this);
                         break;
-                    default:
-                        throw (new Exception("Unknown path: " + directory));
                 }
             }
         }

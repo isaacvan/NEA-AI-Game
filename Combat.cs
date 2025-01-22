@@ -180,6 +180,7 @@ namespace CombatNamespace
 
             AttackInfo? attackInfo = null;
             bool valid = false;
+            int slotIndex = 1;
             while (!valid)
             {
                 // UI
@@ -220,6 +221,7 @@ namespace CombatNamespace
                             }
                             else
                             {
+                                slotIndex = input;
                                 valid = true;
                             }
                         }
@@ -306,7 +308,8 @@ namespace CombatNamespace
             UtilityFunctions.clearScreen(this.player);
 
             UtilityFunctions.TypeText(new TypeText(), $"You used {attackInfo.Name}!");
-            player.ExecuteAttack(attackInfo.Name, target);
+            Enum.TryParse($"Slot{slotIndex}", out AttackSlot slot);
+            player.ExecuteAttack(slot, target);
         }
 
 
