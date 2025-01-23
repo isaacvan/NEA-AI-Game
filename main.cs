@@ -171,7 +171,7 @@ namespace MainNamespace
                 //UtilityFunctions.clearScreen(game.player);
                 UtilityFunctions.UpdateVars(ref game); // updates player rgb vars
 
-                while (!GetAllowedInputs("MoveCharacterMenuMap").Contains(input[0].ToString()) ||
+                while (!GetAllowedInputs("MoveCharacterMenuMapOptions").Contains(input[0].ToString()) ||
                        !GridFunctions.CheckIfOutOfBounds(
                            game.map.Graphs[game.map.Graphs.Count - 1]
                                .Nodes[game.map.Graphs[game.map.Graphs.Count - 1].CurrentNodePointer].tiles,
@@ -291,6 +291,11 @@ namespace MainNamespace
             {
                 game.uiConstructer.DrawMap(game.map.Graphs[game.map.CurrentGraphPointer]);
             }
+
+            if (GetAllowedInputs("Options").Contains(input))
+            {
+                options(true, true);
+            }
         }
 
         public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode, ref Tile oldTile)
@@ -390,6 +395,11 @@ namespace MainNamespace
             if (condition.Contains("Map"))
             {
                 toReturn += "Mm";
+            }
+
+            if (condition.Contains("Options"))
+            {
+                toReturn += "Oo";
             }
 
             return toReturn;

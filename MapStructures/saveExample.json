@@ -176,7 +176,7 @@
               "name": "Forest Guardian",
               "boss": false,
               "id": 7,
-              "currentLocation": "6, 11",
+              "currentLocation": "2, 8",
               "alive": true
             },
             {
@@ -185,7 +185,7 @@
               "name": "Dreadnaught",
               "boss": false,
               "id": 8,
-              "currentLocation": "19, 9",
+              "currentLocation": "17, 10",
               "alive": false
             },
             {
@@ -194,7 +194,7 @@
               "name": "Ancient Sentinel",
               "boss": false,
               "id": 9,
-              "currentLocation": "13, 3",
+              "currentLocation": "15, 4",
               "alive": false
             }
           ],
@@ -290,7 +290,7 @@
               "name": "Ancient Sentinel",
               "boss": false,
               "id": 13,
-              "currentLocation": "6, 5",
+              "currentLocation": "7, 6",
               "alive": true
             },
             {
@@ -299,7 +299,7 @@
               "name": "Forest Guardian",
               "boss": false,
               "id": 14,
-              "currentLocation": "0, 15",
+              "currentLocation": "1, 16",
               "alive": true
             }
           ],
@@ -396,7 +396,7 @@
               "name": "Dreadnaught",
               "boss": false,
               "id": 18,
-              "currentLocation": "1, 6",
+              "currentLocation": "17, 9",
               "alive": false
             },
             {
@@ -405,7 +405,7 @@
               "name": "Dreadnaught",
               "boss": false,
               "id": 19,
-              "currentLocation": "2, 5",
+              "currentLocation": "17, 9",
               "alive": false
             },
             {
@@ -414,7 +414,7 @@
               "name": "Ancient Sentinel",
               "boss": false,
               "id": 20,
-              "currentLocation": "11, 13",
+              "currentLocation": "12, 16",
               "alive": false
             }
           ],
@@ -449,7 +449,7 @@
               "name": "Forest Guardian",
               "boss": true,
               "id": 21,
-              "currentLocation": "18, 3",
+              "currentLocation": "19, 4",
               "alive": true
             }
           ],

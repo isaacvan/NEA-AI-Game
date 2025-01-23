@@ -253,7 +253,7 @@ namespace UIGenerationNamespace
             int index = 1;
             foreach (var item in game.player.inventory.Items)
             {
-                UtilityFunctions.TypeText(new TypeText(), $"Item #{index}{item.Name} ---> {item.ItemType}");
+                UtilityFunctions.TypeText(new TypeText(), $"Item #{index} {item.Name} ---> {item.ItemType.Name}");
                 index++;
             }
             
