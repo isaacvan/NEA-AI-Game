@@ -39,26 +39,22 @@ namespace MainNamespace
         // NEXT STEPS
         //
         //
-        // OBJECTIVES
-        // add item - save to inv
         //
+        // ITEMS
+        // - make items actually change player stats
         //
         // DUNGEON MASTER ADDITIONS
         // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
         // - Make way for player to get more attacks
-        // - how will player collect items?
         //
-        // - CONVERT STATUSES INTO ACTION - update corresponding statusMaps
-        // Player needs to have multiple moves: use enemy attack behaviours?
-        // combat namespace
-        // change prompt to make enemy damage lower?
-        // implement AOE down the line
+        // - implement a resetSave func in options
+        // - if narrative lines empty, give it desc
         //
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
         // design each ai system in combat
         // basic enemy attack back
-        // 
+        //
         //
         // FINAL TWEAKS
         // make game fully playable so that they can complete 1 "storyline"
@@ -157,6 +153,7 @@ namespace MainNamespace
                     GridFunctions.GetPlayerStartPos(ref game),
                     game.map.GetCurrentNode().tiles, ref game));
             }
+
             GridFunctions.DrawWholeNode(game);
             int IdOfNextNode = -1;
             string input = Console.ReadKey().Key.ToString();
@@ -206,6 +203,7 @@ namespace MainNamespace
 
                 // save final gameState
                 game.gameState.saveStateToFile(game.map);
+                saveGameToAllStoragesAsync();
 
                 // get next input
                 input = Console.ReadKey(true).KeyChar.ToString();
@@ -283,8 +281,6 @@ namespace MainNamespace
             if (GetAllowedInputs("CharacterMenu").Contains(input))
             {
                 game.uiConstructer.drawCharacterMenu(game);
-                UtilityFunctions.TypeText(new TypeText(), "Press any key to continue");
-                Console.ReadKey(true);
             }
 
             if (GetAllowedInputs("Map").Contains(input))
@@ -294,7 +290,7 @@ namespace MainNamespace
 
             if (GetAllowedInputs("Options").Contains(input))
             {
-                options(true, true);
+                game = options(true, true, game).Item2;
             }
         }
 
@@ -345,7 +341,7 @@ namespace MainNamespace
                             game.map.GetCurrentNode().enemies.ElementAt(i).alive = false;
                         }
                     }
-                    
+
                     // game.map.GetCurrentNode().enemies.Find(e => e.id == tile.enemyOnTile.Id).alive = false;
 
                     tile.enemyOnTile = null;
@@ -416,10 +412,10 @@ namespace MainNamespace
 
             if (game.player != null)
             {
-                saveGameToAllStoragesSync();
+                // saveGameToAllStoragesSync();
             }
 
-            Thread.Sleep(1000);
+            // Thread.Sleep(1000);
 
             // exit smoothly
             Environment.Exit(0);
@@ -580,7 +576,7 @@ namespace MainNamespace
                             // Load a saved game
                             break;
                         case 3:
-                            bool outcome = options(gameStarted, saveChosen);
+                            bool outcome = options(gameStarted, saveChosen).Item1;
                             if (outcome)
                             {
                                 saveChosen = true;
@@ -729,7 +725,7 @@ namespace MainNamespace
 
         // I think I'm doing it wrong, but I'm not sure how to fix it.
 
-        public static bool options(bool gameStarted, bool saveChosen)
+        public static (bool, Game?) options(bool gameStarted, bool saveChosen, Game game = null)
         {
             UtilityFunctions.clearScreen(null);
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -749,6 +745,8 @@ namespace MainNamespace
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "[7] Set example save.\n");
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                "[8] Reset Save to unused state.\n");
+            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Choose an option: ");
             int choice;
             if (int.TryParse(Console.ReadLine(), out choice))
@@ -757,7 +755,7 @@ namespace MainNamespace
                 {
                     case 1:
                         bool outcome = menu(gameStarted, saveChosen);
-                        return outcome;
+                        return (outcome, game);
                     // Back to main menu
                     case 2:
                         UtilityFunctions.clearScreen(null);
@@ -792,7 +790,7 @@ namespace MainNamespace
                             Thread.Sleep(1000);
                             // return options(gameStarted, saveChosen);
                             bool outcome1 = menu(gameStarted, saveChosen);
-                            return outcome1;
+                            return (outcome1, game);
                         }
                         else
                         {
@@ -809,11 +807,15 @@ namespace MainNamespace
                         Console.Clear();
                         saveGameToAllStoragesAsync().GetAwaiter().GetResult();
                         Environment.Exit(0);
-                        return false;
+                        return (false, game);
                     case 7:
                         SetExampleSaves();
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
+                    case 8:
+                        game = ResetGameState(game).GetAwaiter().GetResult();
+                        Thread.Sleep(1000);
+                        return options(gameStarted, saveChosen, game);
                     default:
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -830,6 +832,84 @@ namespace MainNamespace
                 Thread.Sleep(1000);
                 return options(gameStarted, saveChosen);
             }
+        }
+
+        public static async Task<Game> ResetGameState(Game game)
+        {
+            // reset current save objectgives, enemies, etc. player inv, equipment, everything except the assets
+
+            bool obtainedSaveName = false;
+            string finalPathName;
+            while (!obtainedSaveName)
+            {
+                Console.Clear();
+                Console.WriteLine("Which save would you like to reset?");
+                int index = 1;
+                List<string> pathNames = Directory.GetFiles(UtilityFunctions.mainDirectory + "GameStates", "*.json")
+                    .Select(pathName => Path.GetFileNameWithoutExtension(pathName)).ToList();
+                foreach (string pathName in pathNames)
+                {
+                    Console.WriteLine($"{index}: {pathName}");
+                    index++;
+                }
+
+                string inp = Console.ReadLine();
+                if (int.TryParse(inp, out int gameIndex))
+                {
+                    try
+                    {
+                        finalPathName = pathNames[gameIndex - 1];
+                        obtainedSaveName = true;
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid game index.\n");
+                    }
+                }
+                else
+                {
+                    if (pathNames.Contains(inp))
+                    {
+                        finalPathName = inp;
+                        obtainedSaveName = true;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid game index.\n");
+                    }
+                }
+            }
+
+            // reset map
+            game.map.CurrentGraphPointer = 0;
+            game.map.Graphs[game.map.CurrentGraphPointer].CurrentNodePointer = 0;
+            foreach (Node n in game.map.Graphs[game.map.CurrentGraphPointer].Nodes)
+            {
+                n.enemies = null;
+                n.InitialiseEnemies(game);
+                if (n.Obj != null)
+                {
+                    n.Obj.IsCompleted = false;
+                    n.Obj.NarrativePrompts.Clear();
+                }
+            }
+            
+            // gotten save to reset, now start resetting.
+            game.player = new Player();
+            game.player.PlayerAttacks[AttackSlot.slot1] = game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
+
+            game.player.playerPos = GridFunctions.GetPlayerStartPos(ref game);
+            
+            game.player.equipment = new Equipment();
+            game.player.inventory = new Inventory();
+            await game.player.initialiseEquipment();
+            await game.player.initialiseInventory();
+            
+            
+
+            return game;
         }
 
         public static void SetExampleSaves()
@@ -1065,9 +1145,10 @@ namespace MainNamespace
                     File.Delete(storyline);
                 }
             }
-            
+
             // delete gameStates
-            string[] states = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}GameStates", searchPattern: "*.json");
+            string[] states =
+                Directory.GetFiles($@"{UtilityFunctions.mainDirectory}GameStates", searchPattern: "*.json");
             foreach (var state in states)
             {
                 if (Path.GetFileNameWithoutExtension(state) != "saveExample")

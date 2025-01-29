@@ -60,6 +60,14 @@ namespace ItemFunctionsNamespace
             }
         }
 
+        public async Task readInventory()
+        {
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            Inventory newinv = JsonConvert.DeserializeObject<Inventory>(File.ReadAllText(path));
+            Items = newinv.Items;
+            Quantities = newinv.Quantities;
+        }
+
         public async Task updateInventoryJSON()
         {
             // puts this inventory into JSON file called saveName var in Inventories
@@ -100,41 +108,75 @@ namespace ItemFunctionsNamespace
     
     public class Equipment
     {
-        public Dictionary<EquippableItem.EquipLocation, Item> Slots { get; private set; }
+        public Dictionary<EquippableItem.EquipLocation, Armour> ArmourSlots { get; private set; }
+        public Dictionary<EquippableItem.EquipLocation, Weapon> WeaponSlots { get; private set; }
 
         public Equipment()
         {
-            Slots = new Dictionary<EquippableItem.EquipLocation, Item>();
+            ArmourSlots = new Dictionary<EquippableItem.EquipLocation, Armour>();
+            WeaponSlots = new Dictionary<EquippableItem.EquipLocation, Weapon>();
             foreach (var location in  Enum.GetValues<EquippableItem.EquipLocation>())
             {
-                Slots.Add(location, null);    
+                if (location == EquippableItem.EquipLocation.Accessory ||
+                    location == EquippableItem.EquipLocation.Weapon)
+                {
+                    WeaponSlots.Add(location, null);
+                }
+                else
+                {
+                    ArmourSlots.Add(location, null);    
+                }
             }
+        }
+
+        public async Task readEquipment()
+        {
+            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.json";
+            Equipment newequip = JsonConvert.DeserializeObject<Equipment>(File.ReadAllText(path));
+            ArmourSlots = newequip.ArmourSlots;
+            WeaponSlots = newequip.WeaponSlots;
         }
         
         public void EquipItem(EquippableItem.EquipLocation slot, Item item, Inventory inventory)
         {
-            if (!Slots.ContainsKey(slot))
+            if (slot == EquippableItem.EquipLocation.Accessory || slot == EquippableItem.EquipLocation.Weapon)
             {
-                throw new ArgumentException($"No slot named {slot} exists.");
-            }
-        
-            // Check if there is already an item equipped in the slot
-            if (Slots[slot] != null)
-            {
-                // Optionally, automatically unequip the current item to inventory
-                UnequipItem(slot, inventory);
-            }
+                // Check if there is already an item equipped in the slot
+                if (WeaponSlots[slot] != null)
+                {
+                    // Optionally, automatically unequip the current item to inventory
+                    UnequipItem(slot, inventory);
+                }
 
-            Slots[slot] = item;
+                WeaponSlots[slot] = (Weapon)item;
+            }
+            else
+            {
+                // Check if there is already an item equipped in the slot
+                if (ArmourSlots[slot] != null)
+                {
+                    // Optionally, automatically unequip the current item to inventory
+                    UnequipItem(slot, inventory);
+                }
+
+                ArmourSlots[slot] = (Armour)item;
+            }
             inventory.RemoveItem(item);  // Remove the item from inventory when equipped
         }
 
         public void UnequipItem(EquippableItem.EquipLocation slot, Inventory inventory)
         {
-            if (Slots[slot] != null)
+            if (slot == EquippableItem.EquipLocation.Accessory || slot == EquippableItem.EquipLocation.Weapon)
             {
-                inventory.AddItem(Slots[slot]);  // Add the unequipped item back to the inventory
-                Slots[slot] = null;
+                
+            }
+            else
+            {
+                if (ArmourSlots[slot] != null)
+                {
+                    inventory.AddItem(ArmourSlots[slot]);  // Add the unequipped item back to the inventory
+                    ArmourSlots[slot] = null;
+                }
             }
         }
 
@@ -147,7 +189,7 @@ namespace ItemFunctionsNamespace
         
         public void updateEquipmentJSONSync()
         {
-            // puts this equipment into XML file called saveName var in Equipment
+            // puts this equipment into JSON file called saveName var in Equipment
             string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
             UtilityFunctions.writeToJSONFileSync<Equipment>(path, this);
         }
@@ -635,12 +677,13 @@ namespace ItemFunctionsNamespace
         }
     }
     
-    public abstract class Item
+    public class Item
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public Type ItemType { get; set; }
-        
+        public EquippableItem.EquipLocation ItemEquipLocation { get; set; }
+         // maybe?
     }
 
     public abstract class EquippableItem : Item

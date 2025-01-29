@@ -249,6 +249,7 @@ namespace UIGenerationNamespace
                     UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
                 }
             }
+            
             UtilityFunctions.TypeText(new TypeText(), "\nITEMS:");
             int index = 1;
             foreach (var item in game.player.inventory.Items)
@@ -257,20 +258,73 @@ namespace UIGenerationNamespace
                 index++;
             }
             
+            UtilityFunctions.TypeText(new TypeText(), "\nEQUIPMENT:");
+            foreach (var item in game.player.equipment.ArmourSlots)
+            {
+                if (item.Value != null)
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
+                }
+                else
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
+                }
+            }
+            foreach (var item in game.player.equipment.WeaponSlots)
+            {
+                if (item.Value != null)
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
+                }
+                else
+                {
+                    UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
+                }
+            }
+            
+            
             UtilityFunctions.TypeText(new TypeText(), "\nWould you like to equip / use an item? [y/n]");
             if (Console.ReadLine() == "y")
             {
+                UtilityFunctions.TypeText(new TypeText(), "Enter the name or ID of the item you would like to equip");
                 string inp = Console.ReadLine();
+                bool idSearch = false;
                 while (!game.player.inventory.Items.ConvertAll(x => x.Name).Contains(inp) && inp != "n")
                 {
+                    if (int.TryParse(inp, out int id))
+                    {
+                        if (id > 0 && id <= index)
+                        {
+                            idSearch = true;
+                            break;
+                        }
+                    }
                     UtilityFunctions.TypeText(new TypeText(), $"{inp} is not in the inventory. Enter a valid item or 'n' to exit");
+                    inp = Console.ReadLine();
                 }
 
                 if (inp != "n")
                 {
-                    Item item = game.player.inventory.Items.Find(x => x.Name == inp);
-                    game.player.inventory.RemoveItem(item);
-                   // game.player.equipment.EquipItem();
+                    Item item;
+                    if (idSearch)
+                    {
+                        item = game.player.inventory.Items[Convert.ToInt32(inp)];
+                    }
+                    else
+                    {
+                        item = game.player.inventory.Items.Find(x => x.Name == inp);
+                    }
+                    
+                    // game.player.inventory.RemoveItem(item); - done in equip item
+                    if (item.ItemType == typeof(Weapon))
+                    {
+                        game.player.equipment.EquipItem(EquippableItem.EquipLocation.Weapon, item, game.player.inventory);
+                    } else if (item.ItemType == typeof(Armour))
+                    {
+                        EquippableItem.EquipLocation loc = item.ItemEquipLocation;
+                        game.player.equipment.EquipItem(loc, item, game.player.inventory);
+                    }
+                    
                    // GET ITEM SLOT
                 }
             }

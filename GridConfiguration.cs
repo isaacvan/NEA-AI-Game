@@ -765,6 +765,7 @@ namespace GridConfigurationNamespace
             Console.ReadKey(true);
 
             Console.CursorVisible = false;
+            
             GridFunctions.DrawWholeNode(game);
         }
 
@@ -786,12 +787,12 @@ namespace GridConfigurationNamespace
             game.chat.AppendUserInput(prompt);
             string outp = await game.narrator.GetGPTOutput(game.chat, $"GetContinuation{ObjectiveName}-{NarrativePrompts.Count}");
             List<string> output = outp.Split('\n').ToList();
-            if (output[0].Substring(0, 6).ToLower().Contains("end"))
+            if (output[0].Substring(0, Math.Min(6, output[0].Length)).ToLower().Contains("end"))
             {
                 output[0] = output[0].Remove(0, 3);
                 return (true, output);
             }
-            else if (output[0].Substring(0, 12).ToLower().Contains("continue"))
+            else if (output[0].Substring(0, Math.Min(12, output[0].Length)).ToLower().Contains("continue"))
             {
                 output[0] = output[0].Remove(0, 8);
                 return (false, output);

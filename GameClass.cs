@@ -120,8 +120,8 @@ namespace GameClassNamespace
                 await itemFactory.initialiseItemFactoryFromFile();
 
                 // load inventory & equipment
-                await player.initialiseInventory();
-                await player.initialiseEquipment();
+                await player.equipment.readEquipment();
+                await player.inventory.readInventory();
                 await player.InitialiseAttacks(this);
 
                 // load enemyFactory
