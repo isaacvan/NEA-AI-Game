@@ -1,0 +1,115 @@
+INPUT: Hello, Narrator! As part of your role in shaping our game's challenging environment, you are tasked with populating each node of the game map with enemies. Your creative input is needed to design enemy types that fit within the game’s thematic element and storyline, corresponding to your selected choices.
+
+Please provide the following details:
+
+enemyTypes: Enumerate the types of enemies you will create for this game. Each enemy type should embody aspects of the game’s overarching themes and challenges. As these will be used throughout the whole course of the game, generate at least 5 enemy types.
+enemyTemplates: A dictionary structure. For each type of enemy, provide a template that includes:
+Name: The type of the enemy as a string.
+Health: An integer value for health, ranging from 50 to 100, appropriately scaled based on the enemy's toughness.
+ManaPoints: An integer value for Max mana points, ranging from 50 to 100
+Strength: An integer value representing the enemy's strength, adjusted according to the enemy type. Make this number anywhere from 1 to 20.
+Include Intelligence, Dexterity, Constitution and Charisma, all following the same guideline.
+AttackBehaviourKeys: Within an earlier request, you generated a variety of attacks. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain. They must correspond with the already generated behaviours.
+nature: This is an enum value, either "aggressive", "neutral" or "timid". Aggressive enemies will actively seek the player, and have a more powerful combat ai, whereas timid enemies run away from the player, using a weaker combat ai. Neutral enemies have a balance of both.
+
+The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
+{
+  "enemyTypes": ["Goblin", "Orc", "Dragon"],
+  "enemyTemplates": {
+  "Goblin":
+    {
+      "Name": "Goblin",
+      "Health": 50,
+      "Strength": 3,
+…
+      "AttackBehaviourKeys": ["Stab", "Bloody Slice", "Backstab", "Taunt"]
+      "nature": "timid"
+    },
+    "Orc":
+    {
+      "Name": "Orc",
+      "Health": 80,
+      "Strength": 11,
+…
+      "AttackBehaviourKeys": ["Slash", "Spiked Sweep", "Stomp", "Fortify"]
+      "nature": "neutral"
+    },
+    "Dragon":
+    {
+      "Name": "Dragon",
+      "Health": 100,
+      "Strength": 20,
+…
+      "AttackBehaviourKeys": ["Fireball", "Scaly Slash", "Tail Sweep", "Roar"]
+      "nature": "aggressive"
+    }
+  }
+}
+
+Your input is crucial to the generation of your world. Ensure that all the output is parsable, as any external sentences may break the system.
+
+OUTPUT: {
+  "enemyTypes": ["Goblin", "Undead", "Grey Wolf", "Fire Dragon", "Mountain Troll"],
+  "enemyTemplates": {
+    "Goblin": {
+      "Name": "Goblin",
+      "Health": 50,
+      "ManaPoints": 50,
+      "Strength": 6,
+      "Intelligence": 3,
+      "Dexterity": 7,
+      "Constitution": 4,
+      "Charisma": 2,
+      "AttackBehaviourKeys": ["GoblinSlash", "Backstab", "Taunt", "PlayerBasicAttack"],
+      "nature": "aggressive"
+    },
+    "Undead": {
+      "Name": "Undead",
+      "Health": 60,
+      "ManaPoints": 65,
+      "Strength": 5,
+      "Intelligence": 3,
+      "Dexterity": 4,
+      "Constitution": 7,
+      "Charisma": 2,
+      "AttackBehaviourKeys": ["UndeadGrasp", "GoblinSlash", "Taunt", "PlayerBasicAttack"],
+      "nature": "timid"
+    },
+    "Grey Wolf": {
+      "Name": "Grey Wolf",
+      "Health": 70,
+      "ManaPoints": 50,
+      "Strength": 7,
+      "Intelligence": 2,
+      "Dexterity": 10,
+      "Constitution": 5,
+      "Charisma": 3,
+      "AttackBehaviourKeys": ["WolfBite", "Backstab", "GoblinSlash", "PlayerBasicAttack"],
+      "nature": "neutral"
+    },
+    "Fire Dragon": {
+      "Name": "Fire Dragon",
+      "Health": 100,
+      "ManaPoints": 100,
+      "Strength": 18,
+      "Intelligence": 10,
+      "Dexterity": 6,
+      "Constitution": 10,
+      "Charisma": 10,
+      "AttackBehaviourKeys": ["DragonFlameBreath", "WolfBite", "GoblinSlash", "Backstab"],
+      "nature": "aggressive"
+    },
+    "Mountain Troll": {
+      "Name": "Mountain Troll",
+      "Health": 85,
+      "ManaPoints": 60,
+      "Strength": 15,
+      "Intelligence": 1,
+      "Dexterity": 3,
+      "Constitution": 16,
+      "Charisma": 2,
+      "AttackBehaviourKeys": ["TrollSmash", "DragonFlameBreath", "WolfBite", "UndeadGrasp"],
+      "nature": "aggressive"
+    }
+  }
+}

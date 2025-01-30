@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Weapon>
+        <Name>Arcane Blade</Name>
+        <Description>A mystical sword once wielded by the kingdom's greatest warrior. It pulses with a spectral blue aura.</Description>
+        <Damage>30</Damage>
+        <WeaponType>Sword</WeaponType>
+        <UniqueProperties>+5 Strength</UniqueProperties>
+        <StatusNames>
+            <StatusName>Stun</StatusName>
+        </StatusNames>
+        <AttackBehaviour>GoblinSlash</AttackBehaviour>
+        <NarrativeLine>presses the attack, stunning the enemy with his Arcane Blade. Arcane power surges, dealing additional damage.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Thunder Mace</Name>
+        <Description>A weighty mace with a head shaped like a thundercloud. Causes tremors and spews out electricity.</Description>
+        <Damage>45</Damage>
+        <WeaponType>Mace</WeaponType>
+        <UniqueProperties>+3 Constitution</UniqueProperties>
+        <StatusNames>
+            <StatusName>Frightened</StatusName>
+        </StatusNames>
+        <AttackBehaviour>TrollSmash</AttackBehaviour>
+        <NarrativeLine>unleashes a ground-breaking smash to their enemy, creating fear amongst the ranks. </NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+    <Weapon>
+        <Name>Rubber Chicken</Name>
+        <Description>A seemingly innocuous rubber chicken. Perfect for fooling, but not much else.</Description>
+        <Damage>5</Damage>
+        <WeaponType>Gag</WeaponType>
+        <UniqueProperties>+4 Charisma</UniqueProperties>
+        <StatusNames>
+            <StatusName>Confusion</StatusName>
+        </StatusNames>
+        <AttackBehaviour>PlayerBasicAttack</AttackBehaviour>
+        <NarrativeLine>whacks the enemy with the rubber chicken, inducing confusion and hearty chuckle from the crowd.</NarrativeLine>
+        <ItemEquipLocation>Weapon</ItemEquipLocation>
+    </Weapon>
+</Item>

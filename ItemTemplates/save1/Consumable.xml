@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Potion of Restoration</Name>
+        <Description>A mystical potion that has the power to restore your health and mana.</Description>
+        <Effects>Restores 30% of health and mana points</Effects>
+        <UniqueProperties>None</UniqueProperties>
+        <StoryLineRelevance>Players can purchase this potion from in-game vendors or find it as loot in hidden chests.</StoryLineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Rune Stone of Recall</Name>
+        <Description>An ancient rune stone that can teleport the user to previously visited locations.</Description>
+        <Effects>Teleports the user to a saved location</Effects>
+        <UniqueProperties>Can be used only once</UniqueProperties>
+        <StoryLineRelevance>These stones are essential for quick navigation around the game world, especially when a hasty retreat is needed.</StoryLineRelevance>
+    </Consumable>
+    <Consumable>
+        <Name>Elixir of Giants</Name>
+        <Description>A concoction brewed from the blood of ancient giants. Boosts strength dramatically.</Description>
+        <Effects>Tremendously increases attack power for a short period of time</Effects>
+        <UniqueProperties>None</UniqueProperties>
+        <StoryLineRelevance>A valuable item that can be used strategically to tip the scales of a tough battle in the player's favour.</StoryLineRelevance>
+    </Consumable>
+</Item>

@@ -1,0 +1,8 @@
+INPUT: The player inputted this in response to your narrative: proceed
+
+As a reminder, your last narrative lines were A volcano, active and seething, lies ahead.The peak promises a challenge like no other. Do you dare to proceed?
+
+Please now output the narrators response to this input to continue the objective. You can introduce NPC dialogues to your narrative. It is critical that your response provides a scenario where the user can easily respond with what they will do next.
+It is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the userHowever if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).The items you can give to the player are: Arcane Blade, Thunder Mace, Rubber Chicken, Knight's Helmet, Knight's Cuirass, Knight's Greaves, Potion of Restoration, Rune Stone of Recall, Elixir of GiantsFor example, to end the objective and give the user an item write END (item name)Or, write CONTINUE (next narrative lines)
+
+OUTPUT: CONTINUE: A sinister chuckle resounds through the heat haze as the Goblin lunges at you. This promises to be a tough battle. What will be your next move?

@@ -1,0 +1,44 @@
+{
+  "PlayerBasicAttack": {
+    "Name": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(10, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "strikes the enemy with his sword."
+  },
+  "GoblinSlash": {
+    "Name": "GoblinSlash",
+    "Expression": "target.ReceiveAttack(7, 25)",
+    "Manacost": 2,
+    "Statuses": ["Bleed"],
+    "Narrative": "slashes the player with a rusty blade."
+  },
+  "UndeadGrasp": {
+    "Name": "UndeadGrasp",
+    "Expression": "target.ReceiveAttack(9, 30)",
+    "Manacost": 5,
+    "Statuses": ["Poison"],
+    "Narrative": "seizes the player with a cold hand."
+  },
+  "WolfBite": {
+    "Name": "WolfBite",
+    "Expression": "target.ReceiveAttack(8, 35)",
+    "Manacost": 3,
+    "Statuses": ["Bleed", "Frightened"],
+    "Narrative": "bites the player furiously."
+  },
+  "DragonFlameBreath": {
+    "Name": "DragonFlameBreath",
+    "Expression": "target.ReceiveAttack(14, 45)",
+    "Manacost": 10,
+    "Statuses": ["Burn"],
+    "Narrative": "releases a ferocious flame breath."
+  },
+  "TrollSmash": {
+    "Name": "TrollSmash",
+    "Expression": "target.ReceiveAttack(11, 40)",
+    "Manacost": 4,
+    "Statuses": ["Stun"],
+    "Narrative": "smashes the ground, stunning everyone around."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "ArmourSlots": {
+    "Head": null,
+    "Body": null,
+    "Legs": null
+  },
+  "WeaponSlots": {
+    "Weapon": null,
+    "Accessory": null
+  }
+}
