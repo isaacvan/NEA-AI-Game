@@ -69,7 +69,7 @@ namespace UIGenerationNamespace
                     maxNodesOnADepth = nodeTxtByDepths[i].Count;
                 }
             }
-            
+
             if (maxNodesOnADepth % 2 == 0) maxNodesOnADepth++;
 
             List<List<int>> nodeIndexes = new List<List<int>>();
@@ -94,12 +94,13 @@ namespace UIGenerationNamespace
                     nodeIndexes[i].Add(index);
                 }
             }
-            
+
             List<Dictionary<int, string>> nodeIndexesDict = new List<Dictionary<int, string>>();
             for (int i = 0; i < maxNodesOnADepth; i++)
             {
                 nodeIndexesDict.Add(new Dictionary<int, string>());
             }
+
             for (int i = 0; i < nodeIndexes.Count; i++)
             {
                 for (int j = 0; j < nodeIndexes[i].Count; j++)
@@ -107,7 +108,7 @@ namespace UIGenerationNamespace
                     nodeIndexesDict[nodeIndexes[i][j]].Add(i, nodeTxtByDepths[i][j]);
                 }
             }
-            
+
             List<List<string>> nodeIndexesDict2 = new List<List<string>>();
             for (int i = 0; i < nodeIndexesDict.Count; i++)
             {
@@ -125,7 +126,8 @@ namespace UIGenerationNamespace
                 }
             }
 
-            for (int i = 0; i < nodeIndexesDict2.Count; i++) {
+            for (int i = 0; i < nodeIndexesDict2.Count; i++)
+            {
                 int buffer = 0;
                 for (int j = 0; j < nodeIndexesDict2[i].Count; j++)
                 {
@@ -141,15 +143,15 @@ namespace UIGenerationNamespace
                             Console.SetCursorPosition(buffer, k + 4 * i);
                             Console.Write(strings[k]);
                         }
+
                         buffer += longestTextForEachDepth[j] + 1;
                     }
-                    
+
                     Console.SetCursorPosition(buffer, longestTextForEachDepth[j]);
                 }
+
                 Console.SetCursorPosition(0, Console.CursorTop + (i + 1) * 3);
             }
-            
-            
 
 
             Console.ReadKey(true);
@@ -184,7 +186,7 @@ namespace UIGenerationNamespace
                 {
                     output += $"\n|{poi}|\n";
                 }
-                
+
 
                 for (int i = 0; i < poi.Length + 2; i++)
                 {
@@ -233,7 +235,7 @@ namespace UIGenerationNamespace
             narrationPending = true;
         }
 
-        public void drawCharacterMenu(Game game)
+        public void drawCharacterMenu(Game game, bool viewOnly = false)
         {
             UtilityFunctions.clearScreen(game.player);
             UtilityFunctions.TypeText(new TypeText(), "ATTACKS:");
@@ -249,7 +251,7 @@ namespace UIGenerationNamespace
                     UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
                 }
             }
-            
+
             UtilityFunctions.TypeText(new TypeText(), "\nITEMS:");
             int index = 1;
             foreach (var item in game.player.inventory.Items)
@@ -257,7 +259,7 @@ namespace UIGenerationNamespace
                 UtilityFunctions.TypeText(new TypeText(), $"Item #{index} {item.Name} ---> {item.ItemType.Name}");
                 index++;
             }
-            
+
             UtilityFunctions.TypeText(new TypeText(), "\nEQUIPMENT:");
             foreach (var item in game.player.equipment.ArmourSlots)
             {
@@ -270,6 +272,7 @@ namespace UIGenerationNamespace
                     UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
                 }
             }
+
             foreach (var item in game.player.equipment.WeaponSlots)
             {
                 if (item.Value != null)
@@ -281,10 +284,17 @@ namespace UIGenerationNamespace
                     UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
                 }
             }
-            
-            
+
+
+            if (viewOnly)
+            {
+                Console.ReadKey(true);
+                return;
+            }
+
+
             UtilityFunctions.TypeText(new TypeText(), "\nWould you like to equip / use an item? [y/n]");
-            if (Console.ReadLine() == "y")
+            if (Console.ReadLine().ToString().ToLower() == "y")
             {
                 UtilityFunctions.TypeText(new TypeText(), "Enter the name or ID of the item you would like to equip");
                 string inp = Console.ReadLine();
@@ -299,7 +309,9 @@ namespace UIGenerationNamespace
                             break;
                         }
                     }
-                    UtilityFunctions.TypeText(new TypeText(), $"{inp} is not in the inventory. Enter a valid item or 'n' to exit");
+
+                    UtilityFunctions.TypeText(new TypeText(),
+                        $"{inp} is not in the inventory. Enter a valid item or 'n' to exit");
                     inp = Console.ReadLine();
                 }
 
@@ -310,11 +322,12 @@ namespace UIGenerationNamespace
                     {
                         try
                         {
-                            item = game.player.inventory.Items[Convert.ToInt32(inp)];
+                            item = game.player.inventory.Items[Convert.ToInt32(inp) - 1];
                         }
                         catch (IndexOutOfRangeException)
                         {
-                            UtilityFunctions.TypeText(new TypeText(), $"{inp} is not a valid index. Returning to main screen");
+                            UtilityFunctions.TypeText(new TypeText(),
+                                $"{inp} is not a valid index. Returning to main screen");
                             return;
                         }
                     }
@@ -322,20 +335,22 @@ namespace UIGenerationNamespace
                     {
                         item = game.player.inventory.Items.Find(x => x.Name == inp);
                     }
-                    
+
                     // game.player.inventory.RemoveItem(item); - done in equip item
                     if (item.ItemType == typeof(Weapon))
                     {
-                        game.player.equipment.EquipItem(EquippableItem.EquipLocation.Weapon, item, game.player.inventory);
-                    } else if (item.ItemType == typeof(Armour))
+                        game.player.equipment.EquipItem(EquippableItem.EquipLocation.Weapon, item,
+                            game.player.inventory);
+                    }
+                    else if (item.ItemType == typeof(Armour))
                     {
                         EquippableItem.EquipLocation loc = item.ItemEquipLocation;
                         game.player.equipment.EquipItem(loc, item, game.player.inventory);
                     }
-                    
+
                     game.player.amendStats(game);
-                    
-                   // GET ITEM SLOT
+
+                    // GET ITEM SLOT
                 }
             }
         }

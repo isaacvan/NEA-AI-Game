@@ -24,7 +24,7 @@
               "name": "Goblin",
               "boss": false,
               "id": 0,
-              "currentLocation": "21, 7",
+              "currentLocation": "22, 15",
               "alive": false
             }
           ],
@@ -63,7 +63,7 @@
               "name": "Goblin",
               "boss": false,
               "id": 1,
-              "currentLocation": "4, 19",
+              "currentLocation": "1, 14",
               "alive": true
             },
             {
@@ -72,7 +72,7 @@
               "name": "Mountain Troll",
               "boss": false,
               "id": 2,
-              "currentLocation": "19, 5",
+              "currentLocation": "21, 1",
               "alive": true
             },
             {
@@ -81,7 +81,7 @@
               "name": "Fire Dragon",
               "boss": false,
               "id": 3,
-              "currentLocation": "6, 20",
+              "currentLocation": "2, 16",
               "alive": true
             }
           ],
@@ -113,30 +113,30 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "20, 1",
+              "spawnPoint": "0, 0",
               "nature": 2,
               "name": "Undead",
               "boss": false,
               "id": 4,
-              "currentLocation": "0, 0",
+              "currentLocation": "26, 2",
               "alive": true
             },
             {
-              "spawnPoint": "4, 2",
+              "spawnPoint": "0, 0",
               "nature": 1,
               "name": "Grey Wolf",
               "boss": false,
               "id": 5,
-              "currentLocation": "0, 0",
+              "currentLocation": "6, 4",
               "alive": true
             },
             {
-              "spawnPoint": "2, 1",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Goblin",
               "boss": false,
               "id": 6,
-              "currentLocation": "0, 0",
+              "currentLocation": "5, 11",
               "alive": true
             }
           ],

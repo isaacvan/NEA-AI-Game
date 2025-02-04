@@ -34,17 +34,20 @@ namespace PlayerClassesNamespace
         public int currentHealth { get; set; }
         public int ManaPoints { get; set; }
         public int currentMana { get; set; }
-        
-        public List<string> StatNames { get; set; } = new List<string>() { "Strength", "Dexterity", "Constitution", "Intelligence", "Charisma" };
-        
+
+        public List<string> StatNames { get; set; } = new List<string>()
+            { "Strength", "Dexterity", "Constitution", "Intelligence", "Charisma" };
+
         public int Strength { get; set; }
         public int Intelligence { get; set; }
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Charisma { get; set; }
 
-        [XmlIgnore] public Dictionary<AttackSlot, AttackInfo> PlayerAttacks { get; set; } =
+        [XmlIgnore]
+        public Dictionary<AttackSlot, AttackInfo> PlayerAttacks { get; set; } =
             new Dictionary<AttackSlot, AttackInfo>();
+
         public int Level { get; set; }
         public int currentExp { get; set; }
         public int maxExp { get; set; }
@@ -55,7 +58,7 @@ namespace PlayerClassesNamespace
         [XmlIgnore] public Equipment equipment { get; set; } = new Equipment();
 
         [XmlIgnore] public Dictionary<string, Status> statusMap { get; set; } = new Dictionary<string, Status>();
-        
+
         [XmlIgnore] public int sightRange { get; set; }
         [XmlIgnore] public bool sightRangeModified { get; set; }
         [XmlIgnore] public int sightRangeModifiedBy { get; set; }
@@ -79,52 +82,57 @@ namespace PlayerClassesNamespace
             {
                 if (!equipment.EquipmentEffectsApplied[loc])
                 {
-                    // apply effect
-                    if (loc == EquippableItem.EquipLocation.Head || loc == EquippableItem.EquipLocation.Body ||
-                        loc == EquippableItem.EquipLocation.Legs)
+                    if ((equipment.ArmourSlots.ContainsKey(loc) && equipment.ArmourSlots[loc] != null) || (equipment.WeaponSlots.ContainsKey(loc) && equipment.WeaponSlots[loc] != null))
                     {
-                        // access armours
-                        Armour fullArmourDetails = (Armour)game.itemFactory.createItem(game.itemFactory.armourTemplates.Find(x => x.Name == equipment.ArmourSlots[loc].Name));
-                        string statBonusInStr = fullArmourDetails.UniqueProperties;
-                        foreach (string stat in StatNames)
+                        // apply effect
+                        if (loc == EquippableItem.EquipLocation.Head || loc == EquippableItem.EquipLocation.Body ||
+                            loc == EquippableItem.EquipLocation.Legs)
                         {
-                            if (statBonusInStr.ToLower().Contains(stat.ToLower()))
+                            // access armours
+                            Armour fullArmourDetails = (Armour)game.itemFactory.createItem(
+                                game.itemFactory.armourTemplates.Find(x => x.Name == equipment.ArmourSlots[loc].Name));
+                            string statBonusInStr = fullArmourDetails.UniqueProperties;
+                            foreach (string stat in StatNames)
                             {
-                                // get and evaluate num
-                                if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
+                                if (statBonusInStr.ToLower().Contains(stat.ToLower()))
                                 {
-                                    foreach (PropertyInfo info in typeof(Player).GetProperties())
+                                    // get and evaluate num
+                                    if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
                                     {
-                                        if (info.Name.ToLower().Contains(stat.ToLower()))
+                                        foreach (PropertyInfo info in typeof(Player).GetProperties())
                                         {
-                                            int.TryParse((string)info.GetValue(this), out int prevValue);
-                                            info.SetValue(this, prevValue + value);
-                                            equipment.EquipmentEffectsApplied[loc] = true;
+                                            if (info.Name.ToLower().Contains(stat.ToLower()))
+                                            {
+                                                int.TryParse((string)info.GetValue(this), out int prevValue);
+                                                info.SetValue(this, prevValue + value);
+                                                equipment.EquipmentEffectsApplied[loc] = true;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        // access other
-                        Weapon fullWeaponDetails = (Weapon)game.itemFactory.createItem(game.itemFactory.weaponTemplates.Find(x => x.Name == equipment.WeaponSlots[loc].Name));
-                        string statBonusInStr = fullWeaponDetails.UniqueProperties;
-                        foreach (string stat in StatNames)
+                        else
                         {
-                            if (statBonusInStr.ToLower().Contains(stat.ToLower()))
+                            // access other
+                            Weapon fullWeaponDetails = (Weapon)game.itemFactory.createItem(
+                                game.itemFactory.weaponTemplates.Find(x => x.Name == equipment.WeaponSlots[loc].Name));
+                            string statBonusInStr = fullWeaponDetails.UniqueProperties;
+                            foreach (string stat in StatNames)
                             {
-                                // get and evaluate num
-                                if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
+                                if (statBonusInStr.ToLower().Contains(stat.ToLower()))
                                 {
-                                    foreach (PropertyInfo info in typeof(Player).GetProperties())
+                                    // get and evaluate num
+                                    if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
                                     {
-                                        if (info.Name.ToLower().Contains(stat.ToLower()))
+                                        foreach (PropertyInfo info in typeof(Player).GetProperties())
                                         {
-                                            int.TryParse((string)info.GetValue(this), out int prevValue);
-                                            info.SetValue(this, prevValue + value);
-                                            equipment.EquipmentEffectsApplied[loc] = true;
+                                            if (info.Name.ToLower().Contains(stat.ToLower()))
+                                            {
+                                                int.TryParse((string)info.GetValue(this), out int prevValue);
+                                                info.SetValue(this, prevValue + value);
+                                                equipment.EquipmentEffectsApplied[loc] = true;
+                                            }
                                         }
                                     }
                                 }
@@ -137,8 +145,9 @@ namespace PlayerClassesNamespace
 
         public async Task InitialiseAttacks(Game game)
         {
-            PlayerAttacks = JsonConvert.DeserializeObject<Dictionary<AttackSlot, AttackInfo>>(File.ReadAllText($"{UtilityFunctions.playerAttacksDir}{UtilityFunctions.saveName}.json"));
-            
+            PlayerAttacks = JsonConvert.DeserializeObject<Dictionary<AttackSlot, AttackInfo>>(
+                File.ReadAllText($"{UtilityFunctions.playerAttacksDir}{UtilityFunctions.saveName}.json"));
+
             foreach (AttackInfo attackInfo in PlayerAttacks.Values)
             {
                 if (attackInfo != null)
@@ -149,15 +158,17 @@ namespace PlayerClassesNamespace
                     if (t == typeof(Player))
                     {
                         parameters = new[] { new Parameter("target", typeof(Enemy)) };
-                        Lambda parsedScript = UtilityFunctions.interpreter.Parse(attackInfo.ExpressionString, parameters);
+                        Lambda parsedScript =
+                            UtilityFunctions.interpreter.Parse(attackInfo.ExpressionString, parameters);
                         var newExpression =
-                            new AttackInfo(parsedScript, parsedScript.ToString(), attackInfo.Statuses, attackInfo.Name, attackInfo.Narrative, attackInfo.Manacost).Expression;
+                            new AttackInfo(parsedScript, parsedScript.ToString(), attackInfo.Statuses, attackInfo.Name,
+                                attackInfo.Narrative, attackInfo.Manacost).Expression;
                         attackInfo.Expression = newExpression;
-                    } 
+                    }
                 }
             }
         }
-        
+
         public void EquipItem(EquippableItem.EquipLocation slot, Item item)
         {
             equipment.EquipItem(slot, item, inventory);
@@ -172,7 +183,7 @@ namespace PlayerClassesNamespace
         {
             inventory.AddItem(item);
         }
-        
+
         public void RemoveItem(Item item)
         {
             inventory.RemoveItem(item);
@@ -188,6 +199,7 @@ namespace PlayerClassesNamespace
                 {
                     damage *= 2;
                 }
+
                 UtilityFunctions.clearScreen(Program.game.player);
                 Console.WriteLine($"You have taken {damage} damage.");
                 currentHealth -= damage;
@@ -202,7 +214,7 @@ namespace PlayerClassesNamespace
                 Program.logger.Error("No current combat. Attempt to receive attack failed.");
             }
         }
-        
+
         public void ExecuteAttack(AttackSlot key, Enemy target)
         {
             if (Program.game.player.PlayerAttacks.TryGetValue(key, out var attackInfo))
@@ -213,7 +225,7 @@ namespace PlayerClassesNamespace
                 {
                     throw new Exception("Not enough mana to cast. error check didnt work. at executeattack in player");
                 }
-                
+
 
                 // Optionally handle modifiers here or within the script itself
                 foreach (var effect in attackInfo.Statuses)
@@ -238,7 +250,6 @@ namespace PlayerClassesNamespace
         public void ApplyStatus(string statusName, int turns) // DYNAMICEXPRESSO
         {
             Status status = new Status();
-            
         }
 
         public async Task writePlayerAttacksToJSON()
@@ -259,6 +270,7 @@ namespace PlayerClassesNamespace
                 {
                     await writer.WriteAsync(json);
                 }
+
                 Program.logger.Info("Player attacks data has been written to JSON successfully.");
             }
             catch (Exception ex)
@@ -287,7 +299,7 @@ namespace PlayerClassesNamespace
         {
             await inventory.updateInventoryJSON();
         }
-        
+
         public async Task initialiseEquipment()
         {
             await equipment.updateEquipmentJSON();
@@ -309,7 +321,7 @@ namespace PlayerClassesNamespace
                 throw new Exception($"Error writing to XML file in updatePlayerStatsXML: {e}");
             }
         }
-        
+
         public void updatePlayerStatsXMLSync()
         {
             string path = UtilityFunctions.saveFile;
@@ -327,7 +339,8 @@ namespace PlayerClassesNamespace
             }
         }
 
-        public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat, bool testing = false)
+        public async Task initialisePlayerFromNarrator(GameSetup gameSetup, OpenAIAPI api, Conversation chat,
+            bool testing = false)
         {
             Program.logger.Info("Creating Character...");
 
@@ -348,7 +361,7 @@ namespace PlayerClassesNamespace
             string output = "";
             Player tempPlayer = await gameSetup.generateMainXml(chat, prompt5, this);
             //Console.WriteLine($"TempPlayer stat charisma: {tempPlayer.Charisma}");
-            
+
             // assign this player to tempPlayer
             PropertyInfo[] properties = typeof(Player).GetProperties();
             foreach (PropertyInfo property in properties)
@@ -365,7 +378,8 @@ namespace PlayerClassesNamespace
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to set property in initialisePlayerFromNarrator {property.Name}: {ex.Message}");
+                    Console.WriteLine(
+                        $"Failed to set property in initialisePlayerFromNarrator {property.Name}: {ex.Message}");
                 }
             }
 
@@ -411,14 +425,15 @@ namespace PlayerClassesNamespace
         public int currentNodeId { get; set; }
         public int currentGraphId { get; set; }
 
-        public GameState(string SaveName = null, Point Location = new Point(), int CurrentNodeId = 0, int CurrentGraphId = 0)
+        public GameState(string SaveName = null, Point Location = new Point(), int CurrentNodeId = 0,
+            int CurrentGraphId = 0)
         {
             saveName = SaveName;
             location = Location;
             currentNodeId = CurrentNodeId;
             currentGraphId = CurrentGraphId;
         }
-        
+
         public async Task saveStateToFile(Map map = null)
         {
             string path = $"{UtilityFunctions.mainDirectory}GameStates{Path.DirectorySeparatorChar}{saveName}.json";
@@ -434,8 +449,9 @@ namespace PlayerClassesNamespace
 
             if (map == null)
                 return;
-            
-            string pathMap = $"{UtilityFunctions.mainDirectory}MapStructures{Path.DirectorySeparatorChar}{saveName}.json";
+
+            string pathMap =
+                $"{UtilityFunctions.mainDirectory}MapStructures{Path.DirectorySeparatorChar}{saveName}.json";
             using (StreamWriter file = File.CreateText(pathMap))
             {
                 JsonSerializer serializer = new JsonSerializer
@@ -458,7 +474,7 @@ namespace PlayerClassesNamespace
                 player.playerPos = thisState.location;
                 map.CurrentGraphPointer = thisState.currentGraphId;
                 map.Graphs[map.CurrentGraphPointer].CurrentNodePointer = thisState.currentNodeId;
-                
+
                 saveName = thisState.saveName;
                 location = thisState.location;
                 currentNodeId = thisState.currentNodeId;
@@ -471,6 +487,7 @@ namespace PlayerClassesNamespace
                     saveStateToFile();
                 }
             }
+
             return (player, map);
         }
     }

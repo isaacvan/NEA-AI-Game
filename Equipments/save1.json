@@ -9,6 +9,10 @@
     "Accessory": null
   },
   "EquipmentEffectsApplied": {
+    "Head": false,
+    "Body": false,
+    "Legs": false,
+    "Weapon": false,
     "Accessory": false
   }
 }

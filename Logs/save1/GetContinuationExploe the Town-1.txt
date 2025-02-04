@@ -1,0 +1,8 @@
+INPUT: The player inputted this in response to your narrative: weapon
+
+As a reminder, your last narrative lines were : Entering the town, the adventurer's gaze lands upon the lively crowd. A goblin seen at a far-off corner barely goes noticed. Yet, the menacing Dragon and a Troll loom large, causing a stir. What's the next step, they wonder?
+
+Please now output the narrators response to this input to continue the objective. You can introduce NPC dialogues to your narrative. It is critical that your response provides a scenario where the user can easily respond with what they will do next.
+It is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the userHowever if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).The items you can give to the player are: Arcane Blade, Thunder Mace, Rubber Chicken, Knight's Helmet, Knight's Cuirass, Knight's Greaves, Potion of Restoration, Rune Stone of Recall, Elixir of GiantsFor example, to end the objective and give the user an item write END (item name)Or, write CONTINUE (next narrative lines)
+
+OUTPUT: CONTINUE: Hearing the adventurer utter the word 'weapon', a knight steps forward, offering an armory visit. But, the Dragon and Troll's presence makes this offer a tricky proposition. What will our hero choose?

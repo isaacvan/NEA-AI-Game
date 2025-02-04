@@ -116,6 +116,7 @@ namespace ItemFunctionsNamespace
         {
             ArmourSlots = new Dictionary<EquippableItem.EquipLocation, Armour>();
             WeaponSlots = new Dictionary<EquippableItem.EquipLocation, Weapon>();
+            EquipmentEffectsApplied = new Dictionary<EquippableItem.EquipLocation, bool>();
             foreach (var location in  Enum.GetValues<EquippableItem.EquipLocation>())
             {
                 if (location == EquippableItem.EquipLocation.Accessory ||
@@ -127,7 +128,6 @@ namespace ItemFunctionsNamespace
                 {
                     ArmourSlots.Add(location, null);    
                 }
-                EquipmentEffectsApplied = new Dictionary<EquippableItem.EquipLocation, bool>();
                 EquipmentEffectsApplied.Add(location, false);
             }
         }
@@ -150,8 +150,8 @@ namespace ItemFunctionsNamespace
                     // Optionally, automatically unequip the current item to inventory
                     UnequipItem(slot, inventory);
                 }
-
-                WeaponSlots[slot] = (Weapon)item;
+                
+                WeaponSlots[slot] = item as Weapon;
             }
             else
             {
