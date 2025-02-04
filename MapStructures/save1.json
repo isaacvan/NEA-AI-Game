@@ -24,16 +24,7 @@
               "name": "Goblin",
               "boss": false,
               "id": 0,
-              "currentLocation": "21, 8",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Fire Dragon",
-              "boss": false,
-              "id": 1,
-              "currentLocation": "22, 8",
+              "currentLocation": "21, 7",
               "alive": false
             }
           ],
@@ -41,10 +32,9 @@
             "ObjectiveName": "Embark On Your Journey",
             "Description": "Begin your quest in the mystical world.",
             "NarrativePrompts": [
-              "You awaken in an unknown place, surrounded by wilderness.",
-              "From the looks, it seems like the starting point of your adventure. But where will you go?",
-              ": \"You're here to reclaim this land from dark forces,\" a voice whispers in the wind. Two paths lie ahead: a seemingly quiet forest, teeming with hidden life, or an inviting town, glowing warmly in the distance. Both hold unknown challenges, destinies, and rewards. Which will you choose?",
-              ": \"In the town, you may find allies ready to join your cause, or you might stumble upon useful information about the enemy,\" the wind continues whispering. \"Choose wisely: you can either venture into the town, or explore the secrets hidden within the forest.\""
+              ": Staring the goblin down, the adventurer feels a chill. An old-man watches from his hut. \"Face the fear,\" he advises, \"or let it haunt you forever\".",
+              ": As the adventurer ponders the old man's advice, the goblin inches closer, red eyes glaring menacingly. The old man patiently awaits the player's decision.",
+              " (Potion of Restoration): With a heavy sigh, the adventurer turns away, leaving the objective behind. The old man gifts a Potion of Restoration, a token for the journey ahead."
             ],
             "IsCompleted": true,
             "Location": "0, 0"
@@ -69,23 +59,39 @@
           "enemies": [
             {
               "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Grey Wolf",
+              "nature": 0,
+              "name": "Goblin",
+              "boss": false,
+              "id": 1,
+              "currentLocation": "4, 19",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Mountain Troll",
               "boss": false,
               "id": 2,
-              "currentLocation": "7, 24",
-              "alive": false
+              "currentLocation": "19, 5",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Fire Dragon",
+              "boss": false,
+              "id": 3,
+              "currentLocation": "6, 20",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Exploe the Town",
             "Description": "Visit the lively town and meet its residents.",
             "NarrativePrompts": [
-              "You enter a bustling town, full of people and energy.",
-              "There are various establishments and households. Where will you go first?",
-              ": With careful observation, you spot two promising establishments: the \"Blacksmith's Anvil\" renowned for its weapons, and \"Miraculous Mixtures\", a potion shop infamous for unexpected outcomes. The choice is yours.",
-              ": The Blacksmith, a burly man with scarred hands, shows you his wares. He has the Arcane Blade and the Thunder Mace. Which weapon speaks to your spirit?",
-              ": The Arcane Blade, the blacksmith begins, brims with magical energy amplifying magic power. The Thunder Mace, however, can stun enemies with a bolt of lightning. Each has its strengths, respond wisely."
+              ": Entering the town, the adventurer's gaze lands upon the lively crowd. A goblin seen at a far-off corner barely goes noticed. Yet, the menacing Dragon and a Troll loom large, causing a stir. What's the next step, they wonder?",
+              ": Hearing the adventurer utter the word 'weapon', a knight steps forward, offering an armory visit. But, the Dragon and Troll's presence makes this offer a tricky proposition. What will our hero choose?",
+              " (Arcane Blade): Nodding, the adventurer quickly picks up a gleaming Arcane Blade from the armory and hastily leaves the town, the dragon and troll's presence fading behind."
             ],
             "IsCompleted": true,
             "Location": "0, 0"
@@ -107,22 +113,37 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "20, 1",
+              "nature": 2,
+              "name": "Undead",
+              "boss": false,
+              "id": 4,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "4, 2",
+              "nature": 1,
+              "name": "Grey Wolf",
+              "boss": false,
+              "id": 5,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "2, 1",
               "nature": 0,
               "name": "Goblin",
               "boss": false,
-              "id": 3,
-              "currentLocation": "18, 0",
+              "id": 6,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Cross the Forest",
             "Description": "Navigate your way through a dense, mysterious forest.",
-            "NarrativePrompts": [
-              "You stumble upon a dense forest, filled with the sounds of unseen creatures.",
-              "The forest seems unforgiving, unknown dangers may lurk. Do you brave the path through or turn back?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }
@@ -144,44 +165,29 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 4,
-              "currentLocation": "24, 12",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 5,
-              "currentLocation": "7, 24",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "22, 20",
               "nature": 2,
               "name": "Undead",
               "boss": false,
-              "id": 6,
-              "currentLocation": "16, 20",
+              "id": 7,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "13, 14",
+              "nature": 1,
+              "name": "Grey Wolf",
+              "boss": false,
+              "id": 8,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Scale the Mountain",
             "Description": "Conquer the high peaks of the mountain range.",
-            "NarrativePrompts": [
-              "You're faced with a mountain range, its peaks reaching the heavens.",
-              "Climbing it won't be easy. Will you accept the challenge or retreat?",
-              " As you decide to explore further, the chill of the mountain wind grows fiercer. Two paths present themselves: a hidden cave to your left and a steep climb to the right.",
-              " Venturing into the darkness of the cave, you hear whispers. Your lantern flickers, revealing either a tunnel leading deeper or a small clearing with peculiar stalagmites.",
-              " As you step into the clearing, a soft glow emanates from a crevice between the stalagmites. You can either investigate the source of the glow or return to explore the deeper tunnel."
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -202,45 +208,38 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Mountain Troll",
+              "spawnPoint": "15, 17",
+              "nature": 1,
+              "name": "Grey Wolf",
               "boss": false,
-              "id": 7,
-              "currentLocation": "11, 20",
+              "id": 9,
+              "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Fire Dragon",
+              "spawnPoint": "17, 1",
+              "nature": 2,
+              "name": "Undead",
               "boss": false,
-              "id": 8,
-              "currentLocation": "6, 7",
-              "alive": false
+              "id": 10,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "15, 13",
               "nature": 0,
               "name": "Goblin",
               "boss": false,
-              "id": 9,
-              "currentLocation": "6, 8",
+              "id": 11,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Ford the River",
             "Description": "Find a safe way to cross the roaring river.",
-            "NarrativePrompts": [
-              "You come across a roaring river, the current too strong to swim.",
-              "There may be a safer route to cross. But where?",
-              " \"As you walk along the riverbank, you find two possible routes: a narrow mountain pass promising a quicker, but perilous shortcut, or a dense forest that snakes along the river, longer but potentially safer.\"",
-              " \"Your decision to take the mountain pass leads you to a challenging climb, on your right the steep mountain, to your left a menacing drop. Picking your way carefully, suddenly, a rustling sound makes you freeze. Two options present themselves: Investigate the noise, or press on and ignore it.\"",
-              " \"Hefting the rock in your hand, you move cautiously towards the noise. You're faced with a split in the path: head towards the noise which seems to be coming from a small crevice, or continue up the mountain path.\"",
-              " \"Creeping closer, you peer into the crevice to find a Goblin fumbling with a chest. Two routes lie ahead: confront the Goblin, possibly risking a fight, or leave it undisturbed and continue on your original path.\""
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -261,11 +260,29 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "3, 16",
+              "spawnPoint": "2, 20",
+              "nature": 2,
+              "name": "Undead",
+              "boss": false,
+              "id": 12,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "8, 10",
               "nature": 0,
               "name": "Mountain Troll",
               "boss": false,
-              "id": 10,
+              "id": 13,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "11, 7",
+              "nature": 0,
+              "name": "Mountain Troll",
+              "boss": false,
+              "id": 14,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -273,10 +290,7 @@
           "Obj": {
             "ObjectiveName": "Survive the Desert",
             "Description": "Travel through harsh desert conditions to reach your destination.",
-            "NarrativePrompts": [
-              "You find yourself at the edge of a vast desert. Heat waves shimmer off the sands.",
-              "The crossing will be dangerous. Will you venture forth or seek an alternate route?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }
@@ -298,34 +312,38 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "7, 13",
+              "nature": 0,
+              "name": "Mountain Troll",
               "boss": false,
-              "id": 11,
-              "currentLocation": "17, 10",
+              "id": 15,
+              "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "6, 8",
               "nature": 2,
               "name": "Undead",
               "boss": false,
-              "id": 12,
-              "currentLocation": "14, 5",
+              "id": 16,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "4, 9",
+              "nature": 0,
+              "name": "Mountain Troll",
+              "boss": false,
+              "id": 17,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Uncover the Past",
             "Description": "Discover what happened to the abandoned village.",
-            "NarrativePrompts": [
-              "You discover an abandoned village, frozen in time.",
-              "A story waits to be uncovered. Will you delve deeper or move on?",
-              ": With a brooding cloud of apprehension, you push deeper into the forsaken village. The chill of suspicion lingers as your surroundings morph into an eerie spectacle of grey hues and shadows. Will you explore the dilapidated huts, or will you venture to the village well, an ancient structure whispered to hold forgotten secrets?",
-              ": Swirling your fingers in the well's icy water, you feel an unusual object. A rusty key, perhaps? Or maybe a coveted artifact? As you reach in to retrieve it, a mournful howl froths from the cold winds, sending a shudder past your spine. Looming in the distance, an oversized silhouette of a Grey Wolf manifests. So, will you confront the direwolf or quickly snatch the item from the well?"
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -346,40 +364,28 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "13, 14",
               "nature": 2,
               "name": "Undead",
               "boss": false,
-              "id": 13,
-              "currentLocation": "6, 17",
+              "id": 18,
+              "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 14,
-              "currentLocation": "17, 11",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "1, 22",
               "nature": 0,
               "name": "Goblin",
               "boss": false,
-              "id": 15,
-              "currentLocation": "16, 4",
+              "id": 19,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Plunge into Darkness",
             "Description": "Explore the depths of an ominous cave.",
-            "NarrativePrompts": [
-              "You find a cave entrance, the inside shrouded in darkness.",
-              "There's no telling what's inside. Do you dare to enter?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }
@@ -401,29 +407,29 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "3, 7",
-              "nature": 1,
-              "name": "Grey Wolf",
+              "spawnPoint": "7, 26",
+              "nature": 2,
+              "name": "Undead",
               "boss": false,
-              "id": 16,
+              "id": 20,
               "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "5, 18",
+              "spawnPoint": "5, 5",
+              "nature": 0,
+              "name": "Fire Dragon",
+              "boss": false,
+              "id": 21,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "11, 6",
               "nature": 0,
               "name": "Mountain Troll",
               "boss": false,
-              "id": 17,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "7, 2",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 18,
+              "id": 22,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -431,10 +437,7 @@
           "Obj": {
             "ObjectiveName": "Traverse the Swamp",
             "Description": "Navigate your way through a treacherous swamp.",
-            "NarrativePrompts": [
-              "A swamp lays before you, the ground unstable and the air heavy.",
-              "Can you find a path across this treacherous terrain?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }
@@ -456,35 +459,38 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "2, 12",
+              "nature": 0,
+              "name": "Goblin",
               "boss": false,
-              "id": 19,
-              "currentLocation": "17, 7",
-              "alive": false
+              "id": 23,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Mountain Troll",
+              "spawnPoint": "7, 19",
+              "nature": 1,
+              "name": "Grey Wolf",
               "boss": false,
-              "id": 20,
-              "currentLocation": "11, 18",
-              "alive": false
+              "id": 24,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "10, 14",
+              "nature": 1,
+              "name": "Grey Wolf",
+              "boss": false,
+              "id": 25,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Storm the Fortress",
             "Description": "Invade the enemy stronghold and defeat the guards.",
-            "NarrativePrompts": [
-              "A fortress looms ahead, the enemy flags fluttering at its towers.",
-              "Will you dare storm the fortress, or seek a way around?",
-              ": With soft footsteps and a beating heart, you slip through a side entrance. Two paths lay ahead: the shadowy corridor leading to the Troll's chamber, or ascend the winding stairs to a mysterious room above. Your choice could risk the failure of your mission or perhaps bring unexpected rewards. What do you do?",
-              ": Treading carefully into the Troll's chamber, a slumbering beast meets your gaze. Will you attempt a silent take down or dare to explore a shimmering chest beside it, possibly awakening the monstrous foe? Your actions here pit risk against reward. Choose wisely.",
-              " (Thunder Mace): As you gently pry the chest open, it reveals a magnificent weapon, the Thunder Mace, whispering tales of ancient heroes. Your heart pounds as the Troll stirs but remains asleep. Battle looms, but for now, you have a new ally."
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -505,28 +511,38 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "18, 3",
+              "nature": 1,
+              "name": "Grey Wolf",
               "boss": false,
-              "id": 21,
-              "currentLocation": "19, 5",
+              "id": 26,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "23, 4",
+              "nature": 1,
+              "name": "Grey Wolf",
+              "boss": false,
+              "id": 27,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "2, 14",
+              "nature": 1,
+              "name": "Grey Wolf",
+              "boss": false,
+              "id": 28,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Cross the Lake",
             "Description": "Find a way across a vast, still lake.",
-            "NarrativePrompts": [
-              "A serene lake lies before you, its surface calm, reflecting the sky.",
-              "Will you find a way around, or risk crossing the water?",
-              ": With a deep breath, you plunge into the cold, murky water; a challenge you welcome as the Lighthouse beckons you forth. But beware! To your left, a hidden path shrouded in shadows appears promising, yet equally dangerous. Above, the eerie song of Raven steals your attention. Will you brave the water, explore the hidden path, or heed the Raven's message?",
-              ": Cautiously, you diverge from the lake, stepping onto the hidden path. The chilling whispers of the wind hint at danger yet an alluring promise of discovery. Ahead, a campfire flickers mysteriously. Your heart quickens as you approach. Will you confront what awaits at the fire or retreat back to the ominous lake?",
-              ": Picking up a rock and tossing it towards the campfire, you hold your breath. Moments pass before a rustling sound breaks the silence. An Undead! Do you rush to attack or melt into the shadows, perhaps to find a more strategic approach?",
-              ": Invoking 'Skibidi Rizz', a spell of dazzling light bursts from your palm towards the Undead. The creature recoils, yet a counterattack seems imminent. Will you continue your magical assault or seek the safety of the shadows once more?",
-              ": Swiftly you blend with the shadows, effectively dodging the Undead's counterattack. But in the dim light, two pathways unfold: a dark tunnel leading underground or a steep climb towards the mountaintop. Which path will you tread?"
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -547,20 +563,11 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "19, 10",
+              "spawnPoint": "19, 4",
               "nature": 0,
               "name": "Goblin",
               "boss": false,
-              "id": 22,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "7, 11",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 23,
+              "id": 29,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -568,10 +575,7 @@
           "Obj": {
             "ObjectiveName": "Explore the Ruins",
             "Description": "Investigate the secrets of an ancient ruin.",
-            "NarrativePrompts": [
-              "You find sprawling ruins, remnants of a once proud civilization.",
-              "Will you seek out its mysteries, or leave them be?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }
@@ -591,27 +595,20 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "6, 15",
               "nature": 0,
-              "name": "Goblin",
+              "name": "Fire Dragon",
               "boss": true,
-              "id": 24,
-              "currentLocation": "1, 12",
-              "alive": false
+              "id": 30,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Face the Inferno",
             "Description": "Ascend the active volcano and brave its fiery hazards.",
-            "NarrativePrompts": [
-              "A volcano, active and seething, lies ahead.",
-              "The peak promises a challenge like no other. Do you dare to proceed?",
-              ": A sinister chuckle resounds through the heat haze as the Goblin lunges at you. This promises to be a tough battle. What will be your next move?",
-              ": With a swift motion, you smack the Goblin hard across its grinning face. It stumbles backward, surprise and rage flash in its eyes. It snarls at you, readying for another attack.",
-              ": Without uttering a word, you charge forward, ready to face the Goblin's wrath. But will you strike first, or come up with a more defensive strategy? It's your call.",
-              " (Rubber Chicken): Summoning all your strength, you punch the Goblin with such force that it goes flying across the scorching surroundings and crashes into the volcanic rocks. With the threat removed, you find a peculiar item near the defeated Goblin - a Rubber Chicken! Could this be a strange relic from the Goblin's treasure trove? Regardless, it's yours now."
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -630,25 +627,20 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "22, 22",
+              "nature": 0,
+              "name": "Mountain Troll",
               "boss": true,
-              "id": 25,
-              "currentLocation": "23, 1",
-              "alive": false
+              "id": 31,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Reach the Lighthouse",
             "Description": "Make your way to the guiding light of the lighthouse.",
-            "NarrativePrompts": [
-              "A lighthouse stands in the distance, lighting up the night sky.",
-              "Will you find your way towards the light?",
-              ": As you venture deeper into the lighthouse, you notice two paths. To the left, faint whispers draw your curiosity. To the right, a faint light flickers. What will you choose?",
-              ": Following the mysterious whispers, you find yourself in an old armory. You can either explore and risk alerting any monsters or exit back to the hallway. Choose wisely."
-            ],
-            "IsCompleted": true,
+            "NarrativePrompts": [],
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -667,11 +659,11 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "24, 16",
-              "nature": 0,
-              "name": "Fire Dragon",
+              "spawnPoint": "12, 11",
+              "nature": 2,
+              "name": "Undead",
               "boss": true,
-              "id": 26,
+              "id": 32,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -679,10 +671,7 @@
           "Obj": {
             "ObjectiveName": "Enter the Cathedral",
             "Description": "Venture into a grand cathedral, meet its caretaker.",
-            "NarrativePrompts": [
-              "Behold a grandiose cathedral. The doors are open, inviting.",
-              "Will you step inside and seek guidance from the caretaker?"
-            ],
+            "NarrativePrompts": [],
             "IsCompleted": false,
             "Location": "0, 0"
           }

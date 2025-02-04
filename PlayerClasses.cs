@@ -34,6 +34,9 @@ namespace PlayerClassesNamespace
         public int currentHealth { get; set; }
         public int ManaPoints { get; set; }
         public int currentMana { get; set; }
+        
+        public List<string> StatNames { get; set; } = new List<string>() { "Strength", "Dexterity", "Constitution", "Intelligence", "Charisma" };
+        
         public int Strength { get; set; }
         public int Intelligence { get; set; }
         public int Dexterity { get; set; }
@@ -68,6 +71,68 @@ namespace PlayerClassesNamespace
             PlayerAttacks[AttackSlot.slot3] = null;
             PlayerAttacks[AttackSlot.slot4] = null;
             sightRangeModified = false;
+        }
+
+        public void amendStats(Game game)
+        {
+            foreach (EquippableItem.EquipLocation loc in Enum.GetValues(typeof(EquippableItem.EquipLocation)))
+            {
+                if (!equipment.EquipmentEffectsApplied[loc])
+                {
+                    // apply effect
+                    if (loc == EquippableItem.EquipLocation.Head || loc == EquippableItem.EquipLocation.Body ||
+                        loc == EquippableItem.EquipLocation.Legs)
+                    {
+                        // access armours
+                        Armour fullArmourDetails = (Armour)game.itemFactory.createItem(game.itemFactory.armourTemplates.Find(x => x.Name == equipment.ArmourSlots[loc].Name));
+                        string statBonusInStr = fullArmourDetails.UniqueProperties;
+                        foreach (string stat in StatNames)
+                        {
+                            if (statBonusInStr.ToLower().Contains(stat.ToLower()))
+                            {
+                                // get and evaluate num
+                                if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
+                                {
+                                    foreach (PropertyInfo info in typeof(Player).GetProperties())
+                                    {
+                                        if (info.Name.ToLower().Contains(stat.ToLower()))
+                                        {
+                                            int.TryParse((string)info.GetValue(this), out int prevValue);
+                                            info.SetValue(this, prevValue + value);
+                                            equipment.EquipmentEffectsApplied[loc] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // access other
+                        Weapon fullWeaponDetails = (Weapon)game.itemFactory.createItem(game.itemFactory.weaponTemplates.Find(x => x.Name == equipment.WeaponSlots[loc].Name));
+                        string statBonusInStr = fullWeaponDetails.UniqueProperties;
+                        foreach (string stat in StatNames)
+                        {
+                            if (statBonusInStr.ToLower().Contains(stat.ToLower()))
+                            {
+                                // get and evaluate num
+                                if (int.TryParse(statBonusInStr.Substring(1, 1), out int value))
+                                {
+                                    foreach (PropertyInfo info in typeof(Player).GetProperties())
+                                    {
+                                        if (info.Name.ToLower().Contains(stat.ToLower()))
+                                        {
+                                            int.TryParse((string)info.GetValue(this), out int prevValue);
+                                            info.SetValue(this, prevValue + value);
+                                            equipment.EquipmentEffectsApplied[loc] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public async Task InitialiseAttacks(Game game)

@@ -7,6 +7,7 @@ using GridConfigurationNamespace;
 using GPTControlNamespace;
 using System.Drawing;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using CombatNamespace;
@@ -47,7 +48,7 @@ namespace MainNamespace
         // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
         // - Make way for player to get more attacks
         //
-        // - implement a resetSave func in options
+        //
         // - if narrative lines empty, give it desc
         //
         // NEXT - ENEMY COMBAT AI
@@ -290,7 +291,12 @@ namespace MainNamespace
 
             if (GetAllowedInputs("Options").Contains(input))
             {
-                game = options(true, true, game).Item2;
+                (bool, Game?) result = options(true, true, game);
+                game = result.Item2;
+                if (!result.Item1)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 
@@ -744,8 +750,9 @@ namespace MainNamespace
                 "[6] Clear all saves.\n");
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "[7] Set example save.\n");
-            UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
-                "[8] Reset Save to unused state.\n");
+            if (gameStarted)
+                UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    "[8] Reset Save to unused state.\n");
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
                 "Choose an option: ");
             int choice;
@@ -813,9 +820,14 @@ namespace MainNamespace
                         Thread.Sleep(1000);
                         return options(gameStarted, saveChosen);
                     case 8:
-                        game = ResetGameState(game).GetAwaiter().GetResult();
-                        Thread.Sleep(1000);
-                        return options(gameStarted, saveChosen, game);
+                        if (gameStarted)
+                        {
+                            game = ResetGameState(game).GetAwaiter().GetResult();
+                            Thread.Sleep(1000);
+                            return options(false, saveChosen, game);
+                        }
+
+                        return options(gameStarted, saveChosen);
                     default:
                         UtilityFunctions.clearScreen(null);
                         UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -837,9 +849,11 @@ namespace MainNamespace
         public static async Task<Game> ResetGameState(Game game)
         {
             // reset current save objectgives, enemies, etc. player inv, equipment, everything except the assets
+            
+            NarrationTypeWriter.Stop();
 
             bool obtainedSaveName = false;
-            string finalPathName;
+            string finalPathName = "";
             while (!obtainedSaveName)
             {
                 Console.Clear();
@@ -881,9 +895,14 @@ namespace MainNamespace
                     }
                 }
             }
+            
+            // reset gamState
+            
 
             // reset map
+            game.gameState.currentGraphId = 0;
             game.map.CurrentGraphPointer = 0;
+            game.gameState.currentNodeId = 0;
             game.map.Graphs[game.map.CurrentGraphPointer].CurrentNodePointer = 0;
             foreach (Node n in game.map.Graphs[game.map.CurrentGraphPointer].Nodes)
             {
@@ -892,22 +911,29 @@ namespace MainNamespace
                 if (n.Obj != null)
                 {
                     n.Obj.IsCompleted = false;
+                    string temp = n.Obj.NarrativePrompts[0];
                     n.Obj.NarrativePrompts.Clear();
+                    n.Obj.NarrativePrompts.Add(temp);
                 }
             }
-            
+
             // gotten save to reset, now start resetting.
-            game.player = new Player();
-            game.player.PlayerAttacks[AttackSlot.slot1] = game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
+            game.player = await UtilityFunctions.readFromXMLFile<Player>(UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + finalPathName + ".xml", new Player());
+            game.player.Health = 100;
+            game.player.currentHealth = 100;
+            game.player.PlayerAttacks[AttackSlot.slot1] =
+                game.attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
 
             game.player.playerPos = GridFunctions.GetPlayerStartPos(ref game);
-            
+            game.gameState.location = game.player.playerPos;
+
             game.player.equipment = new Equipment();
             game.player.inventory = new Inventory();
             await game.player.initialiseEquipment();
             await game.player.initialiseInventory();
             
-            
+            // await game.gameState.saveStateToFile();
+            await saveGameToAllStoragesAsync();
 
             return game;
         }

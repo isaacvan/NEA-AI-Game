@@ -771,8 +771,17 @@ namespace GridConfigurationNamespace
 
         public async Task<(bool, List<string>)> GetContinuation(Game game, string input)
         {
-            string prompt = $"The player inputted this in response to your narrative: {input}";
-            prompt += $"\n\nAs a reminder, your last narrative lines were {string.Join("", NarrativePrompts)}";
+            string prompt = "";
+            if (NarrativePrompts.Count == 0)
+            {
+                prompt += $"\n\nAs a reminder, description of this objective is {Description}";
+                prompt += $"This is the first narrative line for this objective.";
+            }
+            else
+            {
+                prompt = $"The player inputted this in response to your narrative: {input}";
+                prompt += $"\n\nAs a reminder, your last narrative lines were {string.Join("", NarrativePrompts)}";
+            }
             prompt += $"\n\nPlease now output the narrators response to this input to continue the objective. You can introduce NPC dialogues to your narrative. It is critical that your response provides a scenario where the user can easily respond with what they will do next.";
             prompt +=
                 "\nIt is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.";

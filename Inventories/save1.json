@@ -1,4 +1,31 @@
 {
-  "Items": [],
-  "Quantities": []
+  "Items": [
+    {
+      "Health": 0,
+      "Mana": 0,
+      "Effect": null,
+      "UniqueProperties": "None",
+      "StorylineRelevance": null,
+      "Name": "Potion of Restoration",
+      "Description": "A mystical potion that has the power to restore your health and mana.",
+      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 0
+    },
+    {
+      "Damage": 30,
+      "WeaponType": "Sword",
+      "UniqueProperties": "+5 Strength",
+      "AttackBehaviour": "GoblinSlash",
+      "StatusNames": [],
+      "NarrativeLine": "presses the attack, stunning the enemy with his Arcane Blade. Arcane power surges, dealing additional damage.",
+      "Name": "Arcane Blade",
+      "Description": "A mystical sword once wielded by the kingdom's greatest warrior. It pulses with a spectral blue aura.",
+      "ItemType": "ItemFunctionsNamespace.Weapon, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 3
+    }
+  ],
+  "Quantities": [
+    1,
+    1
+  ]
 }

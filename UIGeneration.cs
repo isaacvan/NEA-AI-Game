@@ -308,7 +308,15 @@ namespace UIGenerationNamespace
                     Item item;
                     if (idSearch)
                     {
-                        item = game.player.inventory.Items[Convert.ToInt32(inp)];
+                        try
+                        {
+                            item = game.player.inventory.Items[Convert.ToInt32(inp)];
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            UtilityFunctions.TypeText(new TypeText(), $"{inp} is not a valid index. Returning to main screen");
+                            return;
+                        }
                     }
                     else
                     {
@@ -324,6 +332,8 @@ namespace UIGenerationNamespace
                         EquippableItem.EquipLocation loc = item.ItemEquipLocation;
                         game.player.equipment.EquipItem(loc, item, game.player.inventory);
                     }
+                    
+                    game.player.amendStats(game);
                     
                    // GET ITEM SLOT
                 }

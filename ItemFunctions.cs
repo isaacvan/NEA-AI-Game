@@ -110,6 +110,7 @@ namespace ItemFunctionsNamespace
     {
         public Dictionary<EquippableItem.EquipLocation, Armour> ArmourSlots { get; private set; }
         public Dictionary<EquippableItem.EquipLocation, Weapon> WeaponSlots { get; private set; }
+        public Dictionary<EquippableItem.EquipLocation, bool> EquipmentEffectsApplied { get; private set; }
 
         public Equipment()
         {
@@ -126,6 +127,8 @@ namespace ItemFunctionsNamespace
                 {
                     ArmourSlots.Add(location, null);    
                 }
+                EquipmentEffectsApplied = new Dictionary<EquippableItem.EquipLocation, bool>();
+                EquipmentEffectsApplied.Add(location, false);
             }
         }
 

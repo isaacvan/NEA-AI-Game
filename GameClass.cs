@@ -101,7 +101,9 @@ namespace GameClassNamespace
 
                 // save empty game state for future
                 gameState = new GameState(SaveName: UtilityFunctions.saveName);
-                gameState.saveStateToFile();
+                await gameState.saveStateToFile();
+                
+                await UtilityFunctions.writeToXMLFile(UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName, player);
 
                 Console.WriteLine("Started Game.");
             }
