@@ -1,11 +1,8 @@
-2025-02-06 10:12:16.4909|INFO|MainNamespace.Program|Program started
-2025-02-06 10:12:16.5434|INFO|MainNamespace.Program|Running mode=game
-2025-02-06 10:12:21.9117|INFO|MainNamespace.Program|Null behaviour spotted: AstralBlast. Will attempt fix in uninitialised fix
-2025-02-06 10:12:21.9120|INFO|MainNamespace.Program|Null behaviour spotted: Earthstrike. Will attempt fix in uninitialised fix
-2025-02-06 10:12:21.9120|INFO|MainNamespace.Program|Null behaviour spotted: SoothingMelody. Will attempt fix in uninitialised fix
-2025-02-06 10:12:21.9922|INFO|MainNamespace.Program|Initialising Item Factory...
-2025-02-06 10:12:22.0626|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2025-02-06 10:12:22.1036|INFO|MainNamespace.Program|Enemy Factory Initialised
-2025-02-06 10:12:22.1068|INFO|MainNamespace.Program|Generating Uninitialised Attack Behaviours...
-2025-02-06 10:13:34.4434|INFO|MainNamespace.Program|Uninitialised Attack Behaviours Initialised
-2025-02-06 10:13:34.5856|INFO|MainNamespace.Program|Game mode
+2025-02-06 10:58:53.2654|INFO|MainNamespace.Program|Program started
+2025-02-06 10:58:53.3164|INFO|MainNamespace.Program|Running mode=game
+2025-02-06 10:58:55.6537|INFO|MainNamespace.Program|Initialising Item Factory...
+2025-02-06 10:58:55.6870|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2025-02-06 10:58:55.6909|INFO|MainNamespace.Program|Enemy Factory Initialised
+2025-02-06 10:58:55.6922|INFO|MainNamespace.Program|Generating Uninitialised Attack Behaviours...
+2025-02-06 10:58:55.6922|INFO|MainNamespace.Program|No uninitialised attack behaviours found
+2025-02-06 10:58:55.7929|INFO|MainNamespace.Program|Game mode

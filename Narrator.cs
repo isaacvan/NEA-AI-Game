@@ -1144,9 +1144,22 @@ namespace GPTControlNamespace
             }
 
             // add statuses in temp to game.StatusFactory
+            
+            List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
+            foreach (KeyValuePair<string, AttackInfo> kvp in tempAttackBehaviourFactory.attackBehaviours)
+            {
+                items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
+            }
+            
+            Program.game.attackBehaviourFactory.InitializeFromSerializedBehaviors(items);
+            File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory, JsonConvert.SerializeObject(Program.game.attackBehaviourFactory));
+
+            return;
 
             foreach (AttackInfo attackBehaviour in tempAttackBehaviourFactory.attackBehaviours.Values)
             {
+                if (Program.game.attackBehaviourFactory.attackBehaviours.ContainsKey(attackBehaviour.Name))
+                    Program.game.attackBehaviourFactory.attackBehaviours.Remove(attackBehaviour.Name);
                 Program.game.attackBehaviourFactory.attackBehaviours.TryAdd(attackBehaviour.Name, attackBehaviour);
             }
 

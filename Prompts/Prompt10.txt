@@ -8,7 +8,7 @@ Narrative: A string containing the output whenever this attack is used. If the e
 Here is how each component should be formatted and an example for each:
 
 Key: Should be the name of the attack, like "Fireball".
-Expression: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
+ExpressionString: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
 Statuses: These are the status effects that the attack applies.
 Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
 
@@ -18,7 +18,7 @@ For example:
 "attackBehaviours"; {
   "Stab": {
     "Name": "Stab",
-    "Expression": "target.ReceiveAttack(5, 60)",
+    "ExpressionString": "target.ReceiveAttack(5, 60)",
     "Manacost": 2
     "Statuses": []
     "Narrative": "stabs wildly."

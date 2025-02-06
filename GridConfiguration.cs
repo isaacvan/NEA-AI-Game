@@ -489,13 +489,6 @@ namespace GridConfigurationNamespace
             /*
             List<string> rowsToPrint = new List<string>()
             {
-                "Player Information", "", $"CLASS: {game.player.Class}",
-                $"NODE: {game.map.GetCurrentNode().NodePOI} - ID: {game.map.GetCurrentNode().NodeID}",
-                $"LEVEL: {game.player.Level}",
-                $"{UtilityFunctions.ReturnExpBar(game.player.currentExp, game.player.maxExp, 40)}",
-                $"{UtilityFunctions.DrawHealthBar(game.player)}",
-                $"X: {p.X}, Y: {p.Y}",
-                "",
                 "Player Stats",
                 $"Strength: {game.player.Strength}",
                 $"Dexterity: {game.player.Dexterity}",
@@ -506,6 +499,7 @@ namespace GridConfigurationNamespace
             */
 
 
+            int newConstIndentForSecondColumn = 0;
             for (int i = 0; i <= height; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
@@ -513,6 +507,29 @@ namespace GridConfigurationNamespace
                 if (rowsToPrint.Count >= i)
                     rowsToPrint.Add("");
                 Console.Write($"| {rowsToPrint[i]}");
+                if (rowsToPrint[i].Count() > newConstIndentForSecondColumn)
+                {
+                    newConstIndentForSecondColumn = rowsToPrint[i].Count();
+                }
+            }
+            
+            List<string> statsToPrint = new List<string>()
+            {
+                "\x1b[38;2;255;165;0mPLAYER STATS\x1b[38;2;255;255;255m",
+                $"Strength ---> {game.player.Strength}",
+                $"Dexterity ---> {game.player.Dexterity}",
+                $"Intelligence ---> {game.player.Intelligence}",
+                $"Constitution ---> {game.player.Constitution}",
+                $"Charisma ---> {game.player.Charisma}"
+            };
+            
+            for (int i = 0; i <= height; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.SetCursorPosition(indent + newConstIndentForSecondColumn - 10, yconst + i);
+                if (statsToPrint.Count >= i) 
+                    statsToPrint.Add("");
+                Console.Write($"| {statsToPrint[i]}");
             }
 
             Console.SetCursorPosition(initialCursor.Item1, initialCursor.Item2);

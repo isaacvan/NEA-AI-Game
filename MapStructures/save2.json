@@ -388,7 +388,7 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 16,
-              "currentLocation": "16, 17",
+              "currentLocation": "20, 7",
               "alive": true
             },
             {
@@ -397,7 +397,7 @@
               "name": "Astra Grotesque",
               "boss": false,
               "id": 17,
-              "currentLocation": "6, 16",
+              "currentLocation": "-53, 66",
               "alive": false
             }
           ],
@@ -435,22 +435,22 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "2, 7",
+              "spawnPoint": "0, 0",
               "nature": 2,
               "name": "Celestial Serpent",
               "boss": false,
               "id": 18,
-              "currentLocation": "0, 0",
+              "currentLocation": "3, 25",
               "alive": true
             },
             {
-              "spawnPoint": "5, 17",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
               "id": 19,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "6, 13",
+              "alive": false
             }
           ],
           "Obj": {
@@ -487,7 +487,7 @@
               "name": "Eclipse Wraith",
               "boss": true,
               "id": 20,
-              "currentLocation": "4, 10",
+              "currentLocation": "1, 17",
               "alive": false
             }
           ],
