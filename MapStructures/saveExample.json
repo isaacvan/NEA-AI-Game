@@ -20,21 +20,12 @@
           "enemies": [
             {
               "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Rogue Elementalist",
+              "nature": 2,
+              "name": "Shadow Wisp",
               "boss": false,
               "id": 0,
-              "currentLocation": "13, 11",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Rogue Elementalist",
-              "boss": false,
-              "id": 1,
-              "currentLocation": "13, 12",
-              "alive": false
+              "currentLocation": "9, 1",
+              "alive": true
             }
           ],
           "Obj": {
@@ -42,12 +33,11 @@
             "Description": "Welcome to the starting point of your epic adventure. Identify your surroundings and decide on the next course of action.",
             "NarrativePrompts": [
               "A cloak of darkness unravels around you as you open your eyes, suddenly realizing...this is the very beginning of your odyssey. NodeID 0, also known as Starting Point, is where your narrative unfolds.",
-              "Before you lies a vast and open wilderness, threaded with hints of mysterious, unexplored paths each holding an untold adventure. The wind whistles around you, carrying whispers of legends yet to be made.",
-              "Choices, like branching paths, stretch out before you. Where will you go? What will you become in these untold stories lying in wait for you?",
-              "Will you journey through dark and forbidden forests, full of strange creatures and hidden treasures or will you scale towering mountains, filled with dangerous ledges and breath-taking vistas? Or perhaps you will cross deep and treacherous seas, rich with lost cities and sunken ships?",
-              "The journey is yours. The story is yours to write. Adventures are there, waiting. Where will it start?",
-              ": Heeding your plea, an echo resonates around the mystic ruins. A spectral figure materialises, the ancient guardian of Eldoria. With a sage voice, he intones, \"Bold Harbinger, accept this boon for the trials ahead. May this Crescent Blade guide your path and cleave darkness on your journey.\" As the last word fades, a curved blade of gleaming silver appears before you. Your first objective is complete, armed and ready, your Twilight Odyssey begins.",
-              ": With the Crescent Blade now in your hand, its brilliant gleam reflecting off your astonished gaze, the spectral figure speaks once again, \"A Twilight Harbinger with no weapon is but a flickering star in the night, now shine brightly!\" The figure dissolves, leaving you with a newfound sense of purpose and a gleaming blade that seems to hum with power. What was once a plea is now a proclamation of readiness. This is where your journey truly begins."
+              ": You survey the desolate cityscape, the echoes of its past whispering tales of grandeur. Ancient structures loom, adorned with arcane symbols that flicker with dormant magic. Your sight lands on a solitary Shadow Wisp, swirling ominously. Suddenly, the whisper of the Ethereal language brushes against your senses, a female voice saying, \"The first step on your path - vanquish the shadow.\"",
+              ": The ethereal voice emanates from the ruins once again, \"A great imbalance afflicts our world, Lyria, born of light and shadow. The primal essence is tainted, and darkness spreads. Your quest, brave Twilight Harbinger, is to restore balance. Gather the fragments of the Primal Crystal and perform the Rite of Harmony. But beware, the shadows have soldiers too.\" The Shadow Wisp ahead seems to pulsate more intensely with the unfolding of your task.",
+              ": \"A fair request, Twilight Harbinger,\" speaks the voice, her echo becoming corporeal as an ethereal image of a woman. With a wave of her hand, a pulse of starlight energy forms a shimmering object at your feet. \"May this Starlit Staff assist you in your task,\" she says, her form fading. \"Remember, skill and courage are your true weapons.\"",
+              ": As you pick up the Starlit Staff, it pulses with a brilliant luminosity, resonating with your Ethereal essence. The runes etched onto its surface glow, their magic seeping into your veins. You feel an awakening, a surge of power coursing through you. \"The time is nigh,\" voices the ethereal entity, her tone echoing hope and trepidation. \"Embrace your destiny, Twilight Harbinger.\" The Shadow Wisp ahead growls, readying itself for a clash.",
+              " (Starlit Staff): With the Starlit Staff secured in your inventory and a determination solidifying within your heart, you bid the Shadow Wisp a wary farewell. A path of untold challenges and profound discovery awaits you, Twilight Harbinger. As the ethereal voice fades away, you feel an odd sensation of being watched. The journey begins."
             ],
             "IsCompleted": true,
             "Location": "0, 0"
@@ -76,17 +66,8 @@
               "nature": 0,
               "name": "Dreadnaught",
               "boss": false,
-              "id": 2,
-              "currentLocation": "2, 10",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 3,
-              "currentLocation": "1, 11",
+              "id": 1,
+              "currentLocation": "15, 17",
               "alive": false
             }
           ],
@@ -95,10 +76,8 @@
             "Description": "Investigate the mysterious glow deep within the forest.",
             "NarrativePrompts": [
               "You find yourself at the edge of an expansive Forest. The trees stretch out as far as the eye can see. Somewhere from the heart of the forest, a peculiar, emerald glow sparkles.",
-              "Do you want to examine the source of the glowing emerald light, or continue onward without looking back?",
-              " Crescent Blade.",
-              "",
-              "With a flicker of uncertainty, you decide to leave the strange emerald light behind and forge your own path. As you journey deeper into the forest, a glimmer catches your eye. Pushing past the foliage, you discover an ancient altar, upon which rests a beautifully crafted weapon. Reverently, you lift the Crescent Blade, its weight perfectly balanced in your grip, a sense of overwhelming power coursing through your veins. A soft whispering wind fills the silence, promising the blade's allegiance in your future battles."
+              ": A spectral figure materializes before you; the echo of a long-dead blacksmith. \"A blade forged in arcane energies, eh?\" his hollow voice rings out. \"Such a weapon does not come freely. Prove your valor in combat or share a secret of the forest.\"",
+              " Crescent Blade: Sensing the developer's will, the spectral blacksmith nods, stepping back into his ethereal forge. After a moment, from the spectral flames a weapon emerges. It's the Arcane Blade, a weapon teeming with magical energy and forged in the heart of the ethereal realm. It feels cool to the touch, but swells with energy unlike anything else you've ever felt. The smith hands it to you with a spectral nod. \"Use it well,\" he instructs."
             ],
             "IsCompleted": true,
             "Location": "0, 0"
@@ -121,39 +100,38 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "14, 17",
+              "nature": 1,
+              "name": "Forest Guardian",
+              "boss": false,
+              "id": 2,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "11, 3",
+              "nature": 2,
+              "name": "Shadow Wisp",
+              "boss": false,
+              "id": 3,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "10, 1",
               "nature": 0,
               "name": "Rogue Elementalist",
               "boss": false,
               "id": 4,
-              "currentLocation": "18, 7",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 5,
-              "currentLocation": "17, 7",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 6,
-              "currentLocation": "18, 7",
-              "alive": false
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Crumbling Spire",
             "Description": "Search an ancient, abandoned tower for lost artifacts.",
             "NarrativePrompts": [
-              "In the middle of a desolate field, stands a gnarled, old tower. Its stone structure is crumbling, but it still holds a melancholy charm heavy with vanished vibrance.",
-              "Do you dare venture within these timeworn walls and discover its forgotten secrets, or choose to avoid the risks and move along?"
+              "In the middle of a desolate field, stands a gnarled, old tower. Its stone structure is crumbling, but it still holds a melancholy charm heavy with vanished vibrance."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
@@ -176,43 +154,31 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Forest Guardian",
-              "boss": false,
-              "id": 7,
-              "currentLocation": "2, 8",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "9, 3",
               "nature": 0,
               "name": "Dreadnaught",
               "boss": false,
-              "id": 8,
-              "currentLocation": "17, 10",
-              "alive": false
+              "id": 5,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Ancient Sentinel",
+              "spawnPoint": "3, 9",
+              "nature": 2,
+              "name": "Shadow Wisp",
               "boss": false,
-              "id": 9,
-              "currentLocation": "15, 4",
-              "alive": false
+              "id": 6,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Whispering Shadows",
             "Description": "Navigate through a dark cave rumored to hide an invaluable treasure.",
             "NarrativePrompts": [
-              "You suddenly stand before the mouth of a dark cave, where cold wind whispers ominous tales. Stories of a priceless artifact lost in its abysmal hollow speak to your curious instinct.",
-              "Would you step into the darkness to unearth the treasure, or respect the cave's enigma and march ahead?",
-              ": Steeling your courage, you step further into the looming darkness, leaving the world outside behind. The Dreadnaught's growls grow louder, setting your nerves on edge. Your path continues into the Whispering Shadows.",
-              ": As you scrabble in the dark, your hand brushes against something cold and metallic. Extracting it from the cave floor, you discover it's a key, worn by time but gleaming with potential."
+              "You suddenly stand before the mouth of a dark cave, where cold wind whispers ominous tales. Stories of a priceless artifact lost in its abysmal hollow speak to your curious instinct."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -235,30 +201,12 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "5, 9",
               "nature": 1,
               "name": "Ancient Sentinel",
               "boss": false,
-              "id": 10,
-              "currentLocation": "8, 3",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Shadow Wisp",
-              "boss": false,
-              "id": 11,
-              "currentLocation": "9, 8",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Rogue Elementalist",
-              "boss": false,
-              "id": 12,
-              "currentLocation": "3, 8",
+              "id": 7,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
@@ -266,12 +214,9 @@
             "ObjectiveName": "Echoes of History",
             "Description": "Unlock the mysteries behind an ancient temple's past.",
             "NarrativePrompts": [
-              "The Old Temple, a relic from a time past, captivates your senses. Its ancient architecture and faded murals hold a history waiting to be revealed.",
-              "Would you like to spend your time here unraveling the mysteries of the Temple, or continue on your quest without a second thought?",
-              ": As the Temple reverberates with the energies of the hostiles, a spectral figure appears, The Archivist, materializing before you. \"Your journey must continue, but not without help,\" she says, disappearing as swiftly as she emerged. A chest, previously ignored, opens revealing a shimmering weapon, the Crescent Blade. As the blade activates, a wave of silence sweeps through the temple, causing the enemies to dissipilate into the ether. \"Defend the balance,\" echoes The Archivist's fading voice.",
-              ": Crescent Blade. Finally, your hands feel the comforting weight of a weapon you can defend yourself with. The temple seems to sigh in relief, its ancient wards successfully protecting its secrets. The Old Temple fades into the background as you step outside, the Riverside in sight. Your journey goes on, but you're a better-equipped Twilight Harbinger now. \"Balance in all things...the past and the future...light and darkness,\" The Archivist's wisdom lingers in your mind like a sacred mantra, driving you forward."
+              "The Old Temple, a relic from a time past, captivates your senses. Its ancient architecture and faded murals hold a history waiting to be revealed."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -292,21 +237,30 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Ancient Sentinel",
-              "boss": false,
-              "id": 13,
-              "currentLocation": "7, 6",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "8, 11",
               "nature": 1,
               "name": "Forest Guardian",
               "boss": false,
-              "id": 14,
-              "currentLocation": "1, 16",
+              "id": 8,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "6, 2",
+              "nature": 0,
+              "name": "Dreadnaught",
+              "boss": false,
+              "id": 9,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "10, 6",
+              "nature": 0,
+              "name": "Rogue Elementalist",
+              "boss": false,
+              "id": 10,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
@@ -314,13 +268,9 @@
             "ObjectiveName": "Heights of Solitude",
             "Description": "Ensure safe traversal while battling harsh, unpredictable weather.",
             "NarrativePrompts": [
-              "You find yourself amidst towering, daunting mountains. The path ahead is marked by a treacherous pass, accompanied by an unwelcoming chill.",
-              "Would you brave the looming heights and unpredictable weather, or find a less dangerous route?",
-              ": Venturing deeper into the dangerous pass, you feel the trepidation seeping into your bones. Will you hold your ground, prepare to face the unknown, or retreat?",
-              ": Your curiosity guides you towards an ominous cave. As you peek inside the darkness, an eerie silence descends. Will you enter, weapon in hand, or maintain a safe distance?",
-              ": Your shout reverberates off the cavernous walls before it is swallowed by an intimidating silence. An audible stir of unknown creatures echo from the depths. Do you press on or retreat?"
+              "You find yourself amidst towering, daunting mountains. The path ahead is marked by a treacherous pass, accompanied by an unwelcoming chill."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -341,39 +291,29 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "12, 7",
               "nature": 1,
               "name": "Ancient Sentinel",
               "boss": false,
-              "id": 15,
-              "currentLocation": "10, 8",
-              "alive": false
+              "id": 11,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Ancient Sentinel",
+              "spawnPoint": "12, 17",
+              "nature": 2,
+              "name": "Shadow Wisp",
               "boss": false,
-              "id": 16,
-              "currentLocation": "13, 5",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Rogue Elementalist",
-              "boss": false,
-              "id": 17,
-              "currentLocation": "1, 10",
-              "alive": false
+              "id": 12,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Flow of Serenity",
             "Description": "Catch rare fish species at the riverside for local fishermen.",
             "NarrativePrompts": [
-              "You approach the tranquil Riverside, where the water carries whispers of a rare fish species elusive to the local fishermen.",
-              "Do you rest by the Riverside and attempt to catch the elusive fish, or do you continue on your journey without halting for the pursuit?"
+              "You approach the tranquil Riverside, where the water carries whispers of a rare fish species elusive to the local fishermen."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
@@ -398,44 +338,31 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "6, 17",
               "nature": 0,
               "name": "Dreadnaught",
               "boss": false,
-              "id": 18,
-              "currentLocation": "2, 12",
-              "alive": false
+              "id": 13,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Dreadnaught",
+              "spawnPoint": "15, 7",
+              "nature": 2,
+              "name": "Shadow Wisp",
               "boss": false,
-              "id": 19,
-              "currentLocation": "2, 11",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Ancient Sentinel",
-              "boss": false,
-              "id": 20,
-              "currentLocation": "8, 16",
-              "alive": false
+              "id": 14,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Breath of Fire",
             "Description": "Venture into a fearsome dragon's lair and recover the stolen emerald gem.",
             "NarrativePrompts": [
-              "The path leads you to a smoking mountainside, rumored to house a fearsome Dragon. Its cavernous Lair supposedly holds a stolen, precious emerald gem.",
-              "Do you dare to confront the Beast in the search for the emerald gem, or take up a safer path steering clear of potential danger?",
-              " \"As you navigate deeper into the thick smoke of the Dragon's Lair, the air grows hotter with every step. The ominous presence of the Dreadnaughts hangs heavy in the silence. Through an opening in the cavern, you spot the vibrant glow of the precious emerald gem. Unfortunately, it's nestled under the tremendous, sleeping form of the Dragon. Do you dare to attempt the impossible and steal the gem from the Dragon? Or do you find a way to distract the Beast, using the Ancient Sentinel to your advantage?\"",
-              " \"In a stroke of bravery or folly, you grab a loose stone and toss it at the Dragon, awakened, it roars, stirring life into the dank Lair. You scuttle behind the Ancient Sentinel, hoping the beast might serve as a worthy adversary for the Dragon. As the Sentinel clashes with the Dragon, the cavern is filled with an earsplitting cacophony and flying rubble. Seizing the opportunity, you dash towards the emerald. Do you take the gem and run, or wait for the battle to end, risking it all for an even greater prize?\"",
-              " (Phoenix Feather) \"Utilizing the element of surprise, you snatch up the emerald gem and dart towards the exit. Explosions echo in your wake as the Dragon and the Sentinel continue the epic clash. Barely making your way out of the Lair, you escape into the quiet night, leaving the fiery chaos behind. Embracing your triumph, you continue your journey, unaware of the special Phoenix Feather you obtained in the collision between the Dragon and Ancient Sentinel. Its mystical properties are rumored to hold potent healing powers.\""
+              "The path leads you to a smoking mountainside, rumored to house a fearsome Dragon. Its cavernous Lair supposedly holds a stolen, precious emerald gem."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         },
@@ -454,12 +381,12 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "2, 12",
               "nature": 1,
               "name": "Forest Guardian",
               "boss": true,
-              "id": 21,
-              "currentLocation": "16, 9",
+              "id": 15,
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
@@ -467,15 +394,9 @@
             "ObjectiveName": "Ruins of Time",
             "Description": "Explore the remnants of an ancient city believed to hold hidden power.",
             "NarrativePrompts": [
-              "An Ancient City lies in ruins before your eyes, its empty streets echoing tales of lost civilization believed to harbour a hidden power.",
-              "Do you chart a course and delve into the ancient ruins, or take back your steps to avoid any dormant danger?",
-              ": As you venture deeper into the ruins, the echoes of the past grow louder. Ancient murals depict tales of a grand civilization, now lost to time. The path ahead splits into three. An inscription on an old stone plinth stands before them: \"Courage in the path of the lion, Wisdom in the way of the owl, and Strength in the stride of the ox.\" Which path will you take?",
-              ": Choosing the path of Strength, you march forth into the realm of the ox. The air grows denser, the silence deeper. In the far distance, a resonating rumble echoes. Suddenly, out of the encroaching shadows, appears a Rogue Elementalist. Her eyes glow with dark magic, while her hands blaze with uncontrolled ether. Will you fight, or attempt to reason with her?",
-              ": You bravely question the rogue elementalist. For a moment, her fiery eyes soften. \"I am a guardian who strayed from the path… Lost in the pursuit of power,\" she admits. An opportunity presents itself: Do you offer help or challenge her to relinquish her ill-gotten power?",
-              ": Moved by your offer of help, the Rogue Elementalist agrees to assist you. \"I have strayed too far, but perhaps I can still make things right,\" she concedes. With the Elementalist as your ally, the ruins's depths are less daunting and more secrets open to you. What will you do next?",
-              " (Starlit Staff): With a resigned sigh, the Rogue Elementalist hands you an ornate staff. \"This is the Starlit Staff. It was my tool, and now it's yours. Use it well, Twilight Harbinger,\" she tells you. As you turn to leave, with staff in hand and a new ally by your side, the path ahead feels just a bit brighter."
+              "An Ancient City lies in ruins before your eyes, its empty streets echoing tales of lost civilization believed to harbour a hidden power."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
           }
         }

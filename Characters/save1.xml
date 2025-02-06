@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>13</X>
-    <Y>18</Y>
+    <X>24</X>
+    <Y>11</Y>
   </playerPos>
   <Class>Knight</Class>
   <Race>Human</Race>
@@ -11,6 +11,16 @@
   <ManaPoints>40</ManaPoints>
   <currentMana>40</currentMana>
   <StatNames>
+    <string>Strength</string>
+    <string>Dexterity</string>
+    <string>Constitution</string>
+    <string>Intelligence</string>
+    <string>Charisma</string>
+    <string>Strength</string>
+    <string>Dexterity</string>
+    <string>Constitution</string>
+    <string>Intelligence</string>
+    <string>Charisma</string>
     <string>Strength</string>
     <string>Dexterity</string>
     <string>Constitution</string>

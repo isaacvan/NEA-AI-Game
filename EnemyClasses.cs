@@ -54,7 +54,8 @@ namespace EnemyClassesNamespace
                     damage *= 2;
                 }
 
-                Console.WriteLine($"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
+                Console.WriteLine(
+                    $"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
                 Console.WriteLine($"{Name} took {damage} damage.");
                 currentHealth -= damage;
                 Thread.Sleep(1000);
@@ -131,14 +132,19 @@ namespace EnemyClassesNamespace
 
     public class TimidContainer : EnemyConfig
     {
+        public static Random random = new Random();
+
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
-            Random random = new Random();
             bool valid = false;
             Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
             List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
             // up is 1, right is 2, down is 3, left is 4
-            while (!valid)
+
+            int maxAttempts = 100; // Prevent infinite loops
+            int attempts = 0;
+
+            while (!valid && attempts < maxAttempts)
             {
                 int nextMove = this.EnemyMovementLogic(game.player.playerPos, game, oldPoint);
                 string input = "";
@@ -181,7 +187,7 @@ namespace EnemyClassesNamespace
                         else
                         {
                             valid = false;
-                            newPoint = oldPoint;
+                            newPoint = UtilityFunctions.ClonePoint(oldPoint);
                         }
                     }
                     catch
@@ -189,6 +195,12 @@ namespace EnemyClassesNamespace
                         valid = false;
                     }
                 }
+                else
+                {
+                }
+                // Thread
+
+                attempts++;
             }
 
             return newPoint;
@@ -197,7 +209,7 @@ namespace EnemyClassesNamespace
         public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
         {
             var tiles = game.map.GetCurrentNode().tiles;
-            Random random = new Random();
+
 
             int sightRadius = 5;
             int distanceToPlayer =
@@ -241,10 +253,11 @@ namespace EnemyClassesNamespace
 
     public class NeutralContainer : EnemyConfig
     {
+        public static Random random = new Random();
+
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
             // Static Random to prevent reinitialization
-            Random random = new Random();
 
             // 50% chance the enemy doesn't move
             if (random.NextDouble() > 0.5)
@@ -323,21 +336,25 @@ namespace EnemyClassesNamespace
 
         public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
         {
-            Random random = new Random();
             return random.Next(1, 5);
         }
     }
 
     public class AggressiveContainer : EnemyConfig
     {
+        public static Random random = new Random();
+
         public Point GetEnemyMovement(Point oldPoint, ref Game game)
         {
             bool valid = false;
-            Random random = new Random();
             Point newPoint = UtilityFunctions.ClonePoint(oldPoint);
             List<List<Tile>> tiles = game.map.GetCurrentNode().tiles;
             // up is 1, right is 2, down is 3, left is 4
-            while (!valid)
+
+            int attempts = 0;
+            int maxAttempts = 100;
+
+            while (!valid && attempts < maxAttempts)
             {
                 int nextMove = EnemyMovementLogic(game.player.playerPos, game, oldPoint);
                 string input = "";
@@ -380,7 +397,7 @@ namespace EnemyClassesNamespace
                         else
                         {
                             valid = false;
-                            newPoint = oldPoint;
+                            newPoint = UtilityFunctions.ClonePoint(oldPoint);
                         }
                     }
                     catch
@@ -388,6 +405,8 @@ namespace EnemyClassesNamespace
                         valid = false;
                     }
                 }
+
+                attempts++;
             }
 
             return newPoint;
@@ -396,7 +415,6 @@ namespace EnemyClassesNamespace
         public int EnemyMovementLogic(Point playerPos, Game game, Point currentEnemyPos)
         {
             var tiles = game.map.GetCurrentNode().tiles;
-            Random random = new Random();
 
             int sightRadius = 10;
             int distanceToPlayer =
@@ -534,6 +552,11 @@ namespace EnemyClassesNamespace
     {
         public Dictionary<string, AttackInfo> attackBehaviours = new Dictionary<string, AttackInfo>();
 
+        [Newtonsoft.Json.JsonConstructor]
+        public AttackBehaviourFactory()
+        {
+        }
+
         public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative,
             Type targetType, int manacost)
         {
@@ -576,9 +599,17 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                RegisterAttackBehaviour(behaviour.Key, behaviour.AttackInfo.ExpressionString ?? behaviour.AttackInfo.Expression.ToString(),
-                    behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player),
-                    behaviour.AttackInfo.Manacost);
+                if (behaviour == null || behaviour.AttackInfo.ExpressionString == null)
+                {
+                    Program.logger.Info($"Null behaviour spotted: {behaviour.AttackInfo.Name ?? "Fully Null"}. Will attempt fix in uninitialised fix");
+                }
+                else
+                {
+                    RegisterAttackBehaviour(behaviour.Key,
+                        behaviour.AttackInfo.ExpressionString ?? behaviour.AttackInfo.Expression.ToString(),
+                        behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player),
+                        behaviour.AttackInfo.Manacost);
+                }
             }
         }
     }
@@ -596,6 +627,10 @@ namespace EnemyClassesNamespace
 
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
+
+        public AttackInfo()
+        {
+        }
 
         public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name,
             string narrative, int manacost)

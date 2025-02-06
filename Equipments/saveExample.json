@@ -5,7 +5,25 @@
     "Legs": null
   },
   "WeaponSlots": {
-    "Weapon": null,
+    "Weapon": {
+      "Damage": 25,
+      "WeaponType": "Sword",
+      "UniqueProperties": "+5 Strength",
+      "AttackBehaviour": "MoonSlash",
+      "StatusNames": [],
+      "NarrativeLine": "With a swift arc, the blade carves the air, leaving a trail of blood.",
+      "Name": "Crescent Blade",
+      "Description": "A rare blade that curves like the moon, its edge gleams with a light unseen.",
+      "ItemType": "ItemFunctionsNamespace.Weapon, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 3
+    },
     "Accessory": null
+  },
+  "EquipmentEffectsApplied": {
+    "Head": false,
+    "Body": false,
+    "Legs": false,
+    "Weapon": false,
+    "Accessory": false
   }
 }

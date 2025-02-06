@@ -130,6 +130,9 @@ namespace GameClassNamespace
                 enemyFactory =
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
                 
+                // error-checking to ensure statuses are initialised
+                await normalNarrator.GenerateUninitialisedAttackBehaviours(chat);
+                
                 // check for files unwritten
                 // await checkAllFilesForMissing(gameSetup, chat, api, testing);
 
@@ -152,6 +155,9 @@ namespace GameClassNamespace
 
                 Console.WriteLine("Loaded save.");
             }
+            
+            // ensure itemf actory done
+            itemFactory.itemTemplates = itemFactory.GetAllTemplates();
             
             // fix map structure (links between connected nodes)
             map.fixMapStructure();

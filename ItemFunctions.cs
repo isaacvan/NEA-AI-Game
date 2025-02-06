@@ -47,7 +47,7 @@ namespace ItemFunctionsNamespace
 
         public void RemoveItem(Item item, int quant = 1)
         {
-            int index = Items.IndexOf(item);
+            int index = Items.Select(x => x.Name).ToList().IndexOf(item.Name);
             if (index != -1) // checking item exists
             {
                 Quantities[index] -= quant;
@@ -162,7 +162,7 @@ namespace ItemFunctionsNamespace
                     UnequipItem(slot, inventory);
                 }
 
-                ArmourSlots[slot] = (Armour)item;
+                ArmourSlots[slot] = item as Armour;
             }
             inventory.RemoveItem(item);  // Remove the item from inventory when equipped
         }
@@ -171,7 +171,11 @@ namespace ItemFunctionsNamespace
         {
             if (slot == EquippableItem.EquipLocation.Accessory || slot == EquippableItem.EquipLocation.Weapon)
             {
-                
+                if (WeaponSlots[slot] != null)
+                {
+                    inventory.AddItem(WeaponSlots[slot]);
+                    WeaponSlots[slot] = null;
+                }
             }
             else
             {
@@ -211,6 +215,11 @@ namespace ItemFunctionsNamespace
         public List<ConsumableTemplate> consumableTemplates { get; set; } = new List<ConsumableTemplate>();
         public List<ArmourTemplate> armourTemplates { get; set; } = new List<ArmourTemplate>();
         public List<ItemTemplate> itemTemplates { get; set; } = new List<ItemTemplate>();
+
+        public ItemFactory()
+        {
+            itemTemplates = GetAllTemplates();
+        }
 
         public List<ItemTemplate> GetAllTemplates()
         {

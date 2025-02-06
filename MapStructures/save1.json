@@ -118,7 +118,7 @@
               "name": "Undead",
               "boss": false,
               "id": 4,
-              "currentLocation": "26, 2",
+              "currentLocation": "21, 0",
               "alive": true
             },
             {
@@ -127,7 +127,7 @@
               "name": "Grey Wolf",
               "boss": false,
               "id": 5,
-              "currentLocation": "6, 4",
+              "currentLocation": "10, 12",
               "alive": true
             },
             {
@@ -136,7 +136,7 @@
               "name": "Goblin",
               "boss": false,
               "id": 6,
-              "currentLocation": "5, 11",
+              "currentLocation": "19, 13",
               "alive": true
             }
           ],

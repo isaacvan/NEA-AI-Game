@@ -15,6 +15,7 @@ Narrative: Should make sense if coming from an enemy or the player, like "throws
 For example:
 
 {
+"attackBehaviours"; {
   "Stab": {
     "Name": "Stab",
     "Expression": "target.ReceiveAttack(5, 60)",
@@ -23,6 +24,7 @@ For example:
     "Narrative": "stabs wildly."
   },
   ...
+  }
 }
 
 These are the names of the attack behaviours that you have not declared yet, and need to include in your output to this message. Bear in mind, all output must be in parsable JSON format. It is pivotal that you do not use any other commands except target.ReceiveAttack(damage, crit), else the system will break:

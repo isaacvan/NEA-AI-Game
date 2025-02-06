@@ -334,6 +334,8 @@ namespace UtilityFunctionsNamespace
             catch (JsonReaderException)
             {
                 Program.logger.Info($"Before FixJson: {json}");
+                
+                json = json.Substring(json.IndexOf('{'), json.Length - json.IndexOf('}') - 1);
 
                 // Remove markdown code block indicators
                 json = Regex.Replace(json, @"```json|```", "");
@@ -420,7 +422,7 @@ namespace UtilityFunctionsNamespace
 
         // load the class from the first line of the corresponding save. think of lines needed to add to the save. base stats can be generated from the class. will need exp, level. items.
 
-        public static void clearScreen(Player player)
+        public static void clearScreen(Player player, bool sidePrint = false)
         {
             Console.Clear();
             if (Program.testing)
@@ -434,6 +436,11 @@ namespace UtilityFunctionsNamespace
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("MODE: Game");
                 Console.ResetColor();
+            }
+            
+            if (sidePrint)
+            {
+                return;
             }
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -468,7 +475,7 @@ namespace UtilityFunctionsNamespace
             {
                 Console.WriteLine($"LEVEL: {player.Level}");
                 DisplayExpBar(player.currentExp, player.maxExp, 80);
-                Console.WriteLine(DrawHealthBar(player));
+                Console.WriteLine("\n" + DrawHealthBar(player));
                 //DisplayHealthBar(player.currentHealth, player.maxHealth, Console.WindowWidth);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"X: {player.playerPos.X} Y: {player.playerPos.Y}");
@@ -671,7 +678,23 @@ namespace UtilityFunctionsNamespace
             Console.Write("EXP: [");
             Console.Write("\x1b[94m" + filledPart + "\x1b[0m");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(emptyPart + "] " + currentExp + "/" + maxExp);
+            Console.Write(emptyPart + "] " + currentExp + "/" + maxExp);
+        }
+        
+        public static string ReturnExpBar(int currentExp, int maxExp, int barLength)
+        {
+            double progress = (double)currentExp / maxExp;
+            barLength -= 15;
+            int filledLength = (int)(barLength * progress);
+
+            string filledPart = new string('█', filledLength);
+            string emptyPart = new string('-', barLength - filledLength);
+
+            string finalToPrint = "EXP: [" + "\x1b[94m" + filledPart + "\x1b[38;2;255;255;255m";
+            Console.ForegroundColor = ConsoleColor.White;
+            finalToPrint += emptyPart + "] " + currentExp + "/" + maxExp;
+            
+            return finalToPrint;
         }
 
         public static int[] getShadeFromDist(int initialr, int initialg, int initialb, double dist, int scopew,

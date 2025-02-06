@@ -191,7 +191,7 @@ namespace CombatNamespace
                 {
                     if (attack != null)
                     {
-                        UtilityFunctions.TypeText(new TypeText(newLine: false), $"Slot #{i} ---> {attack.Name}");
+                        UtilityFunctions.TypeText(new TypeText(newLine: true), $"Slot #{i} ---> {attack.Name}");
                         i++;
                     }
                 }

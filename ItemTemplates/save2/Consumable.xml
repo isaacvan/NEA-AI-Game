@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+    <Consumable>
+        <Name>Elonim Elixir</Name>
+        <Description>A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.</Description>
+        <Effect>Restores Health and ManaPoints</Effect>
+        <UniqueProperties>+30 Health, +20 ManaPoints</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Stone Seed</Name>
+        <Description>A seed from the heart of Elonim. It can sprout a barrier of stone, provides protection in dire situations.</Description>
+        <Effect>Creates Defensive Barrier</Effect>
+        <UniqueProperties>Provides +10 Defence for 3 turns</UniqueProperties>
+    </Consumable>
+    <Consumable>
+        <Name>Moonlight Nectar</Name>
+        <Description>A sweet, glowing drink that heightens acuity and perceptions.</Description>
+        <Effect>Boosts Intelligence and Dexterity</Effect>
+        <UniqueProperties>+5 Intelligence, +5 Dexterity for 5 turns</UniqueProperties>
+    </Consumable>
+</Item>

@@ -43,6 +43,7 @@ namespace MainNamespace
         //
         // ITEMS
         // - make items actually change player stats
+        // OVERWRITE ITEMS THAT ARE NULL IN BEHAVIOURS
         //
         // DUNGEON MASTER ADDITIONS
         // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
@@ -242,7 +243,6 @@ namespace MainNamespace
                 if (enemy.nature == Nature.timid)
                 {
                     container = new TimidContainer();
-                    container.GetEnemyMovement(oldPoint, ref game);
                 }
                 else if (enemy.nature == Nature.neutral)
                 {
@@ -272,8 +272,15 @@ namespace MainNamespace
 
                 enemy.currentLocation = newPoint;
                 enemy.spawnPoint = Point.Empty;
-
-                GridFunctions.MoveEnemy(oldPoint, newPoint, ref game);
+                try
+                {
+                    GridFunctions.MoveEnemy(oldPoint, newPoint, ref game);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    // dont move that sht
+                }
+                
             }
         }
 
@@ -282,6 +289,8 @@ namespace MainNamespace
             if (GetAllowedInputs("CharacterMenu").Contains(input))
             {
                 game.uiConstructer.drawCharacterMenu(game);
+                UtilityFunctions.TypeText(new TypeText(), "\nPress any key to continue...");
+                Console.ReadKey(true);
             }
 
             if (GetAllowedInputs("Map").Contains(input))
@@ -456,6 +465,11 @@ namespace MainNamespace
                 }
 
                 //Console.WriteLine("All game data saved successfully.");
+
+                if (game.map != null)
+                {
+                    game.map.saveMapStructure();
+                }
             }
             catch (Exception ex)
             {
@@ -916,6 +930,8 @@ namespace MainNamespace
                     n.Obj.NarrativePrompts.Add(temp);
                 }
             }
+            
+            
 
             // gotten save to reset, now start resetting.
             game.player = await UtilityFunctions.readFromXMLFile<Player>(UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + finalPathName + ".xml", new Player());

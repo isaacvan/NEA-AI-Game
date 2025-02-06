@@ -82,7 +82,8 @@ namespace PlayerClassesNamespace
             {
                 if (!equipment.EquipmentEffectsApplied[loc])
                 {
-                    if ((equipment.ArmourSlots.ContainsKey(loc) && equipment.ArmourSlots[loc] != null) || (equipment.WeaponSlots.ContainsKey(loc) && equipment.WeaponSlots[loc] != null))
+                    if ((equipment.ArmourSlots.ContainsKey(loc) && equipment.ArmourSlots[loc] != null) ||
+                        (equipment.WeaponSlots.ContainsKey(loc) && equipment.WeaponSlots[loc] != null))
                     {
                         // apply effect
                         if (loc == EquippableItem.EquipLocation.Head || loc == EquippableItem.EquipLocation.Body ||
@@ -103,9 +104,12 @@ namespace PlayerClassesNamespace
                                         {
                                             if (info.Name.ToLower().Contains(stat.ToLower()))
                                             {
-                                                int.TryParse((string)info.GetValue(this), out int prevValue);
-                                                info.SetValue(this, prevValue + value);
-                                                equipment.EquipmentEffectsApplied[loc] = true;
+                                                if (int.TryParse(Convert.ToString(info.GetValue(this)),
+                                                        out int prevValue))
+                                                {
+                                                    info.SetValue(this, prevValue + value);
+                                                    equipment.EquipmentEffectsApplied[loc] = true;
+                                                }
                                             }
                                         }
                                     }
@@ -129,7 +133,7 @@ namespace PlayerClassesNamespace
                                         {
                                             if (info.Name.ToLower().Contains(stat.ToLower()))
                                             {
-                                                int.TryParse((string)info.GetValue(this), out int prevValue);
+                                                int.TryParse(Convert.ToString(info.GetValue(this)), out int prevValue);
                                                 info.SetValue(this, prevValue + value);
                                                 equipment.EquipmentEffectsApplied[loc] = true;
                                             }
@@ -140,6 +144,27 @@ namespace PlayerClassesNamespace
                         }
                     }
                 }
+            }
+        }
+
+        public void amendWeaponAttacks(Game game)
+        {
+            if (equipment.WeaponSlots[EquippableItem.EquipLocation.Weapon] == null) return;
+            AttackInfo attack =
+                game.attackBehaviourFactory.GetAttackInfo(equipment.WeaponSlots[EquippableItem.EquipLocation.Weapon]
+                    .AttackBehaviour);
+            if (!PlayerAttacks.ContainsValue(attack))
+            {
+                List<AttackSlot> freeSlots = new List<AttackSlot>();
+                foreach (var kvp in PlayerAttacks)
+                {
+                    if (kvp.Value == null)
+                    {
+                        freeSlots.Add(kvp.Key);
+                    }
+                }
+
+                PlayerAttacks[freeSlots.First()] = attack;
             }
         }
 

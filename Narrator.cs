@@ -1060,7 +1060,7 @@ namespace GPTControlNamespace
                 {
                     if (property.Name == "AttackBehaviour")
                     {
-                        if (initialisedAttackBehaviours.Contains(weaponTemplate.AttackBehaviour) == false)
+                        if (initialisedAttackBehaviours.Contains(weaponTemplate.AttackBehaviour) == false )
                         {
                             uninitialisedAttackBehaviours.Add(weaponTemplate.AttackBehaviour);
                         }
@@ -1090,6 +1090,22 @@ namespace GPTControlNamespace
                     }
                 }
             }
+            
+            // check for null attack expressions
+            List<AttackInfo> behavioursToRemove = new List<AttackInfo>();
+            foreach (var attackBehaviour in Program.game.attackBehaviourFactory.attackBehaviours)
+            {
+                if (string.IsNullOrEmpty(attackBehaviour.Value.ExpressionString))
+                {
+                    uninitialisedAttackBehaviours.Add(attackBehaviour.Key);
+                    behavioursToRemove.Add(attackBehaviour.Value);
+                }
+            }
+
+            foreach (var behaviour in behavioursToRemove)
+            {
+                Program.game.attackBehaviourFactory.attackBehaviours.Remove(behaviour.Name);
+            }
 
             if (uninitialisedAttackBehaviours.Count == 0)
             {
@@ -1116,9 +1132,8 @@ namespace GPTControlNamespace
             }
 
             output = await UtilityFunctions.FixJson(output);
-
-            AttackBehaviourFactory? tempAttackBehaviourFactory = new AttackBehaviourFactory();
-            tempAttackBehaviourFactory =
+            
+            AttackBehaviourFactory tempAttackBehaviourFactory =
                 JsonConvert.DeserializeObject<AttackBehaviourFactory>(
                     output);
 

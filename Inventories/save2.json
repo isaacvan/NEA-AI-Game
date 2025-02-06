@@ -1,0 +1,20 @@
+{
+  "Items": [
+    {
+      "Name": "Elonim Elixir",
+      "Description": "A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.",
+      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 0
+    },
+    {
+      "Name": "Elonim Elixir",
+      "Description": "A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.",
+      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 0
+    }
+  ],
+  "Quantities": [
+    1,
+    1
+  ]
+}

@@ -1,0 +1,3 @@
+INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
+
+OUTPUT: "Through the ominous forest, you sight a cave and an old temple in the distance. Yet a Dreadnaught lurks

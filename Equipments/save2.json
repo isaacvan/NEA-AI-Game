@@ -1,0 +1,37 @@
+{
+  "ArmourSlots": {
+    "Head": null,
+    "Body": null,
+    "Legs": {
+      "Defence": 8,
+      "DefensiveCapabilities": "Gives a high chance to dodge attacks",
+      "UniqueProperties": "+2 Dexterity, +1 Charisma",
+      "Name": "Elonim's Sandals",
+      "Description": "Light, yet sturdy sandals perfect for a wanderer's long journey.",
+      "ItemType": "ItemFunctionsNamespace.Armour, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 2
+    }
+  },
+  "WeaponSlots": {
+    "Weapon": {
+      "Damage": 10,
+      "WeaponType": "Sling Stone",
+      "UniqueProperties": "+2 Strength",
+      "AttackBehaviour": "Earthstrike",
+      "StatusNames": [],
+      "NarrativeLine": "The sling stone hits with a force beyond its size, staggering the enemy.",
+      "Name": "Elonim's Grit",
+      "Description": "The soil of Elonim, hardened and compressed into a deadly sling projectile. It's said to carry the weight of the entire homeland.",
+      "ItemType": "ItemFunctionsNamespace.Weapon, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 3
+    },
+    "Accessory": null
+  },
+  "EquipmentEffectsApplied": {
+    "Head": false,
+    "Body": false,
+    "Legs": true,
+    "Weapon": true,
+    "Accessory": false
+  }
+}

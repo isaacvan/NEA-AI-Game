@@ -243,7 +243,7 @@ namespace TestNarratorNamespace
                         Converters = new List<JsonConverter> { new LambdaJsonConverter() }
                     };
                     Dictionary<string, AttackInfo> attackBehaviours =
-                        JsonConvert.DeserializeObject<Dictionary<string, AttackInfo>>(json, settings);
+                        JsonConvert.DeserializeObject<AttackBehaviourFactory>(json, settings).attackBehaviours;
                     List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
                     foreach (KeyValuePair<string, AttackInfo> kvp in attackBehaviours)
                     {
