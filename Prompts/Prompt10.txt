@@ -11,6 +11,7 @@ Key: Should be the name of the attack, like "Fireball".
 ExpressionString: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
 Statuses: These are the status effects that the attack applies.
 Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
+AttackType: Strictly: "Attack", "Heal", "Debuff", "Buff"
 
 For example:
 
@@ -22,6 +23,7 @@ For example:
     "Manacost": 2
     "Statuses": []
     "Narrative": "stabs wildly."
+    "AttackType": "Attack"
   },
   ...
   }

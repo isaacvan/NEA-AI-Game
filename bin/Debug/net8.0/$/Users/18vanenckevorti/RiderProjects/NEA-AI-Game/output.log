@@ -1,2 +1,8 @@
-2025-02-07 15:20:53.9245|INFO|MainNamespace.Program|Program started
-2025-02-07 15:20:53.9577|INFO|MainNamespace.Program|Running mode=game
+2025-02-09 18:26:17.2537|INFO|MainNamespace.Program|Program started
+2025-02-09 18:26:17.2988|INFO|MainNamespace.Program|Running mode=game
+2025-02-09 18:26:19.7639|INFO|MainNamespace.Program|Initialising Item Factory...
+2025-02-09 18:26:19.8035|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2025-02-09 18:26:19.8077|INFO|MainNamespace.Program|Enemy Factory Initialised
+2025-02-09 18:26:19.8089|INFO|MainNamespace.Program|Generating Uninitialised Attack Behaviours...
+2025-02-09 18:26:19.8089|INFO|MainNamespace.Program|No uninitialised attack behaviours found
+2025-02-09 18:26:19.9278|INFO|MainNamespace.Program|Game mode

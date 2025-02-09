@@ -43,8 +43,9 @@ namespace EnemyClassesNamespace
         public int Level { get; set; }
         public Point Position { get; set; }
         public int Id { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public bool RequestingOutpOnly { get; set; } = false;
 
-        public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
+        public int ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
             {
@@ -58,38 +59,46 @@ namespace EnemyClassesNamespace
                     damage *= 2;
                 }
 
-                Console.WriteLine(
+                if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), 
                     $"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
-                Console.WriteLine($"{Name} took {damage} damage.");
+                if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"{Name} took {damage} damage.");
                 currentHealth -= damage;
                 Thread.Sleep(1000);
                 UtilityFunctions.clearScreen(Program.game.player);
+                
+                return damage;
             }
             else
             {
                 Program.logger.Error("No current combat. Attempt to receive attack failed.");
+                throw new Exception("No current combat.");
             }
         }
 
-        public void ExecuteAttack(string key, Player target)
+        public void ExecuteAttack(string key, Player target, bool requestingOutpOnly = false)
         {
             if (Program.game.attackBehaviourFactory.attackBehaviours.TryGetValue(key, out var attackInfo))
             {
                 try
                 {
+                    if (!requestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"Enemy used {key}!");
+                    
                     // Debugging: Ensure expression and parameters are correct
                     var expression = attackInfo.Expression; // e.g., "target.ReceiveAttack(20, 25)"
                     var parameters = new[] { new Parameter("target", typeof(Player)) };
 
                     // Debugging: Log the expression and parameter information
-                    Program.logger.Info($"Expression to parse: {expression}");
-                    Program.logger.Info($"Target type: {target.GetType().FullName}");
+                    if (!requestingOutpOnly) Program.logger.Info($"Expression to parse: {expression}");
+                    if (!requestingOutpOnly) Program.logger.Info($"Target type: {target.GetType().FullName}");
 
                     // Parse the expression with the correct context
                     var attackExpression = UtilityFunctions.interpreter.Parse(expression.ExpressionText, parameters);
 
                     // Invoke the parsed expression
+                    if (requestingOutpOnly) target.RequestingOutpOnly = true;
                     attackExpression.Invoke(target); // Execute the script
+                    target.RequestingOutpOnly = false;
+                    
                     currentMana -= attackInfo.Manacost;
                     if (currentMana < 0)
                     {
@@ -100,14 +109,18 @@ namespace EnemyClassesNamespace
                     // Optionally handle modifiers here or within the script itself
                     foreach (var effect in attackInfo.Statuses)
                     {
-                        Program.logger.Info($"Applying effect: {effect}");
+                        if (!requestingOutpOnly) Program.logger.Info($"Applying effect: {effect}");
                         // APPLY STATUSES
                     }
+                    
+                    UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
+                    Console.ReadKey(true);
                 }
                 catch (Exception ex)
                 {
                     Program.logger.Error($"Error invoking attack expression: {ex.Message}");
                     Program.logger.Error($"Stack Trace: {ex.StackTrace}");
+                    throw new Exception($"Check logs: {ex.Message}");
                 }
             }
             else
@@ -562,7 +575,7 @@ namespace EnemyClassesNamespace
         }
 
         public void RegisterAttackBehaviour(string key, string expression, List<string> statuses, string narrative,
-            Type targetType, int manacost)
+            Type targetType, int manacost, string attackType)
         {
             Parameter[] parameters = null;
             if (targetType == typeof(Player))
@@ -581,7 +594,7 @@ namespace EnemyClassesNamespace
             Lambda parsedScript = UtilityFunctions.interpreter.Parse(expression, parameters);
 
             AttackInfo attackInfo =
-                new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative, manacost);
+                new AttackInfo(parsedScript, parsedScript.ToString(), statuses, key, narrative, manacost, attackType);
             attackBehaviours[key] = attackInfo;
         }
 
@@ -612,7 +625,7 @@ namespace EnemyClassesNamespace
                     RegisterAttackBehaviour(behaviour.Key,
                         behaviour.AttackInfo.ExpressionString ?? behaviour.AttackInfo.Expression.ToString(),
                         behaviour.AttackInfo.Statuses, behaviour.AttackInfo.Narrative, typeof(Player),
-                        behaviour.AttackInfo.Manacost);
+                        behaviour.AttackInfo.Manacost, behaviour.AttackInfo.AttackType);
                 }
             }
         }
@@ -631,13 +644,14 @@ namespace EnemyClassesNamespace
 
         public List<string> Statuses { get; set; }
         public string Narrative { get; set; }
+        public string AttackType { get; set; } // Attack, Heal, Buff, Debuff
 
         public AttackInfo()
         {
         }
 
         public AttackInfo(Lambda expression, string expressionString, List<string> statuses, string name,
-            string narrative, int manacost)
+            string narrative, int manacost, string attackType)
         {
             Expression = expression;
             ExpressionString = expressionString;
@@ -650,6 +664,7 @@ namespace EnemyClassesNamespace
             Name = name;
             Narrative = narrative;
             Manacost = manacost;
+            AttackType = attackType;
         }
     }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>20</X>
-    <Y>4</Y>
+    <X>18</X>
+    <Y>9</Y>
   </playerPos>
   <Class>Mystic Wanderer</Class>
   <Race>Elonim</Race>

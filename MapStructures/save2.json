@@ -282,7 +282,7 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 12,
-              "currentLocation": "20, 3",
+              "currentLocation": "40, 7",
               "alive": true
             }
           ],

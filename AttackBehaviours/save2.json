@@ -5,7 +5,8 @@
       "ExpressionString": "target.ReceiveAttack(5, 20)",
       "Manacost": 0,
       "Statuses": [],
-      "Narrative": "swings a basic attack."
+      "Narrative": "swings a basic attack.",
+      "AttackType": "Attack"
     },
     "FeralClaws": {
       "Name": "FeralClaws",
@@ -14,7 +15,8 @@
       "Statuses": [
         "Bleed"
       ],
-      "Narrative": "swipes violently with its claws."
+      "Narrative": "swipes violently with its claws.",
+      "AttackType": "Attack"
     },
     "VenomousBite": {
       "Name": "VenomousBite",
@@ -23,7 +25,8 @@
       "Statuses": [
         "Poisoned"
       ],
-      "Narrative": "bites with venomous fangs."
+      "Narrative": "bites with venomous fangs.",
+      "AttackType": "Attack"
     },
     "TailSwipe": {
       "Name": "TailSwipe",
@@ -32,7 +35,8 @@
       "Statuses": [
         "Stunned"
       ],
-      "Narrative": "strikes with a powerful tail swipe."
+      "Narrative": "strikes with a powerful tail swipe.",
+      "AttackType": "Attack"
     },
     "DemonicRoar": {
       "Name": "DemonicRoar",
@@ -41,7 +45,8 @@
       "Statuses": [
         "Fear"
       ],
-      "Narrative": "unleashes a terrifying roar."
+      "Narrative": "unleashes a terrifying roar.",
+      "AttackType": "Debuff"
     },
     "EtherealSword": {
       "Name": "EtherealSword",
@@ -51,7 +56,8 @@
         "Armor Break",
         "Slowed"
       ],
-      "Narrative": "strikes with a sword formed from pure energy."
+      "Narrative": "strikes with a sword formed from pure energy.",
+      "AttackType": "Attack"
     },
     "NecroticBolt": {
       "Name": "NecroticBolt",
@@ -61,7 +67,8 @@
         "Poisoned",
         "Weakened"
       ],
-      "Narrative": "throws a bolt of necrotic energy."
+      "Narrative": "throws a bolt of necrotic energy.",
+      "AttackType": "Attack"
     },
     "ArcaneExplosion": {
       "Name": "ArcaneExplosion",
@@ -71,7 +78,8 @@
         "Stunned",
         "Burned"
       ],
-      "Narrative": "envelops the area in an arcane explosion."
+      "Narrative": "envelops the area in an arcane explosion.",
+      "AttackType": "Attack"
     },
     "AstralBlast": {
       "Name": "AstralBlast",
@@ -81,7 +89,8 @@
         "Stun",
         "Mental Exhaustion"
       ],
-      "Narrative": "unleashes a powerful astral blast."
+      "Narrative": "unleashes a powerful astral blast.",
+      "AttackType": "Attack"
     },
     "Earthstrike": {
       "Name": "Earthstrike",
@@ -91,7 +100,8 @@
         "Slow",
         "Armor Reduction"
       ],
-      "Narrative": "strikes the ground, causing an earth-shattering impact."
+      "Narrative": "strikes the ground, causing an earth-shattering impact.",
+      "AttackType": "Attack"
     },
     "SoothingMelody": {
       "Name": "SoothingMelody",
@@ -101,7 +111,8 @@
         "Heal",
         "Calm"
       ],
-      "Narrative": "plays a soothing melody that revitalizes"
+      "Narrative": "plays a soothing melody that revitalizes",
+      "AttackType": "Heal"
     }
   }
 }

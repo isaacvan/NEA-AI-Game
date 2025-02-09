@@ -146,7 +146,7 @@ namespace CombatNamespace
                     enemiesAlive[enemy] = false;
                 }
             }
-            
+
             if (player.currentHealth <= 0)
             {
                 // player is dead
@@ -195,10 +195,10 @@ namespace CombatNamespace
                         i++;
                     }
                 }
-                
+
                 UtilityFunctions.TypeText(new TypeText(), "\n" + UtilityFunctions.universalSeperator);
                 UtilityFunctions.TypeText(new TypeText(), "Please enter an attack");
-                
+
                 try
                 {
                     int input = Convert.ToInt16(Console.ReadKey(true).KeyChar.ToString());
@@ -217,7 +217,8 @@ namespace CombatNamespace
                             if (player.currentMana - Convert.ToInt16(parameters.Last().Value) < 0)
                             {
                                 // player doesnt have enough mana
-                                UtilityFunctions.TypeText(new TypeText(), $"You do not have enough mana to cast this skill.");
+                                UtilityFunctions.TypeText(new TypeText(),
+                                    $"You do not have enough mana to cast this skill.");
                             }
                             else
                             {
@@ -229,15 +230,13 @@ namespace CombatNamespace
                         {
                             Program.logger.Info("Last param in receiveAttack() isn't manacost. changed by accident?");
                         }
-
-                        
                     }
                 }
                 catch
                 {
                     UtilityFunctions.clearScreen(player);
                     UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
-                    UtilityFunctions.TypeText(new TypeText(), 
+                    UtilityFunctions.TypeText(new TypeText(),
                         $"Invalid input. Input should range from 1 - {player.PlayerAttacks.Values.Count}.");
                 }
             }
@@ -253,7 +252,8 @@ namespace CombatNamespace
             if (enemies.Count > 1) // AND ISNT AOE TARGETTING
             {
                 UtilityFunctions.clearScreen(player);
-                UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                UtilityFunctions.TypeText(new TypeText(),
+                    $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                 int i = 1;
                 foreach (Enemy en in enemies.Values)
                 {
@@ -289,11 +289,13 @@ namespace CombatNamespace
                         UtilityFunctions.TypeText(new TypeText(), "Invalid input.");
                         Thread.Sleep(500);
                         UtilityFunctions.clearScreen(player);
-                        UtilityFunctions.TypeText(new TypeText(), $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
+                        UtilityFunctions.TypeText(new TypeText(),
+                            $"There are {enemies.Count} enemies in this battle. Which enemy would you like to target?");
                         int i1 = 1;
                         foreach (Enemy en in enemies.Values)
                         {
-                            UtilityFunctions.TypeText(new TypeText(), $"{i1}: {en.Name} - {en.currentHealth}/{en.Health}");
+                            UtilityFunctions.TypeText(new TypeText(),
+                                $"{i1}: {en.Name} - {en.currentHealth}/{en.Health}");
                             i1++;
                         }
                     }
@@ -304,7 +306,7 @@ namespace CombatNamespace
             {
                 target = (Enemy)enemy;
             }
-            
+
             UtilityFunctions.clearScreen(this.player);
 
             UtilityFunctions.TypeText(new TypeText(), $"You used {attackInfo.Name}!");
@@ -315,29 +317,280 @@ namespace CombatNamespace
 
         public void aggressiveEnemyTurnAction()
         {
-            // enemy turn logic. Implement logic based off enemy natures.
             turnCount++;
 
-            // more
+            // Get the best action using MCTS
+            AttackInfo bestAttack = MCTS(enemy, player, simulations: 1000, maxDepth: 5);
+
+            // Execute the best attack
+            enemy.ExecuteAttack(bestAttack.Name, player);
+
+            Thread.Sleep(1500);
+            UtilityFunctions.clearScreen(player);
+        } 
+        
+        // -------------------------------------------
+        // Monte Carlo Tree Search (MCTS) for Enemy AI
+        // -------------------------------------------
+        public AttackInfo MCTS(Enemy enemy, Player player, int simulations, int maxDepth)
+        {
+            Random rng = new Random();
+            List<AttackInfo> possibleActions = enemy.AttackBehaviours.Values.ToList();
+
+            Dictionary<AttackInfo, double> attackScores = new Dictionary<AttackInfo, double>();
+
+            foreach (var attack in possibleActions)
+                attackScores[attack] = 0;
+
+            for (int i = 0; i < simulations; i++)
+            {
+                AttackInfo chosenAttack = possibleActions[rng.Next(possibleActions.Count)];
+                double score = SimulateCombat(enemy, player, chosenAttack, maxDepth);
+                attackScores[chosenAttack] += score;
+            }
+
+            // Select the best attack based on highest score
+            return attackScores.OrderByDescending(kvp => kvp.Value).First().Key;
         }
+
+        // -------------------------------------------
+        // Combat Simulation for MCTS
+        // -------------------------------------------
+        public double SimulateCombat(Enemy enemy, Player player, AttackInfo firstMove, int maxDepth)
+        {
+            Random rng = new Random();
+
+            // Clone enemy and player states
+            Enemy simEnemy = CloneUtility.DeepClone<Enemy>(enemy);
+            Player simPlayer = CloneUtility.DeepClone<Player>(player);
+
+            int depth = 0;
+            simEnemy.ExecuteAttack(firstMove.Name, simPlayer, true); // Simulate the first attack
+
+            while (simPlayer.currentHealth > 0 && simEnemy.currentHealth > 0 && depth < maxDepth)
+            {
+                depth++;
+
+                if (simPlayer.currentHealth <= 0) return 1000; // High reward for defeating player
+
+                List<AttackInfo> playerAttacks = simPlayer.PlayerAttacks.Values.ToList();
+                simPlayer.ExecuteAttack((AttackSlot)rng.Next(0, playerAttacks.Count()), simEnemy, true);
+
+                if (simEnemy.currentHealth <= 0) return -1000; // High penalty for losing
+
+                List<AttackInfo> enemyAttacks = simEnemy.AttackBehaviours.Values.ToList();
+                AttackInfo enemyMove = enemyAttacks[rng.Next(enemyAttacks.Count)];
+                simEnemy.ExecuteAttack(enemyMove.Name, simPlayer, true);
+            }
+
+            // Reward function: prioritize high damage dealt, low damage taken
+            return (enemy.Health - simEnemy.currentHealth) - (player.Health - simPlayer.currentHealth);
+        } 
+        
+        // -------------------------------------------
+        // Utility: Clone Enemy and Player (Avoid Mutations in Simulations)
+        // -------------------------------------------
+        public static class CloneUtility
+        {
+            public static T DeepClone<T>(T original) where T : new()
+            {
+                if (original == null) throw new ArgumentNullException(nameof(original));
+
+                T clone = new T();
+                foreach (PropertyInfo property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    if (property.CanRead && property.CanWrite)
+                    {
+                        object value = property.GetValue(original);
+                        property.SetValue(clone, value);
+                    }
+                }
+                return clone;
+            }
+        }
+
 
         public void neutralEnemyTurnAction()
         {
-            // enemy turn logic. Implement logic based off enemy natures.
             turnCount++;
 
-            // more
+            // threshoolds for state based approach
+            bool isLowHealth = enemy.currentHealth < (enemy.Health * 0.3);
+            bool isHighMana = enemy.currentMana > (enemy.ManaPoints * 0.7);
+            bool isPlayerLowHealth = player.currentHealth < (player.Health * 0.3);
+            bool isPlayerDebuffed = player.statusMap.Count > 0;
+
+            List<AttackInfo> attacks = enemy.AttackBehaviours.Values.ToList();
+            AttackInfo basicAttack = attacks.FindAll(x => x.AttackType == "Attack").MinBy(x => x.Manacost) ??
+                                     throw new Exception("Enemy doesn't have an attack?"); // cheapest attack
+            AttackInfo? heal = attacks.Find(x => x.AttackType == "Heal") ?? null; // heal
+            AttackInfo largeAttack = attacks.FindAll(x => x.AttackType == "Attack").MaxBy(x => x.Manacost) ??
+                                     throw new Exception("Enemy doesn't have an attack?"); // most expensive attack
+            AttackInfo? buff = attacks.Find(x => x.AttackType == "Buff") ?? null;
+
+            // state-based decision making
+            if (isLowHealth && isHighMana)
+            {
+                // enemy is low on health but has sufficient mana, it might heal itself
+                // execute a healing ability
+
+                if (heal == null)
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(heal.Name, player);
+                }
+            }
+            else if (isPlayerLowHealth)
+            {
+                // player is weak, the enemy might attempt a finishing move
+                // execute a strong attack
+
+                enemy.ExecuteAttack(largeAttack.Name, player);
+            }
+            else if (isPlayerDebuffed)
+            {
+                // If the player has active debuffs, take advantage of the situation
+                // execute a debuff-enhanced attack or buff myself
+
+                if (enemy.currentMana > largeAttack.Manacost)
+                {
+                    enemy.ExecuteAttack(largeAttack.Name, player);
+                }
+                else if (buff != null)
+                {
+                    enemy.ExecuteAttack(buff.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player);
+                }
+            }
+            else if (enemy.currentMana < (enemy.ManaPoints * 0.2))
+            {
+                // If low on mana, the enemy might conserve it or use a basic attack
+                // execute a basic attack
+
+                enemy.ExecuteAttack(basicAttack.Name, player);
+            }
+            else
+            {
+                // Default behavior: a standard attack
+                // execute a random attack
+
+                var rng = new Random();
+                List<AttackInfo> randomisedAttacks = attacks.OrderBy(x => rng.Next()).ToList();
+                foreach (var attack in attacks)
+                {
+                    if (enemy.currentMana > attack.Manacost)
+                    {
+                        enemy.ExecuteAttack(attack.Name, player);
+                    }
+                }
+            }
+
+            Thread.Sleep(1500);
+            UtilityFunctions.clearScreen(player);
         }
+
 
         public void timidEnemyTurnAction()
         {
-            // enemy turn logic
             turnCount++;
-            Enemy thisEnemy = (Enemy)enemy;
-            // more
-            string chosenAttack = thisEnemy.AttackBehaviours[AttackSlot.slot1].Name;
-            Console.WriteLine($"Enemy used {chosenAttack}!");
-            thisEnemy.ExecuteAttack(chosenAttack, player);
+
+            // Thresholds for state-based approach
+            bool isLowHealth = enemy.currentHealth < (enemy.Health * 0.4);
+            bool isHighMana = enemy.currentMana > (enemy.ManaPoints * 0.6);
+            bool isVeryLowHealth = enemy.currentHealth < (enemy.Health * 0.2);
+            bool isPlayerLowHealth = player.currentHealth < (player.Health * 0.3);
+            bool isPlayerAggressive = enemy.currentHealth > (enemy.Health * 0.7) &&
+                                      player.currentHealth < (player.Health * 0.5);
+            bool isManaLow = enemy.currentMana < (enemy.ManaPoints * 0.2);
+            bool hasBuffs = enemy.statusMap.Count > 0;
+
+            List<AttackInfo> attacks = enemy.AttackBehaviours.Values.ToList();
+            AttackInfo basicAttack = attacks.FindAll(x => x.AttackType == "Attack").MinBy(x => x.Manacost) ??
+                                     throw new Exception("Enemy doesn't have an attack?");
+            AttackInfo? heal = attacks.Find(x => x.AttackType == "Heal") ?? null;
+            AttackInfo? buff = attacks.Find(x => x.AttackType == "Buff") ?? null;
+            AttackInfo? defenseBuff = attacks.Find(x => x.AttackType == "Defense") ?? null;
+            AttackInfo? manaRestore = attacks.Find(x => x.AttackType == "ManaRegen") ?? null;
+            AttackInfo? escape = attacks.Find(x => x.AttackType == "Escape") ?? null;
+
+            // State-based decision making
+            if (isVeryLowHealth)
+            {
+                // If very low on health, prioritize escaping or healing
+                if (escape != null)
+                {
+                    enemy.ExecuteAttack(escape.Name, player);
+                }
+                else if (heal != null && enemy.currentMana > heal.Manacost)
+                {
+                    enemy.ExecuteAttack(heal.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player); // Last resort attack
+                }
+            }
+            else if (isLowHealth)
+            {
+                // If low on health but not critical, attempt healing or buffing defense
+                if (heal != null && enemy.currentMana > heal.Manacost)
+                {
+                    enemy.ExecuteAttack(heal.Name, player);
+                }
+                else if (defenseBuff != null && enemy.currentMana > defenseBuff.Manacost)
+                {
+                    enemy.ExecuteAttack(defenseBuff.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player);
+                }
+            }
+            else if (isManaLow)
+            {
+                // If mana is running low, conserve it or regenerate if possible
+                if (manaRestore != null && enemy.currentMana > manaRestore.Manacost)
+                {
+                    enemy.ExecuteAttack(manaRestore.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player);
+                }
+            }
+            else if (isPlayerAggressive)
+            {
+                // If player is getting aggressive, play defensively with buffs or a counterattack
+                if (buff != null && enemy.currentMana > buff.Manacost)
+                {
+                    enemy.ExecuteAttack(buff.Name, player);
+                }
+                else
+                {
+                    enemy.ExecuteAttack(basicAttack.Name, player);
+                }
+            }
+            else
+            {
+                // Default behavior: cautious attacks with mana conservation
+                var rng = new Random();
+                List<AttackInfo> randomisedAttacks = attacks.OrderBy(x => rng.Next()).ToList();
+                foreach (var attack in randomisedAttacks)
+                {
+                    if (enemy.currentMana > attack.Manacost && attack.AttackType != "Escape")
+                    {
+                        enemy.ExecuteAttack(attack.Name, player);
+                        break;
+                    }
+                }
+            }
+
             Thread.Sleep(1500);
             UtilityFunctions.clearScreen(player);
         }

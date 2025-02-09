@@ -5,12 +5,14 @@ Expression: A string containing C# code that defines what the attack does when e
 Manacost: A number from 0-20 dictating how much mana the skill costs to use
 Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
 Narrative: A string containing the output whenever this attack is used. If the enemy is casting it, it will begin with "The {enemyname} {Narrative}", and if the player casts it it will begin with "The player {Narrative}". Ensure this makes grammatical sense.
+AttackType: A string containing what type of attack it is.
 Here is how each component should be formatted and an example for each:
 
 Key: Should be the name of the attack, like "Fireball".
 Expression: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
 Statuses: These are the status effects that the attack applies.
 Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
+AttackType: Strictly: "Attack", "Heal", "Debuff", "Buff"
 
 All behaviours should match the keys used for previous enemies, however, one attack should be called PlayerBasicAttack, used only for the player's beginning move. See the following example:
 This is a Dictionary Structure.
@@ -22,6 +24,7 @@ This is a Dictionary Structure.
     "Manacost": 0
     "Statuses": []
     "Narrative": "throws a punch."
+    "AttackType": "Attack"
   },
   "Bloody Slice": {
     "Name": "Bloody Slice",
@@ -29,6 +32,7 @@ This is a Dictionary Structure.
     "Manacost": 5
     "Statuses": ["Bleed"]
     "Narrative": "slices violently, causing blood to fly."
+    "AttackType": "Attack"
   },
   "Backstab": {
     "Name": "Backstab",
@@ -36,6 +40,7 @@ This is a Dictionary Structure.
     "Manacost": 3
     "Statuses": ["Cripple", "Cloaked"]
     "Narrative": "uses the element of surprise to cause severe damage."
+    "AttackType": "Attack"
   },
   "Taunt": {
     "Name": "Taunt",
@@ -43,6 +48,7 @@ This is a Dictionary Structure.
     "Manacost": 10
     "Statuses": ["AtkPowered", "DefenceBoost"]
     "Narrative": "calls out rude names, taunting everybody in the area."
+    "AttackType": "Buff"
   }
   ...
 }

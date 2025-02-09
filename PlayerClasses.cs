@@ -61,6 +61,7 @@ namespace PlayerClassesNamespace
         [XmlIgnore] public int sightRange { get; set; }
         [XmlIgnore] public bool sightRangeModified { get; set; }
         [XmlIgnore] public int sightRangeModifiedBy { get; set; }
+        [XmlIgnore] public bool RequestingOutpOnly { get; set; } = false;
 
         public Player()
         {
@@ -191,7 +192,7 @@ namespace PlayerClassesNamespace
                             UtilityFunctions.interpreter.Parse(attackInfo.ExpressionString, parameters);
                         var newExpression =
                             new AttackInfo(parsedScript, parsedScript.ToString(), attackInfo.Statuses, attackInfo.Name,
-                                attackInfo.Narrative, attackInfo.Manacost).Expression;
+                                attackInfo.Narrative, attackInfo.Manacost, attackInfo.AttackType).Expression;
                         attackInfo.Expression = newExpression;
                     }
                 }
@@ -218,7 +219,7 @@ namespace PlayerClassesNamespace
             inventory.RemoveItem(item);
         }
 
-        public void ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
+        public int ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
             {
@@ -230,25 +231,31 @@ namespace PlayerClassesNamespace
                 }
 
                 UtilityFunctions.clearScreen(Program.game.player);
-                Console.WriteLine($"You have taken {damage} damage.");
+                if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"You have taken {damage} damage.");
                 currentHealth -= damage;
                 if (currentHealth < 0)
                 {
                     currentHealth = 0;
                     PlayerDies();
                 }
+
+                return damage;
             }
             else
             {
                 Program.logger.Error("No current combat. Attempt to receive attack failed.");
+                throw new Exception("No current combat.");
             }
         }
 
-        public void ExecuteAttack(AttackSlot key, Enemy target)
+        public void ExecuteAttack(AttackSlot key, Enemy target, bool requestingOutpOnly = false)
         {
             if (Program.game.player.PlayerAttacks.TryGetValue(key, out var attackInfo))
             {
+                if (requestingOutpOnly) target.RequestingOutpOnly = true;
                 attackInfo.Expression.Invoke(target); // Execute the script
+                target.RequestingOutpOnly = false;
+                
                 currentMana -= attackInfo.Manacost;
                 if (currentMana < 0)
                 {
@@ -261,6 +268,9 @@ namespace PlayerClassesNamespace
                 {
                     Program.logger.Info($"Applying effect: {effect}");
                 }
+                
+                UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
+                Console.ReadKey(true);
             }
             else
             {
