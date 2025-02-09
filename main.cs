@@ -40,22 +40,11 @@ namespace MainNamespace
         // NEXT STEPS
         //
         //
-        //
-        // ITEMS
-        // - make items actually change player stats
-        // OVERWRITE ITEMS THAT ARE NULL IN BEHAVIOURS
-        //
-        // DUNGEON MASTER ADDITIONS
-        // - get narrator to start affecting variables like enemy levels, sight range, your sight range etc etc depending on map
-        // - Make way for player to get more attacks
-        //
-        //
-        // - if narrative lines empty, give it desc
-        //
         // NEXT - ENEMY COMBAT AI
         // implement the natures for each type of enemy
         // design each ai system in combat
         // basic enemy attack back
+        // boss at end
         //
         //
         // FINAL TWEAKS
@@ -156,7 +145,7 @@ namespace MainNamespace
                     game.map.GetCurrentNode().tiles, ref game));
             }
 
-            GridFunctions.DrawWholeNode(game);
+            GridFunctions.DrawWholeNode(ref game);
             int IdOfNextNode = -1;
             string input = Console.ReadKey().Key.ToString();
             Tile oldTile = null;
@@ -177,7 +166,7 @@ namespace MainNamespace
                            game.player.playerPos, input[0].ToString()))
                 {
                     UtilityFunctions.clearScreen(game.player);
-                    GridFunctions.DrawWholeNode(game);
+                    GridFunctions.DrawWholeNode(ref game);
                     // Console.WriteLine("Please enter a valid input");
                     input = Console.ReadKey(true).KeyChar.ToString();
                 }
@@ -201,7 +190,7 @@ namespace MainNamespace
                     GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
 
                 // draw the updated grid
-                GridFunctions.DrawWholeNode(game);
+                GridFunctions.DrawWholeNode(ref game);
 
                 // save final gameState
                 game.gameState.saveStateToFile(game.map);
@@ -288,7 +277,7 @@ namespace MainNamespace
         {
             if (GetAllowedInputs("CharacterMenu").Contains(input))
             {
-                game.uiConstructer.drawCharacterMenu(game);
+                game.uiConstructer.drawCharacterMenu(ref game);
                 UtilityFunctions.TypeText(new TypeText(), "\nPress any key to continue...");
                 Console.ReadKey(true);
             }
@@ -430,7 +419,7 @@ namespace MainNamespace
                 // saveGameToAllStoragesSync();
             }
 
-            // Thread.Sleep(1000);
+            // Thread.Sleep(5000);
 
             // exit smoothly
             Environment.Exit(0);
@@ -943,7 +932,7 @@ namespace MainNamespace
             game.player.playerPos = GridFunctions.GetPlayerStartPos(ref game);
             game.gameState.location = game.player.playerPos;
 
-            game.player.equipment = new Equipment();
+            game.player.equipment = new Equipment(true);
             game.player.inventory = new Inventory();
             await game.player.initialiseEquipment();
             await game.player.initialiseInventory();

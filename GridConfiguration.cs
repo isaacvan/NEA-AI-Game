@@ -330,7 +330,7 @@ namespace GridConfigurationNamespace
             }
         }
 
-        public static void DrawWholeNode(Game game)
+        public static void DrawWholeNode(ref Game game)
         {
             Node node = game.map.Graphs[game.map.Graphs.Count - 1].Nodes[game.map.GetCurrentNode().NodeID];
             Player player = game.player;
@@ -430,7 +430,7 @@ namespace GridConfigurationNamespace
                 Console.WriteLine();
             }
             
-            DrawSideStats(sightRange, game, Console.GetCursorPosition());
+            DrawSideStats(sightRange, ref game, Console.GetCursorPosition());
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n\n");
@@ -446,7 +446,7 @@ namespace GridConfigurationNamespace
             }
         }
 
-        public static void DrawSideStats(int sightRange, Game game, (int, int) initialCursor)
+        public static void DrawSideStats(int sightRange, ref Game game, (int, int) initialCursor)
         {
             Point p = game.player.playerPos;
             var tiles = game.map.GetCurrentNode().tiles;
@@ -484,7 +484,7 @@ namespace GridConfigurationNamespace
                 height = height - sightRange + (tiles[0].Count - p.Y) - 1;
             }
 
-            List<string> rowsToPrint = game.uiConstructer.drawCharacterMenu(game, true, true);
+            List<string> rowsToPrint = game.uiConstructer.drawCharacterMenu(ref game, true, true);
 
             /*
             List<string> rowsToPrint = new List<string>()
@@ -526,7 +526,7 @@ namespace GridConfigurationNamespace
             for (int i = 0; i <= height; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.SetCursorPosition(indent + newConstIndentForSecondColumn - 10, yconst + i);
+                Console.SetCursorPosition(indent + newConstIndentForSecondColumn - 7, yconst + i);
                 if (statsToPrint.Count >= i) 
                     statsToPrint.Add("");
                 Console.Write($"| {statsToPrint[i]}");
@@ -881,7 +881,7 @@ namespace GridConfigurationNamespace
 
             Console.CursorVisible = false;
 
-            GridFunctions.DrawWholeNode(game);
+            GridFunctions.DrawWholeNode(ref game);
         }
 
         public async Task<(bool, List<string>)> GetContinuation(Game game, string input)

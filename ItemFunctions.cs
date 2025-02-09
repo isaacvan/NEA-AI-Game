@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml.Serialization;
+using GameClassNamespace;
 using MainNamespace;
 using Newtonsoft.Json;
 using OpenAI_API;
@@ -23,6 +24,13 @@ namespace ItemFunctionsNamespace
         {
             Items = new List<Item>();
             Quantities = new List<int>();
+        }
+
+        public void UseConsumable(Item item, ref Game game)
+        {
+            Consumable consumable = item as Consumable;
+            UtilityFunctions.TypeText(new TypeText(), $"The description of this item reads: {consumable.Description}");
+            UtilityFunctions.TypeText(new TypeText(), $"The effect of this item reads: {consumable.Effect}");
         }
 
         public void AddItem(Item item, int quant = 1)
@@ -112,7 +120,7 @@ namespace ItemFunctionsNamespace
         public Dictionary<EquippableItem.EquipLocation, Weapon> WeaponSlots { get; private set; }
         public Dictionary<EquippableItem.EquipLocation, bool> EquipmentEffectsApplied { get; private set; }
 
-        public Equipment()
+        public Equipment(bool initEquipEffectsApplied = false)
         {
             ArmourSlots = new Dictionary<EquippableItem.EquipLocation, Armour>();
             WeaponSlots = new Dictionary<EquippableItem.EquipLocation, Weapon>();
@@ -128,7 +136,7 @@ namespace ItemFunctionsNamespace
                 {
                     ArmourSlots.Add(location, null);    
                 }
-                EquipmentEffectsApplied.Add(location, false);
+                if (initEquipEffectsApplied) EquipmentEffectsApplied.Add(location, false);
             }
         }
 
@@ -138,6 +146,7 @@ namespace ItemFunctionsNamespace
             Equipment newequip = JsonConvert.DeserializeObject<Equipment>(File.ReadAllText(path));
             ArmourSlots = newequip.ArmourSlots;
             WeaponSlots = newequip.WeaponSlots;
+            EquipmentEffectsApplied = newequip.EquipmentEffectsApplied;
         }
         
         public void EquipItem(EquippableItem.EquipLocation slot, Item item, Inventory inventory)

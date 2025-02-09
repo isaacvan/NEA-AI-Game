@@ -48,6 +48,10 @@ namespace EnemyClassesNamespace
         {
             if (Program.game.currentCombat != null)
             {
+                // Add strength + dex + int / 3
+                var plyr = Program.game.player;
+                damage += (plyr.Strength + plyr.Dexterity + plyr.Intelligence) / 3;
+                
                 bool didCrit = Program.game.currentCombat.didCrit(this, crit);
                 if (didCrit)
                 {

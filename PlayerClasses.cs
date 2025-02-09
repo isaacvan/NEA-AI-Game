@@ -35,7 +35,7 @@ namespace PlayerClassesNamespace
         public int ManaPoints { get; set; }
         public int currentMana { get; set; }
 
-        public List<string> StatNames { get; set; }
+        public string[] StatNames { get; set; }
 
         public int Strength { get; set; }
         public int Intelligence { get; set; }
@@ -73,9 +73,9 @@ namespace PlayerClassesNamespace
             PlayerAttacks[AttackSlot.slot3] = null;
             PlayerAttacks[AttackSlot.slot4] = null;
             sightRangeModified = false;
-            if (StatNames == null || StatNames.Count == 0)
+            if (StatNames == null || StatNames.Length == 0)
             {
-                StatNames = new List<string>()
+                StatNames = new string[]
                     { "Strength", "Dexterity", "Constitution", "Intelligence", "Charisma" };
             }
         }

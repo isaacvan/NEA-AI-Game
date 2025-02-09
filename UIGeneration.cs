@@ -235,73 +235,82 @@ namespace UIGenerationNamespace
             narrationPending = true;
         }
 
-        public List<string> drawCharacterMenu(Game game, bool viewOnly = false, bool requestingReturnString = false)
+        public List<string> drawCharacterMenu(ref Game game, bool viewOnly = false, bool requestingReturnString = false)
         {
-            if (game.player.inventory.Items.Select(x => x.ItemType).Count(x => x != typeof(Consumable)) == 0)
+            if (!game.player.inventory.Items.Any())
             {
                 viewOnly = true;
             }
-            
+
             List<string> finalListToReturn = new List<string>();
-            
+
             if (!requestingReturnString) UtilityFunctions.clearScreen(game.player);
-            if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"\x1b[38;2;230;140;120mATTACKS:\x1b[38;2;255;255;255m");
+            if (!requestingReturnString)
+                UtilityFunctions.TypeText(new TypeText(), $"\x1b[38;2;230;140;120mATTACKS:\x1b[38;2;255;255;255m");
             finalListToReturn.Add("\x1b[38;2;230;140;120mATTACKS:\x1b[38;2;255;255;255m");
             foreach (var attack in game.player.PlayerAttacks)
             {
                 // HERE
                 if (attack.Value != null)
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(),
-                        $"Slot #{attack.Key.ToString().Last()} ---> {attack.Value.Name}");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(),
+                            $"Slot #{attack.Key.ToString().Last()} ---> {attack.Value.Name}");
                     finalListToReturn.Add($"Slot #{attack.Key.ToString().Last()} ---> {attack.Value.Name}");
                 }
                 else
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(), $"Slot #{attack.Key.ToString().Last()} ---> Empty");
                     finalListToReturn.Add($"Slot #{attack.Key.ToString().Last()} ---> Empty");
                 }
             }
 
-            
+
             int index = 1;
             if (game.player.inventory.Items.Count > 0)
             {
-                if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), "\n\x1b[38;2;255;215;0mITEMS:\x1b[38;2;255;255;255m");
+                if (!requestingReturnString)
+                    UtilityFunctions.TypeText(new TypeText(), "\n\x1b[38;2;255;215;0mITEMS:\x1b[38;2;255;255;255m");
                 finalListToReturn.Add("");
                 finalListToReturn.Add("\x1b[38;2;255;215;0mITEMS:\x1b[38;2;255;255;255m");
                 foreach (var item in game.player.inventory.Items)
                 {
-                    if (!requestingReturnString)
+                    if (item.ItemType == typeof(Consumable))
                     {
-                        if (item.ItemType == typeof(Consumable))
-                        {
+                        if (!requestingReturnString)
                             UtilityFunctions.TypeText(new TypeText(), $"Item #{index} {item.Name} ---> Consumable");
-                        }
-                        else
-                        {
-                            UtilityFunctions.TypeText(new TypeText(), $"Item #{index} {item.Name} ---> {item.ItemEquipLocation.ToString()}");
-                        }
+                        finalListToReturn.Add($"Item #{index} {item.Name} ---> Consumable");
                     }
-                    finalListToReturn.Add($"Item #{index} {item.Name} ---> {item.ItemEquipLocation.ToString()}");
+                    else
+                    {
+                        if (!requestingReturnString)
+                            UtilityFunctions.TypeText(new TypeText(),
+                                $"Item #{index} {item.Name} ---> {item.ItemEquipLocation.ToString()}");
+                        finalListToReturn.Add($"Item #{index} {item.Name} ---> {item.ItemEquipLocation.ToString()}");
+                    }
+
                     index++;
                 }
             }
-            
 
-            if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), "\n\x1b[38;2;70;130;180mEQUIPMENT:\x1b[38;2;255;255;255m");
+
+            if (!requestingReturnString)
+                UtilityFunctions.TypeText(new TypeText(), "\n\x1b[38;2;70;130;180mEQUIPMENT:\x1b[38;2;255;255;255m");
             finalListToReturn.Add("");
             finalListToReturn.Add("\x1b[38;2;70;130;180mEQUIPMENT:\x1b[38;2;255;255;255m");
             foreach (var item in game.player.equipment.ArmourSlots)
             {
                 if (item.Value != null)
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
                     finalListToReturn.Add($"{item.Key.ToString()} ---> {item.Value.Name}");
                 }
                 else
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
                     finalListToReturn.Add($"{item.Key.ToString()} ---> Empty");
                 }
             }
@@ -310,12 +319,14 @@ namespace UIGenerationNamespace
             {
                 if (item.Value != null)
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> {item.Value.Name}");
                     finalListToReturn.Add($"{item.Key.ToString()} ---> {item.Value.Name}");
                 }
                 else
                 {
-                    if (!requestingReturnString) UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
+                    if (!requestingReturnString)
+                        UtilityFunctions.TypeText(new TypeText(), $"{item.Key.ToString()} ---> Empty");
                     finalListToReturn.Add($"{item.Key.ToString()} ---> Empty");
                 }
             }
@@ -371,7 +382,7 @@ namespace UIGenerationNamespace
                     {
                         item = game.player.inventory.Items.Find(x => x.Name == inp);
                     }
-                    
+
                     // get full item
                     item = game.itemFactory.createItem(game.itemFactory.itemTemplates.Find(x => x.Name == item.Name));
 
@@ -386,6 +397,10 @@ namespace UIGenerationNamespace
                         EquippableItem.EquipLocation loc = item.ItemEquipLocation;
                         game.player.equipment.EquipItem(loc, item, game.player.inventory);
                     }
+                    else
+                    {
+                        game.player.inventory.UseConsumable(item, ref game);
+                    }
 
                     game.player.amendStats(game);
                     game.player.amendWeaponAttacks(game);
@@ -393,7 +408,7 @@ namespace UIGenerationNamespace
                     // GET ITEM SLOT
                 }
             }
-            
+
             return new List<string>();
         }
 
