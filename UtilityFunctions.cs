@@ -419,6 +419,29 @@ namespace UtilityFunctionsNamespace
             File.WriteAllText(filePath, correctedXml.ToString());
             //Console.WriteLine("XML has been corrected and written to " + filePath);
         }
+        
+        public static int? GetLeadingNumber(string input, out int num)
+        {
+            num = 0;
+            input = input.Trim(); // Remove leading spaces
+            int length = 0;
+
+            // Iterate until a non-digit character is found
+            while (length < input.Length && char.IsDigit(input[length]))
+            {
+                length++;
+            }
+
+            if (length == 0) return null; // No leading number found
+
+            if (int.TryParse(input.Substring(0, length), out int result))
+            {
+                num = result;
+                return result;
+            }
+
+            return null; // Shouldn't reach here unless input is extremely long or invalid
+        }
 
         // load the class from the first line of the corresponding save. think of lines needed to add to the save. base stats can be generated from the class. will need exp, level. items.
 

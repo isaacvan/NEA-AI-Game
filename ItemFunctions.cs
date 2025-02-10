@@ -19,7 +19,7 @@ namespace ItemFunctionsNamespace
     {
         public List<Item> Items { get; set; }
         public List<int> Quantities { get; set; }
-        
+
         public Inventory()
         {
             Items = new List<Item>();
@@ -31,6 +31,53 @@ namespace ItemFunctionsNamespace
             Consumable consumable = item as Consumable;
             UtilityFunctions.TypeText(new TypeText(), $"The description of this item reads: {consumable.Description}");
             UtilityFunctions.TypeText(new TypeText(), $"The effect of this item reads: {consumable.Effect}");
+
+            List<string> properties = consumable.UniqueProperties.Split('+').ToList();
+            foreach (string property in properties)
+            {
+                bool applied = false;
+                try
+                {
+                    if (UtilityFunctions.GetLeadingNumber(property, out int value) != null)
+                    {
+                        foreach (PropertyInfo propertyInfo in typeof(Player).GetProperties())
+                        {
+                            if (applied) continue;
+                            if (property.ToLower().Contains(propertyInfo.Name.ToLower()) && propertyInfo.Name == "Health")
+                            {
+                                // set property of game.player to property[0]
+                                game.player.GetType().GetProperty("Health").SetValue(game.player,
+                                    value + Convert.ToInt16(game.player.GetType().GetProperty(propertyInfo.Name)
+                                        .GetValue(game.player)));
+                                applied = true;
+                            } else if (property.ToLower().Contains(propertyInfo.Name.ToLower()) && propertyInfo.Name == "CurrentHealth")
+                            {
+                                game.player.GetType().GetProperty("CurrentHealth").SetValue(game.player,
+                                    value + Convert.ToInt16(game.player.GetType().GetProperty(propertyInfo.Name)
+                                        .GetValue(game.player)));
+                                applied = true;
+                            } else if (property.ToLower().Contains(propertyInfo.Name.ToLower()))
+                            {
+                                propertyInfo.SetValue(game.player,
+                                    value + Convert.ToInt16(game.player.GetType().GetProperty(propertyInfo.Name)
+                                        .GetValue(game.player)));
+                                applied = true;
+                            }
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
+
+            game.player.inventory.RemoveItem(item);
         }
 
         public void AddItem(Item item, int quant = 1)
@@ -70,7 +117,8 @@ namespace ItemFunctionsNamespace
 
         public async Task readInventory()
         {
-            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" +
+                          UtilityFunctions.saveName + ".json";
             Inventory newinv = JsonConvert.DeserializeObject<Inventory>(File.ReadAllText(path));
             Items = newinv.Items;
             Quantities = newinv.Quantities;
@@ -79,7 +127,8 @@ namespace ItemFunctionsNamespace
         public async Task updateInventoryJSON()
         {
             // puts this inventory into JSON file called saveName var in Inventories
-            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" +
+                          UtilityFunctions.saveName + ".json";
             using (StreamWriter file = File.CreateText(path))
             {
                 JsonSerializer serializer = new JsonSerializer
@@ -90,11 +139,12 @@ namespace ItemFunctionsNamespace
                 await file.FlushAsync();
             }
         }
-        
+
         public void updateInventoryJSONSync()
         {
             // puts this inventory into JSON file called saveName var in Inventories
-            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Inventories{Path.DirectorySeparatorChar}" +
+                          UtilityFunctions.saveName + ".json";
             using (StreamWriter file = File.CreateText(path))
             {
                 JsonSerializer serializer = new JsonSerializer
@@ -107,13 +157,13 @@ namespace ItemFunctionsNamespace
         }
     }
 
-    // EQUIPMENT USAGE
-    /*
-    item created through factory, e.g
-    Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
-    player.EquipItem({"Head", "Body", "Legs", "Weapon", "Accessory"}, item);
-    */
-    
+// EQUIPMENT USAGE
+/*
+item created through factory, e.g
+Item item = itemFactory.createItem(itemFactory.armourTemplates[0]);
+player.EquipItem({"Head", "Body", "Legs", "Weapon", "Accessory"}, item);
+*/
+
     public class Equipment
     {
         public Dictionary<EquippableItem.EquipLocation, Armour> ArmourSlots { get; private set; }
@@ -125,7 +175,7 @@ namespace ItemFunctionsNamespace
             ArmourSlots = new Dictionary<EquippableItem.EquipLocation, Armour>();
             WeaponSlots = new Dictionary<EquippableItem.EquipLocation, Weapon>();
             EquipmentEffectsApplied = new Dictionary<EquippableItem.EquipLocation, bool>();
-            foreach (var location in  Enum.GetValues<EquippableItem.EquipLocation>())
+            foreach (var location in Enum.GetValues<EquippableItem.EquipLocation>())
             {
                 if (location == EquippableItem.EquipLocation.Accessory ||
                     location == EquippableItem.EquipLocation.Weapon)
@@ -134,21 +184,23 @@ namespace ItemFunctionsNamespace
                 }
                 else
                 {
-                    ArmourSlots.Add(location, null);    
+                    ArmourSlots.Add(location, null);
                 }
+
                 if (initEquipEffectsApplied) EquipmentEffectsApplied.Add(location, false);
             }
         }
 
         public async Task readEquipment()
         {
-            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.json";
+            string path = UtilityFunctions.mainDirectory +
+                          $@"Equipments{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.json";
             Equipment newequip = JsonConvert.DeserializeObject<Equipment>(File.ReadAllText(path));
             ArmourSlots = newequip.ArmourSlots;
             WeaponSlots = newequip.WeaponSlots;
             EquipmentEffectsApplied = newequip.EquipmentEffectsApplied;
         }
-        
+
         public void EquipItem(EquippableItem.EquipLocation slot, Item item, Inventory inventory)
         {
             if (slot == EquippableItem.EquipLocation.Accessory || slot == EquippableItem.EquipLocation.Weapon)
@@ -159,7 +211,7 @@ namespace ItemFunctionsNamespace
                     // Optionally, automatically unequip the current item to inventory
                     UnequipItem(slot, inventory);
                 }
-                
+
                 WeaponSlots[slot] = item as Weapon;
             }
             else
@@ -173,7 +225,8 @@ namespace ItemFunctionsNamespace
 
                 ArmourSlots[slot] = item as Armour;
             }
-            inventory.RemoveItem(item);  // Remove the item from inventory when equipped
+
+            inventory.RemoveItem(item); // Remove the item from inventory when equipped
         }
 
         public void UnequipItem(EquippableItem.EquipLocation slot, Inventory inventory)
@@ -190,7 +243,7 @@ namespace ItemFunctionsNamespace
             {
                 if (ArmourSlots[slot] != null)
                 {
-                    inventory.AddItem(ArmourSlots[slot]);  // Add the unequipped item back to the inventory
+                    inventory.AddItem(ArmourSlots[slot]); // Add the unequipped item back to the inventory
                     ArmourSlots[slot] = null;
                 }
             }
@@ -199,25 +252,26 @@ namespace ItemFunctionsNamespace
         public async Task updateEquipmentJSON()
         {
             // puts this equipment into XML file called saveName var in Equipment
-            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" +
+                          UtilityFunctions.saveName + ".json";
             await UtilityFunctions.writeToJSONFile<Equipment>(path, this);
         }
-        
+
         public void updateEquipmentJSONSync()
         {
             // puts this equipment into JSON file called saveName var in Equipment
-            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName + ".json";
+            string path = UtilityFunctions.mainDirectory + $@"Equipments{Path.DirectorySeparatorChar}" +
+                          UtilityFunctions.saveName + ".json";
             UtilityFunctions.writeToJSONFileSync<Equipment>(path, this);
         }
     }
-    
-    // ITEMFACTORY USAGE
-    /*
-    Item NEWITEMINSTANCE = itemFactory.createItem(itemFactory.{"armour", "weapon", "consumable"}Templates[index]);
-    */
-     
-    
-    
+
+// ITEMFACTORY USAGE
+/*
+Item NEWITEMINSTANCE = itemFactory.createItem(itemFactory.{"armour", "weapon", "consumable"}Templates[index]);
+*/
+
+
     public class ItemFactory
     {
         public List<WeaponTemplate> weaponTemplates { get; set; } = new List<WeaponTemplate>();
@@ -240,6 +294,7 @@ namespace ItemFunctionsNamespace
                 newList.AddRange(armourTemplates);
                 itemTemplates = newList;
             }
+
             return itemTemplates;
         }
 
@@ -257,21 +312,30 @@ namespace ItemFunctionsNamespace
                 UtilityFunctions.itemTemplateSpecificDirectory =
                     UtilityFunctions.itemTemplateDir + UtilityFunctions.saveName;
             }
-            
+
             // load item templates from file
             // FOLLOW LOGIC OF OTHER ONE BUT JUST LOAD AN ITEM FACTORY FROM ONE FILE
-            
+
             // initialise xml files into respective item templates HERE
             ItemContainer itemContainer = new ItemContainer();
-            
-            
-            var armourItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Armour.xml").Armours;
-            var weaponItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Weapon.xml").Weapons;
-            var consumableItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Consumable.xml").Consumables;
+
+
+            var armourItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Armour.xml")
+                .Armours;
+            var weaponItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Weapon.xml")
+                .Weapons;
+            var consumableItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Consumable.xml")
+                .Consumables;
             //itemContainer.Armours = new List<Armour>();
             // convert to itemTemplates
-            
-            
+
+
             // add to item factory
             foreach (Armour armour in armourItems)
             {
@@ -280,6 +344,7 @@ namespace ItemFunctionsNamespace
                 template.createTemplate(armour);
                 this.armourTemplates.Add(template);
             }
+
             foreach (Weapon weapon in weaponItems)
             {
                 WeaponTemplate template = new WeaponTemplate();
@@ -287,6 +352,7 @@ namespace ItemFunctionsNamespace
                 template.createTemplate(weapon);
                 this.weaponTemplates.Add(template);
             }
+
             foreach (Consumable consumable in consumableItems)
             {
                 ConsumableTemplate template = new ConsumableTemplate();
@@ -299,7 +365,7 @@ namespace ItemFunctionsNamespace
         public async Task initialiseItemFactoryFromNarrator(OpenAIAPI api, Conversation chat, bool testing = false)
         {
             Program.logger.Info("Initialising Item Factory...");
-            
+
             // initialise path, should be fine with testing
             if (!testing)
             {
@@ -314,7 +380,7 @@ namespace ItemFunctionsNamespace
 
             // load item templates from narrator
             string prompt6 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt6.txt");
-            
+
             // get response from GPT
             string output = "";
             if (!testing)
@@ -375,8 +441,6 @@ namespace ItemFunctionsNamespace
                                 break;
                         }
                     }
-
-
                 }
 
                 string weaponXML = string.Join("\n", weaponList);
@@ -389,7 +453,6 @@ namespace ItemFunctionsNamespace
 
                 int traitIndex = 0;
                 List<string> listOfFinalXMLs = new List<string>() { weaponXML, consumableXML, armourXML };
-
 
 
                 //Console.WriteLine(UtilityFunctions.itemTemplateSpecificDirectory);
@@ -419,9 +482,11 @@ namespace ItemFunctionsNamespace
                 {
                     try
                     {
-                        File.Create($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml")
+                        File.Create(
+                                $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml")
                             .Close();
-                        File.WriteAllText($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml",
+                        File.WriteAllText(
+                            $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}{inheritableTrait}.xml",
                             listOfFinalXMLs[traitIndex]);
                         traitIndex++;
                     }
@@ -431,19 +496,28 @@ namespace ItemFunctionsNamespace
                     }
                 }
             }
-            
-            
+
+
             // initialise xml files into respective item templates HERE
             ItemContainer itemContainer = new ItemContainer();
-            
-            
-            var armourItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Armour.xml").Armours;
-            var weaponItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Weapon.xml").Weapons;
-            var consumableItems = ItemContainerUtility.DeserializeItemsFromFile($@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Consumable.xml").Consumables;
+
+
+            var armourItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Armour.xml")
+                .Armours;
+            var weaponItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Weapon.xml")
+                .Weapons;
+            var consumableItems = ItemContainerUtility
+                .DeserializeItemsFromFile(
+                    $@"{UtilityFunctions.itemTemplateSpecificDirectory}{Path.DirectorySeparatorChar}Consumable.xml")
+                .Consumables;
             //itemContainer.Armours = new List<Armour>();
             // convert to itemTemplates
-            
-            
+
+
             // add to item factory
             foreach (Armour armour in armourItems)
             {
@@ -452,6 +526,7 @@ namespace ItemFunctionsNamespace
                 template.createTemplate(armour);
                 this.armourTemplates.Add(template);
             }
+
             foreach (Weapon weapon in weaponItems)
             {
                 WeaponTemplate template = new WeaponTemplate();
@@ -459,6 +534,7 @@ namespace ItemFunctionsNamespace
                 template.createTemplate(weapon);
                 this.weaponTemplates.Add(template);
             }
+
             foreach (Consumable consumable in consumableItems)
             {
                 ConsumableTemplate template = new ConsumableTemplate();
@@ -466,10 +542,10 @@ namespace ItemFunctionsNamespace
                 template.createTemplate(consumable);
                 this.consumableTemplates.Add(template);
             }
-            
-            
+
+
             // initialise
-            
+
 
             Program.logger.Info("Item Factory Initialised");
         }
@@ -487,7 +563,7 @@ namespace ItemFunctionsNamespace
             }
 
             Type itemType = template.getItemTypeFromTemplate();
-            
+
             //Console.WriteLine($"Item type: {itemType.Name}");
 
             //Type itemType = typeof(Item);
@@ -499,19 +575,21 @@ namespace ItemFunctionsNamespace
                 try
                 {
                     // Get the property from the template by name
-                    PropertyInfo templateProperty = template.GetType().GetProperty(property.Name, BindingFlags.Public | BindingFlags.Instance);
+                    PropertyInfo templateProperty = template.GetType()
+                        .GetProperty(property.Name, BindingFlags.Public | BindingFlags.Instance);
                     if (templateProperty != null && templateProperty.CanRead)
                     {
-                        object value = templateProperty.GetValue(template);  // Get value from the template
+                        object value = templateProperty.GetValue(template); // Get value from the template
 
                         // Check if the types are compatible
                         if (property.PropertyType.IsAssignableFrom(templateProperty.PropertyType))
                         {
-                            property.SetValue(newItem, value);  // Set value on the new item
+                            property.SetValue(newItem, value); // Set value on the new item
                         }
                         else
                         {
-                            Console.WriteLine($"Type mismatch for property {property.Name}: {property.PropertyType} expected, but got {templateProperty.PropertyType}");
+                            Console.WriteLine(
+                                $"Type mismatch for property {property.Name}: {property.PropertyType} expected, but got {templateProperty.PropertyType}");
                         }
                     }
                 }
@@ -524,7 +602,7 @@ namespace ItemFunctionsNamespace
             return newItem;
         }
     }
-    
+
     public abstract class ItemTemplate
     {
         public string Name { get; set; }
@@ -537,7 +615,7 @@ namespace ItemFunctionsNamespace
             // set player properties
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            
+
             if (item.ItemType == null) throw new ArgumentNullException(nameof(item));
 
             Type itemType = item.GetType();
@@ -580,7 +658,8 @@ namespace ItemFunctionsNamespace
                 try
                 {
                     object value = property.GetValue(item);
-                    PropertyInfo thisProperty = this.GetType().GetProperty(property.Name, BindingFlags.Public | BindingFlags.Instance);
+                    PropertyInfo thisProperty =
+                        this.GetType().GetProperty(property.Name, BindingFlags.Public | BindingFlags.Instance);
 
                     if (thisProperty != null && thisProperty.CanWrite)
                     {
@@ -608,15 +687,18 @@ namespace ItemFunctionsNamespace
             {
                 throw new Exception($"Invalid item type specified in the template: {templateTypeString}");
             }
-            
+
             try
             {
                 // Assembly assembly = Assembly.Load("__ItemTypes");
                 // Type itemType = Type.GetType($"__ItemTypes.{itemTypeString}, __ItemTypes", throwOnError: true);
                 // bin/Debug/net7.0/Code Projects.dll
-                string assemblyPath = @$"{UtilityFunctions.mainDirectory}bin/Debug/net7.0/Code Projects.dll"; // Adjust the path as necessary
+                string assemblyPath =
+                    @$"{UtilityFunctions.mainDirectory}bin/Debug/net7.0/Code Projects.dll"; // Adjust the path as necessary
                 Assembly asm = Assembly.LoadFrom(assemblyPath);
-                Type itemType = asm.GetType($"ItemFunctionsNamespace.{itemTypeString}", throwOnError: true); // Replace Namespace with the actual namespace
+                Type itemType =
+                    asm.GetType($"ItemFunctionsNamespace.{itemTypeString}",
+                        throwOnError: true); // Replace Namespace with the actual namespace
                 return itemType;
                 // Use itemType confidently here
             }
@@ -633,7 +715,7 @@ namespace ItemFunctionsNamespace
             //Item item = ItemFactory.createItem(this);
         }
     }
-    
+
     public class WeaponTemplate : ItemTemplate
     {
         public int Damage { get; set; }
@@ -659,20 +741,15 @@ namespace ItemFunctionsNamespace
         public string DefensiveCapabilities { get; set; }
         public string UniqueProperties { get; set; }
     }
-    
+
     [XmlRoot("Item")]
     public class ItemContainer
     {
-        [XmlElement("Armour")]
-        public List<Armour> Armours { get; set; } = new List<Armour>();
-        
-        [XmlElement("Weapon")]
-        public List<Weapon> Weapons { get; set; } = new List<Weapon>();
-        
-        [XmlElement("Consumable")]
-        public List<Consumable> Consumables { get; set; } = new List<Consumable>();
-        
-        
+        [XmlElement("Armour")] public List<Armour> Armours { get; set; } = new List<Armour>();
+
+        [XmlElement("Weapon")] public List<Weapon> Weapons { get; set; } = new List<Weapon>();
+
+        [XmlElement("Consumable")] public List<Consumable> Consumables { get; set; } = new List<Consumable>();
     }
 
     public static class ItemContainerUtility
@@ -686,7 +763,6 @@ namespace ItemFunctionsNamespace
 
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
                 {
-                    
                     return (ItemContainer)serializer.Deserialize(fileStream);
                     // Now you can work with the data in itemContainer.Armours
                 }
@@ -697,14 +773,15 @@ namespace ItemFunctionsNamespace
             }
         }
     }
-    
+
     public class Item
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public Type ItemType { get; set; }
+
         public EquippableItem.EquipLocation ItemEquipLocation { get; set; }
-         // maybe?
+        // maybe?
     }
 
     public abstract class EquippableItem : Item
@@ -719,7 +796,7 @@ namespace ItemFunctionsNamespace
         }
     }
 
-    
+
     public class Weapon : EquippableItem
     {
         public int Damage { get; set; }
@@ -745,6 +822,4 @@ namespace ItemFunctionsNamespace
         public string DefensiveCapabilities { get; set; }
         public string UniqueProperties { get; set; }
     }
-    
-    
 }

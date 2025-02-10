@@ -188,7 +188,7 @@
               "name": "Lost Wanderer",
               "boss": false,
               "id": 8,
-              "currentLocation": "11, 4",
+              "currentLocation": "12, 7",
               "alive": true
             },
             {
@@ -197,7 +197,7 @@
               "name": "Lost Wanderer",
               "boss": false,
               "id": 9,
-              "currentLocation": "5, 5",
+              "currentLocation": "5, 8",
               "alive": true
             }
           ],
@@ -282,7 +282,7 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 12,
-              "currentLocation": "40, 7",
+              "currentLocation": "13, 2",
               "alive": true
             }
           ],

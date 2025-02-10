@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: In the eerie silence, the solitary Celestial Serpent slithers around the dimly lit Underground Ruins. The player
+OUTPUT: "As you inch towards the ominous cavern, you pause, spotting the flickering shadows of two Lost Wanderers. They haven't

@@ -101,6 +101,8 @@ namespace GridConfigurationNamespace
                 case "d":
                     PlayerPos.X += 1;
                     break;
+                case "none":
+                    break;
                 default:
                     return true;
                     break;
@@ -1071,6 +1073,27 @@ namespace GridConfigurationNamespace
                 if (!spawn.alive)
                     continue;
                 EnemyTemplate template = game.enemyFactory.enemyTemplates[spawn.name];
+                
+                if (!GridFunctions.CheckIfOutOfBounds(tiles, spawn.currentLocation, "none")) // if point invalid due to corrupt save
+                {
+                    spawn.currentLocation = Point.Empty;
+                    bool validPoint = false;
+                    Random random = new Random();
+                    Point tempPoint = new Point();
+                    
+                    while (!validPoint)
+                    {
+                        tempPoint.X = random.Next(1, this.NodeWidth - 2);
+                        tempPoint.Y = random.Next(1, this.NodeHeight - 2);
+                        if (tiles[tempPoint.X][tempPoint.Y].tileDesc == "Empty" &&
+                            tiles[tempPoint.X][tempPoint.Y].enemyOnTile == null)
+                        {
+                            validPoint = true;
+                        }
+                    }
+                    
+                    spawn.spawnPoint = UtilityFunctions.ClonePoint(tempPoint);
+                }
 
                 if (spawn.spawnPoint != Point.Empty && spawn.currentLocation == Point.Empty)
                 {

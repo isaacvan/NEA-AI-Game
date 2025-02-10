@@ -4,7 +4,7 @@
         <Name>Elonim Elixir</Name>
         <Description>A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.</Description>
         <Effect>Restores Health and ManaPoints</Effect>
-        <UniqueProperties>+30 Health, +20 ManaPoints</UniqueProperties>
+        <UniqueProperties>+30 CurrentHealth, +20 ManaPoints</UniqueProperties>
     </Consumable>
     <Consumable>
         <Name>Stone Seed</Name>

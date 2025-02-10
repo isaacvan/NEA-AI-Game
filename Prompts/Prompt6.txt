@@ -8,6 +8,8 @@
 
 Format your response as follows, without using the examples I have given you, as each item must apply to your game world. This must be in a parseable, XML format. Weapons must be under the inherited Weapon class, consumables in the inherited Consumable class, armour sets in the inherited Armour class. They inherit from the Item class. To seperate these sections, use the word SEPERATOR. Ensure you only use the word SEPERATOR twice, in-between the different sections. It is crucial you only output in parseable XML, if you don't the system will break. Every single item should have a Name and a Description. Armours and Weapons need an ItemEquipLocation. ItemEquipLocation should be Head, Body, Legs, Weapon or Accessory (string):
 
+Remember, when changing MAXHEALTH use the word Health, and when changing CURRENTHEALTH (like a heal) use CurrentHealth.
+
 <Item>
     <Weapon>
         <Name>Spectral Bow</Name>

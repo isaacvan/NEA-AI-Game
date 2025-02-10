@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>18</X>
-    <Y>9</Y>
+    <X>6</X>
+    <Y>10</Y>
   </playerPos>
   <Class>Mystic Wanderer</Class>
   <Race>Elonim</Race>
-  <Health>70</Health>
-  <currentHealth>30</currentHealth>
-  <ManaPoints>90</ManaPoints>
+  <Health>103</Health>
+  <currentHealth>60</currentHealth>
+  <ManaPoints>112</ManaPoints>
   <currentMana>90</currentMana>
   <StatNames>
     <string>Strength</string>

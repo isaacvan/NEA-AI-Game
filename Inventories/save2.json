@@ -1,18 +1,6 @@
 {
   "Items": [
     {
-      "Name": "Elonim Elixir",
-      "Description": "A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.",
-      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "ItemEquipLocation": 0
-    },
-    {
-      "Name": "Elonim Elixir",
-      "Description": "A restorative brew made from Elonim's rare flora. It heals wounds and dispels fatigue.",
-      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "ItemEquipLocation": 0
-    },
-    {
       "Name": "Elonim's Sandals",
       "Description": "Light, yet sturdy sandals perfect for a wanderer's long journey.",
       "ItemType": "ItemFunctionsNamespace.Armour, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -20,8 +8,6 @@
     }
   ],
   "Quantities": [
-    1,
-    1,
     1
   ]
 }
