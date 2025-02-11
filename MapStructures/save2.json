@@ -188,8 +188,8 @@
               "name": "Lost Wanderer",
               "boss": false,
               "id": 8,
-              "currentLocation": "12, 7",
-              "alive": true
+              "currentLocation": "12, 5",
+              "alive": false
             },
             {
               "spawnPoint": "0, 0",
@@ -197,8 +197,8 @@
               "name": "Lost Wanderer",
               "boss": false,
               "id": 9,
-              "currentLocation": "5, 8",
-              "alive": true
+              "currentLocation": "6, 9",
+              "alive": false
             }
           ],
           "Obj": {
@@ -207,9 +207,15 @@
             "NarrativePrompts": [
               "Before you, a cavernous maw yawns, swallowing the light.",
               "A chill wind gusts, carrying echoes from the darkness.",
-              "Do you dare to plunge into the unknown?"
+              "Do you dare to plunge into the unknown?",
+              ": Resolute, you climb into the cavern. The air chills, the ground beneath becoming uneven. The whispers of fallen Wanderers echo, their unseen eyes following. Take a decision, adventurer: charge blindly, bearing Elonim's Grit, or pause, gathering your courage. The path awaits.",
+              ": Channeling your courage, you tread softly. Veering right, your path reveals a faintly glowing fork up ahead. The fork divides into two shadowy paths: icy blue light emanates from the left, while a soft, inviting warmth wafts from the right. Do you follow the chill of the promising unknown or the comfort of inviting warmth?",
+              ": Drawn by warmth, you journey right. Light flickers ahead as you enter a clearing: an elderly hermit wrapped in robes radiates an inviting aura, humming an ancient tune. A wizened ally, or a deceitful shapeshifter? What will you do?",
+              ": The hermit looks up, smiling at your words. \"I am Elonim, wanderer, lost in time. Can I assist in your quest?\" She waits for your response, humming softly. Will you accept her help or decline with precaution?",
+              ": \"Ah, my Grit travels with you? Then destiny ties us,” Elonim states. She extends a shaky hand, an old relic dancing on her palm. \"This Stone Seed, my gift to you. Aid or not, what's your next step?\"",
+              " (Stone Seed): Accepting Elonim's gift, you thank her and prepare to depart. \"May the path embrace you, wanderer,\" she whispers. Braced by her words, you stride forward - your journey deeper into the cavern continues."
             ],
-            "IsCompleted": false,
+            "IsCompleted": true,
             "Location": "0, 0"
           }
         },
@@ -282,8 +288,8 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 12,
-              "currentLocation": "13, 2",
-              "alive": true
+              "currentLocation": "49, 12",
+              "alive": false
             }
           ],
           "Obj": {
@@ -327,31 +333,31 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "1, 19",
+              "spawnPoint": "0, 0",
               "nature": 2,
               "name": "Celestial Serpent",
               "boss": false,
               "id": 13,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "8, 18",
+              "alive": false
             },
             {
-              "spawnPoint": "7, 23",
+              "spawnPoint": "0, 0",
               "nature": 2,
               "name": "Celestial Serpent",
               "boss": false,
               "id": 14,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "35, 139",
+              "alive": false
             },
             {
-              "spawnPoint": "19, 8",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Eclipse Wraith",
               "boss": false,
               "id": 15,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "20, 15",
+              "alive": false
             }
           ],
           "Obj": {
@@ -388,7 +394,7 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 16,
-              "currentLocation": "64, 9",
+              "currentLocation": "109, 34",
               "alive": false
             },
             {
@@ -397,7 +403,7 @@
               "name": "Astra Grotesque",
               "boss": false,
               "id": 17,
-              "currentLocation": "-65, 74",
+              "currentLocation": "-52, 17",
               "alive": false
             }
           ],
@@ -440,8 +446,8 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 18,
-              "currentLocation": "14, 3",
-              "alive": true
+              "currentLocation": "9, 4",
+              "alive": false
             },
             {
               "spawnPoint": "0, 0",
@@ -449,7 +455,7 @@
               "name": "Astra Grotesque",
               "boss": false,
               "id": 19,
-              "currentLocation": "16, 11",
+              "currentLocation": "12, 13",
               "alive": false
             }
           ],
@@ -490,7 +496,7 @@
               "name": "Eclipse Wraith",
               "boss": true,
               "id": 20,
-              "currentLocation": "2, 8",
+              "currentLocation": "2, 18",
               "alive": false
             }
           ],

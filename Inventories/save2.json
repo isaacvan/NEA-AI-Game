@@ -5,9 +5,16 @@
       "Description": "Light, yet sturdy sandals perfect for a wanderer's long journey.",
       "ItemType": "ItemFunctionsNamespace.Armour, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "ItemEquipLocation": 2
+    },
+    {
+      "Name": "Stone Seed",
+      "Description": "A seed from the heart of Elonim. It can sprout a barrier of stone, provides protection in dire situations.",
+      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "ItemEquipLocation": 0
     }
   ],
   "Quantities": [
+    1,
     1
   ]
 }

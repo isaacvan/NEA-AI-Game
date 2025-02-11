@@ -44,28 +44,43 @@ namespace EnemyClassesNamespace
         public Point Position { get; set; }
         public int Id { get; set; }
         [Newtonsoft.Json.JsonIgnore] public bool RequestingOutpOnly { get; set; } = false;
+        [Newtonsoft.Json.JsonIgnore] public bool SimulatedCombat { get; set; } = false;
+
 
         public int ReceiveAttack(int damage, int crit = 20, int manacost = 0) // DYNAMICEXPRESSO
         {
             if (Program.game.currentCombat != null)
             {
                 // Add strength + dex + int / 3
-                var plyr = Program.game.player;
-                damage += (plyr.Strength + plyr.Dexterity + plyr.Intelligence) / 3;
-                
+                if (!SimulatedCombat)
+                {
+                    var plyr = Program.game.player;
+                    damage += (plyr.Strength + plyr.Dexterity + plyr.Intelligence) / 3;
+                }
+                else
+                {
+                    var plyr = Program.game.currentCombat.simPlayer;
+                    damage += (plyr.Strength + plyr.Dexterity + plyr.Intelligence) / 3;
+                }
+
+
                 bool didCrit = Program.game.currentCombat.didCrit(this, crit);
                 if (didCrit)
                 {
                     damage *= 2;
                 }
 
-                if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), 
-                    $"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
-                if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"{Name} took {damage} damage.");
+                if (!RequestingOutpOnly)
+                {
+                    UtilityFunctions.TypeText(new TypeText(),
+                        $"Your {Program.game.player.Class} {Program.game.player.PlayerAttacks[Program.game.currentCombat.lastSlotUsed].Narrative}");
+                    UtilityFunctions.TypeText(new TypeText(), $"{Name} took {damage} damage.");
+                }
+                    
                 currentHealth -= damage;
-                Thread.Sleep(1000);
-                UtilityFunctions.clearScreen(Program.game.player);
-                
+                // Thread.Sleep(1000);
+                //UtilityFunctions.clearScreen(Program.game.player);
+
                 return damage;
             }
             else
@@ -82,7 +97,7 @@ namespace EnemyClassesNamespace
                 try
                 {
                     if (!requestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"Enemy used {key}!");
-                    
+
                     // Debugging: Ensure expression and parameters are correct
                     var expression = attackInfo.Expression; // e.g., "target.ReceiveAttack(20, 25)"
                     var parameters = new[] { new Parameter("target", typeof(Player)) };
@@ -98,7 +113,7 @@ namespace EnemyClassesNamespace
                     if (requestingOutpOnly) target.RequestingOutpOnly = true;
                     attackExpression.Invoke(target); // Execute the script
                     target.RequestingOutpOnly = false;
-                    
+
                     currentMana -= attackInfo.Manacost;
                     if (currentMana < 0)
                     {
@@ -112,9 +127,10 @@ namespace EnemyClassesNamespace
                         if (!requestingOutpOnly) Program.logger.Info($"Applying effect: {effect}");
                         // APPLY STATUSES
                     }
-                    
-                    UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
-                    Console.ReadKey(true);
+
+                    if (!requestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
+                    if (!requestingOutpOnly) Console.ReadKey(true);
+                    if (!requestingOutpOnly) UtilityFunctions.clearScreen(target);
                 }
                 catch (Exception ex)
                 {
@@ -618,7 +634,8 @@ namespace EnemyClassesNamespace
             {
                 if (behaviour == null || behaviour.AttackInfo.ExpressionString == null)
                 {
-                    Program.logger.Info($"Null behaviour spotted: {behaviour.AttackInfo.Name ?? "Fully Null"}. Will attempt fix in uninitialised fix");
+                    Program.logger.Info(
+                        $"Null behaviour spotted: {behaviour.AttackInfo.Name ?? "Fully Null"}. Will attempt fix in uninitialised fix");
                 }
                 else
                 {

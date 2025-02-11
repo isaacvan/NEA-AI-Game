@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <playerPos>
+        <X>3</X>
+        <Y>7</Y>
+    </playerPos>
+    <Class>Mystic Wanderer</Class>
+    <Race>Elonim</Race>
+    <Health>70</Health>
+    <currentHealth>70</currentHealth>
+    <ManaPoints>100</ManaPoints>
+    <currentMana>100</currentMana>
+    <StatNames>
+        <string>Strength</string>
+        <string>Dexterity</string>
+        <string>Constitution</string>
+        <string>Intelligence</string>
+        <string>Charisma</string>
+    </StatNames>
+    <Strength>9</Strength>
+    <Intelligence>8</Intelligence>
+    <Dexterity>5</Dexterity>
+    <Constitution>7</Constitution>
+    <Charisma>5</Charisma>
+    <Level>1</Level>
+    <currentExp>0</currentExp>
+    <maxExp>10</maxExp>
+</Player>

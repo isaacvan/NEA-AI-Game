@@ -38,6 +38,8 @@ namespace CombatNamespace
         public bool enemyTurnBool { get; set; } = false;
         public bool playerAlive { get; set; } = true;
         public AttackSlot lastSlotUsed { get; set; }
+        public Player simPlayer { get; set; }
+        public Enemy simEnemy { get; set; }
 
 
         public enum CombatMenuState
@@ -196,7 +198,7 @@ namespace CombatNamespace
                     }
                 }
 
-                UtilityFunctions.TypeText(new TypeText(), "\n" + UtilityFunctions.universalSeperator);
+                UtilityFunctions.TypeText(new TypeText(), UtilityFunctions.universalSeperator);
                 UtilityFunctions.TypeText(new TypeText(), "Please enter an attack");
 
                 try
@@ -325,10 +327,10 @@ namespace CombatNamespace
             // Execute the best attack
             enemy.ExecuteAttack(bestAttack.Name, player);
 
-            Thread.Sleep(1500);
+            //Thread.Sleep(500);
             UtilityFunctions.clearScreen(player);
-        } 
-        
+        }
+
         // -------------------------------------------
         // Monte Carlo Tree Search (MCTS) for Enemy AI
         // -------------------------------------------
@@ -350,7 +352,7 @@ namespace CombatNamespace
             }
 
             // Select the best attack based on highest score
-            return attackScores.OrderByDescending(kvp => kvp.Value).First().Key;
+             return attackScores.OrderByDescending(kvp => kvp.Value).First().Key;
         }
 
         // -------------------------------------------
@@ -361,11 +363,14 @@ namespace CombatNamespace
             Random rng = new Random();
 
             // Clone enemy and player states
-            Enemy simEnemy = CloneUtility.DeepClone<Enemy>(enemy);
-            Player simPlayer = CloneUtility.DeepClone<Player>(player);
+            simEnemy = CloneUtility.DeepClone<Enemy>(enemy);
+            simPlayer = CloneUtility.DeepClone<Player>(player);
+            simEnemy.RequestingOutpOnly = true;
+            simPlayer.RequestingOutpOnly = true;
 
             int depth = 0;
             simEnemy.ExecuteAttack(firstMove.Name, simPlayer, true); // Simulate the first attack
+            simEnemy.RequestingOutpOnly = true;
 
             while (simPlayer.currentHealth > 0 && simEnemy.currentHealth > 0 && depth < maxDepth)
             {
@@ -373,20 +378,26 @@ namespace CombatNamespace
 
                 if (simPlayer.currentHealth <= 0) return 1000; // High reward for defeating player
 
-                List<AttackInfo> playerAttacks = simPlayer.PlayerAttacks.Values.ToList();
-                simPlayer.ExecuteAttack((AttackSlot)rng.Next(0, playerAttacks.Count()), simEnemy, true);
+                List<int> attackSlotsIntsUsable = simPlayer.PlayerAttacks.Where(x => x.Value != null).ToList()
+                    .FindAll(x => simPlayer.PlayerAttacks[x.Key].Manacost <= simPlayer.currentMana)
+                    .Select(k => (int)k.Key).ToList();
+                simPlayer.ExecuteAttack((AttackSlot)attackSlotsIntsUsable[rng.Next(0, attackSlotsIntsUsable.Count)],
+                    simEnemy, true);
+                simPlayer.RequestingOutpOnly = true;
 
                 if (simEnemy.currentHealth <= 0) return -1000; // High penalty for losing
 
-                List<AttackInfo> enemyAttacks = simEnemy.AttackBehaviours.Values.ToList();
+                List<AttackInfo> enemyAttacks = simEnemy.AttackBehaviours.Values.ToList()
+                    .FindAll(x => x.Manacost <= simEnemy.currentMana);
                 AttackInfo enemyMove = enemyAttacks[rng.Next(enemyAttacks.Count)];
                 simEnemy.ExecuteAttack(enemyMove.Name, simPlayer, true);
+                simEnemy.RequestingOutpOnly = true;
             }
 
             // Reward function: prioritize high damage dealt, low damage taken
             return (enemy.Health - simEnemy.currentHealth) - (player.Health - simPlayer.currentHealth);
-        } 
-        
+        }
+
         // -------------------------------------------
         // Utility: Clone Enemy and Player (Avoid Mutations in Simulations)
         // -------------------------------------------
@@ -405,6 +416,7 @@ namespace CombatNamespace
                         property.SetValue(clone, value);
                     }
                 }
+
                 return clone;
             }
         }
@@ -482,16 +494,18 @@ namespace CombatNamespace
 
                 var rng = new Random();
                 List<AttackInfo> randomisedAttacks = attacks.OrderBy(x => rng.Next()).ToList();
+                bool attackExecuted = false;
                 foreach (var attack in attacks)
                 {
-                    if (enemy.currentMana > attack.Manacost)
+                    if (enemy.currentMana > attack.Manacost && !attackExecuted)
                     {
                         enemy.ExecuteAttack(attack.Name, player);
+                        attackExecuted = true;
                     }
                 }
             }
 
-            Thread.Sleep(1500);
+            //Thread.Sleep(1500);
             UtilityFunctions.clearScreen(player);
         }
 
@@ -591,7 +605,7 @@ namespace CombatNamespace
                 }
             }
 
-            Thread.Sleep(1500);
+            //Thread.Sleep(1500);
             UtilityFunctions.clearScreen(player);
         }
 

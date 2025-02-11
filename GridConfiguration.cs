@@ -29,13 +29,13 @@ namespace GridConfigurationNamespace
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
         {
             { "NodeExit", ("$") }, { "Empty", "." }, { "Player", "@" }, { "Enemy", "E" }, { "Objective", "?" },
-            { "Structure", " " }
+            { "Structure", " " }, { "Berries", "*" }
         };
 
         public static Dictionary<string, Rgb?> CharsToRGB = new Dictionary<string, Rgb?>()
         {
             { "NodeExit", new Rgb(0, 183, 235) }, { "Empty", new Rgb(255, 255, 255) }, { "Player", null },
-            { "Enemy", null }, { "Objective", new Rgb(251, 198, 207) }
+            { "Enemy", null }, { "Objective", new Rgb(251, 198, 207) }, { "Berries", new Rgb(138, 43, 226) }
         };
 
         public static Dictionary<Nature, Rgb> NatureToRGB = new Dictionary<Nature, Rgb>()
@@ -82,6 +82,35 @@ namespace GridConfigurationNamespace
         public static void PlaceTile(ref Node node, int x, int y, Tile tile)
         {
             node.tiles[y][x] = tile;
+        }
+
+        public static Node PlaceBerries(Node node, int minBerry = 1, int maxBerry = 4)
+        {
+            Random rand = new Random();
+            int x = rand.Next(minBerry, maxBerry + 1);
+            bool valid = false;
+            Point rndPoint = Point.Empty;
+            for (int i = 0; i < x; i++)
+            {
+                while (!valid)
+                {
+                    rndPoint = new Point(rand.Next(0, node.NodeWidth), rand.Next(0, node.NodeHeight));
+                    Tile t = node.tiles[rndPoint.X][rndPoint.Y];
+                    if (t.tileDesc == "Empty" &&
+                        rndPoint.X < node.NodeWidth && rndPoint.Y < node.NodeHeight && !t.playerHere)
+                    {
+                        valid = true;
+                    }
+                }
+
+                valid = false;
+                node.tiles[rndPoint.X][rndPoint.Y].tileChar = CharsToMeanings["Berries"][0];
+                node.tiles[rndPoint.X][rndPoint.Y].playerHere = false;
+                node.tiles[rndPoint.X][rndPoint.Y].rgb = CharsToRGB["Berries"];
+                node.tiles[rndPoint.X][rndPoint.Y].tileDesc = "Berries";
+            }
+
+            return node;
         }
 
         public static bool CheckIfOutOfBounds(List<List<Tile>> tiles, Point PlayerPos, string input)
@@ -882,6 +911,7 @@ namespace GridConfigurationNamespace
             Console.ReadKey(true);
 
             Console.CursorVisible = false;
+            game.map.GetCurrentNode().tiles[game.player.playerPos.X][game.player.playerPos.Y].tileChar = GridFunctions.CharsToMeanings["Empty"][0];
 
             GridFunctions.DrawWholeNode(ref game);
         }

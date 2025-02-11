@@ -230,7 +230,7 @@ namespace PlayerClassesNamespace
                     damage *= 2;
                 }
 
-                UtilityFunctions.clearScreen(Program.game.player);
+                //UtilityFunctions.clearScreen(Program.game.player);
                 if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"You have taken {damage} damage.");
                 currentHealth -= damage;
                 if (currentHealth < 0)
@@ -253,9 +253,27 @@ namespace PlayerClassesNamespace
             if (Program.game.player.PlayerAttacks.TryGetValue(key, out var attackInfo))
             {
                 if (requestingOutpOnly) target.RequestingOutpOnly = true;
-                attackInfo.Expression.Invoke(target); // Execute the script
+                var expectedType = attackInfo.Expression.DeclaredParameters.First().Type;
+
+                if (expectedType == typeof(Enemy))
+                {
+                    attackInfo.Expression.Invoke(target); // Correct case, target is an Enemy
+                }
+                else if (expectedType == typeof(Player))
+                {
+                    Parameter[] parameters = null;
+                    parameters = new[] { new Parameter("target", typeof(Enemy)) }; // Ensure correct type
+                    Lambda parsedScript = UtilityFunctions.interpreter.Parse(attackInfo.ExpressionString, parameters);
+                    attackInfo.Expression = parsedScript;
+                    attackInfo.Expression.Invoke(target); // Ensure correct type
+                }
+                else
+                {
+                    throw new Exception($"Unexpected attack expression target type: {expectedType}");
+                }
+
                 target.RequestingOutpOnly = false;
-                
+
                 currentMana -= attackInfo.Manacost;
                 if (currentMana < 0)
                 {
@@ -268,9 +286,10 @@ namespace PlayerClassesNamespace
                 {
                     Program.logger.Info($"Applying effect: {effect}");
                 }
-                
-                UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
-                Console.ReadKey(true);
+
+                if (!requestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to continue...");
+                if (!requestingOutpOnly) Console.ReadKey(true);
+                if (!requestingOutpOnly) UtilityFunctions.clearScreen(this);
             }
             else
             {
@@ -436,6 +455,24 @@ namespace PlayerClassesNamespace
             playerPos = newPos;
         }
 
+        public void UpdateHp()
+        {
+            int baseHp;
+            XmlSerializer serializer = new XmlSerializer(typeof(Player));
+            using (TextReader reader = new StringReader(File.ReadAllText(
+                       $"{UtilityFunctions.mainDirectory}BaseStats{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.xml")))
+            {
+                baseHp = (serializer.Deserialize(reader) as Player).Health;
+            }
+
+            int finalHpMax = baseHp + 2 * Constitution;
+            Health = finalHpMax;
+            if (currentHealth > Health)
+            {
+                currentHealth = Health;
+            }
+        }
+
 
         public void checkForLevelUp()
         {
@@ -448,11 +485,22 @@ namespace PlayerClassesNamespace
         public void levelUp()
         {
             Level++;
+            Strength++;
+            Intelligence++;
+            Dexterity++;
+            Constitution++;
+            Charisma++;
             currentExp -= maxExp;
             maxExp = (maxExp * 2);
             UtilityFunctions.clearScreen(this);
             UtilityFunctions.TypeText(new TypeText(), "You leveled up!");
             UtilityFunctions.TypeText(new TypeText(), $"Level: {Level - 1} ---> {Level}");
+            UtilityFunctions.TypeText(new TypeText(), $"Strength: {Strength - 1} ---> {Strength}");
+            UtilityFunctions.TypeText(new TypeText(), $"Dexterity: {Dexterity - 1} ---> {Dexterity}");
+            UtilityFunctions.TypeText(new TypeText(), $"Intelligence: {Intelligence - 1} ---> {Intelligence}");
+            UtilityFunctions.TypeText(new TypeText(), $"Constitution: {Constitution - 1} ---> {Constitution}");
+            UtilityFunctions.TypeText(new TypeText(), $"Charisma: {Charisma - 1} ---> {Charisma}");
+            UpdateHp();
             Thread.Sleep(1000);
         }
     }

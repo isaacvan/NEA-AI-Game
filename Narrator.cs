@@ -300,6 +300,7 @@ namespace GPTControlNamespace
                 Node newNode = GridFunctions.PopulateNodeWithTiles(node, graph);
                 newNode.InitialiseEnemies(game);
                 newNode = GridFunctions.AddStructures(newNode);
+                newNode = GridFunctions.PlaceBerries(newNode);
                 graphToReturn.Nodes.Add(newNode);
             }
 

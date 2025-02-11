@@ -1,8 +1,26 @@
-2025-02-10 10:23:58.7927|INFO|MainNamespace.Program|Program started
-2025-02-10 10:23:58.8284|INFO|MainNamespace.Program|Running mode=game
-2025-02-10 10:24:01.3597|INFO|MainNamespace.Program|Initialising Item Factory...
-2025-02-10 10:24:01.4054|INFO|MainNamespace.Program|Initialising Enemy Factory...
-2025-02-10 10:24:01.4118|INFO|MainNamespace.Program|Enemy Factory Initialised
-2025-02-10 10:24:01.4132|INFO|MainNamespace.Program|Generating Uninitialised Attack Behaviours...
-2025-02-10 10:24:01.4132|INFO|MainNamespace.Program|No uninitialised attack behaviours found
-2025-02-10 10:24:01.6218|INFO|MainNamespace.Program|Game mode
+2025-02-10 22:07:30.9909|INFO|MainNamespace.Program|Program started
+2025-02-10 22:07:31.0170|INFO|MainNamespace.Program|Running mode=game
+2025-02-10 22:07:35.3573|INFO|MainNamespace.Program|Initialising Item Factory...
+2025-02-10 22:07:35.3937|INFO|MainNamespace.Program|Initialising Enemy Factory...
+2025-02-10 22:07:35.3973|INFO|MainNamespace.Program|Enemy Factory Initialised
+2025-02-10 22:07:35.3984|INFO|MainNamespace.Program|Generating Uninitialised Attack Behaviours...
+2025-02-10 22:07:35.3984|INFO|MainNamespace.Program|No uninitialised attack behaviours found
+2025-02-10 22:07:35.4993|INFO|MainNamespace.Program|Game mode
+2025-02-10 22:07:59.9048|INFO|MainNamespace.Program|Combat started. Player vs 1 enemies.
+2025-02-10 22:07:59.9053|INFO|MainNamespace.Program|Name: Celestial Serpent, Nature: timid
+2025-02-10 22:08:15.5334|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(10, 40)
+2025-02-10 22:08:15.5342|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2025-02-10 22:08:15.5932|INFO|MainNamespace.Program|Applying effect: Stun
+2025-02-10 22:08:15.5932|INFO|MainNamespace.Program|Applying effect: Mental Exhaustion
+2025-02-10 22:08:22.9761|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(10, 40)
+2025-02-10 22:08:22.9761|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2025-02-10 22:08:23.0348|INFO|MainNamespace.Program|Applying effect: Stun
+2025-02-10 22:08:23.0351|INFO|MainNamespace.Program|Applying effect: Mental Exhaustion
+2025-02-10 22:08:24.5541|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(10, 40)
+2025-02-10 22:08:24.5541|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2025-02-10 22:08:24.6112|INFO|MainNamespace.Program|Applying effect: Stun
+2025-02-10 22:08:24.6112|INFO|MainNamespace.Program|Applying effect: Mental Exhaustion
+2025-02-10 22:08:27.4230|INFO|MainNamespace.Program|Expression to parse: target.ReceiveAttack(10, 40)
+2025-02-10 22:08:27.4230|INFO|MainNamespace.Program|Target type: PlayerClassesNamespace.Player
+2025-02-10 22:08:27.4793|INFO|MainNamespace.Program|Applying effect: Stun
+2025-02-10 22:08:27.4793|INFO|MainNamespace.Program|Applying effect: Mental Exhaustion

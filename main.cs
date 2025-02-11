@@ -41,11 +41,10 @@ namespace MainNamespace
         //
         //
         // NEXT - ENEMY COMBAT AI
-        // implement the natures for each type of enemy
-        // design each ai system in combat
-        // basic enemy attack back
         // boss at end
         //
+        // 
+        // make level increase player stats
         //
         // FINAL TWEAKS
         // make game fully playable so that they can complete 1 "storyline"
@@ -177,6 +176,9 @@ namespace MainNamespace
 
                 // register player movement
                 UpdateMoveCounter(ref game);
+                
+                // error check stat changes
+                game.player.UpdateHp();
 
                 // then move enemies
                 MoveEnemies(ref game);
@@ -361,6 +363,21 @@ namespace MainNamespace
             if (tile.objective is { IsCompleted: false })
             {
                 tile.objective.BeginObjective(ref game);
+            }
+
+            if (tile.tileDesc == "Berries")
+            {
+                game.player.currentHealth += (int)Math.Round(game.player.Health * 0.2, 0);
+                if (game.player.currentHealth > game.player.Health)
+                {
+                    game.player.currentHealth = game.player.Health;
+                }
+
+                oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                oldTile.tileDesc = "Empty";
+                oldTile.rgb = GridFunctions.CharsToRGB["Empty"];
+                tile.rgb = GridFunctions.CharsToRGB["Empty"];
+                tile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
             }
 
             // IF NEW GRAPH
