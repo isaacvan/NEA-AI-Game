@@ -24,16 +24,25 @@
               "name": "Celestial Serpent",
               "boss": false,
               "id": 0,
-              "currentLocation": "10, 15",
+              "currentLocation": "7, 13",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 1,
+              "currentLocation": "4, 3",
               "alive": true
             },
             {
               "spawnPoint": "0, 0",
               "nature": 1,
-              "name": "Lunar Golem",
+              "name": "Lost Wanderer",
               "boss": false,
-              "id": 1,
-              "currentLocation": "4, 10",
+              "id": 2,
+              "currentLocation": "6, 2",
               "alive": false
             }
           ],
@@ -41,16 +50,12 @@
             "ObjectiveName": "The Beginning",
             "Description": "You find yourself at the beginning of your journey, unsure of what adventures await.",
             "NarrativePrompts": [
-              "You awaken on a grassy plain, a path leading ahead.",
-              "In your pocket you find a small, mysterious stone.",
-              "What will you do?",
-              ": As you explore, the silent expanse seems to hum in response to your presence. You trip over a protruding stone, but it's not just any stone. It's an Elonim's Sandals, said to increase speed and dexterity. The Lunar Golem and Celestial Serpent seem undisturbed for now. What will you do next?",
-              ": As you pick up the Elonim's Sandals, a gust of wind sweeps across the plain. It's as if the world itself is acknowledging your newfound power. You notice the Lunar Golem and Celestial Serpent stirring from their slumber. Do you choose to face them or sneak away quietly?",
-              ": With the Elonim's Sandals on your feet, you sprint with newfound speed. The plain becomes a blur as the two ancient creatures roar in frustration, too slow to catch up. You have managed to escape. As a reward for your clever thinking, you find a Mystic Wanderer's Robes abandoned on the path ahead."
+              "You awaken on a grassy plain, a path leading ahead."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 1,
@@ -69,46 +74,34 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
+              "spawnPoint": "23, 15",
+              "nature": 1,
+              "name": "Lost Wanderer",
               "boss": false,
-              "id": 2,
-              "currentLocation": "12, 18",
+              "id": 3,
+              "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Astra Grotesque",
-              "boss": false,
-              "id": 3,
-              "currentLocation": "26, 10",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "13, 17",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
               "id": 4,
-              "currentLocation": "26, 9",
-              "alive": false
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Desolate Homes",
             "Description": "Stumble upon a deserted settlement, a remnant of a bygone era.",
             "NarrativePrompts": [
-              "You enter a village, eerily quiet and vacant.",
-              "The weather-beaten houses hold hidden secrets.",
-              "Will you explore further or quickly move on?",
-              ": As you stride deeper into the village, your call echoes through the chilling silence. Suddenly, a whisper of a reply from an unseen entity sends a shiver down your spine. Aimlessly wandering Astra Grotesques respond too, drawn towards your voice... Prepare for an encounter!",
-              " (Elonim Elixir): Grinning, you summon a faux airstrike, using your ItemFunctionsNamespace.Item. A phantasmal bombardment rains down, scorching the ground where Grotesques once stood. The eerie silence deepens; only the gentle whisper saying \"thank you\" remains."
+              "You enter a village, eerily quiet and vacant."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 2,
@@ -127,30 +120,12 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "20, 12",
               "nature": 0,
               "name": "Eclipse Wraith",
               "boss": false,
               "id": 5,
-              "currentLocation": "18, 17",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Astra Grotesque",
-              "boss": false,
-              "id": 6,
-              "currentLocation": "1, 13",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 7,
-              "currentLocation": "20, 11",
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
@@ -158,13 +133,12 @@
             "ObjectiveName": "Journey into the Woods",
             "Description": "The thick forest lies before you, filled with both beauty and danger.",
             "NarrativePrompts": [
-              "You reach the edge of a sprawling forest.",
-              "The wind whispers tales in your ears as the leaves rustle.",
-              "Do you enter or go around it?"
+              "You reach the edge of a sprawling forest."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 3,
@@ -183,41 +157,43 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Lost Wanderer",
+              "spawnPoint": "13, 4",
+              "nature": 0,
+              "name": "Eclipse Wraith",
               "boss": false,
-              "id": 8,
-              "currentLocation": "12, 5",
-              "alive": false
+              "id": 6,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "16, 12",
               "nature": 1,
-              "name": "Lost Wanderer",
+              "name": "Lunar Golem",
               "boss": false,
-              "id": 9,
-              "currentLocation": "6, 9",
-              "alive": false
+              "id": 7,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "9, 5",
+              "nature": 1,
+              "name": "Lunar Golem",
+              "boss": false,
+              "id": 8,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "The Caverns Beckon",
             "Description": "A yawning cave entrance presents another challenge to brave.",
             "NarrativePrompts": [
-              "Before you, a cavernous maw yawns, swallowing the light.",
-              "A chill wind gusts, carrying echoes from the darkness.",
-              "Do you dare to plunge into the unknown?",
-              ": Resolute, you climb into the cavern. The air chills, the ground beneath becoming uneven. The whispers of fallen Wanderers echo, their unseen eyes following. Take a decision, adventurer: charge blindly, bearing Elonim's Grit, or pause, gathering your courage. The path awaits.",
-              ": Channeling your courage, you tread softly. Veering right, your path reveals a faintly glowing fork up ahead. The fork divides into two shadowy paths: icy blue light emanates from the left, while a soft, inviting warmth wafts from the right. Do you follow the chill of the promising unknown or the comfort of inviting warmth?",
-              ": Drawn by warmth, you journey right. Light flickers ahead as you enter a clearing: an elderly hermit wrapped in robes radiates an inviting aura, humming an ancient tune. A wizened ally, or a deceitful shapeshifter? What will you do?",
-              ": The hermit looks up, smiling at your words. \"I am Elonim, wanderer, lost in time. Can I assist in your quest?\" She waits for your response, humming softly. Will you accept her help or decline with precaution?",
-              ": \"Ah, my Grit travels with you? Then destiny ties us,” Elonim states. She extends a shaky hand, an old relic dancing on her palm. \"This Stone Seed, my gift to you. Aid or not, what's your next step?\"",
-              " (Stone Seed): Accepting Elonim's gift, you thank her and prepare to depart. \"May the path embrace you, wanderer,\" she whispers. Braced by her words, you stride forward - your journey deeper into the cavern continues."
+              "Before you, a cavernous maw yawns, swallowing the light."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 4,
@@ -236,20 +212,11 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "10, 13",
-              "nature": 0,
-              "name": "Astra Grotesque",
+              "spawnPoint": "17, 24",
+              "nature": 2,
+              "name": "Celestial Serpent",
               "boss": false,
-              "id": 10,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "19, 3",
-              "nature": 1,
-              "name": "Lunar Golem",
-              "boss": false,
-              "id": 11,
+              "id": 9,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -258,13 +225,12 @@
             "ObjectiveName": "Crossing Waters",
             "Description": "A roaring river blocks your path, its icy waters teeming with peril.",
             "NarrativePrompts": [
-              "The path leads to a wide, untameable river.",
-              "Its waters, cold and swift, mock your attempts to cross.",
-              "How will you proceed?"
+              "The path leads to a wide, untameable river."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 5,
@@ -283,38 +249,34 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
+              "spawnPoint": "14, 17",
+              "nature": 0,
+              "name": "Eclipse Wraith",
               "boss": false,
-              "id": 12,
-              "currentLocation": "49, 12",
-              "alive": false
+              "id": 10,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "7, 5",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 11,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Crypt of Echoes",
             "Description": "Discover an ancient underground city, its history echoing in the cavernous darkness.",
             "NarrativePrompts": [
-              "The cave unveils a forgotten underground city.",
-              "Distant whispers cling on the ancient stone walls.",
-              "What will you find in its shadowy corners?",
-              " As you explore, the eerie silence is broken by a low growl. The celestial serpent has sensed your presence.",
-              " Steeling your nerves, you venture forth to confront the Celestial Serpent. Yet, it senses your bravado and slithers into shadows, ready for the impending showdown.",
-              " Your challenge echoes through the caverns as a call to battle. With a thunderous roar, the Celestial Serpent emerges from the shadows, ready for your courage to be challenged.",
-              " With precision, you hurl a rock at the Serpent's eyes. It reels back, momentarily disoriented - a small victory, but the battle is far from over.",
-              " Seizing the opportunity, you charge, sword in hand. As you strike, the serpent recoils but remains undeterred. The battle rages on.",
-              " In the heart of the battle, your eyes scan the surroundings. Amidst the chaos, you notice a loose stalactite hanging precariously above the serpent. A possible weapon, if used wisely.",
-              " You attempt to reach the stalactite but it hangs too high out of grasp. You'll need to knock it down somehow.",
-              " With a strong hurl, the stone hits the stalactite's base. It shudders, then falls, barely missing the serpent. Will you try again?",
-              " Taking a deep breath, you carefully aim and strike a second stalactite. With a triumphant crash, it impales the startled serpent. The monster screeches, writhing in pain. Your plan worked.",
-              " As the serpent writhes, you sneak past to the guarded treasure. As you reach out to take it, the serpent suddenly lunges. Can you dodge in time?",
-              " You narrowly evade the serpent's lunge, heart pounding. Ignoring your fear, you quickly seize the treasure – a source of ancient power - and make a break towards daylight.",
-              " (Elonim Elixir) Dashing towards the exit, you burst from the darkness into daylight, the roars of the celestial serpent echoing behind you. With shaking hands, you examine the treasure you risked everything to obtain - the mystic Elonim Elixir. Your courage and cunning have served you well."
+              "The cave unveils a forgotten underground city."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 6,
@@ -333,44 +295,25 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 13,
-              "currentLocation": "8, 18",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 14,
-              "currentLocation": "35, 139",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "1, 15",
               "nature": 0,
               "name": "Eclipse Wraith",
               "boss": false,
-              "id": 15,
-              "currentLocation": "20, 15",
-              "alive": false
+              "id": 12,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Cliffs of the Mists",
             "Description": "Find yourself at precipitous cliffs, their peaks hidden in the clouds.",
             "NarrativePrompts": [
-              "The path abruptly ends at the foot of towering mist-draped cliffs.",
-              "Their peaks, hidden in the clouds, pronounce a silent challenge.",
-              "Do you have the courage to ascend?"
+              "The path abruptly ends at the foot of towering mist-draped cliffs."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 7,
@@ -389,40 +332,43 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "8, 6",
               "nature": 2,
               "name": "Celestial Serpent",
               "boss": false,
-              "id": 16,
-              "currentLocation": "109, 34",
-              "alive": false
+              "id": 13,
+              "currentLocation": "0, 0",
+              "alive": true
             },
             {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "14, 1",
               "nature": 0,
-              "name": "Astra Grotesque",
+              "name": "Eclipse Wraith",
               "boss": false,
-              "id": 17,
-              "currentLocation": "-52, 17",
-              "alive": false
+              "id": 14,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "2, 17",
+              "nature": 1,
+              "name": "Lunar Golem",
+              "boss": false,
+              "id": 15,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Altar of the Ancients",
             "Description": "Stumble upon an ancient, mystical altar whispering of long-forgotten rituals.",
             "NarrativePrompts": [
-              "You find an ancient altar, engraved with mysterious symbols.",
-              "A vague energy seems to flicker around it.",
-              "What power does this relic hold?",
-              ":",
-              "As your fingers close around a discarded weapon, a righteous power infuses you. Emboldened, you turn to face the Astra Grotesque and Celestial Serpent. The final stronghold beckons, through trial and tribulation. The ancients seem to whisper guidance.",
-              ": ",
-              "As you sprint away, weapon clutched tightly, the Grotesque and Serpent roar in fury. Yet, the path to the final stronghold now lay open and unobstructed. Your decision echoes the ancients' whispers of wisdom. Safety, for now, is yours.",
-              " (Elonim's Grit): As you depart from the objective, the oath to return the grounds of the ancient altar to silence remains unfulfilled. Yet, in your grip, the weapon pulses a warmth, a testament to your bravery and the potential for future triumph. It is Elonim's Grit. Carry it as a beacon of willpower in your endeavours to come."
+              "You find an ancient altar, engraved with mysterious symbols."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 8,
@@ -441,38 +387,25 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 18,
-              "currentLocation": "9, 4",
-              "alive": false
-            },
-            {
-              "spawnPoint": "0, 0",
+              "spawnPoint": "10, 4",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
-              "id": 19,
-              "currentLocation": "12, 13",
-              "alive": false
+              "id": 16,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
             "ObjectiveName": "Storm's Apex",
             "Description": "Reach the peak of the journey; the storm-prone precipice awaits your challenge.",
             "NarrativePrompts": [
-              "The twilight sky roars as you reach the storm-lashed peak.",
-              "Lightning flits about, while gales challenge your footing.",
-              "What lies beyond this tempest?",
-              ": As you turn to flee, the Astra Grotesque and Celestial Serpent's growls echo in your ears, mocking your retreat. But the storm peak is relentless and unforgiving, and you trip on a hidden stone, falling into the stormy abyss. You struggle to regain control, your heart pounding in your chest. Will you confront the celestial enemies or continue your desperate run?",
-              ": Over jagged rocks and gnarled roots, you run. The celestial enemies loom larger, but you maintain your speed, weaving through the treacherous terrain. But as you charge ahead, you slip further from the Storm's Apex. Will you turn back or continue your escape? The choice is yours as time ticks away.",
-              " (Elonim's Sandals): You bolt, propelled by sheer terror. In the distance, the celestial enemies grow smaller, their growls drowned by the whipping winds. Breathless and fatigued, you somehow find refuge in a concealed cave. Inside, you find a pair of Elonim's Sandals, light as a feather yet indestructible, they will aid your sprint in future encounters."
+              "The twilight sky roars as you reach the storm-lashed peak."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 9,
@@ -491,22 +424,34 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Eclipse Wraith",
+              "spawnPoint": "6, 5",
+              "nature": 1,
+              "name": "Lost Wanderer",
               "boss": true,
-              "id": 20,
-              "currentLocation": "2, 18",
-              "alive": false
+              "id": 17,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Last Bastion",
-            "Description": "Discover a fortress at the journey’s end, its formidable walls promising reward or oblivion.",
+            "ObjectiveName": "The Last Stand",
+            "Description": "You have reached the final stronghold. Engage the Astra Grotesque in a decisive battle.",
             "NarrativePrompts": [
-              "The storm parts to reveal a grand fortress.",
-              "Its stoic walls have withstood the test of time.",
-              "Do you summon the will to conquer this final trial?"
+              "The stronghold looms ominously ahead. Its towering parapets are a force to be reckoned with."
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": {
+            "ObjectiveName": "Storming the Castle",
+            "Description": "You have reached the menacing stronghold of the evil overlord. You must infiltrate it to end his rule of terror.",
+            "NarrativePrompts": [
+              "As you approach the final stronghold, shadows dance ominously in the flickering torchlight at the castle gates.",
+              "A low growl resonates from the darkness as a monstrous guardian becomes visible.",
+              "The stronghold's mgantic stone walls loom high above you, and the final confrontation is at hand.",
+              "Do you take the stealthy approach and sneak past the guardian, or do you prefer to take it head on?",
+              "Or perhaps there may be another way around this... think carefully for your next move could determine the fate of your quest.",
+              "Gravely, you prepare yourself for the challenge that lies ahead."
             ],
             "IsCompleted": false,
             "Location": "0, 0"

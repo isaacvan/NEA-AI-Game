@@ -73,7 +73,17 @@ namespace CombatNamespace
 
             foreach (KeyValuePair<int, Enemy> enemyValuePair in enemiesInp)
             {
-                enemiesAlive.Add(enemyValuePair.Value, true);
+                Enemy e = enemyValuePair.Value;
+                // cahnge stats depending on level
+                int l = e.Level;
+                e.Strength += l - 1;
+                e.Dexterity += l - 1;
+                e.Intelligence += l - 1;
+                e.Constitution += l - 1;
+                e.Charisma += l - 1;
+                e.Health += e.Constitution * 2;
+                e.ManaPoints += e.Intelligence * 2;
+                enemiesAlive.Add(e, true);
             }
         }
 
@@ -322,7 +332,7 @@ namespace CombatNamespace
             turnCount++;
 
             // Get the best action using MCTS
-            AttackInfo bestAttack = MCTS(enemy, player, simulations: 1000, maxDepth: 5);
+            AttackInfo bestAttack = MCTS(enemy, player, simulations: 1000, maxDepth: 8);
 
             // Execute the best attack
             enemy.ExecuteAttack(bestAttack.Name, player);
@@ -352,7 +362,7 @@ namespace CombatNamespace
             }
 
             // Select the best attack based on highest score
-             return attackScores.OrderByDescending(kvp => kvp.Value).First().Key;
+            return attackScores.OrderByDescending(kvp => kvp.Value).First().Key;
         }
 
         // -------------------------------------------
@@ -367,6 +377,8 @@ namespace CombatNamespace
             simPlayer = CloneUtility.DeepClone<Player>(player);
             simEnemy.RequestingOutpOnly = true;
             simPlayer.RequestingOutpOnly = true;
+            simEnemy.SimulatedCombat = true;
+            simPlayer.SimulatedCombat = true;
 
             int depth = 0;
             simEnemy.ExecuteAttack(firstMove.Name, simPlayer, true); // Simulate the first attack
@@ -395,7 +407,7 @@ namespace CombatNamespace
             }
 
             // Reward function: prioritize high damage dealt, low damage taken
-            return (enemy.Health - simEnemy.currentHealth) - (player.Health - simPlayer.currentHealth);
+            return - (enemy.Health - simEnemy.currentHealth) + (player.Health - simPlayer.currentHealth);
         }
 
         // -------------------------------------------
@@ -634,39 +646,6 @@ namespace CombatNamespace
             }
 
             return false;
-        }
-
-        public int DamageConverterFromLevel(int damage, int level)
-        {
-            if (level >= 1 && level <= 10)
-            {
-                try
-                {
-                    double lvlDouble = Convert.ToDouble(level);
-                    double mult = (double)(lvlDouble / 10);
-                    return Convert.ToInt16(Convert.ToDouble(damage) * mult);
-                }
-                catch
-                {
-                    throw new Exception("float to int multiplication thrown error in damageConverter in combat.cs");
-                }
-            }
-
-            if (level > 10 && level <= 20)
-            {
-                try
-                {
-                    double lvlDouble = Convert.ToDouble(level);
-                    double mult = (double)(lvlDouble / 10);
-                    return Convert.ToInt16(Convert.ToDouble(damage) * mult);
-                }
-                catch
-                {
-                    throw new Exception("float to int multiplication thrown error in damageConverter in combat.cs");
-                }
-            }
-
-            return damage;
         }
     }
 

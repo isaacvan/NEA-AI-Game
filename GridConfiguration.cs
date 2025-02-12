@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.JavaScript;
+using CombatNamespace;
 using Emgu.CV.Structure;
 using Emgu.CV.XImgproc;
 using EnemyClassesNamespace;
@@ -25,6 +26,8 @@ namespace GridConfigurationNamespace
         public static int CurrentNodeId = 0;
         public static string CurrentNodeName = "";
         public static int LastestGraphDepth = 0;
+
+        public static bool bossInitialised = false;
 
         public static Dictionary<string, string> CharsToMeanings = new Dictionary<string, string>()
         {
@@ -367,7 +370,16 @@ namespace GridConfigurationNamespace
             Player player = game.player;
             Point playerPos = player.playerPos;
             int sightRange = player.sightRange;
+            EnemySpawn? boss = (node.enemies.Find(x => x.boss) ?? null);
+            Point bossPos = Point.Empty;
+            bool bossPresent = false;
+            if (boss != null)
+            {
+                bossPos = (Point)boss.currentLocation;
+                bossPresent = true;
+            }
 
+            int bossSightRange = 3;
 
             Console.Clear();
             UtilityFunctions.clearScreen(player);
@@ -386,59 +398,46 @@ namespace GridConfigurationNamespace
                     int deltaY = i - playerPos.X;
                     double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY) * 1.1; // get diagonal dist
 
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
+                    int r = 0, g = 0, b = 0;
 
-                    // rgb
-                    if (node.tiles[i][j].rgb != null) // player not here
+                    // fetch tile color if present
+                    if (node.tiles[i][j].rgb != null)
                     {
                         r = (int)node.tiles[i][j].rgb.Value.Red;
                         g = (int)node.tiles[i][j].rgb.Value.Green;
                         b = (int)node.tiles[i][j].rgb.Value.Blue;
                     }
 
-                    // check for dead enemies
-                    if (node.tiles[i][j].enemyOnTile == null && node.tiles[i][j].playerHere == false)
+                    // cmpute distance to boss
+                    int deltaXBoss = j - bossPos.Y;
+                    int deltaYBoss = i - bossPos.X;
+                    double distanceToBoss = Math.Sqrt(deltaXBoss * deltaXBoss + deltaYBoss * deltaYBoss) * 1.1;
+
+                    bool isWithinPlayerSight = (distance <= sightRange);
+                    bool isNearBoss = bossPresent && node.Milestone && (distanceToBoss <= bossSightRange);
+                    bool isFadedArea = (distance * 1.2 <= sightRange * 2);
+
+                    if (isWithinPlayerSight)
                     {
-                        if (node.tiles[i][j].tileChar == CharsToMeanings["Enemy"][0])
+                        // apply the boss glow effect if near the boss
+                        if (isNearBoss)
                         {
-                            string str = "" + node.tiles[i][j].tileDesc;
-                            node.tiles[i][j].tileChar = CharsToMeanings[$"{str}"][0];
+                            float glowStrength = (float)(1.0 - (distanceToBoss / bossSightRange));
+                            glowStrength = Math.Max(0, glowStrength); // mske not negative
+
+                            // blend red glow with original colors
+                            int newR = Math.Min(255, (int)(r + (255 - r) * glowStrength));
+                            int newG = (int)(g * (1 - glowStrength)); // reduce green
+                            int newB = (int)(b * (1 - glowStrength)); // reduce blue
+
+                            WriteTileChar(node, i, j, newR, newG, newB);
+                        }
+                        else
+                        {
+                            WriteTileChar(node, i, j, r, g, b);
                         }
                     }
-
-                    // double check for player tile
-                    if (node.tiles[i][j].playerHere)
-                    {
-                        if (node.tiles[i][j].tileChar != CharsToMeanings["Player"][0])
-                        {
-                            node.tiles[i][j].tileChar = CharsToMeanings[$"Player"][0];
-                        }
-                    }
-
-                    // check for complete objective
-                    if (node.tiles[i][j].objective != null)
-                    {
-                        if (node.tiles[i][j].objective.IsCompleted)
-                        {
-                            if (node.tiles[i][j].tileChar != CharsToMeanings["Empty"][0])
-                            {
-                                node.tiles[i][j].tileChar = CharsToMeanings[$"Empty"][0];
-                                node.tiles[i][j].rgb = CharsToRGB[$"Empty"];
-                            }
-                        }
-                    }
-
-                    // determine if the tile is within sight range
-                    // \x1b[38;2;{r};{g};{b}m
-                    // \x1b[38;2;255m
-                    if (distance <= sightRange)
-                    {
-                        WriteTileChar(node, i, j, r, g, b);
-                    }
-                    // if outside sight range but still within the square frame
-                    else if (distance * 1.2 <= sightRange * 2)
+                    else if (isFadedArea)
                     {
                         float brightness = (float)(1.0 - (distance - sightRange) / (sightRange * 0.5));
                         brightness = Math.Min(brightness, 1);
@@ -450,17 +449,35 @@ namespace GridConfigurationNamespace
                         }
                         else
                         {
-                            WriteTileChar(node, i, j, Math.Round(brightness * r, 0), Math.Round(brightness * g, 0),
-                                Math.Round(brightness * b, 0), brightness);
+                            // blend boss glow into faded area
+                            float glowStrength = isNearBoss ? (float)(1.0 - (distanceToBoss / bossSightRange)) : 0;
+                            glowStrength = Math.Max(0, glowStrength);
+
+                            int newR = Math.Min(255, (int)((r + (255 - r) * glowStrength) * brightness));
+                            int newG = (int)((g * (1 - glowStrength)) * brightness);
+                            int newB = (int)((b * (1 - glowStrength)) * brightness);
+
+                            WriteTileChar(node, i, j, newR, newG, newB, brightness);
                         }
+                    }
+                    else if (isNearBoss)
+                    {
+                        // if outside sight range but still near boss, apply red glow
+                        float glowStrength = (float)(1.0 - (distanceToBoss / bossSightRange));
+                        glowStrength = Math.Max(0, glowStrength);
+
+                        int newR = Math.Min(255, (int)(r + (255 - r) * glowStrength));
+                        int newG = (int)(g * (1 - glowStrength));
+                        int newB = (int)(b * (1 - glowStrength));
+
+                        WriteTileChar(node, i, j, newR, newG, newB, glowStrength);
                     }
                 }
 
-                
-
                 Console.WriteLine();
             }
-            
+
+
             DrawSideStats(sightRange, ref game, Console.GetCursorPosition());
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -543,7 +560,7 @@ namespace GridConfigurationNamespace
                     newConstIndentForSecondColumn = rowsToPrint[i].Count();
                 }
             }
-            
+
             List<string> statsToPrint = new List<string>()
             {
                 "\x1b[38;2;255;165;0mPLAYER STATS\x1b[38;2;255;255;255m",
@@ -553,12 +570,12 @@ namespace GridConfigurationNamespace
                 $"Constitution ---> {game.player.Constitution}",
                 $"Charisma ---> {game.player.Charisma}"
             };
-            
+
             for (int i = 0; i <= height; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(indent + newConstIndentForSecondColumn - 7, yconst + i);
-                if (statsToPrint.Count >= i) 
+                if (statsToPrint.Count >= i)
                     statsToPrint.Add("");
                 Console.Write($"| {statsToPrint[i]}");
             }
@@ -712,7 +729,107 @@ namespace GridConfigurationNamespace
 
             return newTiles;
         }
+
+        public static void CheckEnemiesAreInValidPositions(Game game)
+        {
+            Node n = game.map.GetCurrentNode();
+            List<List<Tile>> tiles = n.tiles;
+            foreach (var spawn in n.enemies)
+            {
+                if (spawn.alive)
+                {
+                    if (!GridFunctions.CheckIfOutOfBounds(tiles, spawn.currentLocation,
+                            "none")) // if point invalid due to corrupt save
+                    {
+                        spawn.currentLocation = Point.Empty;
+                        bool validPoint = false;
+                        Random random = new Random();
+                        Point tempPoint = new Point();
+
+                        while (!validPoint)
+                        {
+                            tempPoint.X = random.Next(1, n.NodeWidth - 2);
+                            tempPoint.Y = random.Next(1, n.NodeHeight - 2);
+                            if (tiles[tempPoint.X][tempPoint.Y].tileDesc == "Empty" &&
+                                tiles[tempPoint.X][tempPoint.Y].enemyOnTile == null)
+                            {
+                                validPoint = true;
+                            }
+                        }
+
+                        spawn.spawnPoint = UtilityFunctions.ClonePoint(tempPoint);
+                    }
+                }
+            }
+
+            game.map.GetCurrentNode().enemies = n.enemies;
+        }
+
+        public static void InitialiseBoss(ref Game game)
+        {
+            Node n = game.map.GetCurrentNode();
+            // Objective storedObjective = Combat.CloneUtility.DeepClone<Objective>(n.Obj);
+            // n.StoredObjectiveForMilestone = storedObjective;
+            n.Obj = null;
+            if (!n.Milestone) throw new Exception("Not milestone... Trying to do boss?");
+            for (int i = 0; i < n.tiles.Count; i++)
+            {
+                for (int j = 0; j < n.tiles[i].Count; j++)
+                {
+                    if (n.tiles[i][j].enemyOnTile != null)
+                    {
+                        n.tiles[i][j].enemyOnTile = null;
+                        n.tiles[i][j].tileDesc = "Empty";
+                        n.tiles[i][j].tileChar = CharsToMeanings[n.tiles[i][j].tileDesc][0];
+                    }
+
+                    if (n.tiles[i][j].objective != null)
+                    {
+                        n.tiles[i][j].objective = null;
+                    }
+                }
+            }
+
+
+            int w = n.NodeWidth;
+            int h = n.NodeHeight;
+            Point p = new Point(w / 2, h / 2);
+
+            Random rnd = new Random();
+            Enemy boss = game.enemyFactory.CreateEnemy(
+                game.enemyFactory.enemyTemplates.Values.ToList()[rnd.Next(game.enemyFactory.enemyTemplates.Count)],
+                n.NodeDepth > 10 ? n.NodeDepth : 10, p, UtilityFunctions.GiveNewEnemyId(), Nature.aggressive);
+            EnemySpawn bossSpawn = new EnemySpawn()
+            {
+                spawnPoint = boss.Position,
+                nature = Nature.aggressive,
+                name = boss.Name,
+                boss = true,
+                id = boss.Id,
+                currentLocation = Point.Empty,
+                alive = true
+            };
+
+            n.enemies.Clear();
+            n.enemies.Add(bossSpawn);
+            n.tiles[boss.Position.X][boss.Position.Y].enemyOnTile = boss;
+            // n.tiles[boss.Position.X][boss.Position.Y].rgb = NatureToRGB[boss.nature];
+            
+            bossInitialised = true;
+        }
     }
+    /*
+     * public class EnemySpawn
+       {
+           public Point spawnPoint { get; set; } // null once spawned
+           public Nature nature { get; set; }
+           public string name { get; set; }
+           public bool boss { get; set; }
+           public int id { get; set; }
+           public Point currentLocation { get; set; } // null when not spawned yet
+           public bool alive { get; set; }
+       }
+     */
 
     public class Map
     {
@@ -772,6 +889,11 @@ namespace GridConfigurationNamespace
             {
                 g.SetEntryAndExits();
             }
+
+            if (!g.Nodes.MaxBy(n => n.NodeDepth).Milestone)
+            {
+                g.Nodes.MaxBy(n => n.NodeDepth).Milestone = true;
+            }
         }
 
         public void saveMapStructure()
@@ -823,6 +945,10 @@ namespace GridConfigurationNamespace
         [JsonIgnore] public Func<Player, Game, string, bool> OnInteraction { get; set; }
         public bool IsCompleted { get; set; }
         public Point Location { get; set; }
+
+        public Objective()
+        {
+        }
 
         public Objective(string name, string description, List<string> prompts,
             Func<Player, Game, string, bool> interaction)
@@ -911,7 +1037,8 @@ namespace GridConfigurationNamespace
             Console.ReadKey(true);
 
             Console.CursorVisible = false;
-            game.map.GetCurrentNode().tiles[game.player.playerPos.X][game.player.playerPos.Y].tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+            game.map.GetCurrentNode().tiles[game.player.playerPos.X][game.player.playerPos.Y].tileChar =
+                GridFunctions.CharsToMeanings["Empty"][0];
 
             GridFunctions.DrawWholeNode(ref game);
         }
@@ -985,6 +1112,7 @@ namespace GridConfigurationNamespace
         [Newtonsoft.Json.JsonIgnore] public List<List<Tile>> tiles { get; set; }
         public List<EnemySpawn> enemies { get; set; }
         public Objective? Obj { get; set; }
+        public Objective? StoredObjectiveForMilestone { get; set; } = null;
 
         public Node(int id, int width, int height, string nodePOI, bool milestone)
         {
@@ -1103,14 +1231,15 @@ namespace GridConfigurationNamespace
                 if (!spawn.alive)
                     continue;
                 EnemyTemplate template = game.enemyFactory.enemyTemplates[spawn.name];
-                
-                if (!GridFunctions.CheckIfOutOfBounds(tiles, spawn.currentLocation, "none")) // if point invalid due to corrupt save
+
+                if (!GridFunctions.CheckIfOutOfBounds(tiles, spawn.currentLocation,
+                        "none")) // if point invalid due to corrupt save
                 {
                     spawn.currentLocation = Point.Empty;
                     bool validPoint = false;
                     Random random = new Random();
                     Point tempPoint = new Point();
-                    
+
                     while (!validPoint)
                     {
                         tempPoint.X = random.Next(1, this.NodeWidth - 2);
@@ -1121,7 +1250,7 @@ namespace GridConfigurationNamespace
                             validPoint = true;
                         }
                     }
-                    
+
                     spawn.spawnPoint = UtilityFunctions.ClonePoint(tempPoint);
                 }
 
@@ -1337,7 +1466,7 @@ namespace GridConfigurationNamespace
         {
             string prompt12 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt12.txt");
             prompt12 += $"\n{string.Join(", ", Nodes.FindAll(n => n.Obj == null).Select(n => n.NodePOI))}";
-            if (Nodes.FindAll(n => n.Obj == null).Count == 0)
+            if (Nodes.FindAll(n => n.Obj == null && !n.Milestone).Count == 0)
             {
                 PlaceExistingObjectivesToNodes();
                 return;
@@ -1351,7 +1480,8 @@ namespace GridConfigurationNamespace
                     JsonConvert.DeserializeObject<Dictionary<string, Objective>>(output);
                 for (int i = 0; i < objectives.Count; i++)
                 {
-                    Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key).Obj = objectives.ElementAt(i).Value;
+                    Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key && !n.Milestone).Obj =
+                        objectives.ElementAt(i).Value;
                 }
             }
             catch (Exception ex)

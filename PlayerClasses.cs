@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Reflection;
 using CombatNamespace;
 using DynamicExpresso;
+using Emgu.CV;
 using Emgu.CV.Dnn;
 using GameClassNamespace;
 using GridConfigurationNamespace;
@@ -62,6 +63,7 @@ namespace PlayerClassesNamespace
         [XmlIgnore] public bool sightRangeModified { get; set; }
         [XmlIgnore] public int sightRangeModifiedBy { get; set; }
         [XmlIgnore] public bool RequestingOutpOnly { get; set; } = false;
+        [XmlIgnore] public bool SimulatedCombat { get; set; } = false;
 
         public Player()
         {
@@ -223,12 +225,27 @@ namespace PlayerClassesNamespace
         {
             if (Program.game.currentCombat != null)
             {
-                damage = Program.game.currentCombat.DamageConverterFromLevel(damage, Level);
+                // Add strength + dex + int / 3
+                if (!SimulatedCombat)
+                {
+                    var enem = Program.game.currentCombat.enemy;
+                    damage += (enem.Strength + enem.Dexterity + enem.Intelligence) / 3;
+                }
+                else
+                {
+                    var enem = Program.game.currentCombat.simEnemy;
+                    damage += (enem.Strength + enem.Dexterity + enem.Intelligence) / 3;
+                }
+
                 bool didCrit = Program.game.currentCombat.didCrit(Program.game.currentCombat.enemy, crit);
                 if (didCrit)
                 {
                     damage *= 2;
                 }
+                
+                // reduce enemy damage as scalar
+                double scalar = 0.5;
+                damage = Convert.ToInt16(Math.Round(damage * scalar, 0));
 
                 //UtilityFunctions.clearScreen(Program.game.player);
                 if (!RequestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"You have taken {damage} damage.");
@@ -236,7 +253,7 @@ namespace PlayerClassesNamespace
                 if (currentHealth < 0)
                 {
                     currentHealth = 0;
-                    PlayerDies();
+                    if (!SimulatedCombat) PlayerDies();
                 }
 
                 return damage;
@@ -455,14 +472,17 @@ namespace PlayerClassesNamespace
             playerPos = newPos;
         }
 
-        public void UpdateHp()
+        public void UpdateHpAndMana()
         {
             int baseHp;
+            int baseMp;
             XmlSerializer serializer = new XmlSerializer(typeof(Player));
             using (TextReader reader = new StringReader(File.ReadAllText(
                        $"{UtilityFunctions.mainDirectory}BaseStats{Path.DirectorySeparatorChar}{UtilityFunctions.saveName}.xml")))
             {
-                baseHp = (serializer.Deserialize(reader) as Player).Health;
+                var obj = serializer.Deserialize(reader) as Player;
+                baseHp = obj.Health;
+                baseMp = obj.ManaPoints;
             }
 
             int finalHpMax = baseHp + 2 * Constitution;
@@ -470,6 +490,13 @@ namespace PlayerClassesNamespace
             if (currentHealth > Health)
             {
                 currentHealth = Health;
+            }
+
+            int finalManaPointMax = baseMp + 2 * Intelligence;
+            ManaPoints = finalManaPointMax;
+            if (currentMana > ManaPoints)
+            {
+                currentMana = ManaPoints;
             }
         }
 
@@ -500,7 +527,7 @@ namespace PlayerClassesNamespace
             UtilityFunctions.TypeText(new TypeText(), $"Intelligence: {Intelligence - 1} ---> {Intelligence}");
             UtilityFunctions.TypeText(new TypeText(), $"Constitution: {Constitution - 1} ---> {Constitution}");
             UtilityFunctions.TypeText(new TypeText(), $"Charisma: {Charisma - 1} ---> {Charisma}");
-            UpdateHp();
+            UpdateHpAndMana();
             Thread.Sleep(1000);
         }
     }

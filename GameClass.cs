@@ -96,14 +96,17 @@ namespace GameClassNamespace
                 GridFunctions.CurrentNodeId = 0;
                 GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
 
-                // generate storyline summary for loaded games
+                // generate storyline summary for loaded games & base stats file
                 await gameSetup.GenerateStoryLineForFuture(chat, this);
+                Program.SerializeBaseStatsOfPlayer(player);
 
                 // save empty game state for future
                 gameState = new GameState(SaveName: UtilityFunctions.saveName);
                 await gameState.saveStateToFile();
-                
-                await UtilityFunctions.writeToXMLFile(UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + UtilityFunctions.saveName, player);
+
+                await UtilityFunctions.writeToXMLFile(
+                    UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" +
+                    UtilityFunctions.saveName, player);
 
                 Console.WriteLine("Started Game.");
             }
@@ -129,10 +132,10 @@ namespace GameClassNamespace
                 // load enemyFactory
                 enemyFactory =
                     await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
-                
+
                 // error-checking to ensure statuses are initialised
                 await normalNarrator.GenerateUninitialisedAttackBehaviours(chat);
-                
+
                 // check for files unwritten
                 // await checkAllFilesForMissing(gameSetup, chat, api, testing);
 
@@ -148,17 +151,20 @@ namespace GameClassNamespace
                 var holder = await gameState.unloadStateFromFile(player, map);
                 player = holder.Item1;
                 map = holder.Item2;
-                
+
+                // check for corruption
+                GridFunctions.CheckEnemiesAreInValidPositions(this);
+
                 // initialise HUD details
                 GridFunctions.CurrentNodeId = map.GetCurrentNode().NodeID;
                 GridFunctions.CurrentNodeName = map.GetCurrentNode().NodePOI;
 
                 Console.WriteLine("Loaded save.");
             }
-            
+
             // ensure itemf actory done
             itemFactory.itemTemplates = itemFactory.GetAllTemplates();
-            
+
             // fix map structure (links between connected nodes)
             map.fixMapStructure();
 
@@ -199,6 +205,7 @@ namespace GameClassNamespace
                         {
                             map = await gameSetup.GenerateMapStructure(chat, this, gameSetup);
                         }
+
                         break;
                     case "Statuses":
                         if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
@@ -236,6 +243,21 @@ namespace GameClassNamespace
 
             currentCombat = new Combat(player, dict);
             return currentCombat.beginCombat();
+        }
+        
+        public void WinGame(Game game)
+        {
+            Console.Clear();
+            UtilityFunctions.TypeText(new TypeText(), "You won the game!\n");
+            game.chat.AppendUserInput("The user won the game and defeated the final boss! Give them a narrative outro to sum up their story and end the narrative. This is will be your final output to the user for this game.");
+            string output = game.narrator.GetGPTOutput(game.chat, "FinalNarrative").GetAwaiter().GetResult();
+            // Console.Clear();
+            UtilityFunctions.TypeText(new TypeText(), output);
+            Thread.Sleep(3000);
+            UtilityFunctions.TypeText(new TypeText(), "\n\nPress any key to exit...");
+
+            Program.ResetGameState(game, endOfGame: true).GetAwaiter().GetResult();
+            Environment.Exit(0);
         }
 
         public void loseGame()

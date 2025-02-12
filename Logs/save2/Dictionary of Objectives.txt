@@ -21,97 +21,19 @@ class Objective
 Generate a JSON response that adheres strictly to this format.
 The dictionary is a Dictionary<string, Objective>.
 Here are the names of all the Node Names that you must generate objectives for:
-Starting Point, Abandoned Village, Forest Edge, Cave Entrance, River Crossing, Underground Ruins, Misty Cliffs, Ancient Altar, Storm Peak, Final Stronghold
+Final Stronghold
 
 OUTPUT: {
-  "Starting Point": {
-    "ObjectiveName": "The Beginning",
-    "Description": "You find yourself at the beginning of your journey, unsure of what adventures await.",
-    "NarrativePrompts": [
-      "You awaken on a grassy plain, a path leading ahead.",
-      "In your pocket you find a small, mysterious stone.",
-      "What will you do?"
-    ]
-  },
-  "Abandoned Village": {
-    "ObjectiveName": "Desolate Homes",
-    "Description": "Stumble upon a deserted settlement, a remnant of a bygone era.",
-    "NarrativePrompts": [
-      "You enter a village, eerily quiet and vacant.",
-      "The weather-beaten houses hold hidden secrets.",
-      "Will you explore further or quickly move on?"
-    ]
-  },
-  "Forest Edge": {
-    "ObjectiveName": "Journey into the Woods",
-    "Description": "The thick forest lies before you, filled with both beauty and danger.",
-    "NarrativePrompts": [
-      "You reach the edge of a sprawling forest.",
-      "The wind whispers tales in your ears as the leaves rustle.",
-      "Do you enter or go around it?"
-    ]
-  },
-  "Cave Entrance": {
-    "ObjectiveName": "The Caverns Beckon",
-    "Description": "A yawning cave entrance presents another challenge to brave.",
-    "NarrativePrompts": [
-      "Before you, a cavernous maw yawns, swallowing the light.",
-      "A chill wind gusts, carrying echoes from the darkness.",
-      "Do you dare to plunge into the unknown?"
-    ]
-  },
-  "River Crossing": {
-    "ObjectiveName": "Crossing Waters",
-    "Description": "A roaring river blocks your path, its icy waters teeming with peril.",
-    "NarrativePrompts": [
-      "The path leads to a wide, untameable river.",
-      "Its waters, cold and swift, mock your attempts to cross.",
-      "How will you proceed?"
-    ]
-  },
-  "Underground Ruins": {
-    "ObjectiveName": "Crypt of Echoes",
-    "Description": "Discover an ancient underground city, its history echoing in the cavernous darkness.",
-    "NarrativePrompts": [
-      "The cave unveils a forgotten underground city.",
-      "Distant whispers cling on the ancient stone walls.",
-      "What will you find in its shadowy corners?"
-    ]
-  },
-  "Misty Cliffs": {
-    "ObjectiveName": "Cliffs of the Mists",
-    "Description": "Find yourself at precipitous cliffs, their peaks hidden in the clouds.",
-    "NarrativePrompts": [
-      "The path abruptly ends at the foot of towering mist-draped cliffs.",
-      "Their peaks, hidden in the clouds, pronounce a silent challenge.",
-      "Do you have the courage to ascend?"
-    ]
-  },
-  "Ancient Altar": {
-    "ObjectiveName": "Altar of the Ancients",
-    "Description": "Stumble upon an ancient, mystical altar whispering of long-forgotten rituals.",
-    "NarrativePrompts": [
-      "You find an ancient altar, engraved with mysterious symbols.",
-      "A vague energy seems to flicker around it.",
-      "What power does this relic hold?"
-    ]
-  },
-  "Storm Peak": {
-    "ObjectiveName": "Storm's Apex",
-    "Description": "Reach the peak of the journey; the storm-prone precipice awaits your challenge.",
-    "NarrativePrompts": [
-      "The twilight sky roars as you reach the storm-lashed peak.",
-      "Lightning flits about, while gales challenge your footing.",
-      "What lies beyond this tempest?"
-    ]
-  },
-  "Final Stronghold": {
-    "ObjectiveName": "Last Bastion",
-    "Description": "Discover a fortress at the journey’s end, its formidable walls promising reward or oblivion.",
-    "NarrativePrompts": [
-      "The storm parts to reveal a grand fortress.",
-      "Its stoic walls have withstood the test of time.",
-      "Do you summon the will to conquer this final trial?"
-    ]
-  }
+    "Final Stronghold": {
+        "ObjectiveName": "Storming the Castle",
+        "Description": "You have reached the menacing stronghold of the evil overlord. You must infiltrate it to end his rule of terror.",
+        "NarrativePrompts": [
+            "As you approach the final stronghold, shadows dance ominously in the flickering torchlight at the castle gates.",
+            "A low growl resonates from the darkness as a monstrous guardian becomes visible.",
+            "The stronghold's mgantic stone walls loom high above you, and the final confrontation is at hand.",
+            "Do you take the stealthy approach and sneak past the guardian, or do you prefer to take it head on?",
+            "Or perhaps there may be another way around this... think carefully for your next move could determine the fate of your quest.",
+            "Gravely, you prepare yourself for the challenge that lies ahead."
+        ]
+    }
 }

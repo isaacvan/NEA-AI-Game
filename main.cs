@@ -43,8 +43,7 @@ namespace MainNamespace
         // NEXT - ENEMY COMBAT AI
         // boss at end
         //
-        // 
-        // make level increase player stats
+        //
         //
         // FINAL TWEAKS
         // make game fully playable so that they can complete 1 "storyline"
@@ -53,13 +52,6 @@ namespace MainNamespace
         //----------------------------------------------------------------------------------------------------------
         */
 
-
-        // ------------------------------------------------------------------------------------------------------------
-        // CURRENT STATE
-        // TESTING - works.
-        // GAME - loadGame works.
-        // GAME - game works, with very occasional api errors in generation.
-        // ----------------------------------------------------------------------------------------------------------
 
         static async Task Main(string[] args)
         {
@@ -176,9 +168,12 @@ namespace MainNamespace
 
                 // register player movement
                 UpdateMoveCounter(ref game);
-                
+
                 // error check stat changes
-                game.player.UpdateHp();
+                game.player.UpdateHpAndMana();
+                
+                if (game.map.GetCurrentNode().Milestone && !GridFunctions.bossInitialised)
+                    GridFunctions.InitialiseBoss(ref game);
 
                 // then move enemies
                 MoveEnemies(ref game);
@@ -190,6 +185,12 @@ namespace MainNamespace
                 // check for a new node
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
                     GridFunctions.UpdateToNewNode(ref game, IdOfNextNode, ref oldTile, oldId);
+
+                if (game.map.GetCurrentNode().Milestone && !GridFunctions.bossInitialised)
+                    GridFunctions.InitialiseBoss(ref game);
+                
+                // check for corruption
+                GridFunctions.CheckEnemiesAreInValidPositions(game);
 
                 // draw the updated grid
                 GridFunctions.DrawWholeNode(ref game);
@@ -271,7 +272,6 @@ namespace MainNamespace
                 {
                     // dont move that sht
                 }
-                
             }
         }
 
@@ -328,8 +328,10 @@ namespace MainNamespace
             {
                 // START COMBAT
                 UtilityFunctions.clearScreen(game.player);
+                bool bossNode = false;
+                if (game.map.GetCurrentNode().Milestone) bossNode = true;
                 bool outcome = game.startCombat(new List<Enemy>() { tile.enemyOnTile });
-                if (outcome)
+                if (outcome && !bossNode)
                 {
                     tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
                     oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
@@ -352,6 +354,11 @@ namespace MainNamespace
 
                     tile.enemyOnTile = null;
                     oldTile.enemyOnTile = null;
+                } else if (outcome && bossNode)
+                {
+                    // WIN GAME
+                    game.WinGame(game);
+                    
                 }
                 else
                 {
@@ -866,58 +873,80 @@ namespace MainNamespace
             }
         }
 
-        public static async Task<Game> ResetGameState(Game game)
+        public static void SerializeBaseStatsOfPlayer(Player player)
+        {
+            string path =
+                $"{UtilityFunctions.mainDirectory}BaseStats{Path.DirectorySeparatorChar}{UtilityFunctions.saveFile}";
+            if (File.Exists(path))
+            {
+                return;
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(Player));
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                serializer.Serialize(sw, player);
+            }
+        }
+
+        public static async Task<Game> ResetGameState(Game game, bool endOfGame = false)
         {
             // reset current save objectgives, enemies, etc. player inv, equipment, everything except the assets
-            
+
             NarrationTypeWriter.Stop();
-
-            bool obtainedSaveName = false;
             string finalPathName = "";
-            while (!obtainedSaveName)
-            {
-                Console.Clear();
-                Console.WriteLine("Which save would you like to reset?");
-                int index = 1;
-                List<string> pathNames = Directory.GetFiles(UtilityFunctions.mainDirectory + "GameStates", "*.json")
-                    .Select(pathName => Path.GetFileNameWithoutExtension(pathName)).ToList();
-                foreach (string pathName in pathNames)
-                {
-                    Console.WriteLine($"{index}: {pathName}");
-                    index++;
-                }
 
-                string inp = Console.ReadLine();
-                if (int.TryParse(inp, out int gameIndex))
+            if (!endOfGame)
+            {
+                bool obtainedSaveName = false;
+                while (!obtainedSaveName)
                 {
-                    try
+                    Console.Clear();
+                    Console.WriteLine("Which save would you like to reset?");
+                    int index = 1;
+                    List<string> pathNames = Directory.GetFiles(UtilityFunctions.mainDirectory + "GameStates", "*.json")
+                        .Select(pathName => Path.GetFileNameWithoutExtension(pathName)).ToList();
+                    foreach (string pathName in pathNames)
                     {
-                        finalPathName = pathNames[gameIndex - 1];
-                        obtainedSaveName = true;
+                        Console.WriteLine($"{index}: {pathName}");
+                        index++;
                     }
-                    catch (IndexOutOfRangeException)
+
+                    string inp = Console.ReadLine();
+                    if (int.TryParse(inp, out int gameIndex))
                     {
-                        Console.Clear();
-                        Console.WriteLine("Invalid game index.\n");
-                    }
-                }
-                else
-                {
-                    if (pathNames.Contains(inp))
-                    {
-                        finalPathName = inp;
-                        obtainedSaveName = true;
+                        try
+                        {
+                            finalPathName = pathNames[gameIndex - 1];
+                            obtainedSaveName = true;
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid game index.\n");
+                        }
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("Invalid game index.\n");
+                        if (pathNames.Contains(inp))
+                        {
+                            finalPathName = inp;
+                            obtainedSaveName = true;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid game index.\n");
+                        }
                     }
                 }
             }
-            
+            else
+            {
+                finalPathName = UtilityFunctions.saveName;
+            }
+
             // reset gamState
-            
+
 
             // reset map
             game.gameState.currentGraphId = 0;
@@ -936,11 +965,12 @@ namespace MainNamespace
                     n.Obj.NarrativePrompts.Add(temp);
                 }
             }
-            
-            
+
 
             // gotten save to reset, now start resetting.
-            game.player = await UtilityFunctions.readFromXMLFile<Player>(UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + finalPathName + ".xml", new Player());
+            game.player = await UtilityFunctions.readFromXMLFile<Player>(
+                UtilityFunctions.mainDirectory + $"BaseStats{Path.DirectorySeparatorChar}" + finalPathName + ".xml",
+                new Player());
             game.player.Health = 100;
             game.player.currentHealth = 100;
             game.player.PlayerAttacks[AttackSlot.slot1] =
@@ -953,7 +983,7 @@ namespace MainNamespace
             game.player.inventory = new Inventory();
             await game.player.initialiseEquipment();
             await game.player.initialiseInventory();
-            
+
             // await game.gameState.saveStateToFile();
             await saveGameToAllStoragesAsync();
 

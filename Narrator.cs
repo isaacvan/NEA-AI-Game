@@ -336,7 +336,7 @@ namespace GPTControlNamespace
             game.map = JsonConvert.DeserializeObject<Map>(output);
             game.map.Graphs[game.map.Graphs.Count - 1] =
                 await PopulateNodesWithTiles(game.map.Graphs[game.map.Graphs.Count - 1], game, true);
-            if (game.map.GetCurrentNode().Obj == null)
+            if (game.map.GetCurrentNode().Obj == null && !game.map.GetCurrentNode().Milestone)
             {
                 await game.map.GetCurrentNode().AddObjectiveToNode(false);
             }
