@@ -214,6 +214,7 @@ namespace MainNamespace
         public static void MoveEnemies(ref Game game)
         {
             var enemies = game.map.GetCurrentNode().enemies;
+            enemies = enemies.FindAll(enemy => enemy.alive);
             foreach (EnemySpawn enemy in enemies)
             {
                 Point oldPoint = new Point();
@@ -374,7 +375,7 @@ namespace MainNamespace
 
             if (tile.tileDesc == "Berries")
             {
-                game.player.currentHealth += (int)Math.Round(game.player.Health * 0.2, 0);
+                game.player.currentHealth += (int)Math.Round(game.player.Health * 0.25, 0);
                 if (game.player.currentHealth > game.player.Health)
                 {
                     game.player.currentHealth = game.player.Health;
@@ -384,8 +385,10 @@ namespace MainNamespace
                 oldTile.tileDesc = "Empty";
                 oldTile.rgb = GridFunctions.CharsToRGB["Empty"];
                 tile.rgb = GridFunctions.CharsToRGB["Empty"];
-                tile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
             }
+            
+            GridFunctions.DrawWholeNode(ref game);
 
             // IF NEW GRAPH
             // GridFunctions.LastestGraphDepth++;

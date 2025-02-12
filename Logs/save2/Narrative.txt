@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: Battered and bruised, you stare down the Astra Grotesque and Lost Wanderer amidst the rubble of the Starting
+OUTPUT: begins here. You're at full health, ready for the perils ahead. Moving cautiously, you set your eyes on
