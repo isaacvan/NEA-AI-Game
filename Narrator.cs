@@ -441,7 +441,8 @@ namespace GPTControlNamespace
             return api;
         }
 
-        public async Task<string> GetGPTOutput(Conversation chat, string title, int? maxTokens = null)
+        public async Task<string> GetGPTOutput(Conversation chat, string title, int? maxTokens = null,
+            (bool, Type)? xml = null)
         {
             if (maxTokens != null)
             {
@@ -451,6 +452,9 @@ namespace GPTControlNamespace
             }
             else chat.RequestParameters.MaxTokens = null;
 
+            bool trueIfJsonfalseIfXml = !(xml != null && xml.Value.Item1);
+            Type type = xml != null ? xml.Value.Item2 : typeof(OpenAIAPI);
+
             // chat.RequestParameters.Temperature = 0.9;
             string output = "";
             bool completed = false;
@@ -459,6 +463,25 @@ namespace GPTControlNamespace
                 try
                 {
                     output = await chat.GetResponseFromChatbotAsync();
+
+                    if (trueIfJsonfalseIfXml)
+                    {
+                        // json
+                        if (!UtilityFunctions.IsValidJsonBasic(output))
+                        {
+                            Program.logger.Warn($"Incomplete JSON detected for {title}. Requesting regeneration...");
+                            continue;  // Retry if JSON is incomplete
+                        }
+                    }
+                    else
+                    {
+                        // xml
+                        if (!UtilityFunctions.IsValidXmlBasic(output, type))
+                        {
+                            Program.logger.Warn($"Incomplete XML detected for {title}. Requesting regeneration...");
+                            continue;
+                        }
+                    }
                     completed = true;
                 }
                 catch (HttpRequestException e)
@@ -559,7 +582,7 @@ namespace GPTControlNamespace
             {
                 // output = await Narrator.getGPTResponse(prompt5, api, 100, 0.9);
                 chat.AppendUserInput(prompt5);
-                output = await GetGPTOutput(chat, "PlayerCharacterGen");
+                output = await GetGPTOutput(chat, "PlayerCharacterGen", xml: (true, typeof(Player)));
             }
             catch (Exception e)
             {

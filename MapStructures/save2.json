@@ -295,22 +295,22 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "17, 6",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
               "id": 12,
-              "currentLocation": "0, 0",
+              "currentLocation": "8, 28",
               "alive": true
             },
             {
-              "spawnPoint": "18, 9",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
               "id": 13,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "14, 12",
+              "alive": false
             }
           ],
           "Obj": {
@@ -378,21 +378,21 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "12, 19",
+              "spawnPoint": "0, 0",
               "nature": 2,
               "name": "Celestial Serpent",
               "boss": false,
               "id": 15,
-              "currentLocation": "0, 0",
+              "currentLocation": "6, 22",
               "alive": true
             },
             {
-              "spawnPoint": "17, 15",
+              "spawnPoint": "0, 0",
               "nature": 1,
               "name": "Lost Wanderer",
               "boss": false,
               "id": 16,
-              "currentLocation": "0, 0",
+              "currentLocation": "15, 15",
               "alive": true
             }
           ],
@@ -424,24 +424,16 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "3, 6",
-              "nature": 1,
-              "name": "Lost Wanderer",
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Lunar Golem",
               "boss": true,
-              "id": 17,
-              "currentLocation": "0, 0",
+              "id": 0,
+              "currentLocation": "27, 16",
               "alive": true
             }
           ],
-          "Obj": {
-            "ObjectiveName": "The Last Stand",
-            "Description": "You have reached the final stronghold. Engage the Astra Grotesque in a decisive battle.",
-            "NarrativePrompts": [
-              "The stronghold looms ominously ahead. Its towering parapets are a force to be reckoned with."
-            ],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          },
+          "Obj": null,
           "StoredObjectiveForMilestone": {
             "ObjectiveName": "Storming the Castle",
             "Description": "You have reached the menacing stronghold of the evil overlord. You must infiltrate it to end his rule of terror.",

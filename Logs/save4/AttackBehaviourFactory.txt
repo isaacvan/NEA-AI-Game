@@ -1,0 +1,140 @@
+INPUT: Your next job as the narrator is to generate a JSON file that represents a dictionary of the attack name to an AttackInfo that corresponds to each of the enemy attack names you gave earlier. Each attack behavior should be defined as an object with the following properties:
+
+Key: A unique string identifier for each attack. This is used to reference the attack in the game's code. These keys will be used later. Bear in mind you will generate at least 5 enemies, so you will need 4 keys per enemy (minimum 20).
+Expression: A string containing C# code that defines what the attack does when executed. This should be simple commands that affect a hypothetical Player class. You have one functions you can use: target.ReceiveAttack(damage, crit). Ensure the damage corresponds to the attack magnitude and the context of the game, and crit is an int between 0 - 100. If no crit is entered, it will be defaulted to 20.
+Manacost: A number from 0-20 dictating how much mana the skill costs to use
+Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
+Narrative: A string containing the output whenever this attack is used. If the enemy is casting it, it will begin with "The {enemyname} {Narrative}", and if the player casts it it will begin with "The player {Narrative}". Ensure this makes grammatical sense.
+AttackType: A string containing what type of attack it is.
+Here is how each component should be formatted and an example for each:
+
+Key: Should be the name of the attack, like "Fireball".
+Expression: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
+Statuses: These are the status effects that the attack applies.
+Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
+AttackType: Strictly: "Attack", "Heal", "Debuff", "Buff"
+
+All behaviours should match the keys used for previous enemies, however, one attack should be called PlayerBasicAttack, used only for the player's beginning move. See the following example:
+SOME BEHAVIOURS MUST COST 0 MANA, AS EVERY ENEMY SHOULD HAVE ONE MOVE WITH 0 MANA COST. At least 2 not including basic attack for the player.
+This is a Dictionary Structure.
+
+{
+  "PlayerBasicAttack": {
+    "Name": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(5, 60)",
+    "Manacost": 0
+    "Statuses": []
+    "Narrative": "throws a punch."
+    "AttackType": "Attack"
+  },
+  "Bloody Slice": {
+    "Name": "Bloody Slice",
+    "Expression": "target.ReceiveAttack(10, 30)",
+    "Manacost": 5
+    "Statuses": ["Bleed"]
+    "Narrative": "slices violently, causing blood to fly."
+    "AttackType": "Attack"
+  },
+  "Backstab": {
+    "Name": "Backstab",
+    "Expression": "target.ReceiveAttack(15, 90)",
+    "Manacost": 3
+    "Statuses": ["Cripple", "Cloaked"]
+    "Narrative": "uses the element of surprise to cause severe damage."
+    "AttackType": "Attack"
+  },
+  "Taunt": {
+    "Name": "Taunt",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 10
+    "Statuses": ["AtkPowered", "DefenceBoost"]
+    "Narrative": "calls out rude names, taunting everybody in the area."
+    "AttackType": "Buff"
+  }
+  ...
+}
+
+Ensure all output is parsable. This is crucial, as if any of your output is not code parsable, the code will break. Your only command in target.ReceiveAttack(int), anything else is not accepted. If a single command is of different syntax, the code will break.
+
+OUTPUT: {
+  "PlayerBasicAttack": {
+    "Name": "PlayerBasicAttack",
+    "Expression": "target.ReceiveAttack(7, 20)",
+    "Manacost": 0,
+    "Statuses": [],
+    "Narrative": "swings a broadsword.",
+    "AttackType": "Attack"
+  },
+  "BarbarianStrike": {
+    "Name": "BarbarianStrike",
+    "Expression": "target.ReceiveAttack(12, 40)",
+    "Manacost": 5,
+    "Statuses": ["Stunned"],
+    "Narrative": "delivers a powerful strike, leaving its enemy stunned.",
+    "AttackType": "Attack"
+  },
+  "ShieldBash": {
+    "Name": "ShieldBash",
+    "Expression": "target.ReceiveAttack(8, 30)",
+    "Manacost": 3,
+    "Statuses": ["Dizzy"],
+    "Narrative": "bashes its opponent with a large shield, leaving them disoriented.",
+    "AttackType": "Attack"
+  },
+  "BattleCry": {
+    "Name": "BattleCry",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 0,
+    "Statuses": ["AtkBoost", "DefBoost"],
+    "Narrative": "let's out a fearsome battle cry, strengthening its resolve.",
+    "AttackType": "Buff"
+  },
+  "SwordThrust": {
+    "Name": "SwordThrust",
+    "Expression": "target.ReceiveAttack(15, 50)",
+    "Manacost": 10,
+    "Statuses": ["Bleed"],
+    "Narrative": "thrusts it's sword straight at its opponent, causing bleeding.",
+    "AttackType": "Attack"
+  },
+  "LegSweep": {
+    "Name": "LegSweep",
+    "Expression": "target.ReceiveAttack(5, 70)",
+    "Manacost": 2,
+    "Statuses": ["Tripped"],
+    "Narrative": "sweeps the legs of its adversary, causing them to fall.",
+    "AttackType": "Attack"
+  },
+  "HeartyLaugh": {
+    "Name": "HeartyLaugh",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 0,
+    "Statuses": ["HPBoost", "DefBoost"],
+    "Narrative": "laughs heartily, increasing vitality and defense.",
+    "AttackType": "Buff"
+  },
+  "KnightlyDuel": {
+    "Name": "KnightlyDuel",
+    "Expression": "target.ReceiveAttack(16, 80)",
+    "Manacost": 15,
+    "Statuses": ["Challenged"],
+    "Narrative": "issues a formal duel challenge to its opposition.",
+    "AttackType": "Attack"
+  },
+  "JoustCharge": {
+    "Name": "JoustCharge",
+    "Expression": "target.ReceiveAttack(20, 60)",
+    "Manacost": 7,
+    "Statuses": ["KnockedBack"],
+    "Narrative": "charges swiftly at its foe with a lance.",
+    "AttackType": "Attack"
+  },
+  "Bulwark": {
+    "Name": "Bulwark",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 0,
+    "Statuses": ["DefenceBoost", "Invulnerable"],
+    "Narrative": "strengthens defenses becoming an unmovable bulwark.",
+    "AttackType": "Buff"
+  }
+}

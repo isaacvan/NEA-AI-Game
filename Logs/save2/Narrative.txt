@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: "Player stands at River Crossing, an Astra Grotesque ahead. A looming mist in the distance implies the Misty
+OUTPUT: Your victory hard-fought, new challenges arise at Storm Peak. A Lost Wanderer and Celestial Serpent await.

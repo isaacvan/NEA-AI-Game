@@ -438,7 +438,7 @@ namespace MainNamespace
                         game.loseGame();
                     }
                 }
-
+    
             }
 
             GridFunctions.DrawWholeNode(ref game);
@@ -689,8 +689,9 @@ namespace MainNamespace
                 }
                 else
                 {
-                    UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
-                        "Invalid input. Please enter a valid number.");
+                    // UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
+                    //    "Invalid input. Please enter a valid number.");
+                    // continue
                 }
             }
 

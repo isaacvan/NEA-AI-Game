@@ -1487,8 +1487,12 @@ namespace GridConfigurationNamespace
                     JsonConvert.DeserializeObject<Dictionary<string, Objective>>(output);
                 for (int i = 0; i < objectives.Count; i++)
                 {
-                    Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key && !n.Milestone).Obj =
-                        objectives.ElementAt(i).Value;
+                    Node? nodetemp = Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key && !n.Milestone) ?? null;
+                    if (nodetemp != null)
+                    {
+                        Nodes.Find(n => n.NodePOI == objectives.ElementAt(i).Key && !n.Milestone).Obj =
+                            objectives.ElementAt(i).Value;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1504,7 +1508,7 @@ namespace GridConfigurationNamespace
                 Point point = new Point();
                 if (Nodes[i].Obj == null)
                 {
-                    throw new Exception("Objective is null.");
+                    
                 }
                 else if (Nodes[i].Obj.Location == Point.Empty)
                 {

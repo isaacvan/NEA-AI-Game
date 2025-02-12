@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Serialization;
 using CombatNamespace;
 using ItemFunctionsNamespace;
@@ -18,6 +19,7 @@ using GPTControlNamespace;
 using GridConfigurationNamespace;
 using MainNamespace;
 using OpenAI_API.Chat;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace UtilityFunctionsNamespace
 {
@@ -746,6 +748,39 @@ namespace UtilityFunctionsNamespace
         {
             return new Player();
         }
+        
+        public static bool IsValidJsonBasic(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return false;
+
+            try
+            {
+                JsonConvert.DeserializeObject(json);
+                return true;  // JSON is valid
+            }
+            catch (JsonReaderException ex)
+            {
+                Program.logger.Warn($"Invalid JSON detected: {ex.Message}");
+                return false;  // JSON is broken
+            }
+        }
+        
+        public static bool IsValidXmlBasic(string xml, Type T)
+        {
+            if (string.IsNullOrWhiteSpace(xml)) return false;
+            XmlSerializer s = new XmlSerializer(T);
+            
+            try
+            {
+                s.Deserialize(new StringReader(xml));
+                return true;  // XML is valid
+            }
+            catch (XmlException ex)
+            {
+                Program.logger.Warn($"Invalid XML detected: {ex.Message}");
+                return false;  // XML is broken
+            }
+        }
     }
 
     public class LambdaJsonConverter : JsonConverter
@@ -770,8 +805,10 @@ namespace UtilityFunctionsNamespace
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // Serialization logic if needed, or throw an exception if not supported.
-            throw new NotImplementedException("This converter does not support writing.");
+            if (value is Lambda lambda)
+            {
+                writer.WriteValue(lambda.ExpressionText);  // Store only the raw expression
+            }
         }
     }
 

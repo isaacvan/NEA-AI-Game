@@ -635,7 +635,7 @@ namespace EnemyClassesNamespace
         {
             foreach (var behaviour in behaviours)
             {
-                if (behaviour == null || behaviour.AttackInfo.ExpressionString == null)
+                if (behaviour == null || (behaviour.AttackInfo.ExpressionString == null && behaviour.AttackInfo.Expression == null))
                 {
                     Program.logger.Info(
                         $"Null behaviour spotted: {behaviour.AttackInfo.Name ?? "Fully Null"}. Will attempt fix in uninitialised fix");
@@ -655,7 +655,7 @@ namespace EnemyClassesNamespace
     {
         public string Name { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore] public Lambda Expression { get; set; }
+        [Newtonsoft.Json.JsonConverter(typeof(LambdaJsonConverter))] public Lambda Expression { get; set; }
 
         //[Newtonsoft.Json.JsonConverter(typeof(ExpressionConverter))] 
         public string ExpressionString { get; set; }
