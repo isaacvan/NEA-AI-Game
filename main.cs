@@ -171,16 +171,18 @@ namespace MainNamespace
 
                 // error check stat changes
                 game.player.UpdateHpAndMana();
-                
+
                 if (game.map.GetCurrentNode().Milestone && !GridFunctions.bossInitialised)
                     GridFunctions.InitialiseBoss(ref game);
-
-                // then move enemies
-                MoveEnemies(ref game);
 
                 // CHECK FOR EVENTS
                 int oldId = game.map.GetCurrentNode().NodeID;
                 CheckForEventsTriggered(ref game, ref IdOfNextNode, ref oldTile);
+
+                // then move enemies
+                MoveEnemies(ref game);
+
+                CheckForEventsTriggered(ref game, ref IdOfNextNode, ref oldTile, onlyCheckEnemies: true);
 
                 // check for a new node
                 if (GridFunctions.CheckIfNewNode(game.map.GetCurrentNode().tiles, game.player.playerPos))
@@ -188,7 +190,7 @@ namespace MainNamespace
 
                 if (game.map.GetCurrentNode().Milestone && !GridFunctions.bossInitialised)
                     GridFunctions.InitialiseBoss(ref game);
-                
+
                 // check for corruption
                 GridFunctions.CheckEnemiesAreInValidPositions(game);
 
@@ -301,93 +303,144 @@ namespace MainNamespace
             }
         }
 
-        public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode, ref Tile oldTile)
+        public static void CheckForEventsTriggered(ref Game game, ref int IdOfNextNode, ref Tile oldTile,
+            bool onlyCheckEnemies = false)
         {
             Point pos = game.player.playerPos;
             Tile tile = game.map.GetCurrentNode().tiles[pos.X][pos.Y];
-            if (tile.tileDesc == "NodeExit") // CHECK FOR IF ON A NODE BOUNDARY
+
+            if (!onlyCheckEnemies)
             {
-                if (tile.exitNodePointerId != null && tile.entryNodePointerId == null)
+                if (tile.tileDesc == "NodeExit") // CHECK FOR IF ON A NODE BOUNDARY
                 {
-                    IdOfNextNode = (int)tile.exitNodePointerId;
-                }
-                else if (tile.exitNodePointerId == null && tile.entryNodePointerId != null)
-                {
-                    IdOfNextNode = (int)tile.entryNodePointerId;
+                    if (tile.exitNodePointerId != null && tile.entryNodePointerId == null)
+                    {
+                        IdOfNextNode = (int)tile.exitNodePointerId;
+                    }
+                    else if (tile.exitNodePointerId == null && tile.entryNodePointerId != null)
+                    {
+                        IdOfNextNode = (int)tile.entryNodePointerId;
+                    }
+                    else
+                    {
+                        throw new Exception("ExitNode was not found, no pointer id was found");
+                    }
                 }
                 else
                 {
-                    throw new Exception("ExitNode was not found, no pointer id was found");
+                    IdOfNextNode = -1;
+                }
+
+                if (tile.enemyOnTile != null)
+                {
+                    // START COMBAT
+                    UtilityFunctions.clearScreen(game.player);
+                    bool bossNode = false;
+                    if (game.map.GetCurrentNode().Milestone) bossNode = true;
+                    bool outcome = game.startCombat(new List<Enemy>() { tile.enemyOnTile });
+                    if (outcome && !bossNode)
+                    {
+                        tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
+                        oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                        oldTile.rgb = new Rgb(255, 255, 255);
+
+                        game.player.currentExp += (tile.enemyOnTile.Level + 1) * 10 *
+                                                  (game.map.Graphs[game.map.CurrentGraphPointer].GraphDepth + 1);
+                        game.player.checkForLevelUp();
+
+                        int EnemyId = tile.enemyOnTile.Id;
+                        for (var i = 0; i < game.map.GetCurrentNode().enemies.Count; i++)
+                        {
+                            if (game.map.GetCurrentNode().enemies[i].id == EnemyId)
+                            {
+                                game.map.GetCurrentNode().enemies.ElementAt(i).alive = false;
+                            }
+                        }
+
+                        // game.map.GetCurrentNode().enemies.Find(e => e.id == tile.enemyOnTile.Id).alive = false;
+
+                        tile.enemyOnTile = null;
+                        oldTile.enemyOnTile = null;
+                    }
+                    else if (outcome && bossNode)
+                    {
+                        // WIN GAME
+                        game.WinGame(game);
+                    }
+                    else
+                    {
+                        // END GAME
+                        game.loseGame();
+                    }
+                }
+
+                if (tile.objective is { IsCompleted: false })
+                {
+                    tile.objective.BeginObjective(ref game);
+                }
+
+                if (tile.tileDesc == "Berries")
+                {
+                    game.player.currentHealth += (int)Math.Round(game.player.Health * 0.25, 0);
+                    if (game.player.currentHealth > game.player.Health)
+                    {
+                        game.player.currentHealth = game.player.Health;
+                    }
+
+                    oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                    oldTile.tileDesc = "Empty";
+                    oldTile.rgb = GridFunctions.CharsToRGB["Empty"];
+                    tile.rgb = GridFunctions.CharsToRGB["Empty"];
+                    tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
                 }
             }
             else
             {
-                IdOfNextNode = -1;
-            }
-
-            if (tile.enemyOnTile != null)
-            {
-                // START COMBAT
-                UtilityFunctions.clearScreen(game.player);
-                bool bossNode = false;
-                if (game.map.GetCurrentNode().Milestone) bossNode = true;
-                bool outcome = game.startCombat(new List<Enemy>() { tile.enemyOnTile });
-                if (outcome && !bossNode)
+                if (tile.enemyOnTile != null)
                 {
-                    tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
-                    oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
-                    oldTile.rgb = new Rgb(255, 255, 255);
-
-                    game.player.currentExp += (tile.enemyOnTile.Level + 1) * 10 *
-                                              (game.map.Graphs[game.map.CurrentGraphPointer].GraphDepth + 1);
-                    game.player.checkForLevelUp();
-
-                    int EnemyId = tile.enemyOnTile.Id;
-                    for (var i = 0; i < game.map.GetCurrentNode().enemies.Count; i++)
+                    // START COMBAT
+                    UtilityFunctions.clearScreen(game.player);
+                    bool bossNode = false;
+                    if (game.map.GetCurrentNode().Milestone) bossNode = true;
+                    bool outcome = game.startCombat(new List<Enemy>() { tile.enemyOnTile });
+                    if (outcome && !bossNode)
                     {
-                        if (game.map.GetCurrentNode().enemies[i].id == EnemyId)
+                        tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
+                        oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
+                        oldTile.rgb = new Rgb(255, 255, 255);
+
+                        game.player.currentExp += (tile.enemyOnTile.Level + 1) * 10 *
+                                                  (game.map.Graphs[game.map.CurrentGraphPointer].GraphDepth + 1);
+                        game.player.checkForLevelUp();
+
+                        int EnemyId = tile.enemyOnTile.Id;
+                        for (var i = 0; i < game.map.GetCurrentNode().enemies.Count; i++)
                         {
-                            game.map.GetCurrentNode().enemies.ElementAt(i).alive = false;
+                            if (game.map.GetCurrentNode().enemies[i].id == EnemyId)
+                            {
+                                game.map.GetCurrentNode().enemies.ElementAt(i).alive = false;
+                            }
                         }
+
+                        // game.map.GetCurrentNode().enemies.Find(e => e.id == tile.enemyOnTile.Id).alive = false;
+
+                        tile.enemyOnTile = null;
+                        oldTile.enemyOnTile = null;
                     }
-
-                    // game.map.GetCurrentNode().enemies.Find(e => e.id == tile.enemyOnTile.Id).alive = false;
-
-                    tile.enemyOnTile = null;
-                    oldTile.enemyOnTile = null;
-                } else if (outcome && bossNode)
-                {
-                    // WIN GAME
-                    game.WinGame(game);
-                    
-                }
-                else
-                {
-                    // END GAME
-                    game.loseGame();
-                }
-            }
-
-            if (tile.objective is { IsCompleted: false })
-            {
-                tile.objective.BeginObjective(ref game);
-            }
-
-            if (tile.tileDesc == "Berries")
-            {
-                game.player.currentHealth += (int)Math.Round(game.player.Health * 0.25, 0);
-                if (game.player.currentHealth > game.player.Health)
-                {
-                    game.player.currentHealth = game.player.Health;
+                    else if (outcome && bossNode)
+                    {
+                        // WIN GAME
+                        game.WinGame(game);
+                    }
+                    else
+                    {
+                        // END GAME
+                        game.loseGame();
+                    }
                 }
 
-                oldTile.tileChar = GridFunctions.CharsToMeanings["Empty"][0];
-                oldTile.tileDesc = "Empty";
-                oldTile.rgb = GridFunctions.CharsToRGB["Empty"];
-                tile.rgb = GridFunctions.CharsToRGB["Empty"];
-                tile.tileChar = GridFunctions.CharsToMeanings["Player"][0];
             }
-            
+
             GridFunctions.DrawWholeNode(ref game);
 
             // IF NEW GRAPH
@@ -884,6 +937,7 @@ namespace MainNamespace
             {
                 return;
             }
+
             XmlSerializer serializer = new XmlSerializer(typeof(Player));
             using (StreamWriter sw = new StreamWriter(path))
             {

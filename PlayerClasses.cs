@@ -244,7 +244,7 @@ namespace PlayerClassesNamespace
                 }
                 
                 // reduce enemy damage as scalar
-                double scalar = 0.5;
+                double scalar = 0.1 + (Program.game.currentCombat.enemy.Level / 10);
                 damage = Convert.ToInt16(Math.Round(damage * scalar, 0));
 
                 //UtilityFunctions.clearScreen(Program.game.player);

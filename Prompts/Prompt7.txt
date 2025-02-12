@@ -15,6 +15,7 @@ Narrative: Should make sense if coming from an enemy or the player, like "throws
 AttackType: Strictly: "Attack", "Heal", "Debuff", "Buff"
 
 All behaviours should match the keys used for previous enemies, however, one attack should be called PlayerBasicAttack, used only for the player's beginning move. See the following example:
+SOME BEHAVIOURS MUST COST 0 MANA, AS EVERY ENEMY SHOULD HAVE ONE MOVE WITH 0 MANA COST. At least 2 not including basic attack for the player.
 This is a Dictionary Structure.
 
 {

@@ -977,7 +977,9 @@ namespace GridConfigurationNamespace
                     if (completedPrompts.Contains(prompt))
                         continue;
                     completedPrompts.Add(prompt);
-                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), prompt);
+                    // remove colon at start and trim
+                    string cleansedPrompt = (prompt[0].Equals(':')) ? prompt.Remove(0, 1).Trim() : prompt.Trim();
+                    UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), cleansedPrompt);
                 }
 
                 Console.Write("> ");
@@ -1037,8 +1039,12 @@ namespace GridConfigurationNamespace
             Console.ReadKey(true);
 
             Console.CursorVisible = false;
-            game.map.GetCurrentNode().tiles[game.player.playerPos.X][game.player.playerPos.Y].tileChar =
+            Node n = game.map.GetCurrentNode();
+            n.Obj.IsCompleted = true;
+            n.tiles[n.Obj.Location.X][n.Obj.Location.Y].tileChar =
                 GridFunctions.CharsToMeanings["Empty"][0];
+            n.tiles[n.Obj.Location.X][n.Obj.Location.Y].objective = null;
+            n.tiles[n.Obj.Location.X][n.Obj.Location.Y].tileDesc = "Empty";
 
             GridFunctions.DrawWholeNode(ref game);
         }
@@ -1062,13 +1068,14 @@ namespace GridConfigurationNamespace
             prompt +=
                 "\nIt is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.";
             prompt +=
-                "You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the user";
+                "You may start this response with the word in full capitals CONTINUE: or END. If you use continue, then all the following text will be outputted to the user";
             prompt +=
                 $"However if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).";
             prompt +=
                 $"The items you can give to the player are: {string.Join(", ", game.itemFactory.weaponTemplates.Select(t => t.Name).Concat(game.itemFactory.armourTemplates.Select(t => t.Name).Concat(game.itemFactory.consumableTemplates.Select(t => t.Name))))}";
             prompt += "For example, to end the objective and give the user an item write END (item name)";
             prompt += "Or, write CONTINUE (next narrative lines)";
+            prompt += "Speak to the player is second person (you do ..., you see...)";
 
             game.chat.AppendUserInput(prompt);
             string outp = await game.narrator.GetGPTOutput(game.chat,
@@ -1466,9 +1473,9 @@ namespace GridConfigurationNamespace
         {
             string prompt12 = File.ReadAllText($"{UtilityFunctions.promptPath}Prompt12.txt");
             prompt12 += $"\n{string.Join(", ", Nodes.FindAll(n => n.Obj == null).Select(n => n.NodePOI))}";
-            if (Nodes.FindAll(n => n.Obj == null && !n.Milestone).Count == 0)
+            if (Nodes.FindAll(n => n.Obj == null && !n.Milestone).Count == 0) // check that they are all initialised
             {
-                PlaceExistingObjectivesToNodes();
+                await PlaceExistingObjectivesToNodes();
                 return;
             }
 

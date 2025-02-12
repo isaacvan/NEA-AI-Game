@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: begins here. You're at full health, ready for the perils ahead. Moving cautiously, you set your eyes on
+OUTPUT: "Player stands at River Crossing, an Astra Grotesque ahead. A looming mist in the distance implies the Misty

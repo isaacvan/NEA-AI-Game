@@ -110,15 +110,18 @@ namespace EnemyClassesNamespace
                     var attackExpression = UtilityFunctions.interpreter.Parse(expression.ExpressionText, parameters);
 
                     // Invoke the parsed expression
-                    if (requestingOutpOnly) target.RequestingOutpOnly = true;
-                    attackExpression.Invoke(target); // Execute the script
-                    target.RequestingOutpOnly = false;
-
-                    currentMana -= attackInfo.Manacost;
-                    if (currentMana < 0)
+                    if (currentMana - attackInfo.Manacost < 0)
                     {
-                        throw new Exception(
-                            "Not enough mana to cast. error check didnt work. at executeattack in enemy");
+                        if (!requestingOutpOnly) UtilityFunctions.TypeText(new TypeText(), $"The enemy could not afford to cast...\n+10 mana");
+                        currentMana += 10;
+                    }
+                    else
+                    {
+                        if (requestingOutpOnly) target.RequestingOutpOnly = true;
+                        attackExpression.Invoke(target); // Execute the script
+                        target.RequestingOutpOnly = false;
+                        
+                        currentMana -= attackInfo.Manacost;
                     }
 
                     // Optionally handle modifiers here or within the script itself

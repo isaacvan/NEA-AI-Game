@@ -12,6 +12,8 @@ Include Intelligence, Dexterity, Constitution and Charisma, all following the sa
 AttackBehaviourKeys: Within an earlier request, you generated a variety of attacks. These keys are a string representative of the attacks each creature has. 4 attacks per creature. Ensure they are creative, and remember, you have full freedom over every capability they contain. They must correspond with the already generated behaviours.
 nature: This is an enum value, either "aggressive", "neutral" or "timid". Aggressive enemies will actively seek the player, and have a more powerful combat ai, whereas timid enemies run away from the player, using a weaker combat ai. Neutral enemies have a balance of both.
 
+EVERY ENEMY MUST HAVE ONE MOVE THAT USES 0 MANA
+
 The output should be formatted in JSON format. It is crucial that the entire output is easily parsable:
 {
   "enemyTypes": ["Goblin", "Orc", "Dragon"],

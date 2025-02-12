@@ -11,7 +11,7 @@
     "FeralClaws": {
       "Name": "FeralClaws",
       "ExpressionString": "target.ReceiveAttack(10, 50)",
-      "Manacost": 5,
+      "Manacost": 0,
       "Statuses": [
         "Bleed"
       ],
@@ -21,7 +21,7 @@
     "VenomousBite": {
       "Name": "VenomousBite",
       "ExpressionString": "target.ReceiveAttack(15, 30)",
-      "Manacost": 7,
+      "Manacost": 0,
       "Statuses": [
         "Poisoned"
       ],
@@ -51,7 +51,7 @@
     "EtherealSword": {
       "Name": "EtherealSword",
       "ExpressionString": "target.ReceiveAttack(20, 70)",
-      "Manacost": 10,
+      "Manacost": 0,
       "Statuses": [
         "Armor Break",
         "Slowed"

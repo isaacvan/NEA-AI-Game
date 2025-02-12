@@ -20,20 +20,11 @@
           "enemies": [
             {
               "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 0,
-              "currentLocation": "8, 12",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
-              "id": 1,
-              "currentLocation": "3, 6",
+              "id": 0,
+              "currentLocation": "8, 12",
               "alive": false
             },
             {
@@ -41,8 +32,8 @@
               "nature": 1,
               "name": "Lost Wanderer",
               "boss": false,
-              "id": 2,
-              "currentLocation": "6, 2",
+              "id": 1,
+              "currentLocation": "14, 2",
               "alive": false
             }
           ],
@@ -74,20 +65,20 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "23, 15",
-              "nature": 1,
-              "name": "Lost Wanderer",
+              "spawnPoint": "15, 3",
+              "nature": 2,
+              "name": "Celestial Serpent",
               "boss": false,
-              "id": 3,
+              "id": 2,
               "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "13, 17",
+              "spawnPoint": "5, 11",
               "nature": 0,
               "name": "Astra Grotesque",
               "boss": false,
-              "id": 4,
+              "id": 3,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -120,13 +111,31 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "20, 12",
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 4,
+              "currentLocation": "9, 16",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Lunar Golem",
+              "boss": false,
+              "id": 5,
+              "currentLocation": "18, 17",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Eclipse Wraith",
               "boss": false,
-              "id": 5,
-              "currentLocation": "0, 0",
-              "alive": true
+              "id": 6,
+              "currentLocation": "16, 22",
+              "alive": false
             }
           ],
           "Obj": {
@@ -157,16 +166,7 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "13, 4",
-              "nature": 0,
-              "name": "Eclipse Wraith",
-              "boss": false,
-              "id": 6,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "16, 12",
+              "spawnPoint": "3, 7",
               "nature": 1,
               "name": "Lunar Golem",
               "boss": false,
@@ -175,7 +175,7 @@
               "alive": true
             },
             {
-              "spawnPoint": "9, 5",
+              "spawnPoint": "3, 12",
               "nature": 1,
               "name": "Lunar Golem",
               "boss": false,
@@ -212,13 +212,13 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "17, 24",
-              "nature": 2,
-              "name": "Celestial Serpent",
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
               "boss": false,
               "id": 9,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "10, 24",
+              "alive": false
             }
           ],
           "Obj": {
@@ -249,18 +249,18 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "14, 17",
-              "nature": 0,
-              "name": "Eclipse Wraith",
+              "spawnPoint": "11, 9",
+              "nature": 2,
+              "name": "Celestial Serpent",
               "boss": false,
               "id": 10,
               "currentLocation": "0, 0",
               "alive": true
             },
             {
-              "spawnPoint": "7, 5",
+              "spawnPoint": "16, 7",
               "nature": 0,
-              "name": "Astra Grotesque",
+              "name": "Eclipse Wraith",
               "boss": false,
               "id": 11,
               "currentLocation": "0, 0",
@@ -295,11 +295,20 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "1, 15",
+              "spawnPoint": "17, 6",
               "nature": 0,
-              "name": "Eclipse Wraith",
+              "name": "Astra Grotesque",
               "boss": false,
               "id": 12,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "18, 9",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 13,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -332,29 +341,11 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "8, 6",
-              "nature": 2,
-              "name": "Celestial Serpent",
-              "boss": false,
-              "id": 13,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "14, 1",
+              "spawnPoint": "2, 2",
               "nature": 0,
-              "name": "Eclipse Wraith",
+              "name": "Astra Grotesque",
               "boss": false,
               "id": 14,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "2, 17",
-              "nature": 1,
-              "name": "Lunar Golem",
-              "boss": false,
-              "id": 15,
               "currentLocation": "0, 0",
               "alive": true
             }
@@ -387,9 +378,18 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "10, 4",
-              "nature": 0,
-              "name": "Astra Grotesque",
+              "spawnPoint": "12, 19",
+              "nature": 2,
+              "name": "Celestial Serpent",
+              "boss": false,
+              "id": 15,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "17, 15",
+              "nature": 1,
+              "name": "Lost Wanderer",
               "boss": false,
               "id": 16,
               "currentLocation": "0, 0",
@@ -424,7 +424,7 @@
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "6, 5",
+              "spawnPoint": "3, 6",
               "nature": 1,
               "name": "Lost Wanderer",
               "boss": true,
