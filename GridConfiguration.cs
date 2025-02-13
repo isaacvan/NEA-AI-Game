@@ -988,7 +988,7 @@ namespace GridConfigurationNamespace
                         continue;
                     completedPrompts.Add(prompt);
                     // remove colon at start and trim
-                    string cleansedPrompt = (prompt[0].Equals(':')) ? prompt.Remove(0, 1).Trim() : prompt.Trim();
+                    string cleansedPrompt = string.IsNullOrWhiteSpace(prompt) ? prompt : (prompt[0].Equals(':') ? prompt.Remove(0, 1).Trim() : prompt.Trim());
                     UtilityFunctions.TypeText(new TypeText(typingSpeed: 2), cleansedPrompt);
                 }
 
@@ -1089,7 +1089,7 @@ namespace GridConfigurationNamespace
 
             game.chat.AppendUserInput(prompt);
             string outp = await game.narrator.GetGPTOutput(game.chat,
-                $"GetContinuation{ObjectiveName}-{NarrativePrompts.Count}");
+                $"GetContinuation{ObjectiveName}-{NarrativePrompts.Count}", txt: true);
             List<string> output = outp.Split('\n').ToList();
             if (output[0].Substring(0, Math.Min(6, output[0].Length)).ToLower().Contains("end"))
             {

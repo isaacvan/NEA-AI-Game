@@ -121,8 +121,8 @@
               "name": "DarkSorcerer",
               "boss": false,
               "id": 4,
-              "currentLocation": "4, 11",
-              "alive": true
+              "currentLocation": "21, 10",
+              "alive": false
             }
           ],
           "Obj": {
@@ -193,12 +193,12 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "9, 22",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "Brigand",
               "boss": false,
               "id": 6,
-              "currentLocation": "0, 0",
+              "currentLocation": "11, 4",
               "alive": true
             }
           ],

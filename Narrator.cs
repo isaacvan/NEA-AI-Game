@@ -446,7 +446,7 @@ namespace GPTControlNamespace
         }
 
         public async Task<string> GetGPTOutput(Conversation chat, string title, int? maxTokens = null,
-            (bool, Type)? xml = null)
+            (bool, Type)? xml = null, bool txt = false)
         {
             if (maxTokens != null)
             {
@@ -468,7 +468,10 @@ namespace GPTControlNamespace
                 {
                     output = await chat.GetResponseFromChatbotAsync();
 
-                    if (trueIfJsonfalseIfXml)
+                    if (txt)
+                    {
+                    }
+                    else if (trueIfJsonfalseIfXml)
                     {
                         // json
                         if (!UtilityFunctions.IsValidJsonBasic(output))

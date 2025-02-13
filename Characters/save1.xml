@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>4</X>
-    <Y>11</Y>
+    <X>13</X>
+    <Y>5</Y>
   </playerPos>
   <Class>Knight</Class>
   <Race>Human</Race>
   <Health>110</Health>
-  <currentHealth>110</currentHealth>
+  <currentHealth>96</currentHealth>
   <ManaPoints>84</ManaPoints>
   <currentMana>70</currentMana>
   <StatNames>
@@ -23,6 +23,6 @@
   <Constitution>10</Constitution>
   <Charisma>7</Charisma>
   <Level>3</Level>
-  <currentExp>0</currentExp>
+  <currentExp>20</currentExp>
   <maxExp>40</maxExp>
 </Player>
