@@ -40,7 +40,7 @@ namespace MainNamespace
         // NEXT STEPS
         //
         //
-        // make uninitialised statuses feed back into enemies in factory in game gen
+        // make uninitialised attacks feed back into enemies in factory in game gen
         //
         //
         //----------------------------------------------------------------------------------------------------------

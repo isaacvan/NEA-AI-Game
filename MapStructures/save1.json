@@ -24,8 +24,8 @@
               "name": "DemonLord",
               "boss": false,
               "id": 0,
-              "currentLocation": "3, 8",
-              "alive": true
+              "currentLocation": "21, 7",
+              "alive": false
             },
             {
               "spawnPoint": "0, 0",
@@ -33,8 +33,8 @@
               "name": "DemonLord",
               "boss": false,
               "id": 1,
-              "currentLocation": "11, 7",
-              "alive": true
+              "currentLocation": "6, 12",
+              "alive": false
             },
             {
               "spawnPoint": "0, 0",
@@ -42,8 +42,8 @@
               "name": "DemonLord",
               "boss": false,
               "id": 2,
-              "currentLocation": "3, 9",
-              "alive": true
+              "currentLocation": "4, 7",
+              "alive": false
             }
           ],
           "Obj": {
@@ -77,12 +77,12 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "6, 15",
+              "spawnPoint": "0, 0",
               "nature": 1,
               "name": "MageKnight",
               "boss": false,
               "id": 3,
-              "currentLocation": "0, 0",
+              "currentLocation": "5, 14",
               "alive": true
             }
           ],

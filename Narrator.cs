@@ -216,7 +216,7 @@ namespace GPTControlNamespace
         Task<Player> generateMainXml(Conversation chat, string prompt5, Player player);
 
         Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat, EnemyFactory enemyFactory,
-            AttackBehaviourFactory attackBehaviourFactory);
+            AttackBehaviourFactory attackBehaviourFactory, bool repopulate = false);
 
         Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
 
@@ -702,7 +702,7 @@ namespace GPTControlNamespace
 
         public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat,
             EnemyFactory enemyFactory,
-            AttackBehaviourFactory attackBehaviourFactory)
+            AttackBehaviourFactory attackBehaviourFactory, bool repopulate = false)
         {
             // function to generate a json file representing the enemies and initialise an enemyFactory
             // function to generate a json file representing the enemies and initialise an enemyFactory

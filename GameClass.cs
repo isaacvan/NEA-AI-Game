@@ -138,7 +138,7 @@ namespace GameClassNamespace
 
                 // error-checking to ensure statuses are initialised
                 await normalNarrator.GenerateUninitialisedAttackBehaviours(chat);
-                // await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
+                await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory, repopulate: true);
 
                 // check for files unwritten
                 // await checkAllFilesForMissing(gameSetup, chat, api, testing);

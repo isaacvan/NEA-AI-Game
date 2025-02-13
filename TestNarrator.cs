@@ -171,11 +171,31 @@ namespace TestNarratorNamespace
             }
 
             public async Task<EnemyFactory> initialiseEnemyFactoryFromNarrator(Conversation chat,
-                EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory)
+                EnemyFactory enemyFactory, AttackBehaviourFactory attackBehaviourFactory, bool repopulate = false)
             {
                 // test code here, once fully working will copy over to main narrator class
                 // function to generate a json file representing the enemies and initialise an enemyFactory
                 Program.logger.Info("Initialising Enemy Factory...");
+
+                if (repopulate)
+                {
+                    foreach (var enemyTemplate in enemyFactory.enemyTemplates.Values.ToList())
+                    {
+                        List<string> presentAttacks = enemyTemplate.AttackBehaviours.ToList()
+                            .Where(x => x.Value != null).Select(x => x.Value.Name).ToList();
+                        List<string> allAttacks = enemyTemplate.attackBehaviourKeys;
+                        foreach (string attack in allAttacks)
+                        {
+                            if (!presentAttacks.Contains(attack))
+                            {
+                                // give attack called attack
+                                enemyTemplate.AttackBehaviours[
+                                        enemyTemplate.getNextAvailableAttackSlot() ?? AttackSlot.slot4] =
+                                    attackBehaviourFactory.attackBehaviours[attack];
+                            }
+                        }
+                    }
+                }
 
                 EnemyFactory enemyFactoryToBeReturned;
                 try
