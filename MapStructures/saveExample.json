@@ -1,6 +1,7 @@
 {
   "Graphs": [
     {
+      "Id": 0,
       "Nodes": [
         {
           "NodeID": 0,
@@ -9,79 +10,90 @@
             2
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
           "NodePOI": "Starting Point",
           "NodeDepth": 0,
           "NodeWidth": 20,
-          "NodeHeight": 20,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Shadow Wisp",
-              "boss": false,
-              "id": 0,
-              "currentLocation": "9, 1",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Embark on the Journey",
-            "Description": "Welcome to the starting point of your epic adventure. Identify your surroundings and decide on the next course of action.",
-            "NarrativePrompts": [
-              "A cloak of darkness unravels around you as you open your eyes, suddenly realizing...this is the very beginning of your odyssey. NodeID 0, also known as Starting Point, is where your narrative unfolds.",
-              ": You survey the desolate cityscape, the echoes of its past whispering tales of grandeur. Ancient structures loom, adorned with arcane symbols that flicker with dormant magic. Your sight lands on a solitary Shadow Wisp, swirling ominously. Suddenly, the whisper of the Ethereal language brushes against your senses, a female voice saying, \"The first step on your path - vanquish the shadow.\"",
-              ": The ethereal voice emanates from the ruins once again, \"A great imbalance afflicts our world, Lyria, born of light and shadow. The primal essence is tainted, and darkness spreads. Your quest, brave Twilight Harbinger, is to restore balance. Gather the fragments of the Primal Crystal and perform the Rite of Harmony. But beware, the shadows have soldiers too.\" The Shadow Wisp ahead seems to pulsate more intensely with the unfolding of your task.",
-              ": \"A fair request, Twilight Harbinger,\" speaks the voice, her echo becoming corporeal as an ethereal image of a woman. With a wave of her hand, a pulse of starlight energy forms a shimmering object at your feet. \"May this Starlit Staff assist you in your task,\" she says, her form fading. \"Remember, skill and courage are your true weapons.\"",
-              ": As you pick up the Starlit Staff, it pulses with a brilliant luminosity, resonating with your Ethereal essence. The runes etched onto its surface glow, their magic seeping into your veins. You feel an awakening, a surge of power coursing through you. \"The time is nigh,\" voices the ethereal entity, her tone echoing hope and trepidation. \"Embrace your destiny, Twilight Harbinger.\" The Shadow Wisp ahead growls, readying itself for a clash.",
-              " (Starlit Staff): With the Starlit Staff secured in your inventory and a determination solidifying within your heart, you bid the Shadow Wisp a wary farewell. A path of untold challenges and profound discovery awaits you, Twilight Harbinger. As the ethereal voice fades away, you feel an odd sensation of being watched. The journey begins."
-            ],
-            "IsCompleted": true,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 1,
-          "ConnectedNodes": [
-            0,
-            3,
-            4
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "undirected",
-            "undirected"
-          ],
-          "NodePOI": "Forest",
-          "NodeDepth": 1,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeHeight": 25,
           "Milestone": false,
           "enemies": [
             {
               "spawnPoint": "0, 0",
               "nature": 0,
-              "name": "Dreadnaught",
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 0,
+              "currentLocation": "8, 12",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Lost Wanderer",
               "boss": false,
               "id": 1,
-              "currentLocation": "15, 17",
+              "currentLocation": "14, 2",
               "alive": false
             }
           ],
           "Obj": {
-            "ObjectiveName": "Emerald Enigma",
-            "Description": "Investigate the mysterious glow deep within the forest.",
+            "ObjectiveName": "The Beginning",
+            "Description": "You find yourself at the beginning of your journey, unsure of what adventures await.",
             "NarrativePrompts": [
-              "You find yourself at the edge of an expansive Forest. The trees stretch out as far as the eye can see. Somewhere from the heart of the forest, a peculiar, emerald glow sparkles.",
-              ": A spectral figure materializes before you; the echo of a long-dead blacksmith. \"A blade forged in arcane energies, eh?\" his hollow voice rings out. \"Such a weapon does not come freely. Prove your valor in combat or share a secret of the forest.\"",
-              " Crescent Blade: Sensing the developer's will, the spectral blacksmith nods, stepping back into his ethereal forge. After a moment, from the spectral flames a weapon emerges. It's the Arcane Blade, a weapon teeming with magical energy and forged in the heart of the ethereal realm. It feels cool to the touch, but swells with energy unlike anything else you've ever felt. The smith hands it to you with a spectral nod. \"Use it well,\" he instructs."
+              "You awaken on a grassy plain, a path leading ahead."
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 1,
+          "ConnectedNodes": [
+            0,
+            3
+          ],
+          "ConnectedNodesEdges": [
+            "directed",
+            "directed"
+          ],
+          "NodePOI": "Abandoned Village",
+          "NodeDepth": 1,
+          "NodeWidth": 28,
+          "NodeHeight": 22,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "15, 3",
+              "nature": 2,
+              "name": "Celestial Serpent",
+              "boss": false,
+              "id": 2,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "5, 11",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 3,
+              "currentLocation": "0, 0",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Desolate Homes",
+            "Description": "Stumble upon a deserted settlement, a remnant of a bygone era.",
+            "NarrativePrompts": [
+              "You enter a village, eerily quiet and vacant."
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 2,
@@ -90,52 +102,53 @@
             4
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Abandoned Tower",
+          "NodePOI": "Forest Edge",
           "NodeDepth": 1,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeWidth": 24,
+          "NodeHeight": 30,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "14, 17",
-              "nature": 1,
-              "name": "Forest Guardian",
-              "boss": false,
-              "id": 2,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "11, 3",
-              "nature": 2,
-              "name": "Shadow Wisp",
-              "boss": false,
-              "id": 3,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "10, 1",
+              "spawnPoint": "0, 0",
               "nature": 0,
-              "name": "Rogue Elementalist",
+              "name": "Astra Grotesque",
               "boss": false,
               "id": 4,
-              "currentLocation": "0, 0",
-              "alive": true
+              "currentLocation": "9, 16",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Lunar Golem",
+              "boss": false,
+              "id": 5,
+              "currentLocation": "18, 17",
+              "alive": false
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Eclipse Wraith",
+              "boss": false,
+              "id": 6,
+              "currentLocation": "16, 22",
+              "alive": false
             }
           ],
           "Obj": {
-            "ObjectiveName": "Crumbling Spire",
-            "Description": "Search an ancient, abandoned tower for lost artifacts.",
+            "ObjectiveName": "Journey into the Woods",
+            "Description": "The thick forest lies before you, filled with both beauty and danger.",
             "NarrativePrompts": [
-              "In the middle of a desolate field, stands a gnarled, old tower. Its stone structure is crumbling, but it still holds a melancholy charm heavy with vanished vibrance."
+              "You reach the edge of a sprawling forest."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 3,
@@ -144,81 +157,81 @@
             5
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Cave",
+          "NodePOI": "Cave Entrance",
           "NodeDepth": 2,
           "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeHeight": 26,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "9, 3",
-              "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 5,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "3, 9",
-              "nature": 2,
-              "name": "Shadow Wisp",
-              "boss": false,
-              "id": 6,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Whispering Shadows",
-            "Description": "Navigate through a dark cave rumored to hide an invaluable treasure.",
-            "NarrativePrompts": [
-              "You suddenly stand before the mouth of a dark cave, where cold wind whispers ominous tales. Stories of a priceless artifact lost in its abysmal hollow speak to your curious instinct."
-            ],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 4,
-          "ConnectedNodes": [
-            1,
-            2,
-            6
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "undirected",
-            "undirected"
-          ],
-          "NodePOI": "Old Temple",
-          "NodeDepth": 2,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "5, 9",
+              "spawnPoint": "3, 7",
               "nature": 1,
-              "name": "Ancient Sentinel",
+              "name": "Lunar Golem",
               "boss": false,
               "id": 7,
               "currentLocation": "0, 0",
               "alive": true
+            },
+            {
+              "spawnPoint": "3, 12",
+              "nature": 1,
+              "name": "Lunar Golem",
+              "boss": false,
+              "id": 8,
+              "currentLocation": "0, 0",
+              "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Echoes of History",
-            "Description": "Unlock the mysteries behind an ancient temple's past.",
+            "ObjectiveName": "The Caverns Beckon",
+            "Description": "A yawning cave entrance presents another challenge to brave.",
             "NarrativePrompts": [
-              "The Old Temple, a relic from a time past, captivates your senses. Its ancient architecture and faded murals hold a history waiting to be revealed."
+              "Before you, a cavernous maw yawns, swallowing the light."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 4,
+          "ConnectedNodes": [
+            2,
+            6
+          ],
+          "ConnectedNodesEdges": [
+            "directed",
+            "directed"
+          ],
+          "NodePOI": "River Crossing",
+          "NodeDepth": 2,
+          "NodeWidth": 23,
+          "NodeHeight": 27,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
+              "boss": false,
+              "id": 9,
+              "currentLocation": "10, 24",
+              "alive": false
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Crossing Waters",
+            "Description": "A roaring river blocks your path, its icy waters teeming with peril.",
+            "NarrativePrompts": [
+              "The path leads to a wide, untameable river."
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 5,
@@ -227,129 +240,111 @@
             7
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Mountain Pass",
+          "NodePOI": "Underground Ruins",
           "NodeDepth": 3,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeWidth": 21,
+          "NodeHeight": 25,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "8, 11",
-              "nature": 1,
-              "name": "Forest Guardian",
-              "boss": false,
-              "id": 8,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "6, 2",
-              "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 9,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "10, 6",
-              "nature": 0,
-              "name": "Rogue Elementalist",
+              "spawnPoint": "11, 9",
+              "nature": 2,
+              "name": "Celestial Serpent",
               "boss": false,
               "id": 10,
+              "currentLocation": "0, 0",
+              "alive": true
+            },
+            {
+              "spawnPoint": "16, 7",
+              "nature": 0,
+              "name": "Eclipse Wraith",
+              "boss": false,
+              "id": 11,
               "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Heights of Solitude",
-            "Description": "Ensure safe traversal while battling harsh, unpredictable weather.",
+            "ObjectiveName": "Crypt of Echoes",
+            "Description": "Discover an ancient underground city, its history echoing in the cavernous darkness.",
             "NarrativePrompts": [
-              "You find yourself amidst towering, daunting mountains. The path ahead is marked by a treacherous pass, accompanied by an unwelcoming chill."
+              "The cave unveils a forgotten underground city."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 6,
           "ConnectedNodes": [
             4,
-            7
+            8
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Riverside",
+          "NodePOI": "Misty Cliffs",
           "NodeDepth": 3,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeWidth": 22,
+          "NodeHeight": 29,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "12, 7",
-              "nature": 1,
-              "name": "Ancient Sentinel",
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
               "boss": false,
-              "id": 11,
-              "currentLocation": "0, 0",
+              "id": 12,
+              "currentLocation": "8, 28",
               "alive": true
             },
             {
-              "spawnPoint": "12, 17",
-              "nature": 2,
-              "name": "Shadow Wisp",
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Astra Grotesque",
               "boss": false,
-              "id": 12,
-              "currentLocation": "0, 0",
-              "alive": true
+              "id": 13,
+              "currentLocation": "14, 12",
+              "alive": false
             }
           ],
           "Obj": {
-            "ObjectiveName": "Flow of Serenity",
-            "Description": "Catch rare fish species at the riverside for local fishermen.",
+            "ObjectiveName": "Cliffs of the Mists",
+            "Description": "Find yourself at precipitous cliffs, their peaks hidden in the clouds.",
             "NarrativePrompts": [
-              "You approach the tranquil Riverside, where the water carries whispers of a rare fish species elusive to the local fishermen."
+              "The path abruptly ends at the foot of towering mist-draped cliffs."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 7,
           "ConnectedNodes": [
             5,
-            6,
-            8
+            9
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "undirected",
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Dragon's Lair",
+          "NodePOI": "Ancient Altar",
           "NodeDepth": 4,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
+          "NodeWidth": 26,
+          "NodeHeight": 24,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "6, 17",
+              "spawnPoint": "2, 2",
               "nature": 0,
-              "name": "Dreadnaught",
-              "boss": false,
-              "id": 13,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "15, 7",
-              "nature": 2,
-              "name": "Shadow Wisp",
+              "name": "Astra Grotesque",
               "boss": false,
               "id": 14,
               "currentLocation": "0, 0",
@@ -357,51 +352,105 @@
             }
           ],
           "Obj": {
-            "ObjectiveName": "Breath of Fire",
-            "Description": "Venture into a fearsome dragon's lair and recover the stolen emerald gem.",
+            "ObjectiveName": "Altar of the Ancients",
+            "Description": "Stumble upon an ancient, mystical altar whispering of long-forgotten rituals.",
             "NarrativePrompts": [
-              "The path leads you to a smoking mountainside, rumored to house a fearsome Dragon. Its cavernous Lair supposedly holds a stolen, precious emerald gem."
+              "You find an ancient altar, engraved with mysterious symbols."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 8,
           "ConnectedNodes": [
-            7
+            6,
+            9
           ],
           "ConnectedNodesEdges": [
-            "undirected"
+            "directed",
+            "directed"
           ],
-          "NodePOI": "Ancient City",
-          "NodeDepth": 5,
-          "NodeWidth": 20,
-          "NodeHeight": 20,
-          "Milestone": true,
+          "NodePOI": "Storm Peak",
+          "NodeDepth": 4,
+          "NodeWidth": 21,
+          "NodeHeight": 28,
+          "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "2, 12",
-              "nature": 1,
-              "name": "Forest Guardian",
-              "boss": true,
+              "spawnPoint": "0, 0",
+              "nature": 2,
+              "name": "Celestial Serpent",
+              "boss": false,
               "id": 15,
-              "currentLocation": "0, 0",
+              "currentLocation": "6, 22",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 1,
+              "name": "Lost Wanderer",
+              "boss": false,
+              "id": 16,
+              "currentLocation": "15, 15",
               "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Ruins of Time",
-            "Description": "Explore the remnants of an ancient city believed to hold hidden power.",
+            "ObjectiveName": "Storm's Apex",
+            "Description": "Reach the peak of the journey; the storm-prone precipice awaits your challenge.",
             "NarrativePrompts": [
-              "An Ancient City lies in ruins before your eyes, its empty streets echoing tales of lost civilization believed to harbour a hidden power."
+              "The twilight sky roars as you reach the storm-lashed peak."
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 9,
+          "ConnectedNodes": [
+            7,
+            8
+          ],
+          "ConnectedNodesEdges": [
+            "directed",
+            "directed"
+          ],
+          "NodePOI": "Final Stronghold",
+          "NodeDepth": 5,
+          "NodeWidth": 30,
+          "NodeHeight": 30,
+          "Milestone": true,
+          "enemies": [
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "Celestial Serpent",
+              "boss": true,
+              "id": 0,
+              "currentLocation": "18, 21",
+              "alive": true
+            }
+          ],
+          "Obj": null,
+          "StoredObjectiveForMilestone": {
+            "ObjectiveName": "Storming the Castle",
+            "Description": "You have reached the menacing stronghold of the evil overlord. You must infiltrate it to end his rule of terror.",
+            "NarrativePrompts": [
+              "As you approach the final stronghold, shadows dance ominously in the flickering torchlight at the castle gates.",
+              "A low growl resonates from the darkness as a monstrous guardian becomes visible.",
+              "The stronghold's mgantic stone walls loom high above you, and the final confrontation is at hand.",
+              "Do you take the stealthy approach and sneak past the guardian, or do you prefer to take it head on?",
+              "Or perhaps there may be another way around this... think carefully for your next move could determine the fate of your quest.",
+              "Gravely, you prepare yourself for the challenge that lies ahead."
             ],
             "IsCompleted": false,
             "Location": "0, 0"
           }
         }
-      ],
-      "Id": 0
+      ]
     }
   ],
   "CurrentGraphPointer": 0

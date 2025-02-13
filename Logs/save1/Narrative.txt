@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: "Each step brings danger, each battle tests your will. Forest's end is near with victory in reach."
+OUTPUT: "As you prepare to leave your village, three menacing DemonLords emerge from the shadows."

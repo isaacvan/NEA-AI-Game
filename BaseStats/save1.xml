@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <playerPos>
-    <X>7</X>
-    <Y>11</Y>
-  </playerPos>
-  <Class>Knight</Class>
-  <Race>Human</Race>
-  <Health>100</Health>
-  <currentHealth>100</currentHealth>
-  <ManaPoints>40</ManaPoints>
-  <currentMana>40</currentMana>
-  <Strength>7</Strength>
-  <Intelligence>3</Intelligence>
-  <Dexterity>5</Dexterity>
-  <Constitution>9</Constitution>
-  <Charisma>8</Charisma>
-  <Level>1</Level>
-  <currentExp>0</currentExp>
-  <maxExp>10</maxExp>
+    <playerPos>
+        <X>0</X>
+        <Y>0</Y>
+    </playerPos>
+    <Class>Knight</Class>
+    <Race>Human</Race>
+    <Health>90</Health>
+    <currentHealth>90</currentHealth>
+    <ManaPoints>70</ManaPoints>
+    <currentMana>70</currentMana>
+    <StatNames>
+        <string>Strength</string>
+        <string>Dexterity</string>
+        <string>Constitution</string>
+        <string>Intelligence</string>
+        <string>Charisma</string>
+    </StatNames>
+    <Strength>10</Strength>
+    <Intelligence>5</Intelligence>
+    <Dexterity>7</Dexterity>
+    <Constitution>8</Constitution>
+    <Charisma>5</Charisma>
+    <Level>1</Level>
+    <currentExp>0</currentExp>
+    <maxExp>10</maxExp>
 </Player>

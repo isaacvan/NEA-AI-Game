@@ -21,82 +21,71 @@ class Objective
 Generate a JSON response that adheres strictly to this format.
 The dictionary is a Dictionary<string, Objective>.
 Here are the names of all the Node Names that you must generate objectives for:
-Starting Point, Town, Forest, Mountain Range, River, Desert, Abandoned Village, Cave, Swamp, Fortress, Lake, Ruins, Volcano, Lighthouse, Cathedral
+Hero's Village, Forest Road, Ancient Ruins, Bandit Camp, Dark Cave, Goblin Hideout, Abandoned Fortress, Dragon's Lair
 
 OUTPUT: {
-    "Starting Point": {
-        "ObjectiveName": "Embark On Your Journey",
-        "Description": "Begin your quest in the mystical world.",
-        "NarrativePrompts": ["You awaken in an unknown place, surrounded by wilderness.", "From the looks, it seems like the starting point of your adventure. But where will you go?"]
+    "Hero's Village": {
+        "ObjectiveName": "The Starting Journey",
+        "Description": "You begin your journey in your own rural village.",
+        "NarrativePrompts": [
+            "You wake up in your small village house. The village elder has called everyone for an important announcement.",
+            "What will you do? Will you hurry to the village center, or tend to your morning chores first?"
+        ]
     },
-    "Town": {
-        "ObjectiveName": "Exploe the Town",
-        "Description": "Visit the lively town and meet its residents.",
-        "NarrativePrompts": ["You enter a bustling town, full of people and energy.", "There are various establishments and households. Where will you go first?"]
+    "Forest Road": {
+        "ObjectiveName": "The Curious Pathway",
+        "Description": "Navigate through a dense, mysterious forest.",
+        "NarrativePrompts": [
+            "You find yourself on a winding path through a thick forest. The sounds of flora and fauna echo all around.",
+            "Suddenly, you notice a pair of gleaming eyes watching from the undergrowth. How will you proceed?"
+        ]
     },
-    "Forest": {
-        "ObjectiveName": "Cross the Forest",
-        "Description": "Navigate your way through a dense, mysterious forest.",
-        "NarrativePrompts": ["You stumble upon a dense forest, filled with the sounds of unseen creatures.", "The forest seems unforgiving, unknown dangers may lurk. Do you brave the path through or turn back?"]
+    "Ancient Ruins": {
+        "ObjectiveName": "Echoes of the Past",
+        "Description": "Uncover secrets hidden within the ancient ruins.",
+        "NarrativePrompts": [
+            "You stumble upon a dilapidated structure, half consumed by nature. You can barely make out the markings of a forgotten civilization.",
+            "The entrance to the ruins beckons you. Will you venture inside, or tread carefully around?"
+        ]
     },
-    "Mountain Range": {
-        "ObjectiveName": "Scale the Mountain",
-        "Description": "Conquer the high peaks of the mountain range.",
-        "NarrativePrompts": ["You're faced with a mountain range, its peaks reaching the heavens.", "Climbing it won't be easy. Will you accept the challenge or retreat?"]
+    "Bandit Camp": {
+        "ObjectiveName": "Bandit Showdown",
+        "Description": "Confront a group of bandits in their own camp.",
+        "NarrativePrompts": [
+            "You smell smoke before you spot the camp - a roughshod cluster of tents surrounding a flickering fire, a hub of scruffy-looking people.",
+            "You see a bandit sentry to one side. Do you sneak around, or make a direct assault?"
+        ]
     },
-    "River": {
-        "ObjectiveName": "Ford the River",
-        "Description": "Find a safe way to cross the roaring river.",
-        "NarrativePrompts": ["You come across a roaring river, the current too strong to swim.", "There may be a safer route to cross. But where?"]
+    "Dark Cave": {
+        "ObjectiveName": "Into The Abyss",
+        "Description": "Venture into the depths of a dark and dangerous cave.",
+        "NarrativePrompts": [
+            "A dark cave entrance yawns in front of you, an eerie chill seeping from within.",
+            "Do you step into the darkness, or find another way around?"
+        ]
     },
-    "Desert": {
-        "ObjectiveName": "Survive the Desert",
-        "Description": "Travel through harsh desert conditions to reach your destination.",
-        "NarrativePrompts": ["You find yourself at the edge of a vast desert. Heat waves shimmer off the sands.", "The crossing will be dangerous. Will you venture forth or seek an alternate route?"]
+    "Goblin Hideout": {
+        "ObjectiveName": "Goblin Encounter",
+        "Description": "Sneak into a goblin hideout and retrieve stolen goods.",
+        "NarrativePrompts": [
+            "The smell of rotting meat leads you to the goblin hideout. You can hear their chattering from a distance.",
+            "How will you proceed? Will you sneak past the guards or take them head-on?"
+        ]
     },
-    "Abandoned Village": {
-        "ObjectiveName": "Uncover the Past",
-        "Description": "Discover what happened to the abandoned village.",
-        "NarrativePrompts": ["You discover an abandoned village, frozen in time.", "A story waits to be uncovered. Will you delve deeper or move on?"]
+    "Abandoned Fortress": {
+        "ObjectiveName": "Deserted Stronghold",
+        "Description": "Explore an abandoned fortress filled with hidden dangers.",
+        "NarrativePrompts": [
+            "Before you stands a once mighty fortress, now crumbling under years of neglect.",
+            "Do you dare to explore its desolate chambers, or keep a safe distance from the ominous structure?"
+        ]
     },
-    "Cave": {
-        "ObjectiveName": "Plunge into Darkness",
-        "Description": "Explore the depths of an ominous cave.",
-        "NarrativePrompts": ["You find a cave entrance, the inside shrouded in darkness.", "There's no telling what's inside. Do you dare to enter?"]
-    },
-    "Swamp": {
-        "ObjectiveName": "Traverse the Swamp",
-        "Description": "Navigate your way through a treacherous swamp.",
-        "NarrativePrompts": ["A swamp lays before you, the ground unstable and the air heavy.", "Can you find a path across this treacherous terrain?"]
-    },
-    "Fortress": {
-        "ObjectiveName": "Storm the Fortress",
-        "Description": "Invade the enemy stronghold and defeat the guards.",
-        "NarrativePrompts": ["A fortress looms ahead, the enemy flags fluttering at its towers.", "Will you dare storm the fortress, or seek a way around?"]
-    },
-    "Lake": {
-        "ObjectiveName": "Cross the Lake",
-        "Description": "Find a way across a vast, still lake.",
-        "NarrativePrompts": ["A serene lake lies before you, its surface calm, reflecting the sky.", "Will you find a way around, or risk crossing the water?"]
-    },
-    "Ruins": {
-        "ObjectiveName": "Explore the Ruins",
-        "Description": "Investigate the secrets of an ancient ruin.",
-        "NarrativePrompts": ["You find sprawling ruins, remnants of a once proud civilization.", "Will you seek out its mysteries, or leave them be?"]
-    },
-    "Volcano": {
-        "ObjectiveName": "Face the Inferno",
-        "Description": "Ascend the active volcano and brave its fiery hazards.",
-        "NarrativePrompts": ["A volcano, active and seething, lies ahead.", "The peak promises a challenge like no other. Do you dare to proceed?"]
-    },
-    "Lighthouse": {
-        "ObjectiveName": "Reach the Lighthouse",
-        "Description": "Make your way to the guiding light of the lighthouse.",
-        "NarrativePrompts": ["A lighthouse stands in the distance, lighting up the night sky.", "Will you find your way towards the light?"]
-    },
-    "Cathedral": {
-        "ObjectiveName": "Enter the Cathedral",
-        "Description": "Venture into a grand cathedral, meet its caretaker.",
-        "NarrativePrompts": ["Behold a grandiose cathedral. The doors are open, inviting.", "Will you step inside and seek guidance from the caretaker?"]
+    "Dragon's Lair": {
+        "ObjectiveName": "Tale of The Dragon",
+        "Description": "Face the ultimate challenge - a confrontation with a fierce dragon in its lair.",
+        "NarrativePrompts": [
+            "Hot sulphurous fumes hit you as you approach the dragon's lair. You can hear the dragon’s deep and ominous snores.",
+            "Will you sneak quietly to steal its hoard or confront the beast, ready for a battle of a lifetime?"
+        ]
     }
 }

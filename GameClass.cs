@@ -62,7 +62,8 @@ namespace GameClassNamespace
                 attackBehaviourFactory = await gameSetup.initialiseAttackBehaviourFactoryFromNarrator(chat);
 
                 // initialise statuses and effects of the attack behaviours. Ensure everything is covered
-                statusFactory = await gameSetup.initialiseStatusFactoryFromNarrator(chat);
+                // FUTURE IMPLEMENTATION FOR EXTENSION
+                // statusFactory = await gameSetup.initialiseStatusFactoryFromNarrator(chat);
 
                 // fill itemFactory
                 await itemFactory.initialiseItemFactoryFromNarrator(api, chat, testing);
@@ -80,7 +81,8 @@ namespace GameClassNamespace
 
                 // error-checking to ensure statuses are initialised
                 await gameSetup.GenerateUninitialisedAttackBehaviours(chat);
-                await gameSetup.GenerateUninitialisedStatuses(chat);
+                // FUTURE IMPLEMENTATION FOR EXTENSION
+                // await gameSetup.GenerateUninitialisedStatuses(chat);
 
                 // give player the basic attack PlayerBasicAttack_(attack)
                 player.PlayerAttacks[AttackSlot.slot1] = attackBehaviourFactory.attackBehaviours["PlayerBasicAttack"];
@@ -119,7 +121,8 @@ namespace GameClassNamespace
                 attackBehaviourFactory = await loadGame.initialiseAttackBehaviourFactoryFromNarrator(chat);
 
                 // load statuses and effects of the attack behaviours.
-                statusFactory = await loadGame.initialiseStatusFactoryFromNarrator(chat);
+                // FUTURE IMPLEMENTATION FOR EXTENSION
+                // statusFactory = await loadGame.initialiseStatusFactoryFromNarrator(chat);
 
                 // load itemFactory
                 await itemFactory.initialiseItemFactoryFromFile();
@@ -135,6 +138,7 @@ namespace GameClassNamespace
 
                 // error-checking to ensure statuses are initialised
                 await normalNarrator.GenerateUninitialisedAttackBehaviours(chat);
+                // await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory);
 
                 // check for files unwritten
                 // await checkAllFilesForMissing(gameSetup, chat, api, testing);
@@ -208,9 +212,11 @@ namespace GameClassNamespace
 
                         break;
                     case "Statuses":
+                        /*
                         if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +
                                          UtilityFunctions.saveName + ".json"))
                             statusFactory = await gameSetup.initialiseStatusFactoryFromNarrator(chat);
+                            */
                         break;
                     case "EnemyTemplates":
                         if (!Path.Exists(UtilityFunctions.mainDirectory + directory + Path.DirectorySeparatorChar +

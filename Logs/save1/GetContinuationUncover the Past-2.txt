@@ -1,8 +1,0 @@
-INPUT: The player inputted this in response to your narrative: delve deeper
-
-As a reminder, your last narrative lines were You discover an abandoned village, frozen in time.A story waits to be uncovered. Will you delve deeper or move on?
-
-Please now output the narrators response to this input to continue the objective. Ensure that your response provides a scenario where the player can do something interesting: give them at least 2 options of things for the user to do. it must be INTERESTING.
-It is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the userHowever if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).The items you can give to the player are: Arcane Blade, Thunder Mace, Rubber Chicken, Knight's Helmet, Knight's Cuirass, Knight's Greaves, Potion of Restoration, Rune Stone of Recall, Elixir of GiantsFor example, to end the objective and give the user an item write END (item name)Or, write CONTINUE (next narrative lines)
-
-OUTPUT: CONTINUE: With a brooding cloud of apprehension, you push deeper into the forsaken village. The chill of suspicion lingers as your surroundings morph into an eerie spectacle of grey hues and shadows. Will you explore the dilapidated huts, or will you venture to the village well, an ancient structure whispered to hold forgotten secrets?

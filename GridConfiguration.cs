@@ -768,6 +768,12 @@ namespace GridConfigurationNamespace
         public static void InitialiseBoss(ref Game game)
         {
             Node n = game.map.GetCurrentNode();
+            if (n.enemies.Count == 1 && n.enemies[0].boss)
+            {
+                bossInitialised = true;
+                return; // boss already initialised
+            }
+
             // Objective storedObjective = Combat.CloneUtility.DeepClone<Objective>(n.Obj);
             // n.StoredObjectiveForMilestone = storedObjective;
             n.Obj = null;
@@ -798,7 +804,7 @@ namespace GridConfigurationNamespace
             Random rnd = new Random();
             Enemy boss = game.enemyFactory.CreateEnemy(
                 game.enemyFactory.enemyTemplates.Values.ToList()[rnd.Next(game.enemyFactory.enemyTemplates.Count)],
-                n.NodeDepth > 10 ? n.NodeDepth : 10, p, UtilityFunctions.GiveNewEnemyId(), Nature.aggressive);
+                n.NodeDepth > 10 ? n.NodeDepth : 10, p, UtilityFunctions.GiveNewEnemyId(), Nature.aggressive, true);
             EnemySpawn bossSpawn = new EnemySpawn()
             {
                 spawnPoint = boss.Position,
@@ -814,7 +820,7 @@ namespace GridConfigurationNamespace
             n.enemies.Add(bossSpawn);
             n.tiles[boss.Position.X][boss.Position.Y].enemyOnTile = boss;
             // n.tiles[boss.Position.X][boss.Position.Y].rgb = NatureToRGB[boss.nature];
-            
+
             bossInitialised = true;
         }
     }
@@ -876,9 +882,13 @@ namespace GridConfigurationNamespace
                     if (connectedNode != null)
                     {
                         // Check if the connection is mutual; if not, add it
-                        if (!connectedNode.ConnectedNodes.Contains(g.Nodes[i].NodeID))
+                        if (!connectedNode.ConnectedNodes.Contains(g.Nodes[i].NodeID) && connectedNode.NodeDepth != g.Nodes[i].NodeDepth)
                         {
                             connectedNode.ConnectedNodes.Add(g.Nodes[i].NodeID);
+                            neededFix = true;
+                        } else if (connectedNode.NodeDepth == g.Nodes[i].NodeDepth)
+                        {
+                            connectedNode.ConnectedNodes.Remove(g.Nodes[i].NodeID);
                             neededFix = true;
                         }
                     }
@@ -1168,9 +1178,9 @@ namespace GridConfigurationNamespace
 
             if (enemies != null)
             {
-                if (enemies.Count > 0)
+                if (enemies.Count > 0 || enemies[0].boss)
                 {
-                    PlaceEnemiesOnNode(game);
+                    PlaceEnemiesOnNode(game, Milestone);
                     return;
                 }
             }
@@ -1230,7 +1240,7 @@ namespace GridConfigurationNamespace
             PlaceEnemiesOnNode(game);
         }
 
-        public void PlaceEnemiesOnNode(Game game)
+        public void PlaceEnemiesOnNode(Game game, bool boss = false)
         {
             if (enemies.Count == 0) throw new Exception("No enemies placed");
             foreach (EnemySpawn spawn in enemies)
@@ -1265,7 +1275,7 @@ namespace GridConfigurationNamespace
                 {
                     tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].tileChar = GridFunctions.CharsToMeanings["Enemy"][0];
                     tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile =
-                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint, spawn.id);
+                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.spawnPoint, spawn.id, boss: boss);
                     enemies[enemies.IndexOf(spawn)].nature =
                         tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
                 }
@@ -1274,7 +1284,7 @@ namespace GridConfigurationNamespace
                     tiles[spawn.currentLocation.X][spawn.currentLocation.Y].tileChar =
                         GridFunctions.CharsToMeanings["Enemy"][0];
                     tiles[spawn.currentLocation.X][spawn.currentLocation.Y].enemyOnTile =
-                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.currentLocation, spawn.id);
+                        game.enemyFactory.CreateEnemy(template, NodeDepth, spawn.currentLocation, spawn.id, boss: boss);
                     // enemies[enemies.IndexOf(spawn)].nature = tiles[spawn.spawnPoint.X][spawn.spawnPoint.Y].enemyOnTile.nature;
                 }
             }
@@ -1508,7 +1518,6 @@ namespace GridConfigurationNamespace
                 Point point = new Point();
                 if (Nodes[i].Obj == null)
                 {
-                    
                 }
                 else if (Nodes[i].Obj.Location == Point.Empty)
                 {
@@ -1646,6 +1655,10 @@ namespace GridConfigurationNamespace
                     try
                     {
                         newNodeId = NodeIdsToPointTo[index];
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        continue; // will be fixed later; issue occurs if ai accidentally links 2 nodes on the same depth
                     }
                     catch (Exception e)
                     {

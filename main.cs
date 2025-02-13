@@ -40,15 +40,9 @@ namespace MainNamespace
         // NEXT STEPS
         //
         //
-        // NEXT - ENEMY COMBAT AI
-        // boss at end
+        // make uninitialised statuses feed back into enemies in factory in game gen
         //
         //
-        //
-        // FINAL TWEAKS
-        // make game fully playable so that they can complete 1 "storyline"
-        // QOL - menu in game, rgb personalisation etc
-        // ramp up difficulty to make game actually challenging
         //----------------------------------------------------------------------------------------------------------
         */
 
@@ -135,6 +129,9 @@ namespace MainNamespace
                     GridFunctions.GetPlayerStartPos(ref game),
                     game.map.GetCurrentNode().tiles, ref game));
             }
+            
+            if (game.map.GetCurrentNode().Milestone && !GridFunctions.bossInitialised)
+                GridFunctions.InitialiseBoss(ref game);
 
             GridFunctions.DrawWholeNode(ref game);
             int IdOfNextNode = -1;
@@ -1061,6 +1058,8 @@ namespace MainNamespace
             directories.Add(@$"{main}Inventories{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}Statuses{Path.DirectorySeparatorChar}");
             directories.Add(@$"{main}MapStructures{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}GameStates{Path.DirectorySeparatorChar}");
+            directories.Add(@$"{main}StoryLines{Path.DirectorySeparatorChar}");
 
             Console.Clear();
             UtilityFunctions.TypeText(new TypeText(UtilityFunctions.Instant, UtilityFunctions.typeSpeed),
@@ -1079,6 +1078,7 @@ namespace MainNamespace
                     }
 
                     string pathToReadNoExt = dir + saveName;
+                    bool txtFile = false;
 
                     bool json = true;
 
@@ -1089,7 +1089,11 @@ namespace MainNamespace
                     }
                     catch
                     {
-                        // if error, file is xml
+                        // if error, file is xml (or txt)
+                        if (dir.Contains("StoryLines"))
+                        {
+                            txtFile = true;
+                        }
                         json = false;
                     }
 
@@ -1097,6 +1101,9 @@ namespace MainNamespace
                     if (json)
                     {
                         File.Copy(pathToReadNoExt + ".json", examplePathNoExt + ".json", true);
+                    } else if (txtFile)
+                    {
+                        File.Copy(pathToReadNoExt + ".txt", examplePathNoExt + ".txt", true);
                     }
                     else
                     {
@@ -1290,6 +1297,16 @@ namespace MainNamespace
                 if (Path.GetFileNameWithoutExtension(state) != "saveExample")
                 {
                     File.Delete(state);
+                }
+            }
+            
+            // delete baseStats
+            string[] baseStats = Directory.GetFiles($@"{UtilityFunctions.mainDirectory}BaseStats", searchPattern: "*.xml");
+            foreach (string baseStat in baseStats)
+            {
+                if (Path.GetFileNameWithoutExtension(baseStat) != "saveExample")
+                {
+                    File.Delete(baseStat);
                 }
             }
         }

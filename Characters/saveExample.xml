@@ -2,52 +2,27 @@
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
     <X>15</X>
-    <Y>17</Y>
+    <Y>19</Y>
   </playerPos>
-  <Class>PeasantHero</Class>
-  <Race>Human</Race>
+  <Class>Mystic Wanderer</Class>
+  <Race>Elonim</Race>
   <Health>100</Health>
   <currentHealth>100</currentHealth>
-  <ManaPoints>60</ManaPoints>
-  <currentMana>60</currentMana>
+  <ManaPoints>82</ManaPoints>
+  <currentMana>82</currentMana>
   <StatNames>
     <string>Strength</string>
     <string>Dexterity</string>
     <string>Constitution</string>
     <string>Intelligence</string>
     <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
   </StatNames>
-  <Strength>27</Strength>
-  <Intelligence>6</Intelligence>
+  <Strength>12</Strength>
+  <Intelligence>11</Intelligence>
   <Dexterity>8</Dexterity>
-  <Constitution>7</Constitution>
-  <Charisma>7</Charisma>
-  <Level>2</Level>
-  <currentExp>10</currentExp>
-  <maxExp>20</maxExp>
+  <Constitution>10</Constitution>
+  <Charisma>8</Charisma>
+  <Level>4</Level>
+  <currentExp>70</currentExp>
+  <maxExp>80</maxExp>
 </Player>

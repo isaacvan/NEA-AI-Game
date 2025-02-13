@@ -504,7 +504,7 @@ namespace EnemyClassesNamespace
         public Dictionary<string, EnemyTemplate> enemyTemplates { get; set; }
 
 
-        public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos, int ID, Nature? nature = null)
+        public Enemy CreateEnemy(EnemyTemplate enemyTemplate, int level, Point pos, int ID, Nature? nature = null, bool boss = false)
         {
             Enemy enemy = new Enemy
             {
@@ -521,7 +521,7 @@ namespace EnemyClassesNamespace
                 Level = level,
                 Position = pos,
                 AttackBehaviours = enemyTemplate.AttackBehaviours,
-                nature = nature ?? enemyTemplate.nature,
+                nature = nature ?? (boss ? Nature.aggressive : enemyTemplate.nature),
                 Id = ID
             };
 

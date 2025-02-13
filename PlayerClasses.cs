@@ -87,6 +87,10 @@ namespace PlayerClassesNamespace
         {
             foreach (EquippableItem.EquipLocation loc in Enum.GetValues(typeof(EquippableItem.EquipLocation)))
             {
+                if (equipment.EquipmentEffectsApplied.Count == 0)
+                {
+                    equipment.initialiseEquipmentEffectsApplied();
+                }
                 if (!equipment.EquipmentEffectsApplied[loc])
                 {
                     if ((equipment.ArmourSlots.ContainsKey(loc) && equipment.ArmourSlots[loc] != null) ||

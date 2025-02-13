@@ -1,78 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>24</X>
-    <Y>11</Y>
+    <X>4</X>
+    <Y>7</Y>
   </playerPos>
   <Class>Knight</Class>
   <Race>Human</Race>
-  <Health>100</Health>
-  <currentHealth>100</currentHealth>
-  <ManaPoints>40</ManaPoints>
-  <currentMana>40</currentMana>
+  <Health>106</Health>
+  <currentHealth>90</currentHealth>
+  <ManaPoints>80</ManaPoints>
+  <currentMana>70</currentMana>
   <StatNames>
     <string>Strength</string>
     <string>Dexterity</string>
     <string>Constitution</string>
     <string>Intelligence</string>
     <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
-    <string>Strength</string>
-    <string>Dexterity</string>
-    <string>Constitution</string>
-    <string>Intelligence</string>
-    <string>Charisma</string>
   </StatNames>
-  <Strength>7</Strength>
-  <Intelligence>3</Intelligence>
-  <Dexterity>5</Dexterity>
-  <Constitution>9</Constitution>
-  <Charisma>8</Charisma>
-  <Level>2</Level>
+  <Strength>10</Strength>
+  <Intelligence>5</Intelligence>
+  <Dexterity>7</Dexterity>
+  <Constitution>8</Constitution>
+  <Charisma>5</Charisma>
+  <Level>1</Level>
   <currentExp>0</currentExp>
-  <maxExp>20</maxExp>
+  <maxExp>10</maxExp>
 </Player>

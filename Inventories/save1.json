@@ -1,13 +1,4 @@
 {
-  "Items": [
-    {
-      "Name": "Potion of Restoration",
-      "Description": "A mystical potion that has the power to restore your health and mana.",
-      "ItemType": "ItemFunctionsNamespace.Consumable, Code Projects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "ItemEquipLocation": 0
-    }
-  ],
-  "Quantities": [
-    1
-  ]
+  "Items": [],
+  "Quantities": []
 }

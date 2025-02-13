@@ -1,8 +1,0 @@
-INPUT: The player inputted this in response to your narrative: end th objective bro
-
-As a reminder, your last narrative lines were : Staring the goblin down, the adventurer feels a chill. An old-man watches from his hut. "Face the fear," he advises, "or let it haunt you forever".: As the adventurer ponders the old man's advice, the goblin inches closer, red eyes glaring menacingly. The old man patiently awaits the player's decision.
-
-Please now output the narrators response to this input to continue the objective. You can introduce NPC dialogues to your narrative. It is critical that your response provides a scenario where the user can easily respond with what they will do next.
-It is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the userHowever if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).The items you can give to the player are: Arcane Blade, Thunder Mace, Rubber Chicken, Knight's Helmet, Knight's Cuirass, Knight's Greaves, Potion of Restoration, Rune Stone of Recall, Elixir of GiantsFor example, to end the objective and give the user an item write END (item name)Or, write CONTINUE (next narrative lines)
-
-OUTPUT: END (Potion of Restoration): With a heavy sigh, the adventurer turns away, leaving the objective behind. The old man gifts a Potion of Restoration, a token for the journey ahead.

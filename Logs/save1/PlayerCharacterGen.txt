@@ -18,16 +18,16 @@ All responses should be generated machine parseable in XML format. The top level
 
 As the game narrator, you will have one player playing the game. To help give you an idea for your generation, they have been given some input. This is what the user has requested for the context of your story:
 
-begin as a knight in a medeival setting
+Knight in a medieval setting
 
 OUTPUT: <Player>
     <Class>Knight</Class>
     <Race>Human</Race>
-    <Health>85</Health>
-    <ManaPoints>65</ManaPoints>
+    <Health>90</Health>
+    <ManaPoints>70</ManaPoints>
     <Strength>10</Strength>
-    <Intelligence>6</Intelligence>
+    <Intelligence>5</Intelligence>
     <Dexterity>7</Dexterity>
-    <Constitution>7</Constitution>
+    <Constitution>8</Constitution>
     <Charisma>5</Charisma>
 </Player>

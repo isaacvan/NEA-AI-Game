@@ -5,14 +5,17 @@ Expression: A string containing C# code that defines what the attack does when e
 Manacost: A number from 0-20 dictating how much mana the skill costs to use
 Statuses: A list of strings describing status effects of the attack, which can influence gameplay mechanics or visuals. You will have to define all these later.
 Narrative: A string containing the output whenever this attack is used. If the enemy is casting it, it will begin with "The {enemyname} {Narrative}", and if the player casts it it will begin with "The player {Narrative}". Ensure this makes grammatical sense.
+AttackType: A string containing what type of attack it is.
 Here is how each component should be formatted and an example for each:
 
 Key: Should be the name of the attack, like "Fireball".
 Expression: Should include a method call on target, like "target.ReceiveAttack(50, 30)". 
 Statuses: These are the status effects that the attack applies.
 Narrative: Should make sense if coming from an enemy or the player, like "throws a punch".
+AttackType: Strictly: "Attack", "Heal", "Debuff", "Buff"
 
 All behaviours should match the keys used for previous enemies, however, one attack should be called PlayerBasicAttack, used only for the player's beginning move. See the following example:
+SOME BEHAVIOURS MUST COST 0 MANA, AS EVERY ENEMY SHOULD HAVE ONE MOVE WITH 0 MANA COST. At least 2 not including basic attack for the player.
 This is a Dictionary Structure.
 
 {
@@ -22,6 +25,7 @@ This is a Dictionary Structure.
     "Manacost": 0
     "Statuses": []
     "Narrative": "throws a punch."
+    "AttackType": "Attack"
   },
   "Bloody Slice": {
     "Name": "Bloody Slice",
@@ -29,6 +33,7 @@ This is a Dictionary Structure.
     "Manacost": 5
     "Statuses": ["Bleed"]
     "Narrative": "slices violently, causing blood to fly."
+    "AttackType": "Attack"
   },
   "Backstab": {
     "Name": "Backstab",
@@ -36,6 +41,7 @@ This is a Dictionary Structure.
     "Manacost": 3
     "Statuses": ["Cripple", "Cloaked"]
     "Narrative": "uses the element of surprise to cause severe damage."
+    "AttackType": "Attack"
   },
   "Taunt": {
     "Name": "Taunt",
@@ -43,6 +49,7 @@ This is a Dictionary Structure.
     "Manacost": 10
     "Statuses": ["AtkPowered", "DefenceBoost"]
     "Narrative": "calls out rude names, taunting everybody in the area."
+    "AttackType": "Buff"
   }
   ...
 }
@@ -52,44 +59,50 @@ Ensure all output is parsable. This is crucial, as if any of your output is not 
 OUTPUT: {
   "PlayerBasicAttack": {
     "Name": "PlayerBasicAttack",
-    "Expression": "target.ReceiveAttack(10, 20)",
+    "Expression": "target.ReceiveAttack(7, 20)",
     "Manacost": 0,
     "Statuses": [],
-    "Narrative": "strikes the enemy with his sword."
+    "Narrative": "swings their sword.",
+    "AttackType": "Attack"
   },
-  "GoblinSlash": {
-    "Name": "GoblinSlash",
-    "Expression": "target.ReceiveAttack(7, 25)",
-    "Manacost": 2,
-    "Statuses": ["Bleed"],
-    "Narrative": "slashes the player with a rusty blade."
-  },
-  "UndeadGrasp": {
-    "Name": "UndeadGrasp",
-    "Expression": "target.ReceiveAttack(9, 30)",
-    "Manacost": 5,
-    "Statuses": ["Poison"],
-    "Narrative": "seizes the player with a cold hand."
-  },
-  "WolfBite": {
-    "Name": "WolfBite",
-    "Expression": "target.ReceiveAttack(8, 35)",
-    "Manacost": 3,
-    "Statuses": ["Bleed", "Frightened"],
-    "Narrative": "bites the player furiously."
-  },
-  "DragonFlameBreath": {
-    "Name": "DragonFlameBreath",
-    "Expression": "target.ReceiveAttack(14, 45)",
-    "Manacost": 10,
-    "Statuses": ["Burn"],
-    "Narrative": "releases a ferocious flame breath."
-  },
-  "TrollSmash": {
-    "Name": "TrollSmash",
-    "Expression": "target.ReceiveAttack(11, 40)",
+  "SwordSlice": {
+    "Name": "SwordSlice",
+    "Expression": "target.ReceiveAttack(15, 30)",
     "Manacost": 4,
+    "Statuses": ["Bleed"],
+    "Narrative": "performs a mighty slice with their blade.",
+    "AttackType": "Attack"
+  },
+  "ShieldBash": {
+    "Name": "ShieldBash",
+    "Expression": "target.ReceiveAttack(10, 25)",
+    "Manacost": 0,
     "Statuses": ["Stun"],
-    "Narrative": "smashes the ground, stunning everyone around."
+    "Narrative": "bashes the enemy with a heavy shield.",
+    "AttackType": "Attack"
+  },
+  "WarCry": {
+    "Name": "WarCry",
+    "Expression": "target.ReceiveAttack(0, 0)",
+    "Manacost": 3,
+    "Statuses": ["DefenceBoost"],
+    "Narrative": "lets out a war cry, bolstering their resolve.",
+    "AttackType": "Buff"
+  },
+  "ChivalrousStrike": {
+    "Name": "ChivalrousStrike",
+    "Expression": "target.ReceiveAttack(20, 10)",
+    "Manacost": 5,
+    "Statuses": ["Inspire"],
+    "Narrative": "strikes with the heart of a lion.",
+    "AttackType": "Attack"
+  },
+  "LethalLance": {
+    "Name": "LethalLance",
+    "Expression": "target.ReceiveAttack(30, 50)",
+    "Manacost": 7,
+    "Statuses": ["ArmorPierce"],
+    "Narrative": "thrusts their lance powerfully.",
+    "AttackType": "Attack"
   }
 }

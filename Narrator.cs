@@ -219,8 +219,11 @@ namespace GPTControlNamespace
             AttackBehaviourFactory attackBehaviourFactory);
 
         Task<AttackBehaviourFactory> initialiseAttackBehaviourFactoryFromNarrator(Conversation chat);
+
+        /*
         Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat);
         Task GenerateUninitialisedStatuses(Conversation chat);
+        */
         Task GenerateUninitialisedAttackBehaviours(Conversation chat);
         Task<Game> GenerateGraphStructure(Conversation chat, Game game, GameSetup gameSetup, int Id);
         Task<Map> GenerateMapStructure(Conversation chat, Game game, GameSetup gameSetup);
@@ -234,8 +237,7 @@ namespace GPTControlNamespace
     {
         private OpenAIAPI api;
         private Conversation chat;
-        
-        
+
 
         public async Task<Objective> GenerateInitialObjective(Game game, Node node)
         {
@@ -245,7 +247,8 @@ namespace GPTControlNamespace
 
             game.chat.AppendUserInput(prompt);
 
-            string aiResponse = await game.narrator.GetGPTOutput(game.chat, $"GenerateInitialObjective:{Regex.Replace(node.NodePOI, " ", "")}");
+            string aiResponse = await game.narrator.GetGPTOutput(game.chat,
+                $"GenerateInitialObjective:{Regex.Replace(node.NodePOI, " ", "")}");
             aiResponse = await UtilityFunctions.FixJson(aiResponse);
 
             // ensure JSON is valid and parse it into an Objective object
@@ -340,6 +343,7 @@ namespace GPTControlNamespace
             {
                 await game.map.GetCurrentNode().AddObjectiveToNode(false);
             }
+
             return game;
         }
 
@@ -470,7 +474,7 @@ namespace GPTControlNamespace
                         if (!UtilityFunctions.IsValidJsonBasic(output))
                         {
                             Program.logger.Warn($"Incomplete JSON detected for {title}. Requesting regeneration...");
-                            continue;  // Retry if JSON is incomplete
+                            continue; // Retry if JSON is incomplete
                         }
                     }
                     else
@@ -482,6 +486,7 @@ namespace GPTControlNamespace
                             continue;
                         }
                     }
+
                     completed = true;
                 }
                 catch (HttpRequestException e)
@@ -879,6 +884,7 @@ namespace GPTControlNamespace
             return tempAttackBehaviourFactory;
         }
 
+        /*
         public async Task<StatusFactory> initialiseStatusFactoryFromNarrator(Conversation chat)
         {
             // status factory logic, use game setup for diverting to using api key
@@ -1068,6 +1074,7 @@ namespace GPTControlNamespace
 
             Program.logger.Info("Status Factory Initialised");
         }
+        */
 
         public async Task GenerateUninitialisedAttackBehaviours(Conversation chat)
         {
@@ -1084,7 +1091,7 @@ namespace GPTControlNamespace
                 {
                     if (property.Name == "AttackBehaviour")
                     {
-                        if (initialisedAttackBehaviours.Contains(weaponTemplate.AttackBehaviour) == false )
+                        if (initialisedAttackBehaviours.Contains(weaponTemplate.AttackBehaviour) == false)
                         {
                             uninitialisedAttackBehaviours.Add(weaponTemplate.AttackBehaviour);
                         }
@@ -1101,7 +1108,22 @@ namespace GPTControlNamespace
                     {
                         foreach (AttackSlot slot in Enum.GetValues(typeof(AttackSlot)))
                         {
-                            if (enemyTemplate.Value.AttackBehaviours[slot] != null)
+                            if (enemyTemplate.Value.AttackBehaviours.Values.ToList().Where(x => x == null).Count() != 0)
+                            {
+                                List<string> keys = enemyTemplate.Value.attackBehaviourKeys;
+                                List<string> presentKeys = enemyTemplate.Value.AttackBehaviours.Values.ToList()
+                                    .Where(x => x != null).Select(x => x.Name).ToList();
+                                foreach (string key in keys)
+                                {
+                                    if (!presentKeys.Contains(key))
+                                    {
+                                        // need to add attack with key key
+                                        if (!uninitialisedAttackBehaviours.Contains(key))
+                                            uninitialisedAttackBehaviours.Add(key);
+                                    }
+                                }
+                            }
+                            else if (enemyTemplate.Value.AttackBehaviours[slot] != null)
                             {
                                 if (initialisedAttackBehaviours.Contains(
                                         enemyTemplate.Value.AttackBehaviours[slot].Name) == false)
@@ -1114,7 +1136,7 @@ namespace GPTControlNamespace
                     }
                 }
             }
-            
+
             // check for null attack expressions
             List<AttackInfo> behavioursToRemove = new List<AttackInfo>();
             foreach (var attackBehaviour in Program.game.attackBehaviourFactory.attackBehaviours)
@@ -1156,7 +1178,7 @@ namespace GPTControlNamespace
             }
 
             output = await UtilityFunctions.FixJson(output);
-            
+
             AttackBehaviourFactory tempAttackBehaviourFactory =
                 JsonConvert.DeserializeObject<AttackBehaviourFactory>(
                     output);
@@ -1168,15 +1190,16 @@ namespace GPTControlNamespace
             }
 
             // add statuses in temp to game.StatusFactory
-            
+
             List<SerializableAttackBehaviour> items = new List<SerializableAttackBehaviour>();
             foreach (KeyValuePair<string, AttackInfo> kvp in tempAttackBehaviourFactory.attackBehaviours)
             {
                 items.Add(new SerializableAttackBehaviour(kvp.Key, kvp.Value));
             }
-            
+
             Program.game.attackBehaviourFactory.InitializeFromSerializedBehaviors(items);
-            File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory, JsonConvert.SerializeObject(Program.game.attackBehaviourFactory));
+            File.WriteAllText(UtilityFunctions.attackBehaviourTemplateSpecificDirectory,
+                JsonConvert.SerializeObject(Program.game.attackBehaviourFactory));
 
             return;
 

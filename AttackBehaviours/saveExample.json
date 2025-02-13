@@ -1,90 +1,118 @@
 {
-  "PlayerBasicAttack": {
-    "Name": "PlayerBasicAttack",
-    "ExpressionString": "target.ReceiveAttack(50, 20)",
-    "Manacost": 0,
-    "Statuses": [],
-    "Narrative": "swings their weapon with basic skill."
-  },
-  "ShadowPierce": {
-    "Name": "ShadowPierce",
-    "ExpressionString": "target.ReceiveAttack(15, 25)",
-    "Manacost": 4,
-    "Statuses": [
-      "Darkened"
-    ],
-    "Narrative": "unleashes a piercing strike from the shadows."
-  },
-  "VenomSpit": {
-    "Name": "VenomSpit",
-    "ExpressionString": "target.ReceiveAttack(8, 15)",
-    "Manacost": 6,
-    "Statuses": [
-      "Poisoned"
-    ],
-    "Narrative": "spits a corrosive venom."
-  },
-  "InfernoBlast": {
-    "Name": "InfernoBlast",
-    "ExpressionString": "target.ReceiveAttack(20, 35)",
-    "Manacost": 8,
-    "Statuses": [
-      "Burned"
-    ],
-    "Narrative": "conjures a massive ball of fire."
-  },
-  "TerrorScreech": {
-    "Name": "TerrorScreech",
-    "ExpressionString": "target.ReceiveAttack(5, 10)",
-    "Manacost": 12,
-    "Statuses": [
-      "Feared"
-    ],
-    "Narrative": "lets out an ear-piercing screech."
-  },
-  "Crystalize": {
-    "Name": "Crystalize",
-    "ExpressionString": "target.ReceiveAttack(12, 50)",
-    "Manacost": 5,
-    "Statuses": [
-      "Stunned"
-    ],
-    "Narrative": "encases the foe in crystalline bonds."
-  },
-  "WhirlwindSlash": {
-    "Name": "WhirlwindSlash",
-    "ExpressionString": "target.ReceiveAttack(18, 40)",
-    "Manacost": 7,
-    "Statuses": [
-      "Disoriented"
-    ],
-    "Narrative": "executes a spinning attack, hitting all nearby."
-  },
-  "EarthquakeStomp": {
-    "Name": "EarthquakeStomp",
-    "ExpressionString": "target.ReceiveAttack(25, 30)",
-    "Manacost": 10,
-    "Statuses": [
-      "Knocked Down"
-    ],
-    "Narrative": "slams the ground, causing a violent quake."
-  },
-  "MysticBind": {
-    "Name": "MysticBind",
-    "ExpressionString": "target.ReceiveAttack(10, 20)",
-    "Manacost": 15,
-    "Statuses": [
-      "Rooted"
-    ],
-    "Narrative": "casts ancient runes to immobilize the target."
-  },
-  "IceSpear": {
-    "Name": "IceSpear",
-    "ExpressionString": "target.ReceiveAttack(13, 25)",
-    "Manacost": 4,
-    "Statuses": [
-      "Frozen"
-    ],
-    "Narrative": "hurls a spear of ice, chilling to the bone."
+  "attackBehaviours": {
+    "PlayerBasicAttack": {
+      "Name": "PlayerBasicAttack",
+      "ExpressionString": "target.ReceiveAttack(5, 20)",
+      "Manacost": 0,
+      "Statuses": [],
+      "Narrative": "swings a basic attack.",
+      "AttackType": "Attack"
+    },
+    "FeralClaws": {
+      "Name": "FeralClaws",
+      "ExpressionString": "target.ReceiveAttack(10, 50)",
+      "Manacost": 0,
+      "Statuses": [
+        "Bleed"
+      ],
+      "Narrative": "swipes violently with its claws.",
+      "AttackType": "Attack"
+    },
+    "VenomousBite": {
+      "Name": "VenomousBite",
+      "ExpressionString": "target.ReceiveAttack(15, 30)",
+      "Manacost": 0,
+      "Statuses": [
+        "Poisoned"
+      ],
+      "Narrative": "bites with venomous fangs.",
+      "AttackType": "Attack"
+    },
+    "TailSwipe": {
+      "Name": "TailSwipe",
+      "ExpressionString": "target.ReceiveAttack(8, 40)",
+      "Manacost": 4,
+      "Statuses": [
+        "Stunned"
+      ],
+      "Narrative": "strikes with a powerful tail swipe.",
+      "AttackType": "Attack"
+    },
+    "DemonicRoar": {
+      "Name": "DemonicRoar",
+      "ExpressionString": "target.ReceiveAttack(0, 0)",
+      "Manacost": 10,
+      "Statuses": [
+        "Fear"
+      ],
+      "Narrative": "unleashes a terrifying roar.",
+      "AttackType": "Debuff"
+    },
+    "EtherealSword": {
+      "Name": "EtherealSword",
+      "ExpressionString": "target.ReceiveAttack(20, 70)",
+      "Manacost": 0,
+      "Statuses": [
+        "Armor Break",
+        "Slowed"
+      ],
+      "Narrative": "strikes with a sword formed from pure energy.",
+      "AttackType": "Attack"
+    },
+    "NecroticBolt": {
+      "Name": "NecroticBolt",
+      "ExpressionString": "target.ReceiveAttack(12, 60)",
+      "Manacost": 6,
+      "Statuses": [
+        "Poisoned",
+        "Weakened"
+      ],
+      "Narrative": "throws a bolt of necrotic energy.",
+      "AttackType": "Attack"
+    },
+    "ArcaneExplosion": {
+      "Name": "ArcaneExplosion",
+      "ExpressionString": "target.ReceiveAttack(15, 80)",
+      "Manacost": 8,
+      "Statuses": [
+        "Stunned",
+        "Burned"
+      ],
+      "Narrative": "envelops the area in an arcane explosion.",
+      "AttackType": "Attack"
+    },
+    "AstralBlast": {
+      "Name": "AstralBlast",
+      "ExpressionString": "target.ReceiveAttack(10, 40)",
+      "Manacost": 5,
+      "Statuses": [
+        "Stun",
+        "Mental Exhaustion"
+      ],
+      "Narrative": "unleashes a powerful astral blast.",
+      "AttackType": "Attack"
+    },
+    "Earthstrike": {
+      "Name": "Earthstrike",
+      "ExpressionString": "target.ReceiveAttack(15, 20)",
+      "Manacost": 7,
+      "Statuses": [
+        "Slow",
+        "Armor Reduction"
+      ],
+      "Narrative": "strikes the ground, causing an earth-shattering impact.",
+      "AttackType": "Attack"
+    },
+    "SoothingMelody": {
+      "Name": "SoothingMelody",
+      "ExpressionString": "target.ReceiveAttack(-5, 0)",
+      "Manacost": 3,
+      "Statuses": [
+        "Heal",
+        "Calm"
+      ],
+      "Narrative": "plays a soothing melody that revitalizes",
+      "AttackType": "Heal"
+    }
   }
 }

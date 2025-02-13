@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Armour>
-        <Name>Knight's Helmet</Name>
-        <Description>A durable helmet designed to protect a knight's head in battle.</Description>
-        <Defence>20</Defence>
-        <UniqueProperties>+2 Constitution</UniqueProperties>
-        <DefensiveCapabilities>Decreases chances of receiving critical blows to the head</DefensiveCapabilities>
+        <Name>Helmet of Honor</Name>
+        <Description>An ornate helmet handed down through generations of noble kin. It symbolizes valor and honor.</Description>
+        <Defence>12</Defence>
+        <UniqueProperties>+2 Strength; +1 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Offer resistance against head attacks</DefensiveCapabilities>
         <ItemEquipLocation>Head</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Knight's Cuirass</Name>
-        <Description>A heavy plate armor that offers high protection against attack.</Description>
-        <Defence>30</Defence>
-        <UniqueProperties>+3 Strength</UniqueProperties>
-        <DefensiveCapabilities>Decreases damage taken from enemy attacks</DefensiveCapabilities>
+        <Name>Chestplate of Courage</Name>
+        <Description>A sturdy chestplate infused with the steel heart of a lion. It signifies courage and determination.</Description>
+        <Defence>18</Defence>
+        <UniqueProperties>+3 Strength; +2 Constitution</UniqueProperties>
+        <DefensiveCapabilities>Highly effective against body attacks</DefensiveCapabilities>
         <ItemEquipLocation>Body</ItemEquipLocation>
     </Armour>
     <Armour>
-        <Name>Knight's Greaves</Name>
-        <Description>High boots made of hardened steel, designed to protect a knight's legs.</Description>
+        <Name>Legplates of Loyalty</Name>
+        <Description>Durable leg plates that stood firm in countless battles. They symbolize loyalty and steadfastness.</Description>
         <Defence>15</Defence>
-        <UniqueProperties>+2 Dexterity</UniqueProperties>
-        <DefensiveCapabilities>Provides a bonus to dodging enemy attacks</DefensiveCapabilities>
+        <UniqueProperties>+2 Strength; +1 Dexterity</UniqueProperties>
+        <DefensiveCapabilities>Shield against lower-body attacks</DefensiveCapabilities>
         <ItemEquipLocation>Legs</ItemEquipLocation>
     </Armour>
 </Item>

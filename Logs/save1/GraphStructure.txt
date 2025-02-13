@@ -42,155 +42,85 @@ The maximum nodeDepth you should go up to (and the milestone should have) is 5.
 OUTPUT: {
     "Id": 0,
     "Nodes": [
-        {
-            "NodeID": 0,
-            "NodeDepth": 0,
-            "NodeHeight": 22,
-            "NodeWidth": 24,
-            "ConnectedNodes": [1, 2],
-            "ConnectedNodesEdges": ["directed", "directed"],
-            "NodePOI": "Starting Point",
-            "Milestone": false
-        },
-        {
-            "NodeID": 1,
-            "NodeDepth": 1,
-            "NodeHeight": 25,
-            "NodeWidth": 22,
-            "ConnectedNodes": [3, 4],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Town",
-            "Milestone": false
-        },
-        {
-            "NodeID": 2,
-            "NodeDepth": 1,
-            "NodeHeight": 23,
-            "NodeWidth": 28,
-            "ConnectedNodes": [5],
-            "ConnectedNodesEdges": ["directed"],
-            "NodePOI": "Forest",
-            "Milestone": false
-        },
-        {
-            "NodeID": 3,
-            "NodeDepth": 2,
-            "NodeHeight": 25,
-            "NodeWidth": 26,
-            "ConnectedNodes": [1, 6],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Mountain Range",
-            "Milestone": false
-        },
-        {
-            "NodeID": 4,
-            "NodeDepth": 2,
-            "NodeHeight": 21,
-            "NodeWidth": 20,
-            "ConnectedNodes": [1, 7],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "River",
-            "Milestone": false
-        },
-        {
-            "NodeID": 5,
-            "NodeDepth": 2,
-            "NodeHeight": 27,
-            "NodeWidth": 25,
-            "ConnectedNodes": [2, 8],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Desert",
-            "Milestone": false
-        },
-        {
-            "NodeID": 6,
-            "NodeDepth": 3,
-            "NodeHeight": 24,
-            "NodeWidth": 23,
-            "ConnectedNodes": [3, 9],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Abandoned Village",
-            "Milestone": false
-        },
-        {
-            "NodeID": 7,
-            "NodeDepth": 3,
-            "NodeHeight": 25,
-            "NodeWidth": 22,
-            "ConnectedNodes": [4, 10],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Cave",
-            "Milestone": false
-        },
-        {
-            "NodeID": 8,
-            "NodeDepth": 3,
-            "NodeHeight": 29,
-            "NodeWidth": 30,
-            "ConnectedNodes": [5, 11],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Swamp",
-            "Milestone": false
-        },
-        {
-            "NodeID": 9,
-            "NodeDepth": 4,
-            "NodeHeight": 22,
-            "NodeWidth": 21,
-            "ConnectedNodes": [6, 12],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Fortress",
-            "Milestone": false
-        },
-        {
-            "NodeID": 10,
-            "NodeDepth": 4,
-            "NodeHeight": 28,
-            "NodeWidth": 27,
-            "ConnectedNodes": [7, 13],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Lake",
-            "Milestone": false
-        },
-        {
-            "NodeID": 11,
-            "NodeDepth": 4,
-            "NodeHeight": 23,
-            "NodeWidth": 24,
-            "ConnectedNodes": [8, 14],
-            "ConnectedNodesEdges": ["undirected", "directed"],
-            "NodePOI": "Ruins",
-            "Milestone": false
-        },
-        {
-            "NodeID": 12,
-            "NodeDepth": 5,
-            "NodeHeight": 24,
-            "NodeWidth": 25,
-            "ConnectedNodes": [9],
-            "ConnectedNodesEdges": ["undirected"],
-            "NodePOI": "Volcano",
-            "Milestone": true
-        },
-        {
-            "NodeID": 13,
-            "NodeDepth": 5,
-            "NodeHeight": 26,
-            "NodeWidth": 25,
-            "ConnectedNodes": [10],
-            "ConnectedNodesEdges": ["undirected"],
-            "NodePOI": "Lighthouse",
-            "Milestone": true
-        },
-        {
-            "NodeID": 14,
-            "NodeDepth": 5,
-            "NodeHeight": 27,
-            "NodeWidth": 28,
-            "ConnectedNodes": [11],
-            "ConnectedNodesEdges": ["undirected"],
-            "NodePOI": "Cathedral",
-            "Milestone": true
-        }
+      {
+        "NodeID": 0,
+        "NodeDepth": 0,
+        "NodeHeight": 24,
+        "NodeWidth": 24,
+        "ConnectedNodes": [1, 2],
+        "ConnectedNodesEdges": ["directed", "directed"],
+        "NodePOI": "Hero's Village",
+        "Milestone": false
+      },
+      {
+        "NodeID": 1,
+        "NodeDepth": 1,
+        "NodeHeight": 26,
+        "NodeWidth": 23,
+        "ConnectedNodes": [0, 2, 3],
+        "ConnectedNodesEdges": ["undirected", "directed", "directed"],
+        "NodePOI": "Forest Road",
+        "Milestone": false
+      },
+      {
+        "NodeID": 2,
+        "NodeDepth": 1,
+        "NodeHeight": 20,
+        "NodeWidth": 25,
+        "ConnectedNodes": [0, 1, 4],
+        "ConnectedNodesEdges": ["undirected", "undirected", "directed"],
+        "NodePOI": "Ancient Ruins",
+        "Milestone": false
+      },
+      {
+        "NodeID": 3,
+        "NodeDepth": 2,
+        "NodeHeight": 28,
+        "NodeWidth": 26,
+        "ConnectedNodes": [1, 4],
+        "ConnectedNodesEdges": ["undirected", "directed"],
+        "NodePOI": "Bandit Camp",
+        "Milestone": false
+      },
+      {
+        "NodeID": 4,
+        "NodeDepth": 2,
+        "NodeHeight": 25,
+        "NodeWidth": 25,
+        "ConnectedNodes": [2, 3, 5],
+        "ConnectedNodesEdges": ["undirected", "undirected", "directed"],
+        "NodePOI": "Dark Cave",
+        "Milestone": false
+      },
+      {
+        "NodeID": 5,
+        "NodeDepth": 3,
+        "NodeHeight": 30,
+        "NodeWidth": 30,
+        "ConnectedNodes": [4, 6],
+        "ConnectedNodesEdges": ["undirected", "directed"],
+        "NodePOI": "Goblin Hideout",
+        "Milestone": false
+      },
+      {
+        "NodeID": 6,
+        "NodeDepth": 4,
+        "NodeHeight": 28,
+        "NodeWidth": 27,
+        "ConnectedNodes": [5, 7],
+        "ConnectedNodesEdges": ["undirected", "directed"],
+        "NodePOI": "Abandoned Fortress",
+        "Milestone": false
+      },
+      {
+        "NodeID": 7,
+        "NodeDepth": 5,
+        "NodeHeight": 28,
+        "NodeWidth": 30,
+        "ConnectedNodes": [6],
+        "ConnectedNodesEdges": ["undirected"],
+        "NodePOI": "Dragon's Lair",
+        "Milestone": true
+      }
     ]
 }

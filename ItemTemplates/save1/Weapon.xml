@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Weapon>
-        <Name>Arcane Blade</Name>
-        <Description>A mystical sword once wielded by the kingdom's greatest warrior. It pulses with a spectral blue aura.</Description>
-        <Damage>30</Damage>
+        <Name>Chivalrous Sword</Name>
+        <Description>A sword that bears the markings of noble knights from ancient times. It posseses an unyielding aura.</Description>
+        <Damage>18</Damage>
         <WeaponType>Sword</WeaponType>
-        <UniqueProperties>+5 Strength</UniqueProperties>
+        <UniqueProperties>+4 Strength</UniqueProperties>
         <StatusNames>
             <StatusName>Stun</StatusName>
         </StatusNames>
-        <AttackBehaviour>GoblinSlash</AttackBehaviour>
-        <NarrativeLine>presses the attack, stunning the enemy with his Arcane Blade. Arcane power surges, dealing additional damage.</NarrativeLine>
+        <AttackBehaviour>SwordSlice</AttackBehaviour>
+        <NarrativeLine>With a powerful slash, the sword strikes the enemy, leaving them temporarily stunned.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Thunder Mace</Name>
-        <Description>A weighty mace with a head shaped like a thundercloud. Causes tremors and spews out electricity.</Description>
-        <Damage>45</Damage>
-        <WeaponType>Mace</WeaponType>
-        <UniqueProperties>+3 Constitution</UniqueProperties>
+        <Name>Valiant Lance</Name>
+        <Description>An imposing lance used by daring knights in times of old. Its reach is both terrifying and awe-inspiring.</Description>
+        <Damage>20</Damage>
+        <WeaponType>Lance</WeaponType>
+        <UniqueProperties>+3 Strength</UniqueProperties>
         <StatusNames>
-            <StatusName>Frightened</StatusName>
+            <StatusName>ArmorPierce</StatusName>
         </StatusNames>
-        <AttackBehaviour>TrollSmash</AttackBehaviour>
-        <NarrativeLine>unleashes a ground-breaking smash to their enemy, creating fear amongst the ranks. </NarrativeLine>
+        <AttackBehaviour>LethalLance</AttackBehaviour>
+        <NarrativeLine>The player thrusts their lance, penetrating enemy's armour.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
     <Weapon>
-        <Name>Rubber Chicken</Name>
-        <Description>A seemingly innocuous rubber chicken. Perfect for fooling, but not much else.</Description>
-        <Damage>5</Damage>
-        <WeaponType>Gag</WeaponType>
-        <UniqueProperties>+4 Charisma</UniqueProperties>
+        <Name>Guardian Shield</Name>
+        <Description>An almost impenetrable shield that has seen countless battles. It resonates with an aura of protection.</Description>
+        <Damage>10</Damage>
+        <WeaponType>Shield</WeaponType>
+        <UniqueProperties>+2 Constitution</UniqueProperties>
         <StatusNames>
-            <StatusName>Confusion</StatusName>
+            <StatusName>DefenceBoost</StatusName>
         </StatusNames>
-        <AttackBehaviour>PlayerBasicAttack</AttackBehaviour>
-        <NarrativeLine>whacks the enemy with the rubber chicken, inducing confusion and hearty chuckle from the crowd.</NarrativeLine>
+        <AttackBehaviour>ShieldBash</AttackBehaviour>
+        <NarrativeLine>The player braces and charges, slamming their shield into the enemy.</NarrativeLine>
         <ItemEquipLocation>Weapon</ItemEquipLocation>
     </Weapon>
 </Item>

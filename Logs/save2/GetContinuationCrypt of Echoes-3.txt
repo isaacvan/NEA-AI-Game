@@ -1,8 +1,0 @@
-INPUT: The player inputted this in response to your narrative: explore
-
-As a reminder, your last narrative lines were The cave unveils a forgotten underground city.Distant whispers cling on the ancient stone walls.What will you find in its shadowy corners?
-
-Please now output the narrators response to this input to continue the objective. You can introduce NPC dialogues to your narrative. It is critical that your response provides a scenario where the user can easily respond with what they will do next.
-It is important that you act as a narrator: Feel free to use dice rolls and random events, where the outcome changes how positive the next narrative is.You may start this response with the word in full capitals CONTINUE or END. If you use continue, then all the following text will be outputted to the userHowever if you start with END, the objective will end and you can decide give the player an item (as a reward if they made positive choices) or just end (the player will lose hp).The items you can give to the player are: Starshard Staff, Elonim's Grit, Harmony Flute, Starshard Circlet, Mystic Wanderer's Robes, Elonim's Sandals, Elonim Elixir, Stone Seed, Moonlight NectarFor example, to end the objective and give the user an item write END (item name)Or, write CONTINUE (next narrative lines)
-
-OUTPUT: CONTINUE As you explore, the eerie silence is broken by a low growl. The celestial serpent has sensed your presence.

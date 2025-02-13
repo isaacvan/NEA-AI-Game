@@ -12,171 +12,266 @@
             "directed",
             "directed"
           ],
-          "NodePOI": "Starting Point",
+          "NodePOI": "Hero's Village",
           "NodeDepth": 0,
           "NodeWidth": 24,
-          "NodeHeight": 22,
+          "NodeHeight": 24,
           "Milestone": false,
           "enemies": [
             {
               "spawnPoint": "0, 0",
               "nature": 0,
-              "name": "Goblin",
+              "name": "DemonLord",
               "boss": false,
               "id": 0,
-              "currentLocation": "22, 15",
-              "alive": false
+              "currentLocation": "3, 8",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "DemonLord",
+              "boss": false,
+              "id": 1,
+              "currentLocation": "11, 7",
+              "alive": true
+            },
+            {
+              "spawnPoint": "0, 0",
+              "nature": 0,
+              "name": "DemonLord",
+              "boss": false,
+              "id": 2,
+              "currentLocation": "3, 9",
+              "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Embark On Your Journey",
-            "Description": "Begin your quest in the mystical world.",
+            "ObjectiveName": "The Starting Journey",
+            "Description": "You begin your journey in your own rural village.",
             "NarrativePrompts": [
-              ": Staring the goblin down, the adventurer feels a chill. An old-man watches from his hut. \"Face the fear,\" he advises, \"or let it haunt you forever\".",
-              ": As the adventurer ponders the old man's advice, the goblin inches closer, red eyes glaring menacingly. The old man patiently awaits the player's decision.",
-              " (Potion of Restoration): With a heavy sigh, the adventurer turns away, leaving the objective behind. The old man gifts a Potion of Restoration, a token for the journey ahead."
+              "You wake up in your small village house. The village elder has called everyone for an important announcement.",
+              "What will you do? Will you hurry to the village center, or tend to your morning chores first?"
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 1,
           "ConnectedNodes": [
-            3,
-            4,
-            0
+            0,
+            2,
+            3
           ],
           "ConnectedNodesEdges": [
             "undirected",
+            "directed",
             "directed"
           ],
-          "NodePOI": "Town",
+          "NodePOI": "Forest Road",
           "NodeDepth": 1,
-          "NodeWidth": 22,
-          "NodeHeight": 25,
+          "NodeWidth": 23,
+          "NodeHeight": 26,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 1,
-              "currentLocation": "1, 14",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 2,
-              "currentLocation": "21, 1",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Fire Dragon",
+              "spawnPoint": "6, 15",
+              "nature": 1,
+              "name": "MageKnight",
               "boss": false,
               "id": 3,
-              "currentLocation": "2, 16",
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Exploe the Town",
-            "Description": "Visit the lively town and meet its residents.",
+            "ObjectiveName": "The Curious Pathway",
+            "Description": "Navigate through a dense, mysterious forest.",
             "NarrativePrompts": [
-              ": Entering the town, the adventurer's gaze lands upon the lively crowd. A goblin seen at a far-off corner barely goes noticed. Yet, the menacing Dragon and a Troll loom large, causing a stir. What's the next step, they wonder?",
-              ": Hearing the adventurer utter the word 'weapon', a knight steps forward, offering an armory visit. But, the Dragon and Troll's presence makes this offer a tricky proposition. What will our hero choose?",
-              " (Arcane Blade): Nodding, the adventurer quickly picks up a gleaming Arcane Blade from the armory and hastily leaves the town, the dragon and troll's presence fading behind."
+              "You find yourself on a winding path through a thick forest. The sounds of flora and fauna echo all around.",
+              "Suddenly, you notice a pair of gleaming eyes watching from the undergrowth. How will you proceed?"
             ],
-            "IsCompleted": true,
+            "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 2,
           "ConnectedNodes": [
-            5,
-            0
+            0,
+            4
           ],
           "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
             "directed"
           ],
-          "NodePOI": "Forest",
+          "NodePOI": "Ancient Ruins",
           "NodeDepth": 1,
-          "NodeWidth": 28,
-          "NodeHeight": 23,
+          "NodeWidth": 25,
+          "NodeHeight": 20,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "0, 0",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "5, 13",
+              "nature": 0,
+              "name": "DarkSorcerer",
               "boss": false,
               "id": 4,
-              "currentLocation": "21, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 5,
-              "currentLocation": "10, 12",
-              "alive": true
-            },
-            {
-              "spawnPoint": "0, 0",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 6,
-              "currentLocation": "19, 13",
+              "currentLocation": "0, 0",
               "alive": true
             }
           ],
           "Obj": {
-            "ObjectiveName": "Cross the Forest",
-            "Description": "Navigate your way through a dense, mysterious forest.",
-            "NarrativePrompts": [],
+            "ObjectiveName": "Echoes of the Past",
+            "Description": "Uncover secrets hidden within the ancient ruins.",
+            "NarrativePrompts": [
+              "You stumble upon a dilapidated structure, half consumed by nature. You can barely make out the markings of a forgotten civilization.",
+              "The entrance to the ruins beckons you. Will you venture inside, or tread carefully around?"
+            ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 3,
           "ConnectedNodes": [
             1,
+            4
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "directed"
+          ],
+          "NodePOI": "Bandit Camp",
+          "NodeDepth": 2,
+          "NodeWidth": 26,
+          "NodeHeight": 28,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "1, 11",
+              "nature": 0,
+              "name": "Brigand",
+              "boss": false,
+              "id": 5,
+              "currentLocation": "0, 0",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Bandit Showdown",
+            "Description": "Confront a group of bandits in their own camp.",
+            "NarrativePrompts": [
+              "You smell smoke before you spot the camp - a roughshod cluster of tents surrounding a flickering fire, a hub of scruffy-looking people.",
+              "You see a bandit sentry to one side. Do you sneak around, or make a direct assault?"
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 4,
+          "ConnectedNodes": [
+            2,
+            5
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "undirected",
+            "directed"
+          ],
+          "NodePOI": "Dark Cave",
+          "NodeDepth": 2,
+          "NodeWidth": 25,
+          "NodeHeight": 25,
+          "Milestone": false,
+          "enemies": [
+            {
+              "spawnPoint": "9, 22",
+              "nature": 0,
+              "name": "Brigand",
+              "boss": false,
+              "id": 6,
+              "currentLocation": "0, 0",
+              "alive": true
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Into The Abyss",
+            "Description": "Venture into the depths of a dark and dangerous cave.",
+            "NarrativePrompts": [
+              "A dark cave entrance yawns in front of you, an eerie chill seeping from within.",
+              "Do you step into the darkness, or find another way around?"
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 5,
+          "ConnectedNodes": [
+            4,
             6
           ],
           "ConnectedNodesEdges": [
             "undirected",
             "directed"
           ],
-          "NodePOI": "Mountain Range",
-          "NodeDepth": 2,
-          "NodeWidth": 26,
-          "NodeHeight": 25,
+          "NodePOI": "Goblin Hideout",
+          "NodeDepth": 3,
+          "NodeWidth": 30,
+          "NodeHeight": 30,
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "22, 20",
-              "nature": 2,
-              "name": "Undead",
+              "spawnPoint": "6, 26",
+              "nature": 1,
+              "name": "MageKnight",
               "boss": false,
               "id": 7,
               "currentLocation": "0, 0",
               "alive": true
-            },
+            }
+          ],
+          "Obj": {
+            "ObjectiveName": "Goblin Encounter",
+            "Description": "Sneak into a goblin hideout and retrieve stolen goods.",
+            "NarrativePrompts": [
+              "The smell of rotting meat leads you to the goblin hideout. You can hear their chattering from a distance.",
+              "How will you proceed? Will you sneak past the guards or take them head-on?"
+            ],
+            "IsCompleted": false,
+            "Location": "0, 0"
+          },
+          "StoredObjectiveForMilestone": null
+        },
+        {
+          "NodeID": 6,
+          "ConnectedNodes": [
+            5,
+            7
+          ],
+          "ConnectedNodesEdges": [
+            "undirected",
+            "directed"
+          ],
+          "NodePOI": "Abandoned Fortress",
+          "NodeDepth": 4,
+          "NodeWidth": 27,
+          "NodeHeight": 28,
+          "Milestone": false,
+          "enemies": [
             {
-              "spawnPoint": "13, 14",
-              "nature": 1,
-              "name": "Grey Wolf",
+              "spawnPoint": "5, 20",
+              "nature": 0,
+              "name": "Brigand",
               "boss": false,
               "id": 8,
               "currentLocation": "0, 0",
@@ -184,497 +279,43 @@
             }
           ],
           "Obj": {
-            "ObjectiveName": "Scale the Mountain",
-            "Description": "Conquer the high peaks of the mountain range.",
-            "NarrativePrompts": [],
+            "ObjectiveName": "Deserted Stronghold",
+            "Description": "Explore an abandoned fortress filled with hidden dangers.",
+            "NarrativePrompts": [
+              "Before you stands a once mighty fortress, now crumbling under years of neglect.",
+              "Do you dare to explore its desolate chambers, or keep a safe distance from the ominous structure?"
+            ],
             "IsCompleted": false,
             "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 4,
-          "ConnectedNodes": [
-            1,
-            7
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "River",
-          "NodeDepth": 2,
-          "NodeWidth": 20,
-          "NodeHeight": 21,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "15, 17",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 9,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "17, 1",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 10,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "15, 13",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 11,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Ford the River",
-            "Description": "Find a safe way to cross the roaring river.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 5,
-          "ConnectedNodes": [
-            2,
-            8
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Desert",
-          "NodeDepth": 2,
-          "NodeWidth": 25,
-          "NodeHeight": 27,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "2, 20",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 12,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "8, 10",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 13,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "11, 7",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 14,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Survive the Desert",
-            "Description": "Travel through harsh desert conditions to reach your destination.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 6,
-          "ConnectedNodes": [
-            3,
-            9
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Abandoned Village",
-          "NodeDepth": 3,
-          "NodeWidth": 23,
-          "NodeHeight": 24,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "7, 13",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 15,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "6, 8",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 16,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "4, 9",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 17,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Uncover the Past",
-            "Description": "Discover what happened to the abandoned village.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
+          },
+          "StoredObjectiveForMilestone": null
         },
         {
           "NodeID": 7,
           "ConnectedNodes": [
-            4,
-            10
+            6
           ],
           "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
+            "undirected"
           ],
-          "NodePOI": "Cave",
-          "NodeDepth": 3,
-          "NodeWidth": 22,
-          "NodeHeight": 25,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "13, 14",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 18,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "1, 22",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 19,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Plunge into Darkness",
-            "Description": "Explore the depths of an ominous cave.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 8,
-          "ConnectedNodes": [
-            5,
-            11
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Swamp",
-          "NodeDepth": 3,
+          "NodePOI": "Dragon's Lair",
+          "NodeDepth": 5,
           "NodeWidth": 30,
-          "NodeHeight": 29,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "7, 26",
-              "nature": 2,
-              "name": "Undead",
-              "boss": false,
-              "id": 20,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "5, 5",
-              "nature": 0,
-              "name": "Fire Dragon",
-              "boss": false,
-              "id": 21,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "11, 6",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": false,
-              "id": 22,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Traverse the Swamp",
-            "Description": "Navigate your way through a treacherous swamp.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 9,
-          "ConnectedNodes": [
-            6,
-            12
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Fortress",
-          "NodeDepth": 4,
-          "NodeWidth": 21,
-          "NodeHeight": 22,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "2, 12",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 23,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "7, 19",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 24,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "10, 14",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 25,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Storm the Fortress",
-            "Description": "Invade the enemy stronghold and defeat the guards.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 10,
-          "ConnectedNodes": [
-            7,
-            13
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Lake",
-          "NodeDepth": 4,
-          "NodeWidth": 27,
           "NodeHeight": 28,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "18, 3",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 26,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "23, 4",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 27,
-              "currentLocation": "0, 0",
-              "alive": true
-            },
-            {
-              "spawnPoint": "2, 14",
-              "nature": 1,
-              "name": "Grey Wolf",
-              "boss": false,
-              "id": 28,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Cross the Lake",
-            "Description": "Find a way across a vast, still lake.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 11,
-          "ConnectedNodes": [
-            8,
-            14
-          ],
-          "ConnectedNodesEdges": [
-            "undirected",
-            "directed"
-          ],
-          "NodePOI": "Ruins",
-          "NodeDepth": 4,
-          "NodeWidth": 24,
-          "NodeHeight": 23,
-          "Milestone": false,
-          "enemies": [
-            {
-              "spawnPoint": "19, 4",
-              "nature": 0,
-              "name": "Goblin",
-              "boss": false,
-              "id": 29,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Explore the Ruins",
-            "Description": "Investigate the secrets of an ancient ruin.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 12,
-          "ConnectedNodes": [
-            9
-          ],
-          "ConnectedNodesEdges": [
-            "undirected"
-          ],
-          "NodePOI": "Volcano",
-          "NodeDepth": 5,
-          "NodeWidth": 25,
-          "NodeHeight": 24,
           "Milestone": true,
           "enemies": [
             {
-              "spawnPoint": "6, 15",
+              "spawnPoint": "14, 24",
               "nature": 0,
-              "name": "Fire Dragon",
+              "name": "DarkSorcerer",
               "boss": true,
-              "id": 30,
+              "id": 9,
               "currentLocation": "0, 0",
               "alive": true
             }
           ],
-          "Obj": {
-            "ObjectiveName": "Face the Inferno",
-            "Description": "Ascend the active volcano and brave its fiery hazards.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 13,
-          "ConnectedNodes": [
-            10
-          ],
-          "ConnectedNodesEdges": [
-            "undirected"
-          ],
-          "NodePOI": "Lighthouse",
-          "NodeDepth": 5,
-          "NodeWidth": 25,
-          "NodeHeight": 26,
-          "Milestone": true,
-          "enemies": [
-            {
-              "spawnPoint": "22, 22",
-              "nature": 0,
-              "name": "Mountain Troll",
-              "boss": true,
-              "id": 31,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Reach the Lighthouse",
-            "Description": "Make your way to the guiding light of the lighthouse.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
-        },
-        {
-          "NodeID": 14,
-          "ConnectedNodes": [
-            11
-          ],
-          "ConnectedNodesEdges": [
-            "undirected"
-          ],
-          "NodePOI": "Cathedral",
-          "NodeDepth": 5,
-          "NodeWidth": 28,
-          "NodeHeight": 27,
-          "Milestone": true,
-          "enemies": [
-            {
-              "spawnPoint": "12, 11",
-              "nature": 2,
-              "name": "Undead",
-              "boss": true,
-              "id": 32,
-              "currentLocation": "0, 0",
-              "alive": true
-            }
-          ],
-          "Obj": {
-            "ObjectiveName": "Enter the Cathedral",
-            "Description": "Venture into a grand cathedral, meet its caretaker.",
-            "NarrativePrompts": [],
-            "IsCompleted": false,
-            "Location": "0, 0"
-          }
+          "Obj": null,
+          "StoredObjectiveForMilestone": null
         }
       ],
       "Id": 0

@@ -191,6 +191,15 @@ player.EquipItem({"Head", "Body", "Legs", "Weapon", "Accessory"}, item);
             }
         }
 
+        public void initialiseEquipmentEffectsApplied()
+        {
+            EquipmentEffectsApplied = new Dictionary<EquippableItem.EquipLocation, bool>();
+            foreach (var location in Enum.GetValues<EquippableItem.EquipLocation>())
+            {
+                EquipmentEffectsApplied.Add(location, false);
+            }
+        }
+
         public async Task readEquipment()
         {
             string path = UtilityFunctions.mainDirectory +

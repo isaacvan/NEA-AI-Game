@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
     <Consumable>
-        <Name>Potion of Restoration</Name>
-        <Description>A mystical potion that has the power to restore your health and mana.</Description>
-        <Effects>Restores 30% of health and mana points</Effects>
-        <UniqueProperties>None</UniqueProperties>
-        <StoryLineRelevance>Players can purchase this potion from in-game vendors or find it as loot in hidden chests.</StoryLineRelevance>
+        <Name>Elixir of Strength</Name>
+        <Description>An ancient potion known to bolster a knight's might. Its use grants a temporary boost to strength.</Description>
+        <Effects>Strength+5</Effects>
+        <UniqueProperties>Can be used once per battle</UniqueProperties>
+        <StorylineRelevance>This potion is said to have been used by the legendary knight, Lancelot.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Rune Stone of Recall</Name>
-        <Description>An ancient rune stone that can teleport the user to previously visited locations.</Description>
-        <Effects>Teleports the user to a saved location</Effects>
-        <UniqueProperties>Can be used only once</UniqueProperties>
-        <StoryLineRelevance>These stones are essential for quick navigation around the game world, especially when a hasty retreat is needed.</StoryLineRelevance>
+        <Name>Chalice of Healing</Name>
+        <Description>A sacred chalice believed to possess the power of revitalization. When consumed, it restores a knight's health.</Description>
+        <Effects>CurrentHealth+20</Effects>
+        <UniqueProperties>Heal</UniqueProperties>
+        <StorylineRelevance>King Arthur was said to have given it to his knights before embarking on perilous quests.</StorylineRelevance>
     </Consumable>
     <Consumable>
-        <Name>Elixir of Giants</Name>
-        <Description>A concoction brewed from the blood of ancient giants. Boosts strength dramatically.</Description>
-        <Effects>Tremendously increases attack power for a short period of time</Effects>
-        <UniqueProperties>None</UniqueProperties>
-        <StoryLineRelevance>A valuable item that can be used strategically to tip the scales of a tough battle in the player's favour.</StoryLineRelevance>
+        <Name>Ruby of Resilience</Name>
+        <Description>This mystical ruby hardens a knight's spirit when held, elevating their defensive traits.</Description>
+        <Effects>Constitution+5</Effects>
+        <UniqueProperties>AtkPowered</UniqueProperties>
+        <StorylineRelevance>This ruby was an emblem of the Round Table's unyielding spirit.</StorylineRelevance>
     </Consumable>
 </Item>
