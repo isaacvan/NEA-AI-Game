@@ -116,12 +116,12 @@
           "Milestone": false,
           "enemies": [
             {
-              "spawnPoint": "5, 13",
+              "spawnPoint": "0, 0",
               "nature": 0,
               "name": "DarkSorcerer",
               "boss": false,
               "id": 4,
-              "currentLocation": "0, 0",
+              "currentLocation": "4, 11",
               "alive": true
             }
           ],

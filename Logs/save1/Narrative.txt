@@ -1,3 +1,3 @@
 INPUT: The max tokens for the next output is 25. Ensure that your output makes sense within 25 tokens.
 
-OUTPUT: "Fully recovered, the hero braces himself for an impending duel with the MageKnight."
+OUTPUT: "DemonLords' eyes glint menace in the shadows. Blood-chilling laughter fills the cold air."

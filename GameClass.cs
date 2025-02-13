@@ -57,6 +57,7 @@ namespace GameClassNamespace
             if (!UtilityFunctions.loadedSave)
             {
                 Console.WriteLine("Starting new game...");
+                GameSetup loadGame = new TestNarrator.GameTest1();
 
                 // initialise attack behaviours
                 attackBehaviourFactory = await gameSetup.initialiseAttackBehaviourFactoryFromNarrator(chat);
@@ -81,6 +82,8 @@ namespace GameClassNamespace
 
                 // error-checking to ensure statuses are initialised
                 await gameSetup.GenerateUninitialisedAttackBehaviours(chat);
+                await loadGame.initialiseEnemyFactoryFromNarrator(chat, enemyFactory, attackBehaviourFactory,
+                    repopulate: true);
                 // FUTURE IMPLEMENTATION FOR EXTENSION
                 // await gameSetup.GenerateUninitialisedStatuses(chat);
 

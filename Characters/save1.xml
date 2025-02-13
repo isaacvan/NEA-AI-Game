@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Player xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <playerPos>
-    <X>9</X>
-    <Y>7</Y>
+    <X>4</X>
+    <Y>11</Y>
   </playerPos>
   <Class>Knight</Class>
   <Race>Human</Race>
   <Health>110</Health>
-  <currentHealth>86</currentHealth>
+  <currentHealth>110</currentHealth>
   <ManaPoints>84</ManaPoints>
   <currentMana>70</currentMana>
   <StatNames>
