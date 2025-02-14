@@ -1,10 +1,7 @@
 ﻿using System.Drawing;
-using System.Net.Mime;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using CombatNamespace;
-using Emgu.CV.Aruco;
 using EnemyClassesNamespace;
 using GameClassNamespace;
 using GPTControlNamespace;

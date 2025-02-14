@@ -1,18 +1,10 @@
 ﻿using UtilityFunctionsNamespace;
 using PlayerClassesNamespace;
-using System;
-using System.Drawing;
-using System.IO;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Transactions;
 using DynamicExpresso;
-using Emgu.CV.Ocl;
 using EnemyClassesNamespace;
-using MainNamespace;
-using NLog;
 using Program = MainNamespace.Program;
+
 
 namespace CombatNamespace
 {

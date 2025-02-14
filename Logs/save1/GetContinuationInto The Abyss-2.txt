@@ -1,0 +1,3 @@
+INPUT: Reeling from the battle, your courage undiminished, you stand ready for the coming onslaught of goblins, with only
+
+OUTPUT: CONTINUE: Despite the scrambled thoughts reflected in your words, you manage to explore the cave surroundings. Cold, dank, and uninviting, each step seems to echo farther than the last. Suddenly, from a dark corner, a soft, tremulous voice floats out. It's a cave dweller, old and frail. Will you engage, or ignore and continue delving deeper? The choice is yours.

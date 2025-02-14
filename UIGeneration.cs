@@ -2,12 +2,8 @@
 using CombatNamespace;
 using EnemyClassesNamespace;
 using GameClassNamespace;
-using GPTControlNamespace;
 using GridConfigurationNamespace;
 using ItemFunctionsNamespace;
-using MainNamespace;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using OpenAI_API.Chat;
 using PlayerClassesNamespace;
 using UtilityFunctionsNamespace;

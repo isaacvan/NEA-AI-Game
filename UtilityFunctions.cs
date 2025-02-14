@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using PlayerClassesNamespace;
 using EnemyClassesNamespace;
 using System.Drawing;
@@ -11,14 +7,11 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using CombatNamespace;
-using ItemFunctionsNamespace;
 using Newtonsoft.Json;
 using DynamicExpresso;
 using GameClassNamespace;
-using GPTControlNamespace;
 using GridConfigurationNamespace;
 using MainNamespace;
-using OpenAI_API.Chat;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace UtilityFunctionsNamespace

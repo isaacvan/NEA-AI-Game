@@ -1,0 +1,3 @@
+INPUT: Incorporate the use of the player's inventory into your narrative. If the player has a particular item, you could create a situation where it would be useful, forcing the player to decide whether or not to use it. Conversely, you might hint at the usefulness of an item the player doesn't have yet, encouraging them to find and acquire it. This can create a more immersive and engaging experience for the player.
+
+OUTPUT: CONTINUE: The DarkSorcerer chuckles at your bold statement, "Even as a developer, one must adhere to the rules of the game. Earn your trophies and arduous battles will yield their rewards." Nevertheless, feeling a tinge of intrigue in you, he gifts you the Valiant Lance. Now, are you going to confront or reason?
